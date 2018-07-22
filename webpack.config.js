@@ -30,6 +30,8 @@ Encore
 
     // allow sass/scss files to be processed
     .enableSassLoader()
+
+    .enableVersioning()
 ;
 
 // export the final configuration

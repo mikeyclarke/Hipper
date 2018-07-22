@@ -9,7 +9,7 @@ Encore
     .setPublicPath('/build')
 
     // will create public/build/app.js and public/build/app.css
-    .addEntry('app', './assets/app/app.js')
+    .addEntry('app', './assets/app/app.ts')
 
     // allow legacy applications to use $/jQuery as a global variable
     .autoProvidejQuery()
@@ -25,6 +25,8 @@ Encore
 
     // create hashed filenames (e.g. app.abc123.css)
     // .enableVersioning()
+
+    .enableTypeScriptLoader()
 
     // allow sass/scss files to be processed
     .enableSassLoader()

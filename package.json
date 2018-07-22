@@ -3,6 +3,8 @@
     "@symfony/webpack-encore": "^0.20.1",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",
+    "ts-loader": "3.5.0",
+    "typescript": "^2.9.2",
     "webpack-notifier": "^1.6.0"
   }
 }

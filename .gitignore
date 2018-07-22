@@ -3,6 +3,8 @@
 ###> symfony/framework-bundle ###
 /.env
 /public/bundles/
+/public/build
 /var/
 /vendor/
+/node_modules/
 ###< symfony/framework-bundle ###

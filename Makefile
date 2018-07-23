@@ -6,3 +6,6 @@ encore_watch:
 
 encore_production:
 	./node_modules/.bin/encore production
+
+phpcs:
+	./vendor/bin/phpcs -p --encoding=utf-8 --standard=PSR2 --error-severity=1 src/

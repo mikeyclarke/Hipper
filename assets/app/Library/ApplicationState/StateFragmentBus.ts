@@ -1,3 +1,5 @@
+/// <reference path="./IContext.ts" />
+
 export default class StateFragmentBus {
     private context : IContext;
     private stateFragmentId : string;

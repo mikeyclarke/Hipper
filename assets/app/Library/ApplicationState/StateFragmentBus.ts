@@ -13,7 +13,7 @@ export default class StateFragmentBus {
     }
 
     public get(): object {
-        return this.context.getFragment(this.stateFragmentId);
+        return this.context.get();
     }
 
     public subscribe(onChange): void {

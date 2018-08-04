@@ -15,3 +15,9 @@ server:
 
 test_js:
 	karma start
+
+reset_env:
+	rm -rf node_modules && yarn install && composer install
+
+run:
+	./node_modules/.bin/encore dev && php -S 127.0.0.1:8000 -t public

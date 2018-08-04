@@ -26,7 +26,11 @@ Encore
     // create hashed filenames (e.g. app.abc123.css)
     // .enableVersioning()
 
-    .enableTypeScriptLoader()
+    // .enableTypeScriptLoader()
+    .enableTypeScriptLoader(function (typeScriptConfigOptions) {
+        typeScriptConfigOptions.transpileOnly = true;
+        typeScriptConfigOptions.configFile = 'tsconfig.json';
+    })
 
     // allow sass/scss files to be processed
     .enableSassLoader()

@@ -1,14 +1,9 @@
 require('../app/app.scss');
 
 interface Person {
-    firstName: string;
-    lastName: string;
+    name: string;
 }
 
-function greeter(person: Person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
+export function greeter(person: Person) {
+    return "Hello, " + person.name ;
 }
-
-let user = { firstName: "John", lastName: "Doe" };
-
-document.body.innerHTML = greeter(user);

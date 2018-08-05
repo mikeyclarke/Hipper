@@ -1,0 +1,26 @@
+{
+  "name": "hleo",
+  "version": "1.0.0",
+  "repository": "git@bitbucket.org:tryhleo/hleo.git",
+  "private": true,
+  "devDependencies": {
+    "@types/jasmine": "^2.8.8",
+    "@types/node": "^10.5.6",
+    "bottlejs": "^1.7.1",
+    "css-loader": "^1.0.0",
+    "jasmine": "^3.1.0",
+    "karma": "^2.0.5",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.2",
+    "karma-typescript": "^3.0.13",
+    "mini-css-extract-plugin": "^0.4.1",
+    "node-sass": "^4.9.2",
+    "redux": "^4.0.0",
+    "sass-loader": "^7.1.0",
+    "ts-loader": "^4.4.2",
+    "typescript": "^3.0.1",
+    "webpack": "^4.16.4",
+    "webpack-cli": "^3.1.0",
+    "webpack-manifest-plugin": "^2.0.3"
+  }
+}

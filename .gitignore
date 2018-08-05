@@ -1,4 +1,5 @@
 .DS_Store
+yarn-error.log
 
 ###> symfony/framework-bundle ###
 /.env

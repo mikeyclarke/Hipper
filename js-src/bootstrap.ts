@@ -1,4 +1,4 @@
-require('./app.scss');
+require('../sass-src/app.scss');
 import container from './container';
 import ArticleEditor from './Library/ArticleEditor/ArticleEditor';
 

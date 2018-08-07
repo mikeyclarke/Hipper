@@ -1,6 +1,7 @@
 require('./app.scss');
 import container from './container';
+import ArticleEditor from './Library/ArticleEditor/ArticleEditor';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // do something
+    const editor = new ArticleEditor(document.querySelector('.js-article-editor'));
 });

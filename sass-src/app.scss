@@ -1,3 +1,10 @@
+@import '../sass-vendor/normalize/normalize';
+
+html,
+body {
+    font-family: 'Proxima Nova Soft', sans-serif;
+}
+
 body {
     background: #eaeaea;
 }

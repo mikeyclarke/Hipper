@@ -12,3 +12,6 @@ reset_env:
 
 run:
 	./node_modules/.bin/webpack --mode=development && php -S 127.0.0.1:8000 -t public
+
+webpack:
+	./node_modules/.bin/webpack --watch --mode=development

@@ -7,6 +7,9 @@ server:
 test_js:
 	karma start
 
+test_js_single_run:
+	karma start --single-run
+
 reset_env:
 	rm -rf node_modules && yarn install && composer install
 

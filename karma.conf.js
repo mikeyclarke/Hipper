@@ -3,7 +3,7 @@ module.exports = function(config) {
         frameworks: ["jasmine", "karma-typescript"],
         files: [
             'node_modules/babel-polyfill/browser.js',
-            './test/*.test.ts',
+            './test/js/*.test.ts',
             './js-src/**/*.ts'
         ],
         preprocessors: {

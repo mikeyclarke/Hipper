@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     entry: {
-        app: './assets/app/bootstrap.ts',
+        app: './js-src/bootstrap.ts',
     },
     output: {
         path: path.resolve(__dirname, 'public/build'),

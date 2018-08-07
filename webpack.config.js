@@ -28,9 +28,6 @@ module.exports = {
                 use: [
                     {
                         loader: 'ts-loader',
-                        options: {
-                            transpileOnly: true
-                        },
                     },
                 ],
             },
@@ -50,12 +47,8 @@ module.exports = {
                 // WARNING: Mikey’s shitty regex below, may cause performance issues 🤷
                 test: /ckeditor5-[^/]+[\/a-zA-Z0-9]+\/[^/]+\.css$/,
                 use: [
-                    {
-                        loader: 'style-loader',
-                        options: {
-                            singleton: true,
-                        },
-                    },
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
                     {
                         loader: 'postcss-loader',
                         options: ckEditorStyles.getPostCssConfig({

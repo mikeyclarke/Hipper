@@ -1,4 +1,4 @@
-import test from '../assets/app/Library/test';
+import test from '../js-src/Library/test';
 
 describe("A suite", function() {
   it("contains spec with an expectation", function() {

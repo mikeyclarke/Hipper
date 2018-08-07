@@ -103,6 +103,14 @@
     "@ckeditor/ckeditor5-ui" "^1.0.0-beta.4"
     "@ckeditor/ckeditor5-utils" "^1.0.0-beta.4"
 
+"@ckeditor/ckeditor5-highlight@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-highlight/-/ckeditor5-highlight-1.0.0-beta.4.tgz#3344df5c59de87f72b819ae6130be2686c83dcce"
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^1.0.0-beta.4"
+    "@ckeditor/ckeditor5-engine" "^1.0.0-beta.4"
+    "@ckeditor/ckeditor5-ui" "^1.0.0-beta.4"
+
 "@ckeditor/ckeditor5-image@1.0.0-beta.4":
   version "1.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-image/-/ckeditor5-image-1.0.0-beta.4.tgz#3ae4bf3e1725e673d4c00baeca3f8013d09a87b1"

@@ -4,7 +4,7 @@ module.exports = function(config) {
         files: [
             'node_modules/babel-polyfill/browser.js',
             './tests/ts/*.test.ts',
-            './src/ts/**/*.ts'
+            './src/ts/Library/**/*.ts'
         ],
         preprocessors: {
             "**/*.ts": ["karma-typescript"]

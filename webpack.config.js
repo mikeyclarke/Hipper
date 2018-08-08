@@ -49,6 +49,10 @@ module.exports = {
                 ],
             },
             {
+                test: /\.twig$/,
+                loader: 'twig-loader',
+            },
+            {
                 test: /ckeditor5-[^/]+\/theme\/icons\/[^/]+\.svg$/,
                 use: ['raw-loader'],
             },
@@ -70,5 +74,8 @@ module.exports = {
                 ],
             },
         ],
+    },
+    node: {
+        fs: 'empty',
     },
 };

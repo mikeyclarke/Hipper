@@ -5,6 +5,8 @@
         <link rel="stylesheet" href="{{ asset('app.css') }}">
     </head>
     <body>
+        {% include 'foo.twig' with {title: 'Loading…'} %}
+
         <div class="js-article-editor">
             <p>Some intial text</p>
         </div>

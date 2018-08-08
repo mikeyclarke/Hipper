@@ -1,12 +1,10 @@
 import Template from '../../Library/Template/Template';
-export class Navigation {
+import UIControl from '../UIControl';
+export class Navigation extends UIControl {
     public static template: Template;
-    public static Render;
-    public static Events;
-    public ui: any;
-    public eventManager: any;
+    public template;
     private title: string = 'hleo';
-    private events: Array<any> = [
+    public events: Array<any> = [
         {
             selector: '.js-button',
             type: 'click',
@@ -16,17 +14,10 @@ export class Navigation {
 
     constructor(el: string)
     {
-        this.eventManager = new Navigation.Events();
-        this.ui = new Navigation.Render(Navigation.template, el, this.eventManager);
-        if (this.ui.element) {
-            this.eventManager.bindEvents(this.ui, this.events, this);
-        }
-        this.render({title: 'test'});
-    }
-
-    public render(data)
-    {
-        this.ui.render(data);
+        super(el);
+        this.template = Navigation.template;
+        this.render({title:'test'});
+        this.bindEvents();
     }
 
     public buttonClicked ()

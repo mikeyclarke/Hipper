@@ -16,8 +16,6 @@ bottle.factory('CKEditor', () => {
 
 bottle.factory('navigationControl', (container) => {
     Navigation.template = container.template_navigation;
-    Navigation.Render = Render;
-    Navigation.Events = Events;
     return Navigation;
 });
 

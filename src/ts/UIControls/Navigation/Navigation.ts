@@ -1,15 +1,7 @@
-import TemplateRenderer from "../../Library/HTMLInserter/HTMLInserter";
-import { InsertPoint } from "../../Library/HTMLInserter/InsertPoint";
-import HTMLInserter from "../../Library/HTMLInserter/HTMLInserter";
-const nav = require('Twig/navigation.twig');
-
-
+import Template from '../../Library/Template/Template';
 export class Navigation {
-    private title: string;
-    constructor(title: string)
-    {
-        this.title = title;
-    }
+    private title: string = 'hleo';
+    public static template: Template;
 
     public getTitle(): string
     {
@@ -19,10 +11,7 @@ export class Navigation {
     public render(): void
     {
         const navigationElement = document.querySelector('.js-navigation-container');
-        HTMLInserter.insert(
-            navigationElement,
-            InsertPoint.afterbegin,
-            nav({title: this.title})
-        );
+        const templateHTML = Navigation.template.render({title: this.title});
+        navigationElement.insertAdjacentHTML('afterbegin', templateHTML);
     }
 }

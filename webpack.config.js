@@ -5,10 +5,10 @@ const { styles: ckEditorStyles } = require( '@ckeditor/ckeditor5-dev-utils' );
 
 module.exports = {
     entry: {
-        app: './js-src/bootstrap.ts',
+        app: './src/ts/bootstrap.ts',
     },
     output: {
-        path: path.resolve(__dirname, 'public/build'),
+        path: path.resolve(__dirname, 'public-roots/app/public/build'),
         publicPath: 'build/',
         filename: '[name].[contenthash].js',
     },

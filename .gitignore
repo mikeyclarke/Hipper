@@ -1,6 +1,6 @@
 .DS_Store
 yarn-error.log
-/public-roots/app/build
+/public-roots/app/public/build
 
 ###> symfony/framework-bundle ###
 /.env

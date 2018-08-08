@@ -16,12 +16,14 @@ export class Navigation extends UIControl {
     {
         super(el);
         this.template = Navigation.template;
-        this.render({title:'test'});
+        if (!this.element) {
+            this.render({title:'test'});
+        }
         this.bindEvents();
     }
 
     public buttonClicked ()
     {
-        console.log('hhh');
+        console.log('button clicked!');
     }
 }

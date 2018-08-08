@@ -1,6 +1,7 @@
 import Template from '../Library/Template/Template';
+import IControl from './IControl';
 
-export default abstract class UIControl {
+export default abstract class UIControl implements IControl {
     abstract template: any;
     protected abstract events: Array<any>;
     protected el: string;
@@ -19,20 +20,13 @@ export default abstract class UIControl {
         }
     }
 
-    public render(data)
+    public render(data: any)
     {
         this.removeExistingNode();
         const parentNode = document.querySelector(this.el);
         const templateHTML = this.template.render(data);
         parentNode.insertAdjacentHTML('afterbegin', templateHTML);
         this.setElement();
-    }
-
-    private removeExistingNode()
-    {
-        while (this.element.firstChild) {
-            this.element.removeChild(this.element.firstChild);
-        }
     }
 
     public bindEvents()
@@ -44,6 +38,13 @@ export default abstract class UIControl {
             } catch (e) {
                 throw new Error(`event binding failed on "${this.events[event].selector} ${this.events[event].type} ${this.events[event].handler}"`);
             }
+        }
+    }
+
+    private removeExistingNode()
+    {
+        while (this.element.firstChild) {
+            this.element.removeChild(this.element.firstChild);
         }
     }
 }

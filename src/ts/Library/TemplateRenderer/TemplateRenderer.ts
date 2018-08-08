@@ -1,7 +1,7 @@
 export default class TemplateRenderer
 {
-    public static render(template: any, parent: Element, data = {}): void
+    public static render(options: any)
     {
-        parent.insertAdjacentHTML('beforeend', template(data));
+        options.anchorElement.insertAdjacentHTML(options.position, options.template(options.data || {}));
     }
 }

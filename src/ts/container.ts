@@ -5,6 +5,8 @@ import CKeditor from './CKEditor/CKEditor';
 import TextEditor from './Library/TextEditor/TextEditor';
 import Template from './Library/Template/Template';
 import { Navigation } from './UIControls/Navigation/Navigation';
+import { Render } from './UIControls/Behaviours/Render';
+import { Events } from './UIControls/Behaviours/Events';
 
 const bottle = new Bottle();
 
@@ -14,6 +16,8 @@ bottle.factory('CKEditor', () => {
 
 bottle.factory('navigationControl', (container) => {
     Navigation.template = container.template_navigation;
+    Navigation.Render = Render;
+    Navigation.Events = Events;
     return Navigation;
 });
 

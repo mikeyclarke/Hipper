@@ -1,18 +1,36 @@
 import Template from '../../Library/Template/Template';
 export class Navigation {
-    private title: string = 'hleo';
-    private el: string;
     public static template: Template;
+    public static Render;
+    public static Events;
+    public ui: any;
+    public eventManager: any;
+    private title: string = 'hleo';
+    private events: Array<any> = [
+        {
+            selector: '.js-button',
+            type: 'click',
+            handler: 'buttonClicked',
+        }
+    ];
 
     constructor(el: string)
     {
-        this.el = el;
+        this.eventManager = new Navigation.Events();
+        this.ui = new Navigation.Render(Navigation.template, el, this.eventManager);
+        if (this.ui.element) {
+            this.eventManager.bindEvents(this.ui, this.events, this);
+        }
+        this.render({title: 'test'});
     }
 
-    public render(): void
+    public render(data)
     {
-        const navigationElement = document.querySelector(this.el);
-        const templateHTML = Navigation.template.render({title: this.title});
-        navigationElement.insertAdjacentHTML('afterbegin', templateHTML);
+        this.ui.render(data);
+    }
+
+    public buttonClicked ()
+    {
+        console.log('hhh');
     }
 }

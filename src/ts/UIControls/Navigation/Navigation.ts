@@ -1,5 +1,5 @@
 import TemplateRenderer from "../../Library/TemplateRenderer/TemplateRenderer";
-const nav = require('../../../../ui/twig/navigation.twig');
+const nav = require('Twig/navigation.twig');
 
 
 export class Navigation {

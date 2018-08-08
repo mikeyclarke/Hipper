@@ -1,4 +1,4 @@
-require('../../ui/sass/app.scss');
+require('Sass/app.scss');
 import container from './container';
 import { Navigation } from './UIControls/Navigation/Navigation';
 

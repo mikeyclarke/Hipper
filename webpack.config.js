@@ -29,6 +29,10 @@ module.exports = {
     ],
     resolve: {
         extensions: ['.ts', '.js', '.scss'],
+        alias: {
+            Sass: path.resolve(__dirname, 'ui/sass'),
+            Twig: path.resolve(__dirname, 'ui/twig'),
+        },
     },
     module: {
         rules: [

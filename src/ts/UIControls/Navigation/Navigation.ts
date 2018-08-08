@@ -1,3 +1,7 @@
+import TemplateRenderer from "../../Library/TemplateRenderer/TemplateRenderer";
+const nav = require('../../../../ui/twig/navigation.twig');
+
+
 export class Navigation {
     private title: string;
     constructor(title: string)
@@ -8,5 +12,11 @@ export class Navigation {
     public getTitle(): string
     {
         return this.title;
+    }
+
+    public render(): void
+    {
+        const navigationElement = document.querySelector('.js-navigation-container');
+        TemplateRenderer.render(nav, navigationElement, {title: this.title});
     }
 }

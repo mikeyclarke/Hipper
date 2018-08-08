@@ -10,6 +10,6 @@ bottle.factory('CKEditor', () => {
 
 bottle.factory('textEditor', (container) => {
     return new TextEditor(container.CKEditor);
-})
+});
 
 export default bottle.container;

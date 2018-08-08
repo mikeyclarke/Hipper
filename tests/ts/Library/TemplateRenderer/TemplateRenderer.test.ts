@@ -2,30 +2,28 @@ import TemplateRenderer from '../../../../src/ts/Library/TemplateRenderer/Templa
 
 describe('TemplateRenderer', () => {
     let element;
-    let data;
-    let html;
-    let stuff;
+    let templateData;
+    let twig;
 
     beforeEach(() => {
-        stuff = {
-            template: function(data) {
-                return html;
+        twig = {
+            template: (data) => {
+                return `<div>${data.hello}</div>`;
             },
         };
-        data = {
+        templateData = {
             hello: 'world',
         };
         element = {
-            insertAdjacentHTML:() => true,
+            insertAdjacentHTML:(html) => true,
         };
-        stuff.html = `<div>${data.hello}</div>`;
     });
 
-    it('does the thing', () => {
-        spyOn(stuff, 'template');
+    it('Passes template data to the twig and inserts html', () => {
+        spyOn(twig, 'template').and.callThrough();;
         spyOn(element, 'insertAdjacentHTML');
-        TemplateRenderer.render(stuff.template, element, data);
-        expect(stuff.template).toHaveBeenCalledWith(data);
-        expect(element.insertAdjacentHTML).toHaveBeenCalledWith('beforeend', html);
+        TemplateRenderer.render(twig.template, element, templateData);
+        expect(twig.template).toHaveBeenCalledWith(templateData);
+        expect(element.insertAdjacentHTML).toHaveBeenCalledWith('beforeend', '<div>world</div>');
     });
 })

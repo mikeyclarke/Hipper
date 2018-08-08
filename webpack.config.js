@@ -1,4 +1,5 @@
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { styles: ckEditorStyles } = require( '@ckeditor/ckeditor5-dev-utils' );
@@ -13,6 +14,14 @@ module.exports = {
         filename: '[name].[contenthash].js',
     },
     plugins: [
+        new CleanWebpackPlugin(
+            [
+                path.resolve(__dirname, 'public-roots/app/public/build'),
+            ],
+            {
+                beforeEmit: true,
+            }
+        ),
         new ManifestPlugin(),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',

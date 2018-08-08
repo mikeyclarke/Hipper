@@ -2,23 +2,12 @@ import HTMLInserter from '../../../../src/ts/Library/HTMLInserter/HTMLInserter';
 import { InsertPoint } from '../../../../src/ts/Library/HTMLInserter/InsertPoint';
 
 describe('HTMLInserter', () => {
-    let element;
-    let html;
+    let relativeElement = document.createElement('div');
 
-    beforeEach(() => {
-        element = {
-            insertAdjacentHTML:(html) => true,
-        };
-        html = '<div>world</div>';
-    });
-
-    it('Passes template data to the twig and inserts html', () => {
-        spyOn(element, 'insertAdjacentHTML');
-        HTMLInserter.insertHTMLString(
-            element,
-            InsertPoint.beforeend,
-            html
-        );
-        expect(element.insertAdjacentHTML).toHaveBeenCalledWith('beforeend', html);
+    it('invokes the dom function with correct params', () => {
+        spyOn(relativeElement, 'insertAdjacentHTML');
+        HTMLInserter.insert(relativeElement, InsertPoint.afterbegin, '<div>test</div>');
+        expect(relativeElement.insertAdjacentHTML).toHaveBeenCalledTimes(1);
+        expect(relativeElement.insertAdjacentHTML).toHaveBeenCalledWith('afterbegin', '<div>test</div>');
     });
 })

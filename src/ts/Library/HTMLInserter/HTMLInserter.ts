@@ -1,10 +1,10 @@
 import { InsertPoint } from "./InsertPoint";
 export default class HTMLInserter
 {
-    public static insertHTMLString(
+    public static insert(
         relativeElement: Element, 
         position: InsertPoint,
-        html: string,
+        html: any,
     ): void {
         relativeElement.insertAdjacentHTML(position, html);
     }

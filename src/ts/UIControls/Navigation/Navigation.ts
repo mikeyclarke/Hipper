@@ -19,7 +19,7 @@ export class Navigation {
     public render(): void
     {
         const navigationElement = document.querySelector('.js-navigation-container');
-        HTMLInserter.insertHTMLString(
+        HTMLInserter.insert(
             navigationElement,
             InsertPoint.afterbegin,
             nav({title: this.title})

@@ -1,4 +1,4 @@
-export enum InsertPosition
+export enum InsertPoint
 {
     beforebegin = 'beforebegin',
     afterbegin = 'afterbegin',

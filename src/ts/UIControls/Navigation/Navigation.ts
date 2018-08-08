@@ -1,5 +1,6 @@
-import TemplateRenderer from "../../Library/TemplateRenderer/TemplateRenderer";
-import { InsertPosition } from "../../Library/TemplateRenderer/InsertPosition";
+import TemplateRenderer from "../../Library/HTMLInserter/HTMLInserter";
+import { InsertPoint } from "../../Library/HTMLInserter/InsertPoint";
+import HTMLInserter from "../../Library/HTMLInserter/HTMLInserter";
 const nav = require('Twig/navigation.twig');
 
 
@@ -18,11 +19,10 @@ export class Navigation {
     public render(): void
     {
         const navigationElement = document.querySelector('.js-navigation-container');
-        TemplateRenderer.render({
-            template: nav, 
-            anchorElement: navigationElement, 
-            data: {title: this.title}, 
-            position: InsertPosition.afterbegin,
-        });
+        HTMLInserter.insertHTMLString(
+            navigationElement,
+            InsertPoint.afterbegin,
+            nav({title: this.title})
+        );
     }
 }

@@ -1,6 +1,5 @@
 require('../../ui/sass/app.scss');
 import container from './container';
-import ArticleEditor from './Library/ArticleEditor/ArticleEditor';
 
 const foo = require('../../ui/twig/foo.twig');
 
@@ -12,6 +11,7 @@ function updateTitle() {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    const editor = new ArticleEditor(document.querySelector('.js-article-editor'));
+    console.log(container.textEditor);
+    container.textEditor.initialiseEditor(document.querySelector('.js-article-editor'));
     updateTitle();
 });

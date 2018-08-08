@@ -10,8 +10,11 @@ import Link from '@ckeditor/ckeditor5-link/src/link';
 import List from '@ckeditor/ckeditor5-list/src/list';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
+import ITextEditor from '../Library/TextEditor/ITextEditor';
 
-class ArticleEditor {
+
+export default class CKeditor implements ITextEditor
+{
     private ckEditorInstance: BalloonEditor;
     private config: object = {
         plugins: [
@@ -30,9 +33,8 @@ class ArticleEditor {
         toolbar: ['bold', 'italic', 'strikethrough', 'blockQuote', 'link'],
     };
 
-    constructor(element: HTMLElement) {
+    public initialiseEditor(element: HTMLElement): void
+    {
         this.ckEditorInstance = BalloonEditor.create(element, this.config);
     }
 }
-
-export default ArticleEditor;

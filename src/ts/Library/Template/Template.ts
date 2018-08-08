@@ -6,7 +6,7 @@ export default class Template
         this.templateFunction = templateFunction;
     }
 
-    public render(data: any): string
+    public render(data: object): string
     {
         return this.templateFunction(data);
     }

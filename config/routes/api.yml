@@ -1,0 +1,3 @@
+article:
+    path: /article
+    controller: App\Controller\ArticleController::get

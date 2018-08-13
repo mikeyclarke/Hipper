@@ -1,6 +1,7 @@
 import Template from '../../Library/Template/Template';
 import UIControl from '../UIControl';
-export class Navigation extends UIControl {
+export class Navigation extends UIControl 
+{
     public static template: Template;
     public template;
     private title: string = 'hleo';

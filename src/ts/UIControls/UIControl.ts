@@ -1,7 +1,8 @@
 import Template from '../Library/Template/Template';
 import IControl from './IControl';
 
-export default abstract class UIControl implements IControl {
+export default abstract class UIControl implements IControl 
+{
     abstract template: any;
     protected abstract events: Array<any>;
     protected el: string;

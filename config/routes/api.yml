@@ -1,3 +1,3 @@
 article:
     path: /article
-    controller: App\Controller\ArticleController::get
+    controller: hleo\Controller\ArticleController::get

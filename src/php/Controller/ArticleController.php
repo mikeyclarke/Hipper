@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace hleo\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

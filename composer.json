@@ -26,12 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/php/"
+            "hleo\\": "src/php/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/php/"
+            "hleo\\Tests\\": "tests/php/"
         }
     },
     "replace": {

@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="{{ asset('app.css') }}">
     </head>
     <body>
-        <form id="signup-form">
+        <form id="signup-form" action="/signup" method="post">
             <div class="signup-form">
                 <div class="form-title">
                     <h1>Sign up</h1>
@@ -15,11 +15,11 @@
                     <input type="text" class="form-control" name="text-name" id="text-name" required="required" aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label for="text-email" class="fb-text-label">Email<span class="required">*</span></label>
+                    <label for="text-email" class="text-label">Email<span class="required">*</span></label>
                     <input type="email" class="form-control" name="text-email" id="text-email" required="required" aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label for="text-password" class="fb-text-label">Password<span class="required">*</span></label>
+                    <label for="text-password" class="text-label">Password<span class="required">*</span></label>
                     <input type="password" class="form-control" name="text-password" id="text-password" required="required" aria-required="true">
                 </div>
                 <div class="form-group field-checkbox-group-policy">
@@ -30,6 +30,9 @@
                             <label for="checkbox-group-policy">I agree</label>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="form-control" name="button-submit" id="button-submit" value="submit">
                 </div>
             </div>
         </form>

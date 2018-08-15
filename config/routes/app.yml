@@ -1,3 +1,7 @@
 index:
     path: /
     controller: hleo\Controller\DefaultController::index
+
+signup:
+    path: /signup
+    controller: hleo\Controller\SignupController::index

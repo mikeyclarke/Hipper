@@ -1,18 +1,39 @@
 <?php
 namespace hleo\Controller;
 
+use hleo\Person\PersonCreator;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Twig_Environment;
 
-class SignupController extends AbstractController
+class SignupController
 {
-    public function index()
-    {
-        return $this->render('signup.html.twig');
+    private $personCreator;
+    private $twig;
+
+    public function __construct(
+        PersonCreator $personCreator,
+        Twig_Environment $twig
+    ) {
+        $this->personCreator = $personCreator;
+        $this->twig = $twig;
     }
 
-    public function post()
+    public function getAction(Request $request)
     {
-        return $this->render('base.html.twig');
+        return new Response(
+            $this->twig->render('signup.html.twig')
+        );
+    }
+
+    public function postAction(Request $request)
+    {
+        $name = $request->request->get('person-name');
+        $email = $request->request->get('person-email-address');
+        $password = $request->request->get('person-password');
+
+        $this->personCreator->create($name, $email, $password);
+        return new RedirectResponse('/await-email-verification');
     }
 }

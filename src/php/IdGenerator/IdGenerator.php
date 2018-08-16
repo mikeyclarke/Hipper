@@ -1,10 +1,13 @@
 <?php
 namespace hleo\IdGenerator;
 
+use Ramsey\Uuid\Uuid;
+
 class IdGenerator
 {
     public function generate()
     {
-        return uniqid();
+        $id = Uuid::uuid1();
+        return $id->toString();
     }
 }

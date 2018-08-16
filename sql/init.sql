@@ -19,6 +19,14 @@ CREATE TABLE person (
     updated                 timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE email_address_verification (
+    id          UUID NOT NULL PRIMARY KEY,
+    person_id   UUID NOT NULL references person(id),
+    hash        varchar(50) NOT NULL,
+    expires     timestamp NOT NULL,
+    created     timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE OR REPLACE FUNCTION update_updated_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN

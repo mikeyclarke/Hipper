@@ -4,6 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    postmark_base_url: 'https://api.postmarkapp.com'
+    transactional_email_from_addr: 'notifications@tryhleo.com'
+    transactional_email_reply_to_addr: 'help@tryhleo.com'
 
 services:
     # default configuration for services in *this* file
@@ -28,3 +31,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    hleo\TransactionalEmail\PostmarkApiClientFactory:
+        arguments:
+            $apiBaseUrl: '%postmark_base_url%'
+            $apiToken: '%env(POSTMARK_SERVER_TOKEN)%'
+
+    hleo\TransactionalEmail\VerifyEmailAddressEmail:
+        arguments:
+            $emailFromAddress: '%transactional_email_from_addr%'
+            $emailReplyToAddress: '%transactional_email_reply_to_addr%'

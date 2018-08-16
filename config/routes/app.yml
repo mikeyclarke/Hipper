@@ -9,3 +9,7 @@ signup:
 register:
     path: /register
     controller: hleo\Controller\RegistrationController::post
+
+verify_email:
+    path: /m/verify-email
+    controller: hleo\Controller\VerifyEmailController::getAction

@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <!-- ... -->
-        <link rel="stylesheet" href="{{ asset('app.css') }}">
-    </head>
-    <body>
-        <div class="js-navigation-container">
-            {% include 'navigation.twig' with {title: 'hleo'} %}
-        </div>
-        <div class="editor-container">
-            <div class="js-article-editor text-editor">
-                <p>start typing...</p>
-            </div>
-        </div>
-        <script src="{{ asset('app.js') }}"></script>
-    </body>
-</html>
+{% extends 'base_layout.twig' %}
+
+{% block content %}
+
+<div class="js-navigation-container">
+    {% include 'navigation.twig' with {title: 'hleo'} %}
+</div>
+<div class="editor-container">
+    <div class="js-article-editor text-editor">
+        <p>start typing...</p>
+    </div>
+</div>
+
+{% endblock %}

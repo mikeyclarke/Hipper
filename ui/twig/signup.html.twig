@@ -1,45 +1,41 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <!-- ... -->
-        <link rel="stylesheet" href="{{ asset('app.css') }}">
-    </head>
-    <body>
-        <div class="page-container">
-            <div class="signup-container">
-                <form id="signup-form" action="/sign-up" method="post">
-                    <div class="signup-form">
-                        <div class="form-title">
-                            <h1>Sign up</h1>
-                        </div>
-                        <div class="form-group">
-                            <label for="person-name" class="text-label">Full name<span class="required">*</span></label>
-                            <input type="text" class="form-control" name="person-name" id="person-name" required="required" aria-required="true">
-                        </div>
-                        <div class="form-group">
-                            <label for="person-email-address" class="text-label">Email<span class="required">*</span></label>
-                            <input type="email" class="form-control" name="person-email-address" id="person-email-address" required="required" aria-required="true">
-                        </div>
-                        <div class="form-group">
-                            <label for="person-password" class="text-label">Password<span class="required">*</span></label>
-                            <input type="password" class="form-control" name="person-password" id="person-password" required="required" aria-required="true">
-                        </div>
-                        <div class="form-group field-checkbox-group-policy">
-                            <label for="field-checkbox-group-policy" class="checkbox-group-label">Agree with our shit<span class="required">*</span></label>
-                            <div class="checkbox-group">
-                                <div class="checkbox">
-                                    <input name="terms-accepted" id="checkbox-group-policy" aria-required="true" value="1" type="checkbox" checked="checked">
-                                    <label for="checkbox-group-policy">I agree</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit">Sign up</button>
+{% extends 'base_layout.twig' %}
+
+{% block content %}
+
+<div class="page-container">
+    <div class="signup-container">
+        <form id="signup-form" action="/sign-up" method="post">
+            <div class="signup-form">
+                <div class="form-title">
+                    <h1>Sign up</h1>
+                </div>
+                <div class="form-group">
+                    <label for="person-name" class="text-label">Full name<span class="required">*</span></label>
+                    <input type="text" class="form-control" name="person-name" id="person-name" required="required" aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="person-email-address" class="text-label">Email<span class="required">*</span></label>
+                    <input type="email" class="form-control" name="person-email-address" id="person-email-address" required="required" aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="person-password" class="text-label">Password<span class="required">*</span></label>
+                    <input type="password" class="form-control" name="person-password" id="person-password" required="required" aria-required="true">
+                </div>
+                <div class="form-group field-checkbox-group-policy">
+                    <label for="field-checkbox-group-policy" class="checkbox-group-label">Agree with our shit<span class="required">*</span></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox">
+                            <input name="terms-accepted" id="checkbox-group-policy" aria-required="true" value="1" type="checkbox" checked="checked">
+                            <label for="checkbox-group-policy">I agree</label>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Sign up</button>
+                </div>
             </div>
-        </div>
-        <script src="{{ asset('app.js') }}"></script>
-    </body>
-</html>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

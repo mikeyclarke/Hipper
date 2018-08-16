@@ -1,0 +1,23 @@
+@import 'vendor/normalize/normalize';
+
+html,
+body {
+    font-family: 'Proxima Nova Soft', sans-serif;
+    height: 100%;
+}
+
+body {
+    background: #eaeaea;
+}
+
+.page-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-container {
+    height: 850px;
+    width: 800px;
+}

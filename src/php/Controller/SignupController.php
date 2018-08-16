@@ -10,4 +10,9 @@ class SignupController extends AbstractController
     {
         return $this->render('signup.html.twig');
     }
+
+    public function post()
+    {
+        return $this->render('base.html.twig');
+    }
 }

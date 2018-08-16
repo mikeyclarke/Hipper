@@ -1,25 +1,35 @@
-require('Sass/app.scss');
 import container from './container';
 
 document.addEventListener('DOMContentLoaded', () => {
     const appBootstrap = new ApplicationBootstrap();
-    appBootstrap.start();
 });
 
 class ApplicationBootstrap 
 {
-    public start(): void {
-        this.initialiseNavigation();
-        this.initialiseTextEditor();
+    private routes: object = {
+        '/': this.app,
+        '/signup': this.signup,
     }
 
-    private initialiseNavigation(): void
+    constructor()
     {
+        const path: string = window.location.pathname;
+        if (this.routes[path]) {
+            this.routes[path].bind(this)();
+        } else {
+            throw new Error('no path found for bootstrapping');
+        }
+    }
+
+    private app(): void
+    {
+        require('Sass/app.scss');
         var nav = new container.navigationControl('.js-navigation-container');
+        container.textEditor.initialiseEditor(document.querySelector('.js-article-editor'));
     }
 
-    private initialiseTextEditor(): void
+    private signup(): void
     {
-        container.textEditor.initialiseEditor(document.querySelector('.js-article-editor'));
+        require('Sass/signup.scss');
     }
 }

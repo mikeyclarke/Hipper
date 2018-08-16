@@ -1,7 +1,7 @@
 const navigationTemplate = require('Twig/navigation.twig');
 
 import * as Bottle from 'bottlejs';
-import CKeditor from './CKEditor/CKEditor';
+import CKeditor from './Library/TextEditor/CKEditor/CKEditor';
 import TextEditor from './Library/TextEditor/TextEditor';
 import Template from './Library/Template/Template';
 import { Navigation } from './UIControls/Navigation/Navigation';

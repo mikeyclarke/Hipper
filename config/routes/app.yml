@@ -5,10 +5,12 @@ index:
 signup:
     path: /signup
     controller: hleo\Controller\SignupController::index
+    methods: [GET]
 
-register:
-    path: /register
-    controller: hleo\Controller\RegistrationController::post
+signup_post:
+    path: /signup
+    controller: hleo\Controller\SignupController::post
+    methods: [POST]
 
 verify_email:
     path: /m/verify-email

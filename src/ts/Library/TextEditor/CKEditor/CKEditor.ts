@@ -10,7 +10,7 @@ import Link from '@ckeditor/ckeditor5-link/src/link';
 import List from '@ckeditor/ckeditor5-list/src/list';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
-import ITextEditor from '../Library/TextEditor/ITextEditor';
+import ITextEditor from '../ITextEditor';
 
 
 export default class CKeditor implements ITextEditor

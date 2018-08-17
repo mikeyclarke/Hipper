@@ -15,12 +15,36 @@ use Symfony\Component\Validator\Validation;
 
 class PersonValidator
 {
+    private $personRepository;
+
+    public function __construct(
+        PersonRepository $personRepository
+    ) {
+        $this->personRepository = $personRepository;
+    }
+
     public function validate(array $input, bool $isNew = false)
     {
         $this->validateInput($input, $isNew);
+        $this->validateUniqueEmailAddress($input);
     }
 
-    public function validateInput(array $input, bool $isNew)
+    private function validateUniqueEmailAddress(array $input)
+    {
+        if (!isset($input['email_address'])) {
+            return;
+        }
+
+        if (null !== $this->personRepository->findOneByEmailAddress($input['email_address'])) {
+            throw new ValidationException([
+                'email_address' => [
+                    sprintf('Email address %s already in use.', $input['email_address']),
+                ]
+            ]);
+        }
+    }
+
+    private function validateInput(array $input, bool $isNew)
     {
         $requiredOnCreate = ['name', 'email_address', 'password'];
         $constraints = [

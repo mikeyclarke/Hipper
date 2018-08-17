@@ -2,6 +2,7 @@
 namespace hleo\EmailAddressVerification;
 
 use Base64Url\Base64Url;
+use hleo\AppConfiguration\AppUrlGenerator;
 use hleo\IdGenerator\IdGenerator;
 use hleo\Person\PersonModel;
 use hleo\TransactionalEmail\VerifyEmailAddressEmail;
@@ -12,15 +13,18 @@ class RequestEmailAddressVerification
     private $emailAddressVerificationInserter;
     private $idGenerator;
     private $verifyEmailAddressEmail;
+    private $appUrlGenerator;
 
     public function __construct(
         EmailAddressVerificationInserter $emailAddressVerificationInserter,
         IdGenerator $idGenerator,
-        VerifyEmailAddressEmail $verifyEmailAddressEmail
+        VerifyEmailAddressEmail $verifyEmailAddressEmail,
+        AppUrlGenerator $appUrlGenerator
     ) {
         $this->emailAddressVerificationInserter = $emailAddressVerificationInserter;
         $this->idGenerator = $idGenerator;
         $this->verifyEmailAddressEmail = $verifyEmailAddressEmail;
+        $this->appUrlGenerator = $appUrlGenerator;
     }
 
     public function sendVerificationRequest(PersonModel $person)
@@ -47,12 +51,11 @@ class RequestEmailAddressVerification
 
     private function createVerificationLink($personId, $verificationId, $verificationHash)
     {
-        return sprintf(
-            'http://127.0.0.1:8000/m/verify-email?p=%s&id=%s&h=%s',
-            Base64Url::encode($personId),
-            Base64Url::encode($verificationId),
-            Base64Url::encode($verificationHash)
-        );
+        return $this->appUrlGenerator->generate('/m/verify-email', [
+            'p' => Base64Url::encode($personId),
+            'id' => Base64Url::encode($verificationId),
+            'h' => Base64Url::encode($verificationHash),
+        ]);
     }
 
     private function createVerificationHash()

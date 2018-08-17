@@ -7,6 +7,7 @@ parameters:
     postmark_base_url: 'https://api.postmarkapp.com'
     transactional_email_from_addr: 'notifications@tryhleo.com'
     transactional_email_reply_to_addr: 'help@tryhleo.com'
+    locale: 'en'
 
 services:
     # default configuration for services in *this* file

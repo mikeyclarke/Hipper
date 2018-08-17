@@ -29,11 +29,7 @@ class SignupController
 
     public function postAction(Request $request)
     {
-        $name = $request->request->get('person-name');
-        $email = $request->request->get('person-email-address');
-        $password = $request->request->get('person-password');
-
-        $this->personCreator->create($name, $email, $password);
+        $this->personCreator->create($request->request->all());
         return new RedirectResponse('/await-email-verification');
     }
 }

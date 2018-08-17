@@ -10,6 +10,7 @@ class PersonCreator
     private $personInserter;
     private $personModelMapper;
     private $encoderFactory;
+    private $personValidator;
     private $idGenerator;
     private $organizationCreator;
     private $requestEmailAddressVerification;
@@ -18,6 +19,7 @@ class PersonCreator
         PersonInserter $personInserter,
         PersonModelMapper $personModelMapper,
         PersonPasswordEncoderFactory $encoderFactory,
+        PersonValidator $personValidator,
         IdGenerator $idGenerator,
         OrganizationCreator $organizationCreator,
         RequestEmailAddressVerification $requestEmailAddressVerification
@@ -25,21 +27,24 @@ class PersonCreator
         $this->personInserter = $personInserter;
         $this->personModelMapper = $personModelMapper;
         $this->encoderFactory = $encoderFactory;
+        $this->personValidator = $personValidator;
         $this->idGenerator = $idGenerator;
         $this->organizationCreator = $organizationCreator;
         $this->requestEmailAddressVerification = $requestEmailAddressVerification;
     }
 
-    public function create($name, $email, $password)
+    public function create(array $input)
     {
+        $this->personValidator->validate($input, true);
+
         $organization = $this->organizationCreator->create();
 
         $encoder = $this->encoderFactory->create();
         $person = $this->personInserter->insert(
             $this->idGenerator->generate(),
-            $name,
-            $email,
-            $encoder->encodePassword($password, null),
+            $input['name'],
+            $input['email_address'],
+            $encoder->encodePassword($input['password'], null),
             $organization['id'],
             'owner'
         );

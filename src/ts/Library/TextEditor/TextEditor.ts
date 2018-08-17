@@ -1,15 +1,15 @@
 import ITextEditor from "./ITextEditor";
 
-let editor;
 export default class TextEditor
 {
+    private editor: ITextEditor;
     constructor(editor: ITextEditor)
     {
-        editor = editor;
+        this.editor = editor;
     }
 
     public initialiseEditor(element: HTMLElement): void
     {
-        editor.initialiseEditor(element);
+        this.editor.initialiseEditor(element);
     }
 }

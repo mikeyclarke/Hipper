@@ -28,8 +28,7 @@ bottle.factory('template_navigation', () => {
 });
 
 bottle.factory('applicationBootstrap', (container) => {
-    const navigation = new container.navigationControl('.js-navigation-container');
-    return new ApplicationBootstrap(navigation, container.textEditor);
+    return new ApplicationBootstrap(container.navigationControl, container.textEditor);
 });
 
 bottle.factory('signupBootstrap', () => {

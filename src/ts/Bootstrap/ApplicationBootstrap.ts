@@ -4,18 +4,19 @@ import TextEditor from '../Library/TextEditor/TextEditor';
 
 export default class ApplicationBootstrap implements IBootstrap
 {
-    private navigationControl;
+    private NavigationControl;
     private textEditor;
 
-    constructor(navigationControl: Navigation, textEditor: TextEditor)
+    constructor(NavigationControl: Navigation, textEditor: TextEditor)
     {
-        this.navigationControl = navigationControl;
+        this.NavigationControl = NavigationControl;
         this.textEditor = textEditor;
     }
 
     public bootstrap(): void
     {
         require('Sass/app.scss');
+        const navigation = new this.NavigationControl('.js-navigation-container');
         this.textEditor.initialiseEditor(document.querySelector('.js-article-editor'));
     }
 }

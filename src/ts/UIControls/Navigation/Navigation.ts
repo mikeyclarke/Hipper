@@ -4,7 +4,6 @@ export class Navigation extends UIControl
 {
     public static template: Template;
     public template;
-    private title: string = 'hleo';
     public events: Array<any> = [
         {
             selector: '.js-button',
@@ -25,6 +24,6 @@ export class Navigation extends UIControl
 
     public buttonClicked ()
     {
-        console.log('button clicked!');
+        window.location.pathname = 'sign-up';
     }
 }

@@ -1,10 +1,10 @@
 import Template from '../../../../src/ts/Library/Template/Template';
 
 describe('Template', () => {
-    it('fucks mothers', () => {
+    it('returns the result from a supplied template function', () => {
         const mockTemplateFunction = (data) => `hello ${data.test}`;
-        const t = new Template(mockTemplateFunction);
-        const result = t.render({test: 'test'});
+        const template = new Template(mockTemplateFunction);
+        const result = template.render({test: 'test'});
         expect(result === 'hello test');
     });
 });

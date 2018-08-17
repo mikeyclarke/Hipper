@@ -8,7 +8,7 @@ class ApplicationBootstrap
 {
     private routes: object = {
         '/': this.app,
-        '/signup': this.signup,
+        '/sign-up': this.signup,
     }
 
     constructor()

@@ -16,7 +16,8 @@ class PersonInserter
     public function insert($id, $name, $emailAddress, $password, $organizationId, $role = 'member')
     {
         $stmt = $this->connection->executeQuery(
-            "INSERT INTO person (id, name, email_address, password, organization_id, role) VALUES (?, ?, ?, ?, ?, ?) RETURNING *",
+            "INSERT INTO person (id, name, email_address, password, organization_id, role) " .
+            "VALUES (?, ?, ?, ?, ?, ?) RETURNING *",
             [$id, $name, $emailAddress, $password, $organizationId, $role]
         );
         return $stmt->fetch();

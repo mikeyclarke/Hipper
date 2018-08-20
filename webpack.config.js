@@ -61,6 +61,16 @@ module.exports = {
                 use: ['raw-loader'],
             },
             {
+                test: /\.(woff|woff2)$/,
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        // Limit at 50k. Above that it emits separate files
+                        limit: 50000,
+                    },
+                },
+            },
+            {
                 // WARNING: Mikey’s shitty regex below, may cause performance issues 🤷
                 test: /ckeditor5-[^/]+[\/a-zA-Z0-9]+\/[^/]+\.css$/,
                 use: [

@@ -7,35 +7,38 @@
         <form id="signup-form" action="/sign-up" method="post">
             <div class="signup-form">
                 <div class="form-title">
-                    <h1>Sign up</h1>
+                    <h1>hleo</h1>
+                    <p>Let’s get you suited up!</p>
                 </div>
                 <div class="form-group">
-                    <label for="person-name" class="text-label">Full name<span class="required">*</span></label>
-                    <input type="text" class="form-control" name="name" id="person-name" required="required" aria-required="true">
+                    <label for="person-name" class="text-label">Your full name</label>
+                    <input type="text" class="form-control" name="name" id="person-name" required="required" aria-required="true" placeholder="e.g. Buzz Lightyear" autocapitalize="words" autocomplete="name">
                 </div>
                 <div class="form-group">
-                    <label for="person-email-address" class="text-label">Email<span class="required">*</span></label>
-                    <input type="email" class="form-control" name="email_address" id="person-email-address" required="required" aria-required="true">
+                    <label for="person-email-address" class="text-label">Your email address</label>
+                    <input type="email" class="form-control" name="email_address" id="person-email-address" required="required" aria-required="true" placeholder="e.g. space-ranger@example.com" autocomplete="email">
                 </div>
                 <div class="form-group">
-                    <label for="person-password" class="text-label">Password<span class="required">*</span></label>
-                    <input type="password" class="form-control" name="password" id="person-password" required="required" aria-required="true">
+                    <label for="person-password" class="text-label">Password</label>
+                    <input type="password" class="form-control" name="password" id="person-password" required="required" aria-required="true" aria-describedby="password-rules" autocomplete="new-password" minlength="8">
+                    <p id="password-rules">Min. 8 characters. Mixing numbers, letters, and symbols is encouraged!</p>
                 </div>
                 <div class="form-group field-checkbox-group-policy">
-                    <label for="field-checkbox-group-policy" class="checkbox-group-label">Agree with our shit<span class="required">*</span></label>
                     <div class="checkbox-group">
                         <div class="checkbox">
-                            <input id="checkbox-group-policy" aria-required="true" value="1" type="checkbox" checked="checked">
-                            <label for="checkbox-group-policy">I agree</label>
+                            <input id="checkbox-group-policy" aria-required="true" value="1" type="checkbox">
+                            <label for="checkbox-group-policy" class="checkbox-group-label">I agree to hleo’s <a href="https://tryhleo.com/terms-of-use" target="_blank">terms of use</a> and <a href="https://tryhleo.com/privacy-policy" target="_blank">privacy policy</a>.</label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit">Sign up</button>
+                    <button type="submit" disabled>Sign up</button>
                 </div>
             </div>
         </form>
     </div>
+
+    <p>👋 Already have an account? <a href="/log-in">Log in</a></p>
 </div>
 
 {% endblock %}

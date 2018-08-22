@@ -16,8 +16,8 @@ run: ## Run webpack once and start the dev server
 webpack: ## Run a one-off webpack build
 	./node_modules/.bin/webpack --watch --mode=development
 
-install_dependencies: ## Install composer and yarn packages
-	yarn install && composer install
+install_dependencies: ## Install composer and npm packages
+	npm install && composer install
 
 _PHONY: help
 

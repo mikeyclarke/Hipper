@@ -1,0 +1,21 @@
+@mixin font-smoothing ($value: on) {
+    $prefixes: (moz-osx, webkit);
+    $valueMap: (
+        moz-osx: (
+            on: grayscale,
+            off: auto,
+        ),
+        webkit: (
+            on: antialiased,
+            off: subpixel-antialiased,
+        ),
+    );
+
+    @each $prefix in $prefixes {
+        @if $value == inherit {
+            -#{$prefix}-font-smoothing: inherit;
+        } @else {
+            -#{$prefix}-font-smoothing: map-get(map-get($valueMap, $prefix), $value);
+        }
+    }
+}

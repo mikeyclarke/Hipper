@@ -1,0 +1,41 @@
+$button-padding-top-bottom: 13px;
+$button-padding-left-right: 30px;
+$button-font-size: 14px;
+$button-font-weight: 500;
+$button-text-transform: uppercase;
+
+$button-background-color-primary: config-get(global, color, primary);
+$button-text-color-primary: #fff;
+$button-border-radius-primary: 100px;
+
+%button {
+    background: transparent;
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    font-size: $button-font-size;
+    font-weight: $button-font-weight;
+    margin: 0;
+    padding: $button-padding-top-bottom $button-padding-left-right;
+    text-transform: $button-text-transform;
+    @include font-smoothing;
+}
+
+%button:disabled {
+    cursor: not-allowed;
+    opacity: .5;
+}
+
+.c-button--primary {
+    @extend %button;
+    background-color: $button-background-color-primary;
+    border-radius: $button-border-radius-primary;
+    box-shadow: 0 1px 8px 0 rgba($button-background-color-primary ,.45);
+    color: $button-text-color-primary;
+}
+
+.c-button--primary:focus {
+    background-color: darken($button-background-color-primary, 3%);
+    outline: 0;
+    transform: scale(1.1);
+}

@@ -1,0 +1,84 @@
+$splash-screen-background-color: #fcfcfc;
+
+$splash-screen-dialog-border-radius: 8px;
+$splash-screen-dialog-box-shadow: 0 1px 20px 4px rgba(93, 74, 226, .1);
+$splash-screen-dialog-margin-bottom: 24px;
+$splash-screen-dialog-margin-top: 36px;
+$splash-screen-dialog-width: 784px;
+
+$splash-screen-dialog-content-background-color: config-get(global, color, white);
+$splash-screen-dialog-content-width: 50%;
+
+$splash-screen-dialog-graphic-width: 50%;
+
+$splash-screen-footer-margin: 0 0 18px;
+
+$splash-screen-single-pane-viewport-width: 470px;
+$splash-screen-dual-pane-viewport-width: 914px;
+
+@mixin single-pane-layout {
+    @media only screen and (min-width: $splash-screen-single-pane-viewport-width) {
+        @content;
+    }
+}
+
+@mixin dual-pane-layout {
+    @media only screen and (min-width: $splash-screen-dual-pane-viewport-width) {
+        @content;
+    }
+}
+
+.l-splash-screen {
+    align-items: center;
+    background-color: $splash-screen-dialog-content-background-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+
+    @include single-pane-layout {
+        background-color: $splash-screen-background-color;
+    }
+}
+
+.l-splash-screen__dialog {
+    background-color: $splash-screen-dialog-content-background-color;
+    display: flex;
+    margin-bottom: $splash-screen-dialog-margin-bottom;
+
+    @include single-pane-layout {
+        box-shadow: $splash-screen-dialog-box-shadow;
+        border-radius: $splash-screen-dialog-border-radius;
+        margin-top: $splash-screen-dialog-margin-top;
+        width: $splash-screen-dialog-width / 2;
+    }
+
+    @include dual-pane-layout {
+        width: $splash-screen-dialog-width;
+    }
+}
+
+.l-splash-screen__dialog-content {
+    @include dual-pane-layout {
+        width: $splash-screen-dialog-content-width;
+    }
+}
+
+.l-splash-screen__dialog-graphic {
+    border-radius: 0 $splash-screen-dialog-border-radius $splash-screen-dialog-border-radius 0;
+    display: none;
+
+    @include dual-pane-layout {
+        display: block;
+        width: $splash-screen-dialog-graphic-width;
+    }
+}
+
+.l-splash-screen__footer {
+    margin: $splash-screen-footer-margin;
+    text-align: center;
+}
+
+.l-splash-screen__footer-copy {
+    margin: 0;
+}

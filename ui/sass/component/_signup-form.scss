@@ -1,0 +1,73 @@
+$signup-form-margin: 40px 30px;
+
+$signup-form-header-margin-bottom: 32px;
+
+$signup-form-title-font-size: 32px;
+$signup-form-title-font-weight: 700;
+$signup-form-title-margin-bottom: 18px;
+$signup-form-title-text-color: #130c17;
+
+$signup-form-subtitle-font-size: 20px;
+
+$signup-form-field-margin-bottom: 24px;
+
+$signup-form-label-font-size: 12px;
+$signup-form-label-font-weight: 500;
+$signup-form-label-margin-bottom: 7px;
+
+$signup-form-field-info-font-size: 14px;
+$signup-form-field-info-text-color: #b0aeb1;
+
+$signup-form-footer-margin: 36px 0 0;
+$signup-form-footer-text-align: right;
+
+.c-signup-form {
+    margin: $signup-form-margin;
+}
+
+.c-signup-form__header {
+    margin: 0 0 $signup-form-header-margin-bottom;
+    text-align: center;
+}
+
+.c-signup-form__title {
+    font-weight: $signup-form-title-font-weight;
+    font-size: $signup-form-title-font-size;
+    color: $signup-form-title-text-color;
+    margin: 0 0 $signup-form-title-margin-bottom;
+}
+
+.c-signup-form__subtitle {
+    font-size: $signup-form-subtitle-font-size;
+    margin: 0;
+}
+
+.c-signup-form__field {
+    border: 0;
+    margin: 0 0 $signup-form-field-margin-bottom;
+    padding: 0;
+}
+
+.c-signup-form__label {
+    display: block;
+    font-weight: $signup-form-label-font-weight;
+    font-size: $signup-form-label-font-size;
+    margin-bottom: $signup-form-label-margin-bottom;
+    text-transform: uppercase;
+}
+
+.c-signup-form__input {
+    width: 100%;
+}
+
+.c-signup-form__field-info {
+    font-size: $signup-form-field-info-font-size;
+    color: $signup-form-field-info-text-color;
+    margin: 3px 0 0;
+    @include font-smoothing;
+}
+
+.c-signup-form__footer {
+    margin: $signup-form-footer-margin;
+    text-align: $signup-form-footer-text-align;
+}

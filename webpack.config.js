@@ -1,4 +1,5 @@
 const path = require('path');
+const autoprefixer = require('autoprefixer');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -49,6 +50,15 @@ module.exports = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            ident: 'postcss',
+                            plugins: [
+                                autoprefixer,
+                            ]
+                        },
+                    },
                     'sass-loader',
                 ],
             },
@@ -59,6 +69,17 @@ module.exports = {
             {
                 test: /ckeditor5-[^/]+\/theme\/icons\/[^/]+\.svg$/,
                 use: ['raw-loader'],
+            },
+            {
+                // WARNING: Mikey’s shitty regex strikes again, this separates our SVGs from those of CKEditor
+                test: /^(?!ckeditor5)[\_\-\/a-zA-Z0-9]+\.svg$/,
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        // Limit at 50k. Above that it emits separate files
+                        limit: 50000,
+                    },
+                },
             },
             {
                 test: /\.(woff|woff2)$/,

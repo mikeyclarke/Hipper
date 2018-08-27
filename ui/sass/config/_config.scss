@@ -1,0 +1,45 @@
+$config: (
+    global: (
+        color: (
+            primary: #11ae83,
+            white: #fefeff,
+        ),
+        font: (
+            stack: "'Proxima Nova Soft', sans-serif",
+        ),
+    ),
+    element: (
+        page: (
+            background-color: #fcfcfc,
+            foreground-color: #3d3d3d,
+        ),
+        input: (
+            background-color: #fff,
+            border-color--is-focused: #2786ee,
+            border-color: #c4c2c5,
+            border-radius: 4px,
+            border-width: 1px,
+            box-shadow: none,
+            height: 44px,
+            padding: 14px,
+            placeholder-color: #b0aeb1,
+            text-color: config-get(page, foreground-color),
+        ),
+    ),
+);
+
+// Usage: config-get('namespace', 'subnamespace', 'property');
+// * E.g. config-get('global', 'color', 'primary');
+// * E.g. config-get('element', 'box-input', 'background-color');
+@function config-get($args...) {
+    $c: $config;
+
+    @each $arg in $args {
+        @if map-has-key($c, $arg) == false {
+            @warn 'Config entry not found';
+        }
+        $c: map-get($c, $arg);
+    }
+
+    @return $c;
+}

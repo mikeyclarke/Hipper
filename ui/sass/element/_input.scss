@@ -1,0 +1,47 @@
+$box-input-types: (
+    date,
+    datetime-local,
+    email,
+    month,
+    number,
+    password,
+    search,
+    tel,
+    text,
+    time,
+    url,
+    week,
+);
+
+$selector: ();
+@each $type in $box-input-types {
+    $selector: append($selector, unquote('[type="#{$type}"]'), 'comma');
+}
+
+// [type="text|email|number|…"]
+#{$selector} {
+    appearance: none;
+    background-color: config-get(element, input, background-color);
+    border: config-get(element, input, border-width) solid config-get(element, input, border-color);
+    border-radius: config-get(element, input, border-radius);
+    box-shadow: config-get(element, input, box-shadow);
+    color: config-get(element, input, text-color);
+    height: config-get(element, input, height);
+    padding: config-get(element, input, padding);
+    @include font-smoothing;
+}
+
+$selector: ();
+@each $type in $box-input-types {
+    $selector: append($selector, unquote('[type="#{$type}"]:focus'), 'comma');
+}
+
+// [type="text|email|number|…"]:focus
+#{$selector} {
+    border-color: config-get(element, input, border-color--is-focused);
+    outline: 0;
+}
+
+::placeholder {
+    color: config-get(element, input, placeholder-color);
+}

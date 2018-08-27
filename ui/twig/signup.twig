@@ -1,0 +1,55 @@
+{% extends 'base_layout.twig' %}
+
+{% block content %}
+
+<div class="l-splash-screen">
+    <div class="l-splash-screen__dialog">
+        <div class="l-splash-screen__dialog-content">
+            <form class="c-signup-form" action="/sign-up" method="post">
+                <div class="c-signup-form__header">
+                    <h1 class="c-signup-form__title">hleo</h1>
+                    <p class="c-signup-form__subtitle">Let’s get you suited up!</p>
+                </div>
+
+                <fieldset class="c-signup-form__field">
+                    <label for="person-name" class="c-signup-form__label">Your name</label>
+                    <input class="c-signup-form__input" type="text" name="name" id="person-name" required="required" aria-required="true" placeholder="e.g. Buzz Lightyear" autocapitalize="words" autocomplete="name" spellcheck="false">
+                </fieldset>
+
+                <fieldset class="c-signup-form__field">
+                    <label for="person-email-address" class="c-signup-form__label">Your email address</label>
+                    <input class="c-signup-form__input" type="email" name="email_address" id="person-email-address" required="required" aria-required="true" placeholder="e.g. space-ranger@example.com" autocomplete="email">
+                </fieldset>
+
+                <fieldset class="c-signup-form__field">
+                    <label for="person-password" class="c-signup-form__label">Password</label>
+                    <div class="c-password-input">
+                        <input class="c-signup-form__input c-password-input__input" type="password" name="password" id="person-password" required="required" aria-required="true" aria-describedby="password-rules" autocomplete="new-password" minlength="8">
+                        <button class="c-password-input__visibility-button" type="button" aria-hidden="true" tabindex="-1">Show</button>
+                    </div>
+                    <p class="c-signup-form__field-info" id="password-rules">Min. 8 characters. Mixing numbers, letters, and symbols is encouraged!</p>
+                </fieldset>
+
+                <fieldset class="c-signup-form__field">
+                    <div class="c-checkbox">
+                        <input class="c-checkbox__input" id="terms-privacy-agreement" type="checkbox" autocomplete="off">
+                        <label class="c-checkbox__label" for="terms-privacy-agreement">I agree to hleo’s <a href="https://tryhleo.com/terms-of-use" target="_blank">terms of use</a>.</label>
+                    </div>
+                </fieldset>
+
+                <div class="c-signup-form__footer">
+                    <button class="c-button--primary" type="submit" disabled>Sign up</button>
+                </div>
+            </form>
+        </div>
+        <div class="l-splash-screen__dialog-graphic" style="background-color: #2A2A3B">
+        </div>
+
+    </div>
+
+    <div class="l-splash-screen__footer">
+        <p class="l-splash-screen__footer-copy">👋 Already have an account? <a href="/log-in">Log in</a></p>
+    </div>
+</div>
+
+{% endblock %}

@@ -19,7 +19,7 @@
     "karma-typescript-es6-transform": "^1.0.4",
     "mini-css-extract-plugin": "^0.4.1",
     "node-sass": "^4.9.2",
-    "postcss-loader": "^2.1.6",
+    "postcss-loader": "^3.0.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^7.1.0",
     "ts-loader": "^4.4.2",

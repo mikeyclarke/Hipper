@@ -23,7 +23,7 @@ class SignupController
     public function getAction(Request $request)
     {
         return new Response(
-            $this->twig->render('signup.html.twig')
+            $this->twig->render('signup.twig')
         );
     }
 

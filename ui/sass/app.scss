@@ -1,15 +1,19 @@
 @import 'vendor/normalize/normalize';
 @import './fonts';
 
-html,
-body {
-    font-family: 'Proxima Nova Soft', sans-serif;
-    height: 100%;
-}
+@import 'helper/font-smoothing';
 
-body {
-    background: #eaeaea;
-}
+@import 'config/config';
+
+@import 'element/page';
+@import 'element/input';
+
+@import 'component/button';
+@import 'component/checkbox';
+@import 'component/password-input';
+@import 'component/signup-form';
+
+@import 'layout/splash-screen';
 
 .editor-container {
     padding: 80px 80px;

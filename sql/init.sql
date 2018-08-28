@@ -1,8 +1,8 @@
 CREATE TABLE organization (
     id          UUID NOT NULL PRIMARY KEY,
     name        varchar(255) NOT NULL,
-    created     timestamp without time zone NOT NULL DEFAULT (now() at time zone 'utc'),
-    updated     timestamp without time zone NOT NULL DEFAULT (now() at time zone 'utc')
+    created     timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated     timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TYPE organization_roles AS ENUM ('owner', 'admin', 'member');
@@ -15,8 +15,8 @@ CREATE TABLE person (
     role                    organization_roles DEFAULT 'member',
     email_address_verified  boolean DEFAULT false,
     organization_id         UUID NOT NULL references organization(id),
-    created     timestamp without time zone NOT NULL DEFAULT (now() at time zone 'utc'),
-    updated     timestamp without time zone NOT NULL DEFAULT (now() at time zone 'utc')
+    created     timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated     timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE email_address_verification (
@@ -24,13 +24,13 @@ CREATE TABLE email_address_verification (
     person_id   UUID NOT NULL references person(id),
     hash        varchar(50) NOT NULL,
     expires     timestamp NOT NULL,
-    created     timestamp without time zone NOT NULL DEFAULT (now() at time zone 'utc')
+    created     timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE OR REPLACE FUNCTION update_updated_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW.updated = now() at time zone 'utc';
+    NEW.updated = now();
     RETURN NEW;
 END;
 $$ language 'plpgsql';

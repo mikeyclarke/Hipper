@@ -5,7 +5,7 @@
 <div class="l-splash-screen">
     <div class="l-splash-screen__dialog">
         <div class="l-splash-screen__dialog-content">
-            <form class="c-signup-form" action="/sign-up" method="post">
+            <form class="c-signup-form js-signup-form" action="/sign-up" method="post">
                 <div class="c-signup-form__header">
                     <h1 class="c-signup-form__title">hleo</h1>
                     <p class="c-signup-form__subtitle">Let’s get you suited up!</p>
@@ -24,21 +24,21 @@
                 <fieldset class="c-signup-form__field">
                     <label for="person-password" class="c-signup-form__label">Password</label>
                     <div class="c-password-input">
-                        <input class="c-signup-form__input c-password-input__input" type="password" name="password" id="person-password" required="required" aria-required="true" aria-describedby="password-rules" autocomplete="new-password" minlength="8">
-                        <button class="c-password-input__visibility-button" type="button" aria-hidden="true" tabindex="-1">Show</button>
+                        <input class="c-signup-form__input c-password-input__input js-password-input" type="password" name="password" id="person-password" required="required" aria-required="true" aria-describedby="password-rules" autocomplete="new-password" minlength="8">
+                        <button class="c-password-input__visibility-button js-toggle-password-visibility" type="button" aria-hidden="true" tabindex="-1">Show</button>
                     </div>
                     <p class="c-signup-form__field-info" id="password-rules">Min. 8 characters. Mixing numbers, letters, and symbols is encouraged!</p>
                 </fieldset>
 
                 <fieldset class="c-signup-form__field">
                     <div class="c-checkbox">
-                        <input class="c-checkbox__input" id="terms-privacy-agreement" type="checkbox" autocomplete="off">
+                        <input class="c-checkbox__input" id="terms-privacy-agreement" required="required" aria-required="true"  type="checkbox" autocomplete="off">
                         <label class="c-checkbox__label" for="terms-privacy-agreement">I agree to hleo’s <a href="https://tryhleo.com/terms-of-use" target="_blank">terms of use</a>.</label>
                     </div>
                 </fieldset>
 
                 <div class="c-signup-form__footer">
-                    <button class="c-button--primary" type="submit" disabled>Sign up</button>
+                    <button class="c-button--primary js-form-submit" type="submit" aria-disabled="true">Sign up</button>
                 </div>
             </form>
         </div>

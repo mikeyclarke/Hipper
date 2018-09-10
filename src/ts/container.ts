@@ -1,22 +1,18 @@
 const navigationTemplate = require('Twig/navigation.twig');
 
 import * as Bottle from 'bottlejs';
-import CKeditor from './Library/TextEditor/CKEditor/CKEditor';
-import TextEditor from './Library/TextEditor/TextEditor';
+import CKeditor from './TextEditor/CKEditor/CKEditor';
+import TextEditor from './TextEditor/TextEditor';
 import Template from './Library/Template/Template';
-import { Navigation } from './UIControls/Navigation/Navigation';
 import ApplicationBootstrap from './Bootstrap/ApplicationBootstrap';
 import SignupBootstrap from './Bootstrap/SignupBootstrap';
+import SignupController from './Signup/SignupController';
+import SignupView from './Signup/SignupView';
 
 const bottle = new Bottle();
 
 bottle.factory('CKEditor', () => {
     return new CKeditor();
-});
-
-bottle.factory('navigationControl', (container) => {
-    Navigation.template = container.template_navigation;
-    return Navigation;
 });
 
 bottle.factory('textEditor', (container) => {
@@ -28,11 +24,19 @@ bottle.factory('template_navigation', () => {
 });
 
 bottle.factory('applicationBootstrap', (container) => {
-    return new ApplicationBootstrap(container.navigationControl, container.textEditor);
+    return new ApplicationBootstrap(container.textEditor);
 });
 
-bottle.factory('signupBootstrap', () => {
-    return new SignupBootstrap();
+bottle.factory('signupView', () => {
+    return new SignupView();
+});
+
+bottle.factory('signupController', (container) => {
+    return new SignupController(container.signupView);
+});
+
+bottle.factory('signupBootstrap', (container) => {
+    return new SignupBootstrap(container.signupController);
 });
 
 bottle.factory('bootstrap', (container) => {

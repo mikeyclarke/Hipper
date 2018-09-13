@@ -11,7 +11,7 @@ class ElementCache
         this.cacheElements(elementHash);
     }
 
-    public get(key): HTMLElement
+    public get(key: string): HTMLElement
     {
         return this.cachedElements[key];
     }
@@ -35,11 +35,11 @@ class ElementCache
         }
     }
 
-    private querySelectorDistinct(selector: string)
+    private querySelectorDistinct(selector: string): HTMLElement
     {
         const matches = this.baseElement.querySelectorAll(selector);
         this.requireDistinctElement(matches);
-        return matches.item(0);
+        return <HTMLElement> matches.item(0);
     }
 
     private requireDistinctElement(queryResult: NodeList): void

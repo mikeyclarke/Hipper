@@ -1,10 +1,13 @@
-class SignupView
+import EventDelegator from '../hleo/EventDelegator/EventDelegator';
+import ElementCache from '../hleo/ElementCache/ElementCache';
+
+class SignupForm
 {
     private EventDelegator: any;
     private ElementCache: any;
     private isPasswordVisible: boolean = false;
     private eventDelegator: any;
-    private dom: any;
+    private elementCache: any;
 
     private events: object = {
         'keyup': 'onFormInteraction',
@@ -19,26 +22,20 @@ class SignupView
         'passwordInputElement': '.js-password-input',
     }
 
-    constructor(EventDelegator: any, ElementCache: any)
-    {
-        this.EventDelegator = EventDelegator;
-        this.ElementCache = ElementCache;
-    }
-
     public init(): void
     {
-        this.dom = new this.ElementCache('.js-signup-form', this.elements);
-        this.eventDelegator = new this.EventDelegator(this.events, this.dom.get('form'), this);
-        this.eventDelegator.bindEvents();
+        this.elementCache = new ElementCache('.js-signup-form', this.elements);
+        this.eventDelegator = new EventDelegator(this.events, this.elementCache.get('form'), this);
+        this.eventDelegator.delegate();
     }
 
     protected onFormInteraction(): void
     {
-        if (this.dom.get('form').checkValidity())
+        if (this.elementCache.get('form').checkValidity())
         {
-            this.dom.get('submitButton').setAttribute('aria-disabled', 'false');
+            this.elementCache.get('submitButton').setAttribute('aria-disabled', 'false');
         } else {
-            this.dom.get('submitButton').setAttribute('aria-disabled', 'true');
+            this.elementCache.get('submitButton').setAttribute('aria-disabled', 'true');
         }
     }
 
@@ -54,18 +51,18 @@ class SignupView
             this.setTogglePasswordVisibilityText('hide');
             this.isPasswordVisible = true;
         }
-        this.dom.get('passwordInputElement').focus();
+        this.elementCache.get('passwordInputElement').focus();
     }
 
     private setTogglePasswordVisibilityText(text: string): void
     {
-        this.dom.get('togglePasswordVisibilityButton').innerText = text.toUpperCase();
+        this.elementCache.get('togglePasswordVisibilityButton').innerText = text.toUpperCase();
     }
 
     private setPasswordFieldType(type: string): void
     {
-        this.dom.get('passwordInputElement').type = type;
+        this.elementCache.get('passwordInputElement').type = type;
     }
 }
 
-export default SignupView;
+export default SignupForm;

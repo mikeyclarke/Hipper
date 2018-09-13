@@ -3,9 +3,7 @@ import CKeditor from './TextEditor/CKEditor/CKEditor';
 import TextEditor from './TextEditor/TextEditor';
 import ApplicationBootstrap from './Bootstrap/ApplicationBootstrap';
 import SignupBootstrap from './Bootstrap/SignupBootstrap';
-import SignupView from './Signup/SignupView';
-import EventDelegator from './hleo/EventDelegator/EventDelegator';
-import ElementCache from './hleo/ElementCache/ElementCache';
+import SignupForm from './SignupForm/SignupForm';
 
 const bottle = new Bottle();
 
@@ -21,12 +19,12 @@ bottle.factory('applicationBootstrap', (container) => {
     return new ApplicationBootstrap(container.textEditor);
 });
 
-bottle.factory('signupView', () => {
-    return new SignupView(EventDelegator, ElementCache);
+bottle.factory('signupForm', () => {
+    return new SignupForm();
 });
 
 bottle.factory('signupBootstrap', (container) => {
-    return new SignupBootstrap(container.signupView);
+    return new SignupBootstrap(container.signupForm);
 });
 
 bottle.factory('bootstrap', (container) => {

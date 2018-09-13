@@ -18,14 +18,14 @@ class EventDelegator
         this.context = context;
     }
 
-    public bindEvents(): void
+    public delegate(): void
     {
         this.getEventTypes();
         this.storeEventTypes();
         this.bindTopLevelEvents();
     }
 
-    public removeEvents(): void
+    public undelegate(): void
     {
         this.eventTypes.forEach((evtType) => {
             this.element.removeEventListener(evtType, this.boundHandler);

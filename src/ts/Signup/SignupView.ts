@@ -54,6 +54,7 @@ class SignupView
             this.setTogglePasswordVisibilityText('hide');
             this.isPasswordVisible = true;
         }
+        this.dom.get('passwordInputElement').focus();
     }
 
     private setTogglePasswordVisibilityText(text: string): void

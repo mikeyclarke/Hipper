@@ -4,6 +4,7 @@ import TextEditor from './TextEditor/TextEditor';
 import ApplicationBootstrap from './Bootstrap/ApplicationBootstrap';
 import SignupBootstrap from './Bootstrap/SignupBootstrap';
 import SignupForm from './SignupForm/SignupForm';
+import SignupService from './SignupForm/SignupService';
 
 const bottle = new Bottle();
 
@@ -20,7 +21,7 @@ bottle.factory('applicationBootstrap', (container) => {
 });
 
 bottle.factory('signupForm', () => {
-    return new SignupForm();
+    return new SignupForm(SignupService);
 });
 
 bottle.factory('signupBootstrap', (container) => {

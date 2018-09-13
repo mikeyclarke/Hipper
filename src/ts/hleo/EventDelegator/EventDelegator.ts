@@ -41,7 +41,7 @@ class EventDelegator
                 this.eventDelegates[registeredEventType].forEach(registeredEvent => {
                     if (!registeredEvent.selector)
                     {
-                        this.context[registeredEvent.callback]();
+                        this.context[registeredEvent.callback](event);
                     } else {
                         this.searchParentsForMatch(registeredEvent, event);
                     }
@@ -57,7 +57,7 @@ class EventDelegator
             el = el.parentElement
         }
         if (el !== this.element && el.classList.contains(registeredEvent.selector)) {
-            this.context[registeredEvent.callback]();
+            this.context[registeredEvent.callback](event);
         }
     }
 

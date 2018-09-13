@@ -1,17 +1,17 @@
 import IBootstrap from './IBootstrap';
-import SignupController from '../Signup/SignupController';
+import SignupView from '../Signup/SignupView';
 
 export default class SignupBootstrap implements IBootstrap
 {
-    private signupController;
+    private signupView;
 
-    constructor(signupController: SignupController)
+    constructor(SignupView: SignupView)
     {
-        this.signupController = signupController;
+        this.signupView = SignupView;
     }
 
     public bootstrap(): void
     {
-        this.signupController.init();
+        this.signupView.init();
     }
 }

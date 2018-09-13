@@ -1,4 +1,4 @@
-class UIElement
+class ElementCache
 {
     private element: HTMLElement;
     private elements: any = {};
@@ -56,4 +56,4 @@ class UIElement
     }
 }
 
-export default UIElement;
+export default ElementCache;

@@ -1,15 +1,11 @@
-const navigationTemplate = require('Twig/navigation.twig');
-
 import * as Bottle from 'bottlejs';
 import CKeditor from './TextEditor/CKEditor/CKEditor';
 import TextEditor from './TextEditor/TextEditor';
-import Template from './Library/Template/Template';
 import ApplicationBootstrap from './Bootstrap/ApplicationBootstrap';
 import SignupBootstrap from './Bootstrap/SignupBootstrap';
-import SignupController from './Signup/SignupController';
 import SignupView from './Signup/SignupView';
-import DOMEventController from './Library/DOMEventController/DOMEventController';
-import UIElement from './Library/UIElement/UIElement';
+import DOMEventController from './hleo/DOMEventController/DOMEventController';
+import ElementCache from './hleo/ElementCache/ElementCache';
 
 const bottle = new Bottle();
 
@@ -21,24 +17,16 @@ bottle.factory('textEditor', (container) => {
     return new TextEditor(container.CKEditor);
 });
 
-bottle.factory('template_navigation', () => {
-    return new Template(navigationTemplate);
-});
-
 bottle.factory('applicationBootstrap', (container) => {
     return new ApplicationBootstrap(container.textEditor);
 });
 
 bottle.factory('signupView', () => {
-    return new SignupView(DOMEventController, UIElement);
-});
-
-bottle.factory('signupController', (container) => {
-    return new SignupController(container.signupView);
+    return new SignupView(DOMEventController, ElementCache);
 });
 
 bottle.factory('signupBootstrap', (container) => {
-    return new SignupBootstrap(container.signupController);
+    return new SignupBootstrap(container.signupView);
 });
 
 bottle.factory('bootstrap', (container) => {

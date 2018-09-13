@@ -35,11 +35,9 @@ class EventDelegator
 
     private handleEvent(event: Event): void
     {
-        for (let registeredEventType in this.eventDelegates)
+        if (this.isEventTypeRegistered(event.type))
         {
-            if (event.type === registeredEventType)
-            {
-                for (let registeredEvent of this.eventDelegates[registeredEventType])
+            for (let registeredEvent of this.eventDelegates[event.type])
                 {
                     if (!registeredEvent.selector)
                     {
@@ -48,18 +46,22 @@ class EventDelegator
                         this.searchParentsForMatch(registeredEvent, event);
                     }
                 }
-            }
         }
     }
 
-    private searchParentsForMatch(registeredEvent: EventDelegate, currentEvent: Event): void
+    private isEventTypeRegistered(type: string): boolean
     {
-        let el = <HTMLElement> currentEvent.target;
-        while (el && !el.classList.contains(registeredEvent.selector) && el !== this.element.parentNode) {
-            el = el.parentElement
+        return this.eventDelegates.hasOwnProperty(event.type);
+    }
+
+    private searchParentsForMatch(delegate: EventDelegate, event: Event): void
+    {
+        let currentNode = <HTMLElement> event.target;
+        while (currentNode && !currentNode.classList.contains(delegate.selector) && currentNode !== this.element.parentNode) {
+            currentNode = currentNode.parentElement
         }
-        if (el !== this.element && el.classList.contains(registeredEvent.selector)) {
-            this.context[registeredEvent.callback](currentEvent);
+        if (currentNode !== this.element && currentNode.classList.contains(delegate.selector)) {
+            this.context[delegate.callback](event);
         }
     }
 

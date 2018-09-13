@@ -4,7 +4,6 @@ import SignupService from './SignupService';
 
 class SignupForm
 {
-    private signupService: SignupService;
     private isPasswordVisible: boolean = false;
     private eventDelegator: any;
     private elementCache: any;
@@ -23,11 +22,6 @@ class SignupForm
         'passwordInputElement': '.js-password-input',
     }
 
-    constructor(signupService: SignupService)
-    {
-        this.signupService = signupService;
-    }
-
     public init(): void
     {
         this.elementCache = new ElementCache('.js-signup-form', this.elements);
@@ -38,10 +32,9 @@ class SignupForm
     protected onSubmit(event): void
     {
         event.preventDefault();
-        const formData = new FormData(this.elementCache.get('form'));
         SignupService.submitForm((res) => {
             console.log(res);
-        }, formData);
+        }, this.getFormData());
     }
 
     protected onFormInteraction(): void
@@ -67,6 +60,11 @@ class SignupForm
             this.isPasswordVisible = true;
         }
         this.elementCache.get('passwordInputElement').focus();
+    }
+
+    private getFormData(): FormData
+    {
+        return new FormData(this.elementCache.get('form'));
     }
 
     private setTogglePasswordVisibilityText(text: string): void

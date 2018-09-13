@@ -59,7 +59,7 @@ class EventDelegator
             el = el.parentElement
         }
         if (el !== this.element && el.classList.contains(registeredEvent.selector)) {
-            this.context[registeredEvent.callback](event);
+            this.context[registeredEvent.callback](currentEvent);
         }
     }
 

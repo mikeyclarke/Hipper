@@ -3,7 +3,7 @@ import CKeditor from './TextEditor/CKEditor/CKEditor';
 import TextEditor from './TextEditor/TextEditor';
 import ApplicationBootstrap from './Bootstrap/ApplicationBootstrap';
 import SignupBootstrap from './Bootstrap/SignupBootstrap';
-import SignupForm from './SignupForm/SignupForm';
+import SignupForm from './onboarding/SignupForm/SignupForm';
 
 const bottle = new Bottle();
 

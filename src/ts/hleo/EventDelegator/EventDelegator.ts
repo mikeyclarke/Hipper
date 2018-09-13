@@ -72,9 +72,9 @@ class EventDelegator
     {
         const types = [];
 
-        for (let key in this.events)
+        for (let eventSignature in this.events)
         {
-            types.push(key.match(this.eventSplitter)[1]);
+            types.push(eventSignature.match(this.eventSplitter)[1]);
         }
 
         this.eventTypes = types.filter((value, index, self) => {
@@ -92,9 +92,9 @@ class EventDelegator
 
     private createEventDelegates(): void
     {
-        for (let key in this.events)
+        for (let eventSignature in this.events)
         {
-            const match = key.match(this.eventSplitter);
+            const match = eventSignature.match(this.eventSplitter);
             this.eventDelegates[match[1]].push(new EventDelegate(match[2], this.events[match[0]], match[1]));
         }
     }

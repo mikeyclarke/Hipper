@@ -4,9 +4,9 @@ class SignupService
         return fetch('/_/sign-up', {
             method: "POST",
             headers: {
-                "Content-Type": "application/json; charset=utf-8",
+                "Content-Type": "Content-Type: multipart/form-data;",
             },
-            body: JSON.stringify(payload),
+            body: payload,
         })
         .then((response) => {
             callback(response.json());

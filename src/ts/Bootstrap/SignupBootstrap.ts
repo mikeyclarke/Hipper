@@ -1,5 +1,5 @@
 import IBootstrap from './IBootstrap';
-import SignupForm from '../SignupForm/SignupForm';
+import SignupForm from '../onboarding/SignupForm/SignupForm';
 
 export default class SignupBootstrap implements IBootstrap
 {

@@ -18,21 +18,21 @@ class EventDelegator
         this.context = context;
     }
 
-    public bindEvents()
+    public bindEvents(): void
     {
         this.getEventTypes();
         this.storeEventTypes();
         this.bindTopLevelEvents();
     }
 
-    public removeEvents()
+    public removeEvents(): void
     {
         this.eventTypes.forEach((evtType) => {
             this.element.removeEventListener(evtType, this.boundHandler);
         });
     }
 
-    private handleEvent(event): void
+    private handleEvent(event: Event): void
     {
         for (let registeredEventType in this.eventDelegates)
         {
@@ -50,18 +50,18 @@ class EventDelegator
         }
     }
 
-    private searchParentsForMatch(registeredEvent, currentEvent)
+    private searchParentsForMatch(registeredEvent: EventDelegate, currentEvent: Event): void
     {
-        let el = currentEvent.target;
+        let el = <HTMLElement> currentEvent.target;
         while (el && !el.classList.contains(registeredEvent.selector) && el !== this.element.parentNode) {
-            el = el.parentNode
+            el = el.parentElement
         }
         if (el !== this.element && el.classList.contains(registeredEvent.selector)) {
             this.context[registeredEvent.callback]();
         }
     }
 
-    private bindTopLevelEvents()
+    private bindTopLevelEvents(): void
     {
         this.eventTypes.forEach((evtType) => {
             this.element.addEventListener(evtType, this.boundHandler);
@@ -82,7 +82,7 @@ class EventDelegator
         });
     }
 
-    private storeEventTypes()
+    private storeEventTypes(): void
     {
         this.eventTypes.forEach((evtType) => {
             this.eventDelegates[evtType] = [];
@@ -90,7 +90,7 @@ class EventDelegator
         this.createEventDelegates();
     }
 
-    private createEventDelegates()
+    private createEventDelegates(): void
     {
         for (let key in this.events)
         {

@@ -44,11 +44,11 @@ class SignupForm
         if (this.isPasswordVisible) 
         {
             this.setPasswordFieldType('password');
-            this.setTogglePasswordVisibilityText('show');
+            this.setTogglePasswordVisibilityText('Show');
             this.isPasswordVisible = false;
         } else {
             this.setPasswordFieldType('text');
-            this.setTogglePasswordVisibilityText('hide');
+            this.setTogglePasswordVisibilityText('Hide');
             this.isPasswordVisible = true;
         }
         this.elementCache.get('passwordInputElement').focus();
@@ -56,7 +56,7 @@ class SignupForm
 
     private setTogglePasswordVisibilityText(text: string): void
     {
-        this.elementCache.get('togglePasswordVisibilityButton').innerText = text.toUpperCase();
+        this.elementCache.get('togglePasswordVisibilityButton').innerText = text;
     }
 
     private setPasswordFieldType(type: string): void

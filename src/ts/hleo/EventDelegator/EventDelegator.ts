@@ -1,3 +1,5 @@
+import EventDelegate from "./EventDelegate";
+
 class EventDelegator
 {
     private element: HTMLElement;
@@ -5,7 +7,7 @@ class EventDelegator
     private context: any;
     private eventSplitter: RegExp = /^(\S+)\s*(.*)$/;
     private eventTypes: Array<string>;
-    private eventMap: any = {};
+    private eventDelegates: any = {};
     private boundHandler: any;
 
     constructor(events: object, el: HTMLElement, context: any)
@@ -19,7 +21,7 @@ class EventDelegator
     public bindEvents()
     {
         this.getEventTypes();
-        this.createEventMap();
+        this.storeEventTypes();
         this.bindTopLevelEvents();
     }
 
@@ -32,11 +34,11 @@ class EventDelegator
 
     private handleEvent(event): void
     {
-        for (let registeredEventType in this.eventMap)
+        for (let registeredEventType in this.eventDelegates)
         {
             if (event.type === registeredEventType)
             {
-                this.eventMap[registeredEventType].forEach(registeredEvent => {
+                this.eventDelegates[registeredEventType].forEach(registeredEvent => {
                     if (!registeredEvent.selector)
                     {
                         this.context[registeredEvent.callback]();
@@ -80,24 +82,20 @@ class EventDelegator
         });
     }
 
-    private createEventMap()
+    private storeEventTypes()
     {
         this.eventTypes.forEach((evtType) => {
-            this.eventMap[evtType] = [];
+            this.eventDelegates[evtType] = [];
         });
-        this.populateEventMap();
+        this.createEventDelegates();
     }
 
-    private populateEventMap()
+    private createEventDelegates()
     {
         for (let key in this.events)
         {
             const match = key.match(this.eventSplitter);
-            this.eventMap[match[1]].push({
-                'callback': this.events[match[0]],
-                'type': match[1],
-                'selector': match[2].substr(1),
-            });
+            this.eventDelegates[match[1]].push(new EventDelegate(match[2], this.events[match[0]], match[1]));
         }
     }
 }

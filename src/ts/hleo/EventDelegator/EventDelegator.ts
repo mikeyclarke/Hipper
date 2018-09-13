@@ -27,9 +27,10 @@ class EventDelegator
 
     public undelegate(): void
     {
-        this.eventTypes.forEach((evtType) => {
+        for (let evtType of this.eventTypes)
+        {
             this.element.removeEventListener(evtType, this.boundHandler);
-        });
+        }
     }
 
     private handleEvent(event: Event): void
@@ -38,14 +39,15 @@ class EventDelegator
         {
             if (event.type === registeredEventType)
             {
-                this.eventDelegates[registeredEventType].forEach(registeredEvent => {
+                for (let registeredEvent of this.eventDelegates[registeredEventType])
+                {
                     if (!registeredEvent.selector)
                     {
                         this.context[registeredEvent.callback](event);
                     } else {
                         this.searchParentsForMatch(registeredEvent, event);
                     }
-                });
+                }
             }
         }
     }
@@ -63,9 +65,10 @@ class EventDelegator
 
     private bindTopLevelEvents(): void
     {
-        this.eventTypes.forEach((evtType) => {
+        for (let evtType of this.eventTypes)
+        {
             this.element.addEventListener(evtType, this.boundHandler);
-        });
+        }
     }
 
     private getEventTypes(): void
@@ -84,9 +87,11 @@ class EventDelegator
 
     private storeEventTypes(): void
     {
-        this.eventTypes.forEach((evtType) => {
+        for (let evtType of this.eventTypes)
+        {
             this.eventDelegates[evtType] = [];
-        });
+        }
+
         this.createEventDelegates();
     }
 

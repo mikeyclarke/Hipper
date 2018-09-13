@@ -8,6 +8,8 @@ import ApplicationBootstrap from './Bootstrap/ApplicationBootstrap';
 import SignupBootstrap from './Bootstrap/SignupBootstrap';
 import SignupController from './Signup/SignupController';
 import SignupView from './Signup/SignupView';
+import DOMEventController from './Library/DOMEventController/DOMEventController';
+import UIElement from './Library/UIElement/UIElement';
 
 const bottle = new Bottle();
 
@@ -28,7 +30,7 @@ bottle.factory('applicationBootstrap', (container) => {
 });
 
 bottle.factory('signupView', () => {
-    return new SignupView();
+    return new SignupView(DOMEventController, UIElement);
 });
 
 bottle.factory('signupController', (container) => {

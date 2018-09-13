@@ -1,9 +1,9 @@
 class SignupView
 {
-    private DOMEventController: any;
+    private EventDelegator: any;
     private ElementCache: any;
     private isPasswordVisible: boolean = false;
-    private eventController: any;
+    private eventDelegator: any;
     private dom: any;
 
     private events: object = {
@@ -19,17 +19,17 @@ class SignupView
         'passwordInputElement': '.js-password-input',
     }
 
-    constructor(DOMEventController: any, ElementCache: any)
+    constructor(EventDelegator: any, ElementCache: any)
     {
-        this.DOMEventController = DOMEventController;
+        this.EventDelegator = EventDelegator;
         this.ElementCache = ElementCache;
     }
 
     public init(): void
     {
         this.dom = new this.ElementCache('.js-signup-form', this.elements);
-        this.eventController = new this.DOMEventController(this.events, this.dom.get('form'), this);
-        this.eventController.bindEvents();
+        this.eventDelegator = new this.EventDelegator(this.events, this.dom.get('form'), this);
+        this.eventDelegator.bindEvents();
     }
 
     protected onFormInteraction(): void

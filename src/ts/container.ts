@@ -4,7 +4,7 @@ import TextEditor from './TextEditor/TextEditor';
 import ApplicationBootstrap from './Bootstrap/ApplicationBootstrap';
 import SignupBootstrap from './Bootstrap/SignupBootstrap';
 import SignupView from './Signup/SignupView';
-import DOMEventController from './hleo/DOMEventController/DOMEventController';
+import EventDelegator from './hleo/EventDelegator/EventDelegator';
 import ElementCache from './hleo/ElementCache/ElementCache';
 
 const bottle = new Bottle();
@@ -22,7 +22,7 @@ bottle.factory('applicationBootstrap', (container) => {
 });
 
 bottle.factory('signupView', () => {
-    return new SignupView(DOMEventController, ElementCache);
+    return new SignupView(EventDelegator, ElementCache);
 });
 
 bottle.factory('signupBootstrap', (container) => {

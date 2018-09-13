@@ -1,4 +1,4 @@
-class DOMEventController
+class EventDelegator
 {
     private element: HTMLElement;
     private events: object;
@@ -102,4 +102,4 @@ class DOMEventController
     }
 }
 
-export default DOMEventController;
+export default EventDelegator;

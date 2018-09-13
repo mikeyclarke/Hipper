@@ -28,13 +28,13 @@ class SignupView
     public init(): void
     {
         this.dom = new this.ElementCache('.js-signup-form', this.elements);
-        this.eventController = new this.DOMEventController(this.events, this.dom.getElement(), this);
+        this.eventController = new this.DOMEventController(this.events, this.dom.get('form'), this);
         this.eventController.bindEvents();
     }
 
     protected onFormInteraction(): void
     {
-        if (this.dom.getElement().checkValidity())
+        if (this.dom.get('form').checkValidity())
         {
             this.dom.get('submitButton').setAttribute('aria-disabled', 'false');
         } else {

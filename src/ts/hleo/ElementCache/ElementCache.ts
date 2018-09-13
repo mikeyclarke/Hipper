@@ -1,49 +1,48 @@
 class ElementCache
 {
-    private element: HTMLElement;
-    private elements: any = {};
-    private selector: string;
+    private baseElement: HTMLElement;
+    private baseElementSelector: string;
+    private cachedElements: any = {};
 
-    constructor(selector: string, elements: any)
+    constructor(baseElementSelector: string, elementHash: any)
     {
-        this.selector = selector;
-        this.setElement();
-        this.cacheElements(elements);
-    }
-
-    public getElement(): HTMLElement
-    {
-        return this.element;
+        this.baseElementSelector = baseElementSelector;
+        this.setBaseElement();
+        this.cacheElements(elementHash);
     }
 
     public get(key): HTMLElement
     {
-        return this.elements[key];
+        return this.cachedElements[key];
     }
 
-    private setElement(): void
+    private setBaseElement(): void
     {
-        const matches = this.getElementMatches(this.selector);
-        this.checkQueryResult(matches);
-        this.element = <HTMLElement> matches.item(0);
+        const matches = document.querySelectorAll(this.baseElementSelector);
+        this.requireDistinctElement(matches);
+        this.baseElement = <HTMLElement>  matches.item(0);
     }
 
-    private cacheElements(elements): void
+    private cacheElements(elementHash): void
     {
-        for (let key in elements)
+        for (let selector in elementHash)
         {
-            const matches = this.getElementMatches(elements[key]);
-            this.checkQueryResult(matches);
-            this.elements[key] = this.element.querySelector(elements[key]);
+            if (elementHash[selector] === this.baseElementSelector) {
+                this.cachedElements[selector] = this.baseElement;
+            } else {
+                this.cachedElements[selector] = this.querySelectorDistinct(elementHash[selector]);
+            }
         }
     }
 
-    private getElementMatches(selector: string): NodeList
+    private querySelectorDistinct(selector: string)
     {
-        return document.querySelectorAll(selector);
+        const matches = this.baseElement.querySelectorAll(selector);
+        this.requireDistinctElement(matches);
+        return matches.item(0);
     }
 
-    private checkQueryResult(queryResult: NodeList): void
+    private requireDistinctElement(queryResult: NodeList): void
     {
         if (queryResult.length > 1) 
         {

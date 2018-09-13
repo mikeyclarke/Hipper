@@ -1,7 +1,7 @@
-import IBootstrap from './IBootstrap';
+import IController from './IController';
 import TextEditor from '../TextEditor/TextEditor';
 
-export default class ApplicationBootstrap implements IBootstrap
+export default class IndexController implements IController
 {
     private textEditor;
 
@@ -10,7 +10,7 @@ export default class ApplicationBootstrap implements IBootstrap
         this.textEditor = textEditor;
     }
 
-    public bootstrap(): void
+    public start(): void
     {
         require('Sass/app.scss');
         this.textEditor.initialiseEditor(document.querySelector('.js-article-editor'));

@@ -1,7 +1,7 @@
-import IBootstrap from './IBootstrap';
+import IController from './IController';
 import SignupForm from '../onboarding/SignupForm/SignupForm';
 
-export default class SignupBootstrap implements IBootstrap
+export default class SignupController implements IController
 {
     private signupForm: SignupForm;
 
@@ -10,7 +10,7 @@ export default class SignupBootstrap implements IBootstrap
         this.signupForm = SignupForm;
     }
 
-    public bootstrap(): void
+    public start(): void
     {
         this.signupForm.init();
     }

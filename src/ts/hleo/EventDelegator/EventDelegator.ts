@@ -51,7 +51,7 @@ class EventDelegator
 
     private isEventTypeRegistered(type: string): boolean
     {
-        return this.eventDelegates.hasOwnProperty(event.type);
+        return this.eventDelegates.hasOwnProperty(type);
     }
 
     private searchParentsForMatch(delegate: EventDelegate, event: Event): void

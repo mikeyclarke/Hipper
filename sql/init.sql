@@ -20,11 +20,11 @@ CREATE TABLE person (
 );
 
 CREATE TABLE email_address_verification (
-    id          UUID NOT NULL PRIMARY KEY,
-    person_id   UUID NOT NULL references person(id),
-    hash        varchar(50) NOT NULL,
-    expires     timestamp NOT NULL,
-    created     timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+    id                      UUID NOT NULL PRIMARY KEY,
+    person_id               UUID NOT NULL references person(id),
+    verification_phrase     varchar(50) NOT NULL,
+    expires                 timestamp without time zone NOT NULL,
+    created                 timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE OR REPLACE FUNCTION update_updated_timestamp()

@@ -21,7 +21,7 @@ class ConstraintViolationListFormatter
         return $errors;
     }
 
-    private function formatViolationPropertyPath(ConstraintViolation $violation)
+    private static function formatViolationPropertyPath(ConstraintViolation $violation)
     {
         return preg_replace(
             ['(^\[)', '(\]\[)', '(\]$)'],

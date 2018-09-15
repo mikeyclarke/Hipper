@@ -16,7 +16,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: false       # Allows optimizing the container by removing unused services; this also means
+        public: true        # Allows optimizing the container by removing unused services; this also means
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
 
@@ -44,8 +44,3 @@ services:
         arguments:
             $emailFromAddress: '%transactional_email_from_addr%'
             $emailReplyToAddress: '%transactional_email_reply_to_addr%'
-
-    hleo\AppConfiguration\AppUrlGenerator:
-        arguments:
-            $protocol: '%app_protocol%'
-            $domain: '%app_domain%'

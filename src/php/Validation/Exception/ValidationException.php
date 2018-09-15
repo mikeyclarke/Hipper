@@ -4,6 +4,7 @@ namespace hleo\Validation\Exception;
 class ValidationException extends \Exception
 {
     const MESSAGE = 'Invalid data';
+    const NAME = 'invalid_request_payload';
 
     private $violations;
 
@@ -12,6 +13,11 @@ class ValidationException extends \Exception
         parent::__construct(self::MESSAGE);
 
         $this->violations = $violations;
+    }
+
+    public function getName()
+    {
+        return self::NAME;
     }
 
     public function getViolations()

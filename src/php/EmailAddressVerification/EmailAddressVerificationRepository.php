@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace hleo\EmailAddressVerification;
 
 use Doctrine\DBAL\Connection;
@@ -13,21 +15,19 @@ class EmailAddressVerificationRepository
         $this->connection = $connection;
     }
 
-    public function get(string $personId, string $id, string $hash)
+    public function get(string $personId, string $verificationPhrase): ?array
     {
         $qb = $this->connection->createQueryBuilder();
 
         $qb->select('id')
             ->from('email_address_verification')
-            ->andWhere('id = :id')
             ->andWhere('person_id = :personId')
-            ->andWhere('hash = :hash')
+            ->andWhere('verification_phrase = :verificationPhrase')
             ->andWhere('expires > CURRENT_TIMESTAMP');
 
         $qb->setParameters([
             'personId' => $personId,
-            'id' => $id,
-            'hash' => $hash,
+            'verificationPhrase' => $verificationPhrase,
         ]);
 
         $stmt = $qb->execute();

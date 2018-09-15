@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace hleo\EmailAddressVerification;
 
 use Doctrine\DBAL\Connection;
@@ -13,14 +15,14 @@ class EmailAddressVerificationInserter
         $this->connection = $connection;
     }
 
-    public function insert(string $id, string $personId, string $hash, string $expires)
+    public function insert(string $id, string $personId, string $verificationPhrase, string $expires): void
     {
         $this->connection->insert(
             'email_address_verification',
             [
                 'id' => $id,
                 'person_id' => $personId,
-                'hash' => $hash,
+                'verification_phrase' => $verificationPhrase,
                 'expires' => $expires,
             ]
         );

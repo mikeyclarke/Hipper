@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace hleo\EmailAddressVerification;
 
 use hleo\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
@@ -17,9 +19,9 @@ class VerifyEmailAddress
         $this->personUpdater = $personUpdater;
     }
 
-    public function verify(string $personId, string $verificationId, string $verificationHash)
+    public function verify(string $personId, string $verificationPhrase): void
     {
-        $result = $this->emailAddressVerificationRepository->get($personId, $verificationId, $verificationHash);
+        $result = $this->emailAddressVerificationRepository->get($personId, $verificationPhrase);
         if (null === $result) {
             throw new EmailAddressVerificationNotFoundException;
         }

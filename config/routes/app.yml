@@ -2,14 +2,54 @@ index:
     path: /
     controller: hleo\Controller\DefaultController::index
 
-signup:
+signup.get:
     path: /sign-up
-    controller: hleo\Controller\SignupController::getAction
+    controller: hleo\Onboarding\SignUpController::getAction
     methods: [GET]
 
-signup_post:
-    path: /sign-up
-    controller: hleo\Controller\SignupController::postAction
+signup.post:
+    path: /_/sign-up
+    controller: hleo\Onboarding\SignUpController::postAction
+    methods: [POST]
+
+verify_identity.get:
+    path: /verify-identity
+    controller: hleo\Onboarding\VerifyIdentityController::postAction
+    methods: [GET]
+
+verify_identity.post:
+    path: /_/verify-identity
+    controller: hleo\Onboarding\VerifyIdentityController::postAction
+    methods: [POST]
+
+name_team.get:
+    path: /name-team
+    controller: hleo\Onboarding\NameTeamController::getAction
+    methods: [GET]
+
+name_team.post:
+    path: /_/name-team
+    controller: hleo\Onboarding\NameTeamController::postAction
+    methods: [POST]
+
+choose_team_url.get:
+    path: /choose-team-url
+    controller: hleo\Onboarding\ChooseTeamUrlController::getAction
+    methods: [GET]
+
+choose_team_url.post:
+    path: /_/choose-team-url
+    controller: hleo\Onboarding\ChooseTeamUrlController::postAction
+    methods: [POST]
+
+invite_team.get:
+    path: /invite-team
+    controller: hleo\Onboarding\InviteTeamController::getAction
+    methods: [GET]
+
+invite_team.post:
+    path: /_/invite-team
+    controller: hleo\Onboarding\InviteTeamController::postAction
     methods: [POST]
 
 verify_email:

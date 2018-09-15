@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace hleo\TransactionalEmail;
 
 class VerifyEmailAddressEmail
@@ -19,7 +21,7 @@ class VerifyEmailAddressEmail
         $this->emailReplyToAddress = $emailReplyToAddress;
     }
 
-    public function send(string $recipientName, string $recipientEmailAddress, string $verifyLink)
+    public function send(string $recipientName, string $recipientEmailAddress, string $verificationPhrase): void
     {
         $client = $this->apiClientFactory->create();
         $client->request('POST', '/email', [
@@ -28,9 +30,12 @@ class VerifyEmailAddressEmail
                 'ReplyTo' => $this->emailReplyToAddress,
                 'To' => $recipientEmailAddress,
                 'Tag' => self::TAG,
+                'Subject' => 'Lithos verification code',
                 'HtmlBody' => sprintf(
-                    '<html><body><a href="%s">Verify your email address</a></body></html>',
-                    $verifyLink
+                    '<html><body>' .
+                    '<p>Hey! Copy the below phrase into your open browser window to prove that you’re a human.</p>' .
+                    '<p>%s</p></body></html>',
+                    $verificationPhrase
                 ),
             ]
         ]);

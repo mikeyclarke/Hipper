@@ -6,6 +6,9 @@ framework:
 
     session:
         handler_id: ~
+        cookie_lifetime: 0
+        name: 's'
+        cookie_httponly: true
 
     php_errors:
         log: false

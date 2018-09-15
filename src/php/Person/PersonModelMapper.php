@@ -23,7 +23,7 @@ class PersonModelMapper
         $this->modelMapper = $modelMapper;
     }
 
-    public function createFromArray(array $properties)
+    public function createFromArray(array $properties): PersonModel
     {
         $model = new PersonModel;
         $this->modelMapper->mapProperties($model, $this->fields, $properties);

@@ -1,4 +1,0 @@
-twig:
-    paths: ['%kernel.project_dir%/ui/twig']
-    debug: '%kernel.debug%'
-    strict_variables: '%kernel.debug%'

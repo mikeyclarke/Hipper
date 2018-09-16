@@ -1,0 +1,11 @@
+framework:
+    assets:
+        json_manifest_path: '%kernel.project_dir%/public-roots/app/public/build/manifest.json'
+
+    secret: '%env(APP_SECRET)%'
+
+    session:
+        handler_id: ~
+
+    php_errors:
+        log: false

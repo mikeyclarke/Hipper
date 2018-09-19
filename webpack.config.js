@@ -14,6 +14,9 @@ module.exports = {
         publicPath: 'build/',
         filename: '[name].[contenthash].js',
     },
+    stats: {
+        children: false
+    },
     plugins: [
         new CleanWebpackPlugin(
             [

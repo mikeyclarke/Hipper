@@ -7,6 +7,9 @@ server: ## Run the dev server
 test_js: ## Run the JavaScript unit tests and watch
 	karma start
 
+tslint:
+	tslint -p tsconfig.json -c tslint.json
+
 test_js_single_run: ## Single run for JavaScript unit tests
 	karma start --single-run
 

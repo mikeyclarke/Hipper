@@ -1,4 +1,4 @@
-class ElementCache {
+export class ElementCache {
     private baseElement: HTMLElement;
     private baseElementSelector: string;
     private cachedElements: any = {};
@@ -44,5 +44,3 @@ class ElementCache {
         }
     }
 }
-
-export default ElementCache;

@@ -31,12 +31,12 @@ class EventDelegator {
     private handleEvent(event: Event): void {
         if (this.isEventTypeRegistered(event.type)) {
             for (const registeredEvent of this.eventDelegates[event.type]) {
-                    if (!registeredEvent.selector) {
-                        this.context[registeredEvent.callback](event);
-                    } else {
-                        this.searchParentsForMatch(registeredEvent, event);
-                    }
+                if (!registeredEvent.selector) {
+                    this.context[registeredEvent.callback](event);
+                } else {
+                    this.searchParentsForMatch(registeredEvent, event);
                 }
+            }
         }
     }
 

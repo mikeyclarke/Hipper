@@ -1,5 +1,5 @@
 import EventDelegator from '../../hleo/EventDelegator/EventDelegator';
-import ElementCache from '../../hleo/ElementCache/ElementCache';
+import { ElementCache } from '../../hleo/ElementCache/ElementCache';
 import SignupService from './SignupService';
 
 class SignupForm {

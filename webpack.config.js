@@ -34,9 +34,25 @@ module.exports = {
             Sass: path.resolve(__dirname, 'ui/sass'),
             Twig: path.resolve(__dirname, 'ui/twig'),
         },
+        modules: [
+            path.resolve('./src/ts'),
+            path.resolve('./node_modules'),
+        ],
     },
     module: {
         rules: [
+            {
+                test: /\.ts$/,
+                enforce: 'pre',
+                use: [
+                    {
+                        loader: 'tslint-loader',
+                        options: {
+                            configFile: 'tslint.json'
+                        }
+                    }
+                ]
+            },
             {
                 test: /\.ts$/,
                 use: [

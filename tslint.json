@@ -173,8 +173,7 @@
       "trailing-comma": [
         true,
         {
-          "singleline": "never",
-          "multiline": "never"
+          "esSpecCompliant": true
         }
       ],
       "triple-equals": [

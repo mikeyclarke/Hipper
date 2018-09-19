@@ -1,4 +1,3 @@
-export default interface IController 
-{
-    start(): void,
+export default interface IController {
+    start(): void;
 }

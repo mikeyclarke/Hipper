@@ -1,8 +1,7 @@
-class SignupService
-{
+class SignupService {
     public static submitForm(callback, payload) {
         return fetch('/_/sign-up', {
-            method: "POST",
+            method: 'POST',
             body: payload,
         })
         .then((response) => {

@@ -1,4 +1,3 @@
-export default interface ITextEditor
-{
-    initialiseEditor(element: HTMLElement),
+export default interface ITextEditor {
+    initialiseEditor(element: HTMLElement);
 }

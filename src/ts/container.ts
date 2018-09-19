@@ -32,13 +32,13 @@ bottle.factory('bootstrap', (container) => {
     const routes: object = {
         '/': container.indexController,
         '/sign-up': container.signupController,
-    }
+    };
 
     if (routes[path]) {
         return routes[path];
     } else {
         throw new Error('no path found for bootstrapping');
     }
-})
+});
 
 export default bottle.container;

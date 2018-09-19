@@ -12,9 +12,7 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import ITextEditor from '../ITextEditor';
 
-
-export default class CKeditor implements ITextEditor
-{
+export default class CKeditor implements ITextEditor {
     private ckEditorInstance: BalloonEditor;
     private config: object = {
         plugins: [
@@ -33,8 +31,7 @@ export default class CKeditor implements ITextEditor
         toolbar: ['bold', 'italic', 'strikethrough', 'blockQuote', 'link'],
     };
 
-    public initialiseEditor(element: HTMLElement): void
-    {
+    public initialiseEditor(element: HTMLElement): void {
         this.ckEditorInstance = BalloonEditor.create(element, this.config);
     }
 }

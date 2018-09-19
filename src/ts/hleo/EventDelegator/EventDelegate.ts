@@ -1,4 +1,4 @@
-class EventDelegate {
+export class EventDelegate {
     public selector: string;
     public callback: string;
     public eventType: string;
@@ -9,5 +9,3 @@ class EventDelegate {
         this.eventType = eventType;
     }
 }
-
-export default EventDelegate;

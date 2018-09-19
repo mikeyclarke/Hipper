@@ -1,8 +1,8 @@
-import IController from './IController';
+import { IController } from './IController';
 import TextEditor from '../TextEditor/TextEditor';
 
-export default class IndexController implements IController {
-    private textEditor;
+export class IndexController implements IController {
+    private readonly textEditor: TextEditor;
 
     constructor(textEditor: TextEditor) {
         this.textEditor = textEditor;

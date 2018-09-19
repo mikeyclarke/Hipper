@@ -1,7 +1,7 @@
-import ITextEditor from './ITextEditor';
+import { ITextEditor } from './ITextEditor';
 
-export default class TextEditor {
-    private editor: ITextEditor;
+export class TextEditor {
+    private readonly editor: ITextEditor;
     constructor(editor: ITextEditor) {
         this.editor = editor;
     }

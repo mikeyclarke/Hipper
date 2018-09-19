@@ -1,11 +1,11 @@
-import IController from './IController';
+import { IController } from './IController';
 import SignupForm from '../onboarding/SignupForm/SignupForm';
 
-export default class SignupController implements IController {
-    private signupForm: SignupForm;
+export class SignupController implements IController {
+    private readonly signupForm: SignupForm;
 
-    constructor(SignupForm: SignupForm) {
-        this.signupForm = SignupForm;
+    constructor(signupForm: SignupForm) {
+        this.signupForm = signupForm;
     }
 
     public start(): void {

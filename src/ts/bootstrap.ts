@@ -1,6 +1,6 @@
-import container from './container';
+import { bottle } from './container';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const app = container.bootstrap;
+    const app = bottle.container.bootstrap;
     app.start();
 });

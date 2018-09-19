@@ -1,7 +1,7 @@
 export class ElementCache {
     private baseElement: HTMLElement;
-    private baseElementSelector: string;
-    private cachedElements: any = {};
+    private readonly baseElementSelector: string;
+    private readonly cachedElements: any = {};
 
     constructor(baseElementSelector: string, elementHash: any) {
         this.baseElementSelector = baseElementSelector;
@@ -19,7 +19,7 @@ export class ElementCache {
         this.baseElement = <HTMLElement>  matches.item(0);
     }
 
-    private cacheElements(elementHash): void {
+    private cacheElements(elementHash: any): void {
         for (const selector in elementHash) {
             if (elementHash[selector] === this.baseElementSelector) {
                 this.cachedElements[selector] = this.baseElement;

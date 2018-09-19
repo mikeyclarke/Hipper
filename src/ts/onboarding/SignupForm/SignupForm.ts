@@ -1,20 +1,20 @@
-import EventDelegator from '../../hleo/EventDelegator/EventDelegator';
+import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
 import { ElementCache } from '../../hleo/ElementCache/ElementCache';
-import SignupService from './SignupService';
+import { submitSignup } from './SignupService';
 
-class SignupForm {
+export class SignupForm {
     private isPasswordVisible: boolean = false;
     private eventDelegator: any;
     private elementCache: any;
 
-    private events: object = {
+    private readonly events: object = {
         keyup: 'onFormInteraction',
         change: 'onFormInteraction',
         submit: 'onSubmit',
         'click .js-toggle-password-visibility': 'onTogglePasswordVisibilityClick',
     };
 
-    private elements: object = {
+    private readonly elements: object = {
         form: '.js-signup-form',
         togglePasswordVisibilityButton: '.js-toggle-password-visibility',
         submitButton: '.js-form-submit',
@@ -27,10 +27,10 @@ class SignupForm {
         this.eventDelegator.delegate();
     }
 
-    protected onSubmit(event): void {
+    protected onSubmit(event: any): void {
         event.preventDefault();
-        SignupService.submitForm((res) => {
-            console.log(res);
+        submitSignup((res) => {
+            // console.log(res);
         }, this.getFormData());
     }
 
@@ -67,5 +67,3 @@ class SignupForm {
         this.elementCache.get('passwordInputElement').type = type;
     }
 }
-
-export default SignupForm;

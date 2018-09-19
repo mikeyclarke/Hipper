@@ -1,13 +1,13 @@
-import EventDelegate from './EventDelegate';
+import { EventDelegate } from './EventDelegate';
 
-class EventDelegator {
-    private element: HTMLElement;
-    private events: object;
-    private context: any;
-    private eventSplitter: RegExp = /^(\S+)\s*(.*)$/;
+export class EventDelegator {
+    private readonly element: HTMLElement;
+    private readonly events: object;
+    private readonly context: any;
+    private readonly eventSplitter: RegExp = /^(\S+)\s*(.*)$/;
+    private readonly eventDelegates: any = {};
+    private readonly boundHandler: any;
     private eventTypes: string[];
-    private eventDelegates: any = {};
-    private boundHandler: any;
 
     constructor(events: object, el: HTMLElement, context: any) {
         this.boundHandler = this.handleEvent.bind(this);
@@ -63,7 +63,7 @@ class EventDelegator {
     private getEventTypes(): void {
         const types = [];
 
-        for (const eventSignature in this.events) {
+        for (const eventSignature of Object.keys(this.events)) {
             types.push(eventSignature.match(this.eventSplitter)[1]);
         }
 
@@ -81,11 +81,9 @@ class EventDelegator {
     }
 
     private createEventDelegates(): void {
-        for (const eventSignature in this.events) {
+        for (const eventSignature of Object.keys(this.events)) {
             const match = eventSignature.match(this.eventSplitter);
             this.eventDelegates[match[1]].push(new EventDelegate(match[2], this.events[match[0]], match[1]));
         }
     }
 }
-
-export default EventDelegator;

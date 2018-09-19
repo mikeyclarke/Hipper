@@ -1,9 +1,9 @@
 import * as Bottle from 'bottlejs';
-import CKeditor from './TextEditor/CKEditor/CKEditor';
-import TextEditor from './TextEditor/TextEditor';
-import SignupForm from './onboarding/SignupForm/SignupForm';
-import IndexController from './RouteControllers/IndexController';
-import SignupController from './RouteControllers/SignupController';
+import { CKeditor } from './TextEditor/CKEditor/CKEditor';
+import { TextEditor } from './TextEditor/TextEditor';
+import { SignupForm } from './onboarding/SignupForm/SignupForm';
+import { IndexController } from './RouteControllers/IndexController';
+import { SignupController } from './RouteControllers/SignupController';
 
 const bottle = new Bottle();
 
@@ -41,4 +41,4 @@ bottle.factory('bootstrap', (container) => {
     }
 });
 
-export default bottle.container;
+export { bottle };

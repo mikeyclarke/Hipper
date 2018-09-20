@@ -15,7 +15,7 @@ test_js_single_run: ## Single run for JavaScript unit tests
 phpcs: ## Check that PHP complies with stylistic rules
 	./vendor/bin/phpcs -p --encoding=utf-8 --standard=PSR2 --error-severity=1 src/php
 
-tslint:
+tslint: ## Lint Typescript files
 	./node_modules/.bin/tslint -p tsconfig.json -c tslint.json
 
 ## ---------
@@ -25,10 +25,10 @@ tslint:
 install_dependencies: ## Install composer and npm packages
 	npm install && composer install
 
-npm_install:
+npm_install: ## Install npm packages
 	npm install
 
-composer_install:
+composer_install: ## Install composer packages
 	composer install
 
 ## ---------
@@ -44,7 +44,7 @@ run: ## Run webpack once and start the dev server
 webpack: ## Run a one-off webpack build
 	./node_modules/.bin/webpack --watch --mode=development
 
-sql:
+sql: ## Run database setup
 	psql -d hleo -a -f sql/init.sql
 
 ## ---------

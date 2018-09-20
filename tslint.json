@@ -60,7 +60,7 @@
       "missing-optional-annotation": false,
       "new-parens": true,
       "no-angle-bracket-type-assertion": false,
-      "no-any": false,
+      "no-any": true,
       "no-arg": true,
       "no-backbone-get-set-outside-model": false,
       "no-bitwise": true,

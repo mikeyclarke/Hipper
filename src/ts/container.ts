@@ -5,6 +5,8 @@ import { SignupForm } from './onboarding/SignupForm/SignupForm';
 import { IndexController } from './RouteControllers/IndexController';
 import { SignupController } from './RouteControllers/SignupController';
 import { IController } from 'RouteControllers/IController';
+import { ElementCache } from 'hleo/ElementCache/ElementCache';
+import { EventDelegator } from 'hleo/EventDelegator/EventDelegator';
 
 const bottle = new Bottle();
 
@@ -29,7 +31,9 @@ bottle.factory('textEditor', (container) => {
 });
 
 bottle.factory('signupForm', () => {
-    return new SignupForm();
+    const signupFormElementCache = new ElementCache('.js-signup-form', SignupForm.elements);
+    const signupFormEventDelegator = new EventDelegator(signupFormElementCache.get('form'));
+    return new SignupForm(signupFormEventDelegator, signupFormElementCache);
 });
 
 bottle.factory('bootstrap', (container) => {

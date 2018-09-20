@@ -2,11 +2,13 @@ import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
 import { ElementCache } from '../../hleo/ElementCache/ElementCache';
 import { submitSignup } from './SignupService';
 import { IEvents } from '../../hleo/EventDelegator/IEvents';
+import { IElementHash } from 'hleo/ElementCache/IElementHash';
+import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
 
-export class SignupForm {
+export class SignupForm implements IEventEnabled {
     private isPasswordVisible: boolean = false;
-    private eventDelegator: any;
-    private elementCache: any;
+    private readonly eventDelegator: EventDelegator;
+    private readonly elementCache: ElementCache;
 
     private readonly events: IEvents = {
         keyup: 'onFormInteraction',
@@ -15,28 +17,38 @@ export class SignupForm {
         'click .js-toggle-password-visibility': 'onTogglePasswordVisibilityClick',
     };
 
-    private readonly elements: object = {
+    public static readonly elements: IElementHash = {
         form: '.js-signup-form',
         togglePasswordVisibilityButton: '.js-toggle-password-visibility',
         submitButton: '.js-form-submit',
         passwordInputElement: '.js-password-input',
     };
 
+    constructor(eventDelegator: EventDelegator, elementCache: ElementCache) {
+        this.eventDelegator = eventDelegator;
+        this.elementCache = elementCache;
+    }
+
     public init(): void {
-        this.elementCache = new ElementCache('.js-signup-form', this.elements);
-        this.eventDelegator = new EventDelegator(this.events, this.elementCache.get('form'), this);
+        this.eventDelegator.setContext(this);
+        this.eventDelegator.setEvents(this.events);
         this.eventDelegator.delegate();
     }
 
-    protected onSubmit(event: any): void {
+    protected onSubmit(event: Event): void {
         event.preventDefault();
-        submitSignup((res: any) => {
+        submitSignup((res: Response) => {
             // console.log(res);
         }, this.getFormData());
     }
 
+    public getEvents(): IEvents {
+        return this.events;
+    }
+
     protected onFormInteraction(): void {
-        if (this.elementCache.get('form').checkValidity()) {
+        const form = <HTMLFormElement> this.elementCache.get('form');
+        if (form.checkValidity()) {
             this.elementCache.get('submitButton').setAttribute('aria-disabled', 'false');
         } else {
             this.elementCache.get('submitButton').setAttribute('aria-disabled', 'true');
@@ -57,7 +69,7 @@ export class SignupForm {
     }
 
     private getFormData(): FormData {
-        return new FormData(this.elementCache.get('form'));
+        return new FormData(<HTMLFormElement> this.elementCache.get('form'));
     }
 
     private setTogglePasswordVisibilityText(text: string): void {
@@ -65,6 +77,7 @@ export class SignupForm {
     }
 
     private setPasswordFieldType(type: string): void {
-        this.elementCache.get('passwordInputElement').type = type;
+        const passwordField = <HTMLInputElement> this.elementCache.get('passwordInputElement');
+        passwordField.type = type;
     }
 }

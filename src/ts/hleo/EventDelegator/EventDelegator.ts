@@ -1,24 +1,23 @@
 import { EventDelegate } from './EventDelegate';
 import { IEvents } from './IEvents';
+import { IEventEnabled } from './IEventEnabled';
 
 export class EventDelegator {
     private readonly element: HTMLElement;
-    private readonly events: IEvents;
-    private readonly context: any;
+    private events!: IEvents;
+    private context!: IEventEnabled;
     private readonly eventSplitter: RegExp = /^(\S+)\s*(.*)$/;
-    private readonly eventDelegates: any = {};
-    private readonly boundHandler: any;
-    private eventTypes: string[];
+    private readonly eventDelegates: IDelegateCollection = {};
+    private readonly boundHandler: EventListenerOrEventListenerObject;
+    private eventTypes!: string[];
 
-    constructor(events: IEvents, el: HTMLElement, context: any) {
+    constructor(el: HTMLElement) {
         this.boundHandler = this.handleEvent.bind(this);
         this.element = el;
-        this.events = events;
-        this.context = context;
-        this.eventTypes = this.getEventTypes();
     }
 
     public delegate(): void {
+        this.eventTypes = this.getEventTypes();
         this.storeEventTypes();
         this.bindTopLevelEvents();
     }
@@ -29,10 +28,19 @@ export class EventDelegator {
         }
     }
 
+    public setContext(context: IEventEnabled): void {
+        this.context = context;
+    }
+
+    public setEvents(events: IEvents): void {
+        this.events = events;
+    }
+
     private handleEvent(event: Event): void {
         if (this.isEventTypeRegistered(event.type)) {
             for (const registeredEvent of this.eventDelegates[event.type]) {
                 if (!registeredEvent.selector) {
+                    // @ts-ignore
                     this.context[registeredEvent.callback](event);
                 } else {
                     this.searchParentsForMatch(registeredEvent, event);
@@ -57,6 +65,7 @@ export class EventDelegator {
             }
         }
         if (currentNode !== this.element && currentNode.classList.contains(delegate.selector)) {
+            // @ts-ignore
             this.context[delegate.callback](event);
         }
     }
@@ -99,4 +108,12 @@ export class EventDelegator {
             }
         }
     }
+}
+
+interface IContext {
+    [key: string]: Function;
+}
+
+interface IDelegateCollection {
+    [key: string]: EventDelegate[];
 }

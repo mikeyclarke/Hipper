@@ -1,9 +1,10 @@
+import { IElementHash } from './IElementHash';
 export class ElementCache {
-    private baseElement: HTMLElement;
+    private readonly baseElement: HTMLElement;
     private readonly baseElementSelector: string;
-    private readonly cachedElements: any = {};
+    private readonly cachedElements: IElementCache = {};
 
-    constructor(baseElementSelector: string, elementHash: any) {
+    constructor(baseElementSelector: string, elementHash: IElementHash) {
         this.baseElementSelector = baseElementSelector;
         this.baseElement = this.getBaseElement();
         this.cacheElements(elementHash);
@@ -19,7 +20,7 @@ export class ElementCache {
         return <HTMLElement> matches.item(0);
     }
 
-    private cacheElements(elementHash: any): void {
+    private cacheElements(elementHash: IElementHash): void {
         for (const selector in elementHash) {
             if (elementHash[selector] === this.baseElementSelector) {
                 this.cachedElements[selector] = this.baseElement;
@@ -43,4 +44,8 @@ export class ElementCache {
             throw new Error('Unable to match selector');
         }
     }
+}
+
+interface IElementCache {
+    [key: string]: HTMLElement;
 }

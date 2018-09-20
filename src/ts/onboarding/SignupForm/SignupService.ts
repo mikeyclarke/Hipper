@@ -1,4 +1,4 @@
-function submitSignup(callback: Function, payload: FormData) {
+function submitSignup(callback: Function, payload: string) {
     return fetch('/_/sign-up', {
         method: 'POST',
         body: payload,

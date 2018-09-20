@@ -4,6 +4,7 @@ import { submitSignup } from './SignupService';
 import { IEvents } from '../../hleo/EventDelegator/IEvents';
 import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
+import { SignupFormData } from './SignupFormData';
 
 export class SignupForm implements IEventEnabled {
     private isPasswordVisible: boolean = false;
@@ -22,6 +23,9 @@ export class SignupForm implements IEventEnabled {
         togglePasswordVisibilityButton: '.js-toggle-password-visibility',
         submitButton: '.js-form-submit',
         passwordInputElement: '.js-password-input',
+        emailInputElement: '.js-email-input',
+        nameInputElement: '.js-name-input',
+        termsInputElement: '.js-terms-input',
     };
 
     constructor(eventDelegator: EventDelegator, elementCache: ElementCache) {
@@ -37,9 +41,10 @@ export class SignupForm implements IEventEnabled {
 
     protected onSubmit(event: Event): void {
         event.preventDefault();
+        const formData = this.getFormData();
         submitSignup((res: Response) => {
             // console.log(res);
-        }, this.getFormData());
+        }, formData.get());
     }
 
     public getEvents(): IEvents {
@@ -68,8 +73,12 @@ export class SignupForm implements IEventEnabled {
         this.elementCache.get('passwordInputElement').focus();
     }
 
-    private getFormData(): FormData {
-        return new FormData(<HTMLFormElement> this.elementCache.get('form'));
+    private getFormData(): SignupFormData {
+        const passwordEl = <HTMLInputElement> this.elementCache.get('passwordInputElement');
+        const emailEl = <HTMLInputElement> this.elementCache.get('emailInputElement');
+        const nameEl = <HTMLInputElement> this.elementCache.get('nameInputElement');
+        const termsEl = <HTMLInputElement> this.elementCache.get('termsInputElement');
+        return new SignupFormData(nameEl.value, emailEl.value, passwordEl.value, termsEl.checked);
     }
 
     private setTogglePasswordVisibilityText(text: string): void {

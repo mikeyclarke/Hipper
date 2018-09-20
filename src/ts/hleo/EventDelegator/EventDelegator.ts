@@ -110,10 +110,6 @@ export class EventDelegator {
     }
 }
 
-interface IContext {
-    [key: string]: Function;
-}
-
 interface IDelegateCollection {
     [key: string]: EventDelegate[];
 }

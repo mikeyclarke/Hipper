@@ -1,15 +1,16 @@
 import { EventDelegate } from './EventDelegate';
+import { IEvents } from './IEvents';
 
 export class EventDelegator {
     private readonly element: HTMLElement;
-    private readonly events: object;
+    private readonly events: IEvents;
     private readonly context: any;
     private readonly eventSplitter: RegExp = /^(\S+)\s*(.*)$/;
     private readonly eventDelegates: any = {};
     private readonly boundHandler: any;
     private eventTypes: string[];
 
-    constructor(events: object, el: HTMLElement, context: any) {
+    constructor(events: IEvents, el: HTMLElement, context: any) {
         this.boundHandler = this.handleEvent.bind(this);
         this.element = el;
         this.events = events;

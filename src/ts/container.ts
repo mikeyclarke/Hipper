@@ -4,8 +4,13 @@ import { TextEditor } from './TextEditor/TextEditor';
 import { SignupForm } from './onboarding/SignupForm/SignupForm';
 import { IndexController } from './RouteControllers/IndexController';
 import { SignupController } from './RouteControllers/SignupController';
+import { IController } from 'RouteControllers/IController';
 
 const bottle = new Bottle();
+
+interface Iroute {
+    [key: string]: IController;
+}
 
 bottle.factory('indexController', (container) => {
     return new IndexController(container.textEditor);
@@ -29,7 +34,7 @@ bottle.factory('signupForm', () => {
 
 bottle.factory('bootstrap', (container) => {
     const path: string = window.location.pathname;
-    const routes: object = {
+    const routes: Iroute = {
         '/': container.indexController,
         '/sign-up': container.signupController,
     };

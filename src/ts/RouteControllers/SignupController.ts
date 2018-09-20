@@ -1,5 +1,5 @@
 import { IController } from './IController';
-import SignupForm from '../onboarding/SignupForm/SignupForm';
+import { SignupForm } from '../onboarding/SignupForm/SignupForm';
 
 export class SignupController implements IController {
     private readonly signupForm: SignupForm;

@@ -1,13 +1,14 @@
 import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
 import { ElementCache } from '../../hleo/ElementCache/ElementCache';
 import { submitSignup } from './SignupService';
+import { IEvents } from '../../hleo/EventDelegator/IEvents';
 
 export class SignupForm {
     private isPasswordVisible: boolean = false;
     private eventDelegator: any;
     private elementCache: any;
 
-    private readonly events: object = {
+    private readonly events: IEvents = {
         keyup: 'onFormInteraction',
         change: 'onFormInteraction',
         submit: 'onSubmit',
@@ -29,7 +30,7 @@ export class SignupForm {
 
     protected onSubmit(event: any): void {
         event.preventDefault();
-        submitSignup((res) => {
+        submitSignup((res: any) => {
             // console.log(res);
         }, this.getFormData());
     }

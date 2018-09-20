@@ -1,9 +1,9 @@
 <?php
-namespace hleo\Controller;
+namespace Lithos\Controller;
 
 use Base64Url\Base64Url;
-use hleo\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
-use hleo\EmailAddressVerification\VerifyEmailAddress;
+use Lithos\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
+use Lithos\EmailAddressVerification\VerifyEmailAddress;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 

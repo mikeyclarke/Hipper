@@ -1,8 +1,8 @@
 <?php
-namespace hleo\Person;
+namespace Lithos\Person;
 
-use hleo\Validation\ConstraintViolationListFormatter;
-use hleo\Validation\Exception\ValidationException;
+use Lithos\Validation\ConstraintViolationListFormatter;
+use Lithos\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;

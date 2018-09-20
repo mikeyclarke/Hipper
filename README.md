@@ -1,4 +1,4 @@
-# hleo
+# Lithos
 
 ## Make targets
 

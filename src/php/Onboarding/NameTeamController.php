@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace hleo\Onboarding;
+namespace Lithos\Onboarding;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

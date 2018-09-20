@@ -1,5 +1,5 @@
 <?php
-namespace hleo\Person;
+namespace Lithos\Person;
 
 use Symfony\Component\Security\Core\Encoder\Argon2iPasswordEncoder;
 

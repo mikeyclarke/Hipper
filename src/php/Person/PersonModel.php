@@ -1,5 +1,5 @@
 <?php
-namespace hleo\Person;
+namespace Lithos\Person;
 
 class PersonModel
 {

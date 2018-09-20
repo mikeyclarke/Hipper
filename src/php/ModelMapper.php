@@ -1,5 +1,5 @@
 <?php
-namespace hleo;
+namespace Lithos;
 
 class ModelMapper
 {

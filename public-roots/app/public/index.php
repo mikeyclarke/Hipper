@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use hleo\Kernel;
+use Lithos\Kernel;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 

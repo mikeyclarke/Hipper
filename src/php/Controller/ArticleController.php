@@ -1,5 +1,5 @@
 <?php
-namespace hleo\Controller;
+namespace Lithos\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

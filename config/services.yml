@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     postmark_base_url: 'https://api.postmarkapp.com'
-    transactional_email_from_addr: 'notifications@tryhleo.com'
-    transactional_email_reply_to_addr: 'help@tryhleo.com'
+    transactional_email_from_addr: 'notifications@lithosapp.com'
+    transactional_email_reply_to_addr: 'help@lithosapp.com'
     locale: 'en'
     app_protocol: '%env(APP_PROTOCOL)%'
     app_domain: '%env(APP_DOMAIN)%'
@@ -22,25 +22,25 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    hleo\:
+    Lithos\:
         resource: '../src/php/*'
         exclude: '../src/php/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    hleo\Controller\:
+    Lithos\Controller\:
         resource: '../src/php/Controller'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    hleo\TransactionalEmail\PostmarkApiClientFactory:
+    Lithos\TransactionalEmail\PostmarkApiClientFactory:
         arguments:
             $apiBaseUrl: '%postmark_base_url%'
             $apiToken: '%env(POSTMARK_SERVER_TOKEN)%'
 
-    hleo\TransactionalEmail\VerifyEmailAddressEmail:
+    Lithos\TransactionalEmail\VerifyEmailAddressEmail:
         arguments:
             $emailFromAddress: '%transactional_email_from_addr%'
             $emailReplyToAddress: '%transactional_email_reply_to_addr%'

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace hleo\EmailAddressVerification;
+namespace Lithos\EmailAddressVerification;
 
-use hleo\IdGenerator\IdGenerator;
-use hleo\Person\PersonModel;
-use hleo\TransactionalEmail\VerifyEmailAddressEmail;
+use Lithos\IdGenerator\IdGenerator;
+use Lithos\Person\PersonModel;
+use Lithos\TransactionalEmail\VerifyEmailAddressEmail;
 
 class RequestEmailAddressVerification
 {

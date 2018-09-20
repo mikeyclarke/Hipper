@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace hleo\EmailAddressVerification;
+namespace Lithos\EmailAddressVerification;
 
-use hleo\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
-use hleo\Person\PersonUpdater;
+use Lithos\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
+use Lithos\Person\PersonUpdater;
 
 class VerifyEmailAddress
 {

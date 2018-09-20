@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace hleo\EmailAddressVerification;
+namespace Lithos\EmailAddressVerification;
 
 use GenPhrase\Password as GenPhraseGenerator;
 

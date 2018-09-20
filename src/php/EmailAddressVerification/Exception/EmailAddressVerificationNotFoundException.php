@@ -1,5 +1,5 @@
 <?php
-namespace hleo\EmailAddressVerification\Exception;
+namespace Lithos\EmailAddressVerification\Exception;
 
 class EmailAddressVerificationNotFoundException extends \Exception
 {

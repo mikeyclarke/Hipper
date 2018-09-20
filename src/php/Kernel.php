@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace hleo;
+namespace Lithos;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;

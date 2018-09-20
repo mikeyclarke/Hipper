@@ -1,57 +1,57 @@
 index:
     path: /
-    controller: hleo\Controller\DefaultController::index
+    controller: Lithos\Controller\DefaultController::index
 
 signup.get:
     path: /sign-up
-    controller: hleo\Onboarding\SignUpController::getAction
+    controller: Lithos\Onboarding\SignUpController::getAction
     methods: [GET]
 
 signup.post:
     path: /_/sign-up
-    controller: hleo\Onboarding\SignUpController::postAction
+    controller: Lithos\Onboarding\SignUpController::postAction
     methods: [POST]
 
 verify_identity.get:
     path: /verify-identity
-    controller: hleo\Onboarding\VerifyIdentityController::postAction
+    controller: Lithos\Onboarding\VerifyIdentityController::postAction
     methods: [GET]
 
 verify_identity.post:
     path: /_/verify-identity
-    controller: hleo\Onboarding\VerifyIdentityController::postAction
+    controller: Lithos\Onboarding\VerifyIdentityController::postAction
     methods: [POST]
 
 name_team.get:
     path: /name-team
-    controller: hleo\Onboarding\NameTeamController::getAction
+    controller: Lithos\Onboarding\NameTeamController::getAction
     methods: [GET]
 
 name_team.post:
     path: /_/name-team
-    controller: hleo\Onboarding\NameTeamController::postAction
+    controller: Lithos\Onboarding\NameTeamController::postAction
     methods: [POST]
 
 choose_team_url.get:
     path: /choose-team-url
-    controller: hleo\Onboarding\ChooseTeamUrlController::getAction
+    controller: Lithos\Onboarding\ChooseTeamUrlController::getAction
     methods: [GET]
 
 choose_team_url.post:
     path: /_/choose-team-url
-    controller: hleo\Onboarding\ChooseTeamUrlController::postAction
+    controller: Lithos\Onboarding\ChooseTeamUrlController::postAction
     methods: [POST]
 
 invite_team.get:
     path: /invite-team
-    controller: hleo\Onboarding\InviteTeamController::getAction
+    controller: Lithos\Onboarding\InviteTeamController::getAction
     methods: [GET]
 
 invite_team.post:
     path: /_/invite-team
-    controller: hleo\Onboarding\InviteTeamController::postAction
+    controller: Lithos\Onboarding\InviteTeamController::postAction
     methods: [POST]
 
 verify_email:
     path: /m/verify-email
-    controller: hleo\Controller\VerifyEmailController::getAction
+    controller: Lithos\Controller\VerifyEmailController::getAction

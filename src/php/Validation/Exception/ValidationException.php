@@ -1,5 +1,5 @@
 <?php
-namespace hleo\Validation\Exception;
+namespace Lithos\Validation\Exception;
 
 class ValidationException extends \Exception
 {

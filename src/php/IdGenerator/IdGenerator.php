@@ -1,5 +1,5 @@
 <?php
-namespace hleo\IdGenerator;
+namespace Lithos\IdGenerator;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;

@@ -1,9 +1,9 @@
 <?php
-namespace hleo\Person;
+namespace Lithos\Person;
 
-use hleo\EmailAddressVerification\RequestEmailAddressVerification;
-use hleo\IdGenerator\IdGenerator;
-use hleo\Organization\OrganizationCreator;
+use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
+use Lithos\IdGenerator\IdGenerator;
+use Lithos\Organization\OrganizationCreator;
 
 class PersonCreator
 {

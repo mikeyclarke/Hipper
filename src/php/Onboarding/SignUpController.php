@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace hleo\Onboarding;
+namespace Lithos\Onboarding;
 
-use hleo\Person\PersonCreator;
-use hleo\Validation\Exception\ValidationException;
+use Lithos\Person\PersonCreator;
+use Lithos\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

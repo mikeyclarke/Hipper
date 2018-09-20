@@ -1,5 +1,5 @@
 <?php
-namespace hleo\TransactionalEmail;
+namespace Lithos\TransactionalEmail;
 
 use GuzzleHttp\Client;
 

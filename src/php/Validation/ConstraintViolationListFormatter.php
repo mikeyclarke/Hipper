@@ -1,5 +1,5 @@
 <?php
-namespace hleo\Validation;
+namespace Lithos\Validation;
 
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;

@@ -1,5 +1,5 @@
 <?php
-namespace hleo\Organization;
+namespace Lithos\Organization;
 
 use Doctrine\DBAL\Connection;
 

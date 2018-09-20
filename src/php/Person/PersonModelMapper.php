@@ -1,7 +1,7 @@
 <?php
-namespace hleo\Person;
+namespace Lithos\Person;
 
-use hleo\ModelMapper;
+use Lithos\ModelMapper;
 
 class PersonModelMapper
 {

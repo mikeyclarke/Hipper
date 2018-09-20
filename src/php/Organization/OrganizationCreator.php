@@ -1,7 +1,7 @@
 <?php
-namespace hleo\Organization;
+namespace Lithos\Organization;
 
-use hleo\IdGenerator\IdGenerator;
+use Lithos\IdGenerator\IdGenerator;
 
 class OrganizationCreator
 {

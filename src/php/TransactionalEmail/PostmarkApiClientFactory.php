@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\TransactionalEmail;
 
 use GuzzleHttp\Client;
@@ -16,7 +18,7 @@ class PostmarkApiClientFactory
         $this->apiToken = $apiToken;
     }
 
-    public function create()
+    public function create(): Client
     {
         return new Client([
             'base_uri' => $this->apiBaseUrl,

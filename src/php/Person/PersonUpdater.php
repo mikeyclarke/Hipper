@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\Person;
 
 use Doctrine\DBAL\Connection;
@@ -13,7 +15,7 @@ class PersonUpdater
         $this->connection = $connection;
     }
 
-    public function update(string $personId, array $properties)
+    public function update(string $personId, array $properties): void
     {
         $this->connection->update(
             'person',

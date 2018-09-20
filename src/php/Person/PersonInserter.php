@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\Person;
 
 use Doctrine\DBAL\Connection;
@@ -13,13 +15,19 @@ class PersonInserter
         $this->connection = $connection;
     }
 
-    public function insert($id, $name, $emailAddress, $password, $organizationId, $role = 'member')
+    public function insert($id, $name, $emailAddress, $password, $organizationId, $role = 'member'): ?array
     {
         $stmt = $this->connection->executeQuery(
             "INSERT INTO person (id, name, email_address, password, organization_id, role) " .
             "VALUES (?, ?, ?, ?, ?, ?) RETURNING *",
             [$id, $name, $emailAddress, $password, $organizationId, $role]
         );
-        return $stmt->fetch();
+        $result = $stmt->fetch();
+
+        if (false === $result) {
+            return null;
+        }
+
+        return $result;
     }
 }

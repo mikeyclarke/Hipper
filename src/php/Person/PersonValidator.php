@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\Person;
 
 use Lithos\Validation\ConstraintViolationListFormatter;
@@ -23,13 +25,13 @@ class PersonValidator
         $this->personRepository = $personRepository;
     }
 
-    public function validate(array $input, bool $isNew = false)
+    public function validate(array $input, bool $isNew = false): void
     {
         $this->validateInput($input, $isNew);
         $this->validateUniqueEmailAddress($input);
     }
 
-    private function validateUniqueEmailAddress(array $input)
+    private function validateUniqueEmailAddress(array $input): void
     {
         if (!isset($input['email_address'])) {
             return;
@@ -44,7 +46,7 @@ class PersonValidator
         }
     }
 
-    private function validateInput(array $input, bool $isNew)
+    private function validateInput(array $input, bool $isNew): void
     {
         $requiredOnCreate = ['name', 'email_address', 'password'];
         $constraints = [

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\Person;
 
 use Doctrine\DBAL\Connection;
@@ -13,7 +15,7 @@ class PersonRepository
         $this->connection = $connection;
     }
 
-    public function findOneByEmailAddress(string $emailAddress)
+    public function findOneByEmailAddress(string $emailAddress): ?array
     {
         $qb = $this->connection->createQueryBuilder();
 
@@ -27,7 +29,7 @@ class PersonRepository
         $result = $stmt->fetch();
 
         if (false === $result) {
-            return;
+            return null;
         }
 
         return $result;

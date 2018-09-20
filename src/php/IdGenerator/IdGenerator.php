@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\IdGenerator;
 
 use Ramsey\Uuid\Uuid;
@@ -24,7 +26,7 @@ class IdGenerator
         $this->factory->setCodec($codec);
     }
 
-    public function generate()
+    public function generate(): string
     {
         return $this->factory->uuid4()->toString();
     }

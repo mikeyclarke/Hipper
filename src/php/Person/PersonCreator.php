@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\Person;
 
 use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
@@ -33,7 +35,7 @@ class PersonCreator
         $this->requestEmailAddressVerification = $requestEmailAddressVerification;
     }
 
-    public function create(array $input)
+    public function create(array $input): PersonModel
     {
         $this->personValidator->validate($input, true);
 

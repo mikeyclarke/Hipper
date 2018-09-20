@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\Validation;
 
 use Symfony\Component\Validator\ConstraintViolation;
@@ -6,7 +8,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 class ConstraintViolationListFormatter
 {
-    public static function format(ConstraintViolationList $violations)
+    public static function format(ConstraintViolationList $violations): array
     {
         $errors = [];
 
@@ -21,7 +23,7 @@ class ConstraintViolationListFormatter
         return $errors;
     }
 
-    private static function formatViolationPropertyPath(ConstraintViolation $violation)
+    private static function formatViolationPropertyPath(ConstraintViolation $violation): string
     {
         return preg_replace(
             ['(^\[)', '(\]\[)', '(\]$)'],

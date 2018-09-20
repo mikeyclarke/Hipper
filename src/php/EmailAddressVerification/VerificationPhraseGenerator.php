@@ -7,7 +7,7 @@ use GenPhrase\Password as GenPhraseGenerator;
 
 class VerificationPhraseGenerator
 {
-    public function generate()
+    public function generate(): string
     {
         $generator = new GenPhraseGenerator;
         $generator->disableWordModifier(true);

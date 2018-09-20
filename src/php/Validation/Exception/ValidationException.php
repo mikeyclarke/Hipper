@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\Validation\Exception;
 
 class ValidationException extends \Exception
@@ -15,12 +17,12 @@ class ValidationException extends \Exception
         $this->violations = $violations;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }
 
-    public function getViolations()
+    public function getViolations(): array
     {
         return $this->violations;
     }

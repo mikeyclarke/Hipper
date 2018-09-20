@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos;
 
 class ModelMapper
 {
-    public function mapProperties($model, array $fields, array $properties)
+    public function mapProperties($model, array $fields, array $properties): void
     {
         foreach ($properties as $key => $value) {
             if (!isset($fields[$key])) {

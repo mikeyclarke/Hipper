@@ -15,7 +15,8 @@ module.exports = {
         filename: '[name].[contenthash].js',
     },
     stats: {
-        children: false
+        children: false,
+        maxModules: 0,
     },
     plugins: [
         new CleanWebpackPlugin(

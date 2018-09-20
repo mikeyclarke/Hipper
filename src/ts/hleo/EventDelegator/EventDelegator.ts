@@ -15,10 +15,10 @@ export class EventDelegator {
         this.element = el;
         this.events = events;
         this.context = context;
+        this.eventTypes = this.getEventTypes();
     }
 
     public delegate(): void {
-        this.getEventTypes();
         this.storeEventTypes();
         this.bindTopLevelEvents();
     }
@@ -47,8 +47,14 @@ export class EventDelegator {
 
     private searchParentsForMatch(delegate: EventDelegate, event: Event): void {
         let currentNode = <HTMLElement> event.target;
+
         while (currentNode && !currentNode.classList.contains(delegate.selector) && currentNode !== this.element.parentNode) {
-            currentNode = currentNode.parentElement;
+            const nextNode = <HTMLElement> currentNode.parentElement;
+            if (nextNode !== null) {
+                currentNode = nextNode;
+            } else {
+                break;
+            }
         }
         if (currentNode !== this.element && currentNode.classList.contains(delegate.selector)) {
             this.context[delegate.callback](event);
@@ -61,14 +67,18 @@ export class EventDelegator {
         }
     }
 
-    private getEventTypes(): void {
+    private getEventTypes(): string[] {
         const types = [];
 
         for (const eventSignature of Object.keys(this.events)) {
-            types.push(eventSignature.match(this.eventSplitter)[1]);
+            const splitEvent = eventSignature.match(this.eventSplitter);
+            if (splitEvent && splitEvent.length > 0) {
+                const eventType = splitEvent[1];
+                types.push(eventType);
+            }
         }
 
-        this.eventTypes = types.filter((value, index, self) => {
+        return types.filter((value, index, self) => {
             return self.indexOf(value) === index;
         });
     }
@@ -84,7 +94,9 @@ export class EventDelegator {
     private createEventDelegates(): void {
         for (const eventSignature of Object.keys(this.events)) {
             const match = eventSignature.match(this.eventSplitter);
-            this.eventDelegates[match[1]].push(new EventDelegate(match[2], this.events[match[0]], match[1]));
+            if (match) {
+                this.eventDelegates[match[1]].push(new EventDelegate(match[2], this.events[match[0]], match[1]));
+            }
         }
     }
 }

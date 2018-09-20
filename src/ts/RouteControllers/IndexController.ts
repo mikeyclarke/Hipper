@@ -10,6 +10,9 @@ export class IndexController implements IController {
 
     public start(): void {
         require('Sass/app.scss');
-        this.textEditor.initialiseEditor(document.querySelector('.js-article-editor'));
+        const textEditorNode = <HTMLElement> document.querySelector('.js-article-editor');
+        if (textEditorNode) {
+            this.textEditor.initialiseEditor(textEditorNode);
+        }
     }
 }

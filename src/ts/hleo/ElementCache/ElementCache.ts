@@ -5,7 +5,7 @@ export class ElementCache {
 
     constructor(baseElementSelector: string, elementHash: any) {
         this.baseElementSelector = baseElementSelector;
-        this.setBaseElement();
+        this.baseElement = this.getBaseElement();
         this.cacheElements(elementHash);
     }
 
@@ -13,10 +13,10 @@ export class ElementCache {
         return this.cachedElements[key];
     }
 
-    private setBaseElement(): void {
+    private getBaseElement(): HTMLElement {
         const matches = document.querySelectorAll(this.baseElementSelector);
         this.requireDistinctElement(matches);
-        this.baseElement = <HTMLElement>  matches.item(0);
+        return <HTMLElement> matches.item(0);
     }
 
     private cacheElements(elementHash: any): void {

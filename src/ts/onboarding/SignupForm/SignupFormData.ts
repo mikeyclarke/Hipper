@@ -14,9 +14,9 @@ export class SignupFormData {
     public get(): string {
         return JSON.stringify({
             name: this.name,
-            email: this.email,
+            email_address: this.email,
             password: this.password,
-            termsAgreed: this.termsAgreed,
+            terms_agreed: this.termsAgreed,
         });
     }
 }

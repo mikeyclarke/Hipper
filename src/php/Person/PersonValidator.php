@@ -8,6 +8,7 @@ use Lithos\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
@@ -48,7 +49,7 @@ class PersonValidator
 
     private function validateInput(array $input, bool $isNew): void
     {
-        $requiredOnCreate = ['name', 'email_address', 'password'];
+        $requiredOnCreate = ['name', 'email_address', 'password', 'terms_agreed'];
         $constraints = [
             'name' => [
                 new NotBlank,
@@ -73,6 +74,9 @@ class PersonValidator
                 new Choice([
                     'choices' => ['owner', 'admin', 'member'],
                 ]),
+            ],
+            'terms_agreed' => [
+                new IsTrue,
             ],
         ];
 

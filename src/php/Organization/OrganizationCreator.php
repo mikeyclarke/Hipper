@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\Organization;
 
 use Lithos\IdGenerator\IdGenerator;
@@ -18,7 +20,7 @@ class OrganizationCreator
         $this->organizationInserter = $organizationInserter;
     }
 
-    public function create()
+    public function create(): array
     {
         $organization = $this->organizationInserter->insert(
             $this->idGenerator->generate(),

@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     postmark_base_url: 'https://api.postmarkapp.com'
-    transactional_email_from_addr: 'notifications@lithosapp.com'
-    transactional_email_reply_to_addr: 'help@lithosapp.com'
+    transactional_email_from_addr: 'notifications@tryhleo.com'
+    transactional_email_reply_to_addr: 'help@tryhleo.com'
     locale: 'en'
     app_protocol: '%env(APP_PROTOCOL)%'
     app_domain: '%env(APP_DOMAIN)%'

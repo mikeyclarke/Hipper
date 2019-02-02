@@ -62,7 +62,7 @@ class PersonValidator
                 new NotBlank,
                 new Length([
                     'min' => 8,
-                    'max' => 4096,
+                    'max' => 160,
                 ]),
             ],
             'email_address_verified' => [

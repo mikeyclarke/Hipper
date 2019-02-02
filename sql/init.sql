@@ -24,7 +24,7 @@ CREATE TABLE person (
     id                      UUID NOT NULL PRIMARY KEY,
     name                    text CHECK (LENGTH(name) <= 100) NOT NULL,
     email_address           text CHECK (LENGTH(email_address) <= 255) NOT NULL,
-    password                text CHECK (LENGTH(password) <= 150) NOT NULL,
+    password                text NOT NULL,
     role                    organization_roles DEFAULT 'member',
     email_address_verified  boolean DEFAULT false,
     organization_id         UUID NOT NULL references organization(id),

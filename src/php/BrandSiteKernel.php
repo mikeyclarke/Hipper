@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
-final class Kernel extends BaseKernel
+final class BrandSiteKernel extends BaseKernel
 {
     use MicroKernelTrait;
 
@@ -36,16 +36,16 @@ final class Kernel extends BaseKernel
     {
         $configDir = $this->getProjectDir() . '/config';
 
-        $routes->import($configDir . '/routes.yml');
+        $routes->import($configDir . '/routes/brand-site/routes.yml');
     }
 
     public function getCacheDir(): string
     {
-        return $this->getProjectDir() . '/var/cache/' . $this->environment;
+        return $this->getProjectDir() . '/var/cache/brand-site/' . $this->environment;
     }
 
     public function getLogDir(): string
     {
-        return $this->getProjectDir() . '/var/log';
+        return $this->getProjectDir() . '/var/log/brand-site';
     }
 }

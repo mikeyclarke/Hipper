@@ -1,7 +1,3 @@
-index:
-    path: /
-    controller: Lithos\Controller\DefaultController::index
-
 signup.get:
     path: /sign-up
     controller: Lithos\Onboarding\SignUpController::getAction

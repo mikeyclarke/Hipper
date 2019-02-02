@@ -10,7 +10,7 @@ module.exports = {
         app: './src/ts/bootstrap.ts',
     },
     output: {
-        path: path.resolve(__dirname, 'public-roots/app/public/build'),
+        path: path.resolve(__dirname, 'public-roots/assets/public/build'),
         publicPath: 'build/',
         filename: '[name].[contenthash].js',
     },
@@ -21,7 +21,7 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(
             [
-                path.resolve(__dirname, 'public-roots/app/public/build'),
+                path.resolve(__dirname, 'public-roots/assets/public/build'),
             ],
             {
                 beforeEmit: true,

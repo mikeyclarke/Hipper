@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Lithos\AppKernel;
+use Lithos\BrandSiteKernel;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,7 +26,7 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
     Request::setTrustedHosts(explode(',', $trustedHosts));
 }
 
-$kernel = new AppKernel($env, $debug);
+$kernel = new BrandSiteKernel($env, $debug);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();

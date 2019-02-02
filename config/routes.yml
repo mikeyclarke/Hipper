@@ -1,5 +1,0 @@
-app:
-    resource: routes/app.yml
-
-api:
-    resource: routes/api.yml

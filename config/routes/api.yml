@@ -1,3 +1,0 @@
-article:
-    path: /article
-    controller: Lithos\Controller\ArticleController::get

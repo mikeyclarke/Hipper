@@ -41,13 +41,3 @@ choose_team_url.post:
     path: /_/choose-team-url
     controller: Lithos\Onboarding\ChooseTeamUrlController::postAction
     methods: [POST]
-
-invite_team.get:
-    path: /invite-team
-    controller: Lithos\Onboarding\InviteTeamController::getAction
-    methods: [GET]
-
-invite_team.post:
-    path: /_/invite-team
-    controller: Lithos\Onboarding\InviteTeamController::postAction
-    methods: [POST]

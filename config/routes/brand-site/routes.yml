@@ -2,11 +2,15 @@ signup.get:
     path: /sign-up
     controller: Lithos\Onboarding\SignUpController::getAction
     methods: [GET]
+    defaults:
+        unsecured: true
 
 signup.post:
     path: /_/sign-up
     controller: Lithos\Onboarding\SignUpController::postAction
     methods: [POST]
+    defaults:
+        unsecured: true
 
 verify_identity.get:
     path: /verify-identity

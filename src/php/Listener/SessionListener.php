@@ -6,7 +6,6 @@ namespace Lithos\Listener;
 use Lithos\Person\PersonModelMapper;
 use Lithos\Person\PersonRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -15,55 +14,47 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionListener implements EventSubscriberInterface
 {
-    const UNAUTHENTICATED_ROUTES = [
-        '/',
-        '/sign-up',
-        '/_/sign-up',
-    ];
-
     private $personModelMapper;
     private $personRepository;
-    private $session;
 
     public function __construct(
         PersonModelMapper $personModelMapper,
-        PersonRepository $personRepository,
-        SessionInterface $session
+        PersonRepository $personRepository
     ) {
         $this->personModelMapper = $personModelMapper;
         $this->personRepository = $personRepository;
-        $this->session = $session;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => ['onKernelRequest', 512],
+            KernelEvents::REQUEST => ['onKernelRequest', 0],
         ];
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
             return;
         }
 
         $request = $event->getRequest();
+        $session = $request->getSession();
+        $routeParams = $request->attributes->get('_route_params');
 
-        if ($this->isUnauthenticatedRoute($request)) {
+        if ($this->isUnsecuredRoute($routeParams)) {
             return;
         }
 
-        // Only throw a 401 if route exists
-
-        if (!$this->hasValidSession()) {
+        if (!$this->hasValidSession($session)) {
             $response = new Response(null, 401);
             $event->setResponse($response);
             return;
         }
 
-        $person = $this->personRepository->findById($this->session->get('_personId'));
-        if ($this->session->get('_password') !== $person['password']) {
+        $person = $this->personRepository->findById($session->get('_personId'));
+
+        if (!$this->passesAuthentication($session, $person)) {
             $response = new Response(null, 401);
             $event->setResponse($response);
             return;
@@ -74,17 +65,18 @@ class SessionListener implements EventSubscriberInterface
         $request->attributes->set('person', $personModel);
     }
 
-    private function isUnauthenticatedRoute(Request $request)
+    private function passesAuthentication(SessionInterface $session, array $person): bool
     {
-        $parts = explode('.', $request->getHttpHost());
-        if (count($parts) === 3) {
-            return false;
-        }
-        return in_array($request->getPathInfo(), self::UNAUTHENTICATED_ROUTES);
+        return $session->get('_password') === $person['password'];
     }
 
-    private function hasValidSession(): bool
+    private function hasValidSession(SessionInterface $session): bool
     {
-        return $this->session->has('_password') && $this->session->has('_personId');
+        return $session->has('_password') && $session->has('_personId');
+    }
+
+    private function isUnsecuredRoute(array $routeParams): bool
+    {
+        return isset($routeParams['unsecured']) && (bool) $routeParams['unsecured'];
     }
 }

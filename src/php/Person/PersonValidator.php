@@ -53,6 +53,10 @@ class PersonValidator
         $constraints = [
             'name' => [
                 new NotBlank,
+                new Length([
+                    'min' => 3,
+                    'max' => 100,
+                ]),
             ],
             'email_address' => [
                 new NotBlank,

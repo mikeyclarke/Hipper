@@ -26,14 +26,14 @@ class SignUpController
     public function getAction(Request $request): Response
     {
         return new Response(
-            $this->twig->render('signup.twig')
+            $this->twig->render('onboarding/signup.twig')
         );
     }
 
     public function postAction(Request $request): JsonResponse
     {
         try {
-            $person = $this->personCreator->create(json_decode($request->getContent(), true));
+            list($person, $encodedPassword) = $this->personCreator->create(json_decode($request->getContent(), true));
         } catch (ValidationException $e) {
             return new JsonResponse(
                 [
@@ -46,7 +46,8 @@ class SignUpController
         }
 
         $session = $request->getSession();
-        $session->set('onboarding/personId', $person->getId());
+        $session->set('_personId', $person->getId());
+        $session->set('_password', $encodedPassword);
 
         return new JsonResponse(null, 201);
     }

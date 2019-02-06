@@ -1,0 +1,27 @@
+{% extends 'onboarding/onboarding_layout.twig' %}
+
+{% block content %}
+
+<div class="l-splash-screen">
+    <div class="l-splash-screen__dialog">
+        <div class="l-splash-screen__dialog-content">
+            <form class="c-signup-form js-verify-identity-form">
+                <div class="c-signup-form__header">
+                    <h1 class="c-signup-form__title">Nice to meet you {{ person.name }}!</h1>
+                    <p class="c-signup-form__subtitle">To keep our system secure we’ve sent a verification code to {{ person.emailAddress }}. Paste it in below to continue</p>
+                </div>
+
+                <fieldset class="c-signup-form__field">
+                    <label for="verification-code" class="c-signup-form__label">Verification code</label>
+                    <input class="c-signup-form__input js-verification-code-input" type="text" name="verification-code" id="verification-code" required="required" aria-required="true" autocapitalize="off" spellcheck="false">
+                    <p class="c-signup-form__field-info">Don’t see our email? Try your spam folder.</p>
+                </fieldset>
+            </form>
+        </div>
+        <div class="l-splash-screen__dialog-graphic" style="background-color: #2A2A3B">
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

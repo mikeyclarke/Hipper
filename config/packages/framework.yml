@@ -6,10 +6,12 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     session:
-        handler_id: ~
+        handler_id: session.handler.native_file
+        storage_id: lithos_session_storage
         cookie_lifetime: 0
         name: 's'
         cookie_httponly: true
+        cookie_secure: true
 
     php_errors:
         log: false

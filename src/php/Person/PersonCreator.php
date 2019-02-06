@@ -5,7 +5,7 @@ namespace Lithos\Person;
 
 use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
 use Lithos\IdGenerator\IdGenerator;
-use Lithos\Organization\OrganizationCreator;
+use Lithos\Organization\Organization;
 
 class PersonCreator
 {
@@ -14,7 +14,7 @@ class PersonCreator
     private $encoderFactory;
     private $personValidator;
     private $idGenerator;
-    private $organizationCreator;
+    private $organization;
     private $requestEmailAddressVerification;
 
     public function __construct(
@@ -23,7 +23,7 @@ class PersonCreator
         PersonPasswordEncoderFactory $encoderFactory,
         PersonValidator $personValidator,
         IdGenerator $idGenerator,
-        OrganizationCreator $organizationCreator,
+        Organization $organization,
         RequestEmailAddressVerification $requestEmailAddressVerification
     ) {
         $this->personInserter = $personInserter;
@@ -31,15 +31,15 @@ class PersonCreator
         $this->encoderFactory = $encoderFactory;
         $this->personValidator = $personValidator;
         $this->idGenerator = $idGenerator;
-        $this->organizationCreator = $organizationCreator;
+        $this->organization = $organization;
         $this->requestEmailAddressVerification = $requestEmailAddressVerification;
     }
 
-    public function create(array $input): PersonModel
+    public function create(array $input): array
     {
         $this->personValidator->validate($input, true);
 
-        $organization = $this->organizationCreator->create();
+        $organizationModel = $this->organization->create();
 
         $encoder = $this->encoderFactory->create();
         $person = $this->personInserter->insert(
@@ -47,13 +47,13 @@ class PersonCreator
             $input['name'],
             $input['email_address'],
             $encoder->encodePassword($input['password'], null),
-            $organization['id'],
+            $organizationModel->getId(),
             'owner'
         );
 
         $model = $this->personModelMapper->createFromArray($person);
         $this->requestEmailAddressVerification->sendVerificationRequest($model);
 
-        return $model;
+        return [$model, $person['password']];
     }
 }

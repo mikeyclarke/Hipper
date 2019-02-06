@@ -8,33 +8,41 @@ use Lithos\EmailAddressVerification\VerifyEmailAddress;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig_Environment;
 
 class VerifyIdentityController
 {
     private $verifyEmailAddress;
+    private $twig;
 
     public function __construct(
-        VerifyEmailAddress $verifyEmailAddress
+        VerifyEmailAddress $verifyEmailAddress,
+        Twig_Environment $twig
     ) {
         $this->verifyEmailAddress = $verifyEmailAddress;
+        $this->twig = $twig;
     }
 
     public function getAction(Request $request): Response
     {
-        return new Response(null);
+        $person = $request->attributes->get('person');
+
+        $context = [
+            'person' => $person,
+        ];
+
+        return new Response(
+            $this->twig->render('onboarding/verify_identity.twig', $context)
+        );
     }
 
     public function postAction(Request $request): JsonResponse
     {
-        if (!$request->hasPreviousSession()) {
-            return new JsonResponse(null, 401);
-        }
-
-        $session = $request->getSession();
         $content = json_decode($request->getContent(), true);
+        $person = $request->attributes->get('person');
 
         try {
-            $this->verifyEmailAddress->verify($session->get('onboarding/personId'), $content['phrase']);
+            $this->verifyEmailAddress->verify($person->getId(), $content['phrase']);
         } catch (EmailAddressVerificationNotFoundException $e) {
             return new JsonResponse(null, 400);
         }

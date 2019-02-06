@@ -10,7 +10,7 @@ signup.post:
 
 verify_identity.get:
     path: /verify-identity
-    controller: Lithos\Onboarding\VerifyIdentityController::postAction
+    controller: Lithos\Onboarding\VerifyIdentityController::getAction
     methods: [GET]
 
 verify_identity.post:

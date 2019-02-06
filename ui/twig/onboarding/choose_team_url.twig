@@ -1,0 +1,31 @@
+{% extends 'onboarding/onboarding_layout.twig' %}
+
+{% block content %}
+
+<div class="l-splash-screen">
+    <div class="l-splash-screen__dialog">
+        <div class="l-splash-screen__dialog-content">
+            <form class="c-signup-form js-choose-team-url-form">
+                <div class="c-signup-form__header">
+                    <h1 class="c-signup-form__title">One last thing…</h1>
+                    <p class="c-signup-form__subtitle">Choose the URL you and your team will use to log into hleo.</p>
+                </div>
+
+                <fieldset class="c-signup-form__field">
+                    <label for="team-url" class="c-signup-form__label">Your team URL</label>
+                    <input class="c-signup-form__input js-team-url-input" type="text" name="team-url" id="team-url" required="required" aria-required="true" autocomplete="off" autocapitalize="off" spellcheck="false" pattern="[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?" maxlength="63">
+                    <span>.{{ domain }}</span>
+                </fieldset>
+
+                <div class="c-signup-form__footer">
+                    <button class="c-button--primary js-form-submit" type="submit" aria-disabled="true">Done</button>
+                </div>
+            </form>
+        </div>
+        <div class="l-splash-screen__dialog-graphic" style="background-color: #2A2A3B">
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

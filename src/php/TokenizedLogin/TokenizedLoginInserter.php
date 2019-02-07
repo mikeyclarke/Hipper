@@ -5,7 +5,7 @@ namespace Lithos\TokenizedLogin;
 
 use Doctrine\DBAL\Connection;
 
-class TokenInserter
+class TokenizedLoginInserter
 {
     private $connection;
 

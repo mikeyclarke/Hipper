@@ -30,7 +30,7 @@ class NameTeamController
         );
     }
 
-    public function postAction(Request $request): JsonResponse
+    public function postAction(Request $request): Response
     {
         $content = json_decode($request->getContent(), true);
         $person = $request->attributes->get('person');
@@ -47,5 +47,7 @@ class NameTeamController
                 400
             );
         }
+
+        return new Response(null, 200);
     }
 }

@@ -24,6 +24,7 @@ class FinalizeController
     public function getAction(Request $request): RedirectResponse
     {
         $session = $request->getSession();
+        $sessionName = $session->getName();
         $person = $request->attributes->get('person');
 
         $organizationModel = $this->organization->get($person->getOrganizationId());
@@ -34,8 +35,15 @@ class FinalizeController
         $token = $this->tokenizedLogin->create($person);
         $session->invalidate();
 
-        return new RedirectResponse(
-            sprintf('https://%s.%s?t=%s', $organizationModel->getSubdomain(), $request->getHttpHost(), $token)
+        $response = new RedirectResponse(
+            sprintf(
+                'https://%s.%s/tokenized-login?t=%s',
+                $organizationModel->getSubdomain(),
+                $request->getHttpHost(),
+                $token
+            )
         );
+        $response->headers->clearCookie($sessionName);
+        return $response;
     }
 }

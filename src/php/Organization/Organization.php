@@ -13,6 +13,7 @@ class Organization
     private $organizationInserter;
     private $organizationModelMapper;
     private $organizationRepository;
+    private $organizationUpdater;
     private $organizationValidator;
 
     public function __construct(
@@ -20,12 +21,14 @@ class Organization
         OrganizationInserter $organizationInserter,
         OrganizationModelMapper $organizationModelMapper,
         OrganizationRepository $organizationRepository,
+        OrganizationUpdater $organizationUpdater,
         OrganizationValidator $organizationValidator
     ) {
         $this->idGenerator = $idGenerator;
         $this->organizationInserter = $organizationInserter;
         $this->organizationModelMapper = $organizationModelMapper;
         $this->organizationRepository = $organizationRepository;
+        $this->organizationUpdater = $organizationUpdater;
         $this->organizationValidator = $organizationValidator;
     }
 

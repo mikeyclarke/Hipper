@@ -1,3 +1,10 @@
 index:
     path: /
     controller: Lithos\Controller\DefaultController::index
+
+tokenized_login.get:
+    path: /tokenized-login
+    methods: [GET]
+    controller: Lithos\App\TokenizedLoginController::getAction
+    defaults:
+        unsecured: true

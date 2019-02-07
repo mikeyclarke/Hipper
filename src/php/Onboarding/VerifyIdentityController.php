@@ -36,7 +36,7 @@ class VerifyIdentityController
         );
     }
 
-    public function postAction(Request $request): JsonResponse
+    public function postAction(Request $request): Response
     {
         $content = json_decode($request->getContent(), true);
         $person = $request->attributes->get('person');
@@ -47,6 +47,6 @@ class VerifyIdentityController
             return new JsonResponse(null, 400);
         }
 
-        return new JsonResponse(null, 200);
+        return new Response(null, 200);
     }
 }

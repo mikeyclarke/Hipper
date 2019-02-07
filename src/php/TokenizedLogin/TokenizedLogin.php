@@ -10,16 +10,16 @@ class TokenizedLogin
 {
     private $idGenerator;
     private $tokenGenerator;
-    private $tokenInserter;
+    private $tokenizedLoginInserter;
 
     public function __construct(
         IdGenerator $idGenerator,
         TokenGenerator $tokenGenerator,
-        TokenInserter $tokenInserter
+        TokenizedLoginInserter $tokenizedLoginInserter
     ) {
         $this->idGenerator = $idGenerator;
         $this->tokenGenerator = $tokenGenerator;
-        $this->tokenInserter = $tokenInserter;
+        $this->tokenizedLoginInserter = $tokenizedLoginInserter;
     }
 
     public function create(PersonModel $person): string
@@ -28,7 +28,7 @@ class TokenizedLogin
         $token = $this->tokenGenerator->generate();
         $expiryDate = new \DateTime('+ 1 hours');
 
-        $this->tokenInserter->insert(
+        $this->tokenizedLoginInserter->insert(
             $tokenId,
             $person->getId(),
             $token,

@@ -26,6 +26,9 @@ name_team.get:
     path: /name-team
     controller: Lithos\Onboarding\NameTeamController::getAction
     methods: [GET]
+    defaults:
+        _before_middlewares:
+            - onboarding_verified_person_middleware:before
 
 name_team.post:
     path: /_/name-team
@@ -36,8 +39,19 @@ choose_team_url.get:
     path: /choose-team-url
     controller: Lithos\Onboarding\ChooseTeamUrlController::getAction
     methods: [GET]
+    defaults:
+        _before_middlewares:
+            - onboarding_verified_person_middleware:before
 
 choose_team_url.post:
     path: /_/choose-team-url
     controller: Lithos\Onboarding\ChooseTeamUrlController::postAction
     methods: [POST]
+
+finalize.get:
+    path: /begin
+    controller: Lithos\Onboarding\FinalizeController::getAction
+    methods: [GET]
+    defaults:
+        _before_middlewares:
+            - onboarding_verified_person_middleware:before

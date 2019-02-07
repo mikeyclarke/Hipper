@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Listener;
+namespace Lithos\Subscriber;
 
 use Lithos\Person\PersonModelMapper;
 use Lithos\Person\PersonRepository;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class SessionListener implements EventSubscriberInterface
+class SessionSubscriber implements EventSubscriberInterface
 {
     private $personModelMapper;
     private $personRepository;
@@ -46,7 +46,7 @@ class SessionListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$this->hasValidSession($session)) {
+        if (!$request->hasPreviousSession() || !$this->hasValidSession($session)) {
             $response = new Response(null, 401);
             $event->setResponse($response);
             return;

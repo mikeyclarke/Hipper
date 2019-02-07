@@ -12,18 +12,31 @@ class Organization
     private $idGenerator;
     private $organizationInserter;
     private $organizationModelMapper;
+    private $organizationRepository;
     private $organizationValidator;
 
     public function __construct(
         IdGenerator $idGenerator,
         OrganizationInserter $organizationInserter,
         OrganizationModelMapper $organizationModelMapper,
+        OrganizationRepository $organizationRepository,
         OrganizationValidator $organizationValidator
     ) {
         $this->idGenerator = $idGenerator;
         $this->organizationInserter = $organizationInserter;
         $this->organizationModelMapper = $organizationModelMapper;
+        $this->organizationRepository = $organizationRepository;
         $this->organizationValidator = $organizationValidator;
+    }
+
+    public function get(string $id): ?OrganizationModel
+    {
+        $result = $this->organizationRepository->findById($id);
+        if (null == $result) {
+            return $result;
+        }
+        $model = $this->organizationModelMapper->createFromArray($result);
+        return $model;
     }
 
     public function create(): OrganizationModel

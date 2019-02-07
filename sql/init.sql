@@ -46,6 +46,20 @@ CREATE TABLE email_address_verification (
     created                 timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE tokenized_login (
+    id                  UUID NOT NULL PRIMARY KEY,
+    person_id           UUID NOT NULL references person(id),
+    token               text CHECK (LENGTH(token) <= 32) NOT NULL,
+    expires             timestamp without time zone NOT NULL,
+    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_tokenized_login_updated_timestamp
+BEFORE UPDATE
+ON tokenized_login
+FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
+
 CREATE TABLE knowledgebase (
     id                  UUID NOT NULL PRIMARY KEY,
     organization_id     UUID NOT NULL references organization(id),

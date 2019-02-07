@@ -48,3 +48,6 @@ services:
     lithos_session_storage:
         class: Lithos\Session\SessionStorage
         arguments: ['%session.storage.options%', '@session.handler', '@session.storage.metadata_bag', '@request_stack']
+
+    onboarding_verified_person_middleware:
+        class: Lithos\Onboarding\VerifiedPersonMiddleware

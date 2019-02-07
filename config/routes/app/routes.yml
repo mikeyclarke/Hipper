@@ -8,3 +8,10 @@ tokenized_login.get:
     controller: Lithos\App\TokenizedLoginController::getAction
     defaults:
         unsecured: true
+
+login.post:
+    path: /_/login
+    methods: [POST]
+    controller: Lithos\App\LoginController::postAction
+    defaults:
+        unsecured: true

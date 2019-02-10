@@ -14,11 +14,33 @@ use Symfony\Component\Validator\Validation;
 
 class TeamValidator
 {
-    public function validate(array $input, bool $isNew = false): void
+    private $teamRepository;
+
+    public function __construct(
+        TeamRepository $teamRepository
+    ) {
+        $this->teamRepository = $teamRepository;
+    }
+
+    public function validate(array $input, string $organizationId, bool $isNew = false): void
     {
         $this->validateInput($input, $isNew);
+        $this->validateUniqueName($organizationId, $input);
+    }
 
-        // Check name isn’t already taken
+    private function validateUniqueName(string $organizationId, array $input): void
+    {
+        if (!isset($input['name'])) {
+            return;
+        }
+
+        if ($this->teamRepository->existsWithName($organizationId, $input['name'])) {
+            throw new ValidationException([
+                'name' => [
+                    'Name already in use.',
+                ]
+            ]);
+        }
     }
 
     private function validateInput(array $input, bool $isNew): void

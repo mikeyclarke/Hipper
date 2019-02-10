@@ -35,7 +35,7 @@ class Team
 
     public function create(PersonModel $person, array $parameters): void
     {
-        $this->teamValidator->validate($parameters, true);
+        $this->teamValidator->validate($parameters, $person->getOrganizationId(), true);
 
         $id = $this->idGenerator->generate();
         $urlId = $this->generateUrlId($parameters['name']);

@@ -53,6 +53,11 @@ class SessionSubscriber implements EventSubscriberInterface
         }
 
         $person = $this->personRepository->findById($session->get('_personId'));
+        if (null === $person) {
+            $response = new Response(null, 401);
+            $event->setResponse($response);
+            return;
+        }
 
         if (!$this->passesAuthentication($session, $person)) {
             $response = new Response(null, 401);

@@ -20,7 +20,8 @@
         "doctrine/doctrine-bundle": "^1.10",
         "symfony/security": "^4.1",
         "symfony/validator": "^4.1",
-        "genphrase/genphrase": "^1.2"
+        "genphrase/genphrase": "^1.2",
+        "ausi/slug-generator": "^1.1"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.4",

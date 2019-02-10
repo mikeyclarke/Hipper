@@ -15,3 +15,8 @@ login.post:
     controller: Lithos\App\LoginController::postAction
     defaults:
         unsecured: true
+
+create_team.post:
+    path: /_/create-team
+    methods: [POST]
+    controller: Lithos\App\CreateTeamController::postAction

@@ -10,6 +10,7 @@ use Lithos\Organization\Organization;
 class PersonCreator
 {
     private $personInserter;
+    private $personMetadataInserter;
     private $personModelMapper;
     private $encoderFactory;
     private $personValidator;
@@ -19,6 +20,7 @@ class PersonCreator
 
     public function __construct(
         PersonInserter $personInserter,
+        PersonMetadataInserter $personMetadataInserter,
         PersonModelMapper $personModelMapper,
         PersonPasswordEncoderFactory $encoderFactory,
         PersonValidator $personValidator,
@@ -27,6 +29,7 @@ class PersonCreator
         RequestEmailAddressVerification $requestEmailAddressVerification
     ) {
         $this->personInserter = $personInserter;
+        $this->personMetadataInserter = $personMetadataInserter;
         $this->personModelMapper = $personModelMapper;
         $this->encoderFactory = $encoderFactory;
         $this->personValidator = $personValidator;
@@ -50,10 +53,17 @@ class PersonCreator
             $organizationModel->getId(),
             'owner'
         );
+        $this->createPersonMetadata($person['id']);
 
         $model = $this->personModelMapper->createFromArray($person);
         $this->requestEmailAddressVerification->sendVerificationRequest($model);
 
         return [$model, $person['password']];
+    }
+
+    private function createPersonMetadata(string $personId): void
+    {
+        $id = $this->idGenerator->generate();
+        $this->personMetadataInserter->insert($id, $personId);
     }
 }

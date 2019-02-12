@@ -8,7 +8,6 @@ class PersonModel
     private $id;
     private $name;
     private $emailAddress;
-    private $role;
     private $emailAddressVerified;
     private $organizationId;
     private $created;
@@ -42,16 +41,6 @@ class PersonModel
     public function getEmailAddress(): string
     {
         return $this->emailAddress;
-    }
-
-    public function setRole(string $role): void
-    {
-        $this->role = $role;
-    }
-
-    public function getRole(): string
-    {
-        return $this->role;
     }
 
     public function setEmailAddressVerified(bool $emailAddressVerified): void

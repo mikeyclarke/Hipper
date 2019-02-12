@@ -15,12 +15,12 @@ class PersonInserter
         $this->connection = $connection;
     }
 
-    public function insert($id, $name, $emailAddress, $password, $organizationId, $role = 'member'): ?array
+    public function insert($id, $name, $emailAddress, $password, $organizationId): ?array
     {
         $stmt = $this->connection->executeQuery(
-            "INSERT INTO person (id, name, email_address, password, organization_id, role) " .
-            "VALUES (?, ?, ?, ?, ?, ?) RETURNING *",
-            [$id, $name, $emailAddress, $password, $organizationId, $role]
+            "INSERT INTO person (id, name, email_address, password, organization_id) " .
+            "VALUES (?, ?, ?, ?, ?) RETURNING *",
+            [$id, $name, $emailAddress, $password, $organizationId]
         );
         $result = $stmt->fetch();
 

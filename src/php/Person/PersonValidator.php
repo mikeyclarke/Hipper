@@ -74,11 +74,6 @@ class PersonValidator
                     'type' => 'bool',
                 ]),
             ],
-            'role' => [
-                new Choice([
-                    'choices' => ['owner', 'admin', 'member'],
-                ]),
-            ],
             'terms_agreed' => [
                 new IsTrue,
             ],

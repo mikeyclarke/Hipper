@@ -12,7 +12,6 @@ class PersonModelMapper
         'id' => 'id',
         'name' => 'name',
         'email_address' => 'emailAddress',
-        'role' => 'role',
         'email_address_verified' => 'emailAddressVerified',
         'organization_id' => 'organizationId',
         'created' => 'created',

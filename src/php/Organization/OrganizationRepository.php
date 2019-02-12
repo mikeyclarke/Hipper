@@ -34,4 +34,24 @@ class OrganizationRepository
 
         return $result;
     }
+
+    public function findBySubdomain(string $subdomain): ?array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('*')
+            ->from('organization')
+            ->where('subdomain = :subdomain');
+
+        $qb->setParameter('subdomain', $subdomain);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetch();
+
+        if (false === $result) {
+            return null;
+        }
+
+        return $result;
+    }
 }

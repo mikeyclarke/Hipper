@@ -6,13 +6,14 @@ namespace Lithos\Subscriber;
 use Lithos\Person\PersonModelMapper;
 use Lithos\Person\PersonRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class SessionSubscriber implements EventSubscriberInterface
+class AuthenticationSubscriber implements EventSubscriberInterface
 {
     private $personModelMapper;
     private $personRepository;
@@ -47,21 +48,23 @@ class SessionSubscriber implements EventSubscriberInterface
         }
 
         if (!$request->hasPreviousSession() || !$this->hasValidSession($session)) {
-            $response = new Response(null, 401);
-            $event->setResponse($response);
+            $this->createUnauthorizedResponse($event);
             return;
         }
 
         $person = $this->personRepository->findById($session->get('_personId'));
         if (null === $person) {
-            $response = new Response(null, 401);
-            $event->setResponse($response);
+            $this->createUnauthorizedResponse($event);
+            return;
+        }
+
+        if ($this->isForeignOrganizationContext($request, $person)) {
+            $this->createUnauthorizedResponse($event);
             return;
         }
 
         if (!$this->passesAuthentication($session, $person)) {
-            $response = new Response(null, 401);
-            $event->setResponse($response);
+            $this->createUnauthorizedResponse($event);
             return;
         }
         unset($person['password']);
@@ -73,6 +76,22 @@ class SessionSubscriber implements EventSubscriberInterface
     private function passesAuthentication(SessionInterface $session, array $person): bool
     {
         return $session->get('_password') === $person['password'];
+    }
+
+    private function isForeignOrganizationContext(Request $request, array $person): bool
+    {
+        if ($request->attributes->get('isOrganizationContext') === false) {
+            return false;
+        }
+
+        $organization = $request->attributes->get('organization');
+        return $organization->getId() !== $person['organization_id'];
+    }
+
+    private function createUnauthorizedResponse(GetResponseEvent $event): void
+    {
+        $response = new Response(null, 401);
+        $event->setResponse($response);
     }
 
     private function hasValidSession(SessionInterface $session): bool

@@ -8,8 +8,6 @@ parameters:
     transactional_email_from_addr: 'notifications@tryhleo.com'
     transactional_email_reply_to_addr: 'help@tryhleo.com'
     locale: 'en'
-    app_protocol: '%env(APP_PROTOCOL)%'
-    app_domain: '%env(APP_DOMAIN)%'
 
 services:
     # default configuration for services in *this* file

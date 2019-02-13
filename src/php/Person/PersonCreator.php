@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Lithos\Person;
 
-use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
 use Lithos\IdGenerator\IdGenerator;
-use Lithos\Organization\Organization;
+use Lithos\Organization\OrganizationModel;
 
 class PersonCreator
 {
@@ -13,50 +12,43 @@ class PersonCreator
     private $personMetadataInserter;
     private $personModelMapper;
     private $encoderFactory;
-    private $personValidator;
     private $idGenerator;
-    private $organization;
-    private $requestEmailAddressVerification;
 
     public function __construct(
         PersonInserter $personInserter,
         PersonMetadataInserter $personMetadataInserter,
         PersonModelMapper $personModelMapper,
         PersonPasswordEncoderFactory $encoderFactory,
-        PersonValidator $personValidator,
-        IdGenerator $idGenerator,
-        Organization $organization,
-        RequestEmailAddressVerification $requestEmailAddressVerification
+        IdGenerator $idGenerator
     ) {
         $this->personInserter = $personInserter;
         $this->personMetadataInserter = $personMetadataInserter;
         $this->personModelMapper = $personModelMapper;
         $this->encoderFactory = $encoderFactory;
-        $this->personValidator = $personValidator;
         $this->idGenerator = $idGenerator;
-        $this->organization = $organization;
-        $this->requestEmailAddressVerification = $requestEmailAddressVerification;
     }
 
-    public function create(array $input): array
-    {
-        $this->personValidator->validate($input, true);
-
-        $organizationModel = $this->organization->create();
-
+    public function create(
+        OrganizationModel $organization,
+        string $name,
+        string $emailAddress,
+        string $rawPassword,
+        bool $emailAddressVerified = false
+    ): array {
         $encoder = $this->encoderFactory->create();
         $person = $this->personInserter->insert(
             $this->idGenerator->generate(),
-            $input['name'],
-            $input['email_address'],
-            $encoder->encodePassword($input['password'], null),
-            $organizationModel->getId(),
-            'owner'
+            $name,
+            $emailAddress,
+            $encoder->encodePassword($rawPassword, null),
+            $organization->getId(),
+            $emailAddressVerified
         );
         $this->createPersonMetadata($person['id']);
 
         $model = $this->personModelMapper->createFromArray($person);
-        $this->requestEmailAddressVerification->sendVerificationRequest($model);
+
+        // TODO: If email address verified send welcome email
 
         return [$model, $person['password']];
     }

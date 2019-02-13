@@ -16,6 +16,13 @@ login.post:
     defaults:
         unsecured: true
 
+join.post:
+    path: /_/join
+    methods: [POST]
+    controller: Lithos\App\JoinOrganizationController::postAction
+    defaults:
+        unsecured: true
+
 create_team.post:
     path: /_/create-team
     methods: [POST]

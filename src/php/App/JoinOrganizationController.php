@@ -1,39 +1,31 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Onboarding;
+namespace Lithos\App;
 
-use Lithos\Person\CreationStrategy\CreateFoundingMember;
+use Lithos\Person\CreationStrategy\CreateFromApprovedEmailDomain;
 use Lithos\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
 
-class SignUpController
+class JoinOrganizationController
 {
     private $personCreation;
-    private $twig;
 
     public function __construct(
-        CreateFoundingMember $personCreation,
-        Twig_Environment $twig
+        CreateFromApprovedEmailDomain $personCreation
     ) {
         $this->personCreation = $personCreation;
-        $this->twig = $twig;
-    }
-
-    public function getAction(Request $request): Response
-    {
-        return new Response(
-            $this->twig->render('onboarding/signup.twig')
-        );
     }
 
     public function postAction(Request $request): Response
     {
+        $parameters = json_decode($request->getContent(), true);
+        $organization = $request->attributes->get('organization');
+
         try {
-            list($person, $encodedPassword) = $this->personCreation->create(json_decode($request->getContent(), true));
+            list($person, $encodedPassword) = $this->personCreation->create($organization, $parameters);
         } catch (ValidationException $e) {
             return new JsonResponse(
                 [

@@ -8,6 +8,8 @@ class OrganizationModel
     private $id;
     private $name;
     private $subdomain;
+    private $approvedEmailDomainSignupAllowed;
+    private $approvedEmailDomains;
     private $created;
     private $updated;
 
@@ -39,6 +41,26 @@ class OrganizationModel
     public function getSubdomain(): ?string
     {
         return $this->subdomain;
+    }
+
+    public function setApprovedEmailDomainSignupAllowed(bool $approvedEmailDomainSignupAllowed): void
+    {
+        $this->approvedEmailDomainSignupAllowed = $approvedEmailDomainSignupAllowed;
+    }
+
+    public function isApprovedEmailDomainSignupAllowed(): bool
+    {
+        return $this->approvedEmailDomainSignupAllowed;
+    }
+
+    public function setApprovedEmailDomains(?string $approvedEmailDomains): void
+    {
+        $this->approvedEmailDomains = $approvedEmailDomains;
+    }
+
+    public function getApprovedEmailDomains(): ?string
+    {
+        return $this->approvedEmailDomains;
     }
 
     public function setCreated(string $created): void

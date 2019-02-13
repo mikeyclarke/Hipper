@@ -8,6 +8,9 @@ test_js: ## Run the JavaScript unit tests and watch
 test_js_single_run: ## Single run for JavaScript unit tests
 	karma start --single-run
 
+test_php:
+	./vendor/bin/phpunit tests/php
+
 ## ---------
 ##	Coding standards
 ## ---------

@@ -12,6 +12,8 @@ class OrganizationModelMapper
         'id' => 'id',
         'name' => 'name',
         'subdomain' => 'subdomain',
+        'approved_email_domain_signup_allowed' => 'approvedEmailDomainSignupAllowed',
+        'approved_email_domains' => 'approvedEmailDomains',
         'created' => 'created',
         'updated' => 'updated',
     ];

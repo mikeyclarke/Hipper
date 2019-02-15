@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lithos\Tests\Person\CreationStrategy;
 
+use Doctrine\DBAL\Connection;
 use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
 use Lithos\Organization\OrganizationModel;
 use Lithos\Person\CreationStrategy\CreateFromApprovedEmailDomain;
@@ -18,6 +19,7 @@ class CreateFromApprovedEmailDomainTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
+    private $connection;
     private $personCreator;
     private $personValidator;
     private $requestEmailAddressVerification;
@@ -25,11 +27,13 @@ class CreateFromApprovedEmailDomainTest extends TestCase
 
     public function setUp(): void
     {
+        $this->connection = m::mock(Connection::class);
         $this->personCreator = m::mock(PersonCreator::class);
         $this->personValidator = m::mock(PersonValidator::class);
         $this->requestEmailAddressVerification = m::mock(RequestEmailAddressVerification::class);
 
         $this->createFromApprovedEmailDomain = new CreateFromApprovedEmailDomain(
+            $this->connection,
             $this->personCreator,
             $this->personValidator,
             $this->requestEmailAddressVerification
@@ -54,6 +58,7 @@ class CreateFromApprovedEmailDomainTest extends TestCase
         $encodedPassword = 'encoded-password';
 
         $this->createPersonValidatorExpectation($input);
+        $this->createConnectionBeginTransactionExpectation();
         $this->createPersonCreatorExpectation(
             $organization,
             $input['name'],
@@ -61,6 +66,7 @@ class CreateFromApprovedEmailDomainTest extends TestCase
             $input['password'],
             [$person, $encodedPassword]
         );
+        $this->createConnectionCommitExpectation();
         $this->createRequestEmailAddressVerificationExpectation($person);
 
         $result = $this->createFromApprovedEmailDomain->create($organization, $input);
@@ -110,6 +116,13 @@ class CreateFromApprovedEmailDomainTest extends TestCase
             ->with($person);
     }
 
+    private function createConnectionCommitExpectation()
+    {
+        $this->connection
+            ->shouldReceive('commit')
+            ->once();
+    }
+
     private function createPersonCreatorExpectation($organization, $name, $emailAddress, $password, $result)
     {
         $this->personCreator
@@ -118,6 +131,13 @@ class CreateFromApprovedEmailDomainTest extends TestCase
             ->with($organization, $name, $emailAddress, $password)
             ->once()
             ->andReturn($result);
+    }
+
+    private function createConnectionBeginTransactionExpectation()
+    {
+        $this->connection
+            ->shouldReceive('beginTransaction')
+            ->once();
     }
 
     private function createPersonValidatorExpectation($input)

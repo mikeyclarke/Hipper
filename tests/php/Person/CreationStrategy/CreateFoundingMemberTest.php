@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lithos\Person\CreationStrategy;
 
+use Doctrine\DBAL\Connection;
 use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
 use Lithos\Organization\Organization;
 use Lithos\Organization\OrganizationModel;
@@ -17,6 +18,7 @@ class CreateFoundingMemberTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
+    private $connection;
     private $organization;
     private $personCreator;
     private $personValidator;
@@ -25,12 +27,14 @@ class CreateFoundingMemberTest extends TestCase
 
     public function setUp(): void
     {
+        $this->connection = m::mock(Connection::class);
         $this->organization = m::mock(Organization::class);
         $this->personCreator = m::mock(PersonCreator::class);
         $this->personValidator = m::mock(PersonValidator::class);
         $this->requestEmailAddressVerification = m::mock(RequestEmailAddressVerification::class);
 
         $this->createFoundingMember = new CreateFoundingMember(
+            $this->connection,
             $this->organization,
             $this->personCreator,
             $this->personValidator,
@@ -54,6 +58,7 @@ class CreateFoundingMemberTest extends TestCase
         $encodedPassword = 'encoded-password';
 
         $this->createPersonValidatorExpectation($input);
+        $this->createConnectionBeginTransactionExpectation();
         $this->createOrganizationExpectation($organization);
         $this->createPersonCreatorExpectation(
             $organization,
@@ -62,6 +67,7 @@ class CreateFoundingMemberTest extends TestCase
             $input['password'],
             [$person, $encodedPassword]
         );
+        $this->createConnectionCommitExpectation();
         $this->createRequestEmailAddressVerificationExpectation($person);
 
         $result = $this->createFoundingMember->create($input);
@@ -74,6 +80,13 @@ class CreateFoundingMemberTest extends TestCase
             ->shouldReceive('sendVerificationRequest')
             ->once()
             ->with($person);
+    }
+
+    private function createConnectionCommitExpectation()
+    {
+        $this->connection
+            ->shouldReceive('commit')
+            ->once();
     }
 
     private function createPersonCreatorExpectation($organization, $name, $emailAddress, $password, $result)
@@ -91,6 +104,13 @@ class CreateFoundingMemberTest extends TestCase
             ->shouldReceive('create')
             ->once()
             ->andReturn($result);
+    }
+
+    private function createConnectionBeginTransactionExpectation()
+    {
+        $this->connection
+            ->shouldReceive('beginTransaction')
+            ->once();
     }
 
     private function createPersonValidatorExpectation($input)

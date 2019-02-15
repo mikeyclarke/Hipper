@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lithos\Person\CreationStrategy;
 
+use Doctrine\DBAL\Connection;
 use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
 use Lithos\Organization\OrganizationModel;
 use Lithos\Person\Exception\ApprovedEmailDomainSignupNotAllowedException;
@@ -13,15 +14,18 @@ use Lithos\Validation\Exception\ValidationException;
 
 class CreateFromApprovedEmailDomain
 {
+    private $connection;
     private $personCreator;
     private $personValidator;
     private $requestEmailAddressVerification;
 
     public function __construct(
+        Connection $connection,
         PersonCreator $personCreator,
         PersonValidator $personValidator,
         RequestEmailAddressVerification $requestEmailAddressVerification
     ) {
+        $this->connection = $connection;
         $this->personCreator = $personCreator;
         $this->personValidator = $personValidator;
         $this->requestEmailAddressVerification = $requestEmailAddressVerification;
@@ -43,12 +47,19 @@ class CreateFromApprovedEmailDomain
             ]);
         }
 
-        list($person, $encodedPassword) = $this->personCreator->create(
-            $organization,
-            $input['name'],
-            $input['email_address'],
-            $input['password']
-        );
+        $this->connection->beginTransaction();
+        try {
+            list($person, $encodedPassword) = $this->personCreator->create(
+                $organization,
+                $input['name'],
+                $input['email_address'],
+                $input['password']
+            );
+            $this->connection->commit();
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
 
         $this->requestEmailAddressVerification->sendVerificationRequest($person);
 

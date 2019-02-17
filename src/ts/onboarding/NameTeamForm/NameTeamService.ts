@@ -1,5 +1,5 @@
-function submitSignup(callback: Function, payload: string) {
-    return fetch('/_/sign-up', {
+function nameTeam(callback: Function, payload: string) {
+    return fetch('/_/name-team', {
         method: 'POST',
         body: payload,
     })
@@ -8,4 +8,4 @@ function submitSignup(callback: Function, payload: string) {
     });
 }
 
-export { submitSignup };
+export { nameTeam };

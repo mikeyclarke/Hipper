@@ -42,9 +42,7 @@ export class SignupForm implements IEventEnabled {
     protected onSubmit(event: Event): void {
         event.preventDefault();
         const formData = this.getFormData();
-        submitSignup((res: Response) => {
-            // console.log(res);
-        }, formData.get());
+        submitSignup(this.onSubmitResponse.bind(this), formData.get());
     }
 
     public getEvents(): IEvents {
@@ -71,6 +69,16 @@ export class SignupForm implements IEventEnabled {
             this.isPasswordVisible = true;
         }
         this.elementCache.get('passwordInputElement').focus();
+    }
+
+    private onSubmitResponse(response: Response): void {
+        if (response.status === 201) {
+            this.gotoVerifyIdentityStep();
+        }
+    }
+
+    private gotoVerifyIdentityStep(): void {
+        window.location.pathname = "/verify-identity";
     }
 
     private getFormData(): SignupFormData {

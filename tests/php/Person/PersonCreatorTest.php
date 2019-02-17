@@ -10,10 +10,9 @@ use Lithos\Person\PersonInserter;
 use Lithos\Person\PersonMetadataInserter;
 use Lithos\Person\PersonModel;
 use Lithos\Person\PersonModelMapper;
-use Lithos\Person\PersonPasswordEncoderFactory;
+use Lithos\Person\PersonPasswordEncoder;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Encoder\Argon2iPasswordEncoder;
 
 class PersonCreatorTest extends TestCase
 {
@@ -22,28 +21,25 @@ class PersonCreatorTest extends TestCase
     private $personInserter;
     private $personMetadataInserter;
     private $personModelMapper;
-    private $encoderFactory;
+    private $passwordEncoder;
     private $idGenerator;
     private $personCreator;
-    private $passwordEncoder;
 
     public function setUp(): void
     {
         $this->personInserter = m::mock(PersonInserter::class);
         $this->personMetadataInserter = m::mock(PersonMetadataInserter::class);
         $this->personModelMapper = m::mock(PersonModelMapper::class);
-        $this->encoderFactory = m::mock(PersonPasswordEncoderFactory::class);
+        $this->passwordEncoder = m::mock(PersonPasswordEncoder::class);
         $this->idGenerator = m::mock(IdGenerator::class);
 
         $this->personCreator = new PersonCreator(
             $this->personInserter,
             $this->personMetadataInserter,
             $this->personModelMapper,
-            $this->encoderFactory,
+            $this->passwordEncoder,
             $this->idGenerator
         );
-
-        $this->passwordEncoder = m::mock(Argon2iPasswordEncoder::class);
     }
 
     /**
@@ -66,7 +62,6 @@ class PersonCreatorTest extends TestCase
         $metadataId = '63a16b95-2550-438a-a6fb-90b544e2626a';
         $personModel = new PersonModel;
 
-        $this->createEncoderFactoryExpectation();
         $this->createIdGeneratorExpectation($personId);
         $this->createPasswordEncoderExpectation($rawPassword, $encodedPassword);
         $this->createPersonInserterExpectation(
@@ -107,7 +102,6 @@ class PersonCreatorTest extends TestCase
         $metadataId = '63a16b95-2550-438a-a6fb-90b544e2626a';
         $personModel = new PersonModel;
 
-        $this->createEncoderFactoryExpectation();
         $this->createIdGeneratorExpectation($personId);
         $this->createPasswordEncoderExpectation($rawPassword, $encodedPassword);
         $this->createPersonInserterExpectation(
@@ -171,7 +165,7 @@ class PersonCreatorTest extends TestCase
         $this->passwordEncoder
             ->shouldReceive('encodePassword')
             ->once()
-            ->with($rawPassword, null)
+            ->with($rawPassword)
             ->andReturn($result);
     }
 
@@ -181,13 +175,5 @@ class PersonCreatorTest extends TestCase
             ->shouldReceive('generate')
             ->once()
             ->andReturn($result);
-    }
-
-    private function createEncoderFactoryExpectation()
-    {
-        $this->encoderFactory
-            ->shouldReceive('create')
-            ->once()
-            ->andReturn($this->passwordEncoder);
     }
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Lithos\App;
 
-use Lithos\Person\PersonPasswordEncoderFactory;
+use Lithos\Person\PersonPasswordEncoder;
 use Lithos\Person\PersonRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoginController
 {
-    private $personPasswordEncoderFactory;
+    private $passwordEncoder;
     private $personRepository;
 
     public function __construct(
-        PersonPasswordEncoderFactory $personPasswordEncoderFactory,
+        PersonPasswordEncoder $passwordEncoder,
         PersonRepository $personRepository
     ) {
-        $this->personPasswordEncoderFactory = $personPasswordEncoderFactory;
+        $this->passwordEncoder = $passwordEncoder;
         $this->personRepository = $personRepository;
     }
 
@@ -34,8 +34,7 @@ class LoginController
             return new Response(null, 400);
         }
 
-        $passwordEncoder = $this->personPasswordEncoderFactory->create();
-        if (!$passwordEncoder->isPasswordValid($person['password'], $password, null)) {
+        if (!$this->passwordEncoder->isPasswordValid($person['password'], $password)) {
             return new Response(null, 400);
         }
 

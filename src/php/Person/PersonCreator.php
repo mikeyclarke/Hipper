@@ -11,20 +11,20 @@ class PersonCreator
     private $personInserter;
     private $personMetadataInserter;
     private $personModelMapper;
-    private $encoderFactory;
+    private $passwordEncoder;
     private $idGenerator;
 
     public function __construct(
         PersonInserter $personInserter,
         PersonMetadataInserter $personMetadataInserter,
         PersonModelMapper $personModelMapper,
-        PersonPasswordEncoderFactory $encoderFactory,
+        PersonPasswordEncoder $passwordEncoder,
         IdGenerator $idGenerator
     ) {
         $this->personInserter = $personInserter;
         $this->personMetadataInserter = $personMetadataInserter;
         $this->personModelMapper = $personModelMapper;
-        $this->encoderFactory = $encoderFactory;
+        $this->passwordEncoder = $passwordEncoder;
         $this->idGenerator = $idGenerator;
     }
 
@@ -35,12 +35,11 @@ class PersonCreator
         string $rawPassword,
         bool $emailAddressVerified = false
     ): array {
-        $encoder = $this->encoderFactory->create();
         $person = $this->personInserter->insert(
             $this->idGenerator->generate(),
             $name,
             $emailAddress,
-            $encoder->encodePassword($rawPassword, null),
+            $this->passwordEncoder->encodePassword($rawPassword),
             $organization->getId(),
             $emailAddressVerified
         );

@@ -1,0 +1,35 @@
+version: '3'
+services:
+  nginx:
+    build: "config/docker/web"
+    ports:
+        - "443:443"
+    volumes:
+        - .:/var/hleo
+    links:
+        - php
+  node:
+    build: "config/docker/node"
+    tty: true
+    volumes:
+        - .:/var/hleo
+  php:
+    build: "config/docker/php"
+    tty: true
+    ports:
+        - "9000:9000"
+    volumes:
+        - .:/var/hleo
+    links:
+        - postgres
+  postgres:
+    build: "config/docker/db"
+    environment:
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=root
+        - POSTGRES_DB=hleo
+    ports:
+        - "5432:5432"
+    volumes:
+        - ~/docker/volumes/postgres:/var/lib/postgresql/data
+        - ./sql:/var/sql

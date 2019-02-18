@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Lithos\Organization;
 
 use Lithos\Validation\ConstraintViolationListFormatter;
+use Lithos\Validation\Constraints\NotReservedSubdomain;
 use Lithos\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;
@@ -41,6 +42,7 @@ class OrganizationValidator
                     new Regex([
                         'pattern' => '/[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?/',
                     ]),
+                    new NotReservedSubdomain,
                 ]),
             ],
         ];

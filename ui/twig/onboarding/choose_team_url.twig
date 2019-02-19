@@ -18,7 +18,7 @@
                 </fieldset>
 
                 <div class="c-signup-form__footer">
-                    <button class="c-button--primary js-form-submit" type="submit" aria-disabled="true">Done</button>
+                    <button class="c-button--primary js-form-submit" type="submit" {% if subdomainSuggestion is empty %}aria-disabled="true"{% endif %}>Done</button>
                 </div>
             </form>
         </div>

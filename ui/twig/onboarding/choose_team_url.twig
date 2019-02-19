@@ -13,7 +13,7 @@
 
                 <fieldset class="c-signup-form__field">
                     <label for="team-url" class="c-signup-form__label">Your team URL</label>
-                    <input class="c-signup-form__input js-team-url-input" type="text" name="team-url" id="team-url" required="required" aria-required="true" autocomplete="off" autocapitalize="off" spellcheck="false" pattern="[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?" maxlength="63">
+                    <input class="c-signup-form__input js-team-url-input" type="text" name="team-url" id="team-url" required="required" aria-required="true" autocomplete="off" autocapitalize="off" spellcheck="false" pattern="[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?" maxlength="63"{% if subdomainSuggestion is not empty %} value="{{ subdomainSuggestion }}"{% endif %}>
                     <span>.{{ domain }}</span>
                 </fieldset>
 

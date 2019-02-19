@@ -24,7 +24,7 @@ class NotReservedSubdomainValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $reserved = require __DIR__ . '/../data/reserved_subdomains.php';
+        $reserved = require __DIR__ . '/../../data/reserved_subdomains.php';
 
         foreach ($reserved['regexPatterns'] as $pattern) {
             if (preg_match($pattern, $value)) {

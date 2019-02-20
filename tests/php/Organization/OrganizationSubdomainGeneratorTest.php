@@ -86,4 +86,16 @@ class OrganizationSubdomainGeneratorTest extends TestCase
         $result = $this->subdomainGenerator->generate($input);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function noDuplicateDashes()
+    {
+        $input = 'achme- limited --liability partnership';
+        $expected = 'achme-limited-liability-partnership';
+
+        $result = $this->subdomainGenerator->generate($input);
+        $this->assertEquals($expected, $result);
+    }
 }

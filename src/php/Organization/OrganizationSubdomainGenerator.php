@@ -11,9 +11,9 @@ class OrganizationSubdomainGenerator
     public function generate(string $organizationName): string
     {
         $subdomain = $this->stripInvalidCharacters($organizationName);
-        $subdomain = $this->stripDuplicateWhitespace($subdomain);
-        $subdomain = $this->stripOuterWhitespaceAndDashes($subdomain);
         $subdomain = $this->replaceSpaces($subdomain);
+        $subdomain = $this->stripDuplicateDashes($subdomain);
+        $subdomain = $this->stripOuterDashes($subdomain);
         $subdomain = $this->toLowercase($subdomain);
         $subdomain = $this->checkAgainstBlacklist($subdomain);
         return $subdomain;
@@ -24,14 +24,14 @@ class OrganizationSubdomainGenerator
         return preg_replace('/[^a-zA-Z0-9-\s]/', '', $value);
     }
 
-    private function stripDuplicateWhitespace(string $value): string
+    private function stripDuplicateDashes(string $value): string
     {
-        return preg_replace('/\s+/', ' ', $value);
+        return preg_replace('/-+/', '-', $value);
     }
 
-    private function stripOuterWhitespaceAndDashes(string $value): string
+    private function stripOuterDashes(string $value): string
     {
-        return trim($value, "- \t\n\r\0\x0B");
+        return trim($value, "-");
     }
 
     private function replaceSpaces(string $value): string

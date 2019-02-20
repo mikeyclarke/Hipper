@@ -48,11 +48,15 @@ class ChooseTeamUrlController
 
     public function postAction(Request $request): Response
     {
-        $content = json_decode($request->getContent(), true);
         $person = $request->attributes->get('person');
 
         try {
-            $this->organization->update($person->getOrganizationId(), ['subdomain' => $content['subdomain']]);
+            $this->organization->update(
+                $person->getOrganizationId(),
+                [
+                    'subdomain' => $request->request->get('subdomain', '')
+                ]
+            );
         } catch (ValidationException $e) {
             return new JsonResponse(
                 [
@@ -64,6 +68,6 @@ class ChooseTeamUrlController
             );
         }
 
-        return new Response(null, 200);
+        return new JsonResponse(null, 200);
     }
 }

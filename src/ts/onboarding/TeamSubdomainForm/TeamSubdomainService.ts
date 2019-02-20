@@ -1,5 +1,8 @@
 function setTeamSubdomain(callback: Function, payload: string) {
     return fetch('/_/choose-team-url', {
+        headers: {
+            'Content-Type': 'application/json',
+        },
         method: 'POST',
         body: payload,
     })

@@ -21,11 +21,10 @@ class CreateTeamController
 
     public function postAction(Request $request): Response
     {
-        $parameters = json_decode($request->getContent(), true);
         $person = $request->attributes->get('person');
 
         try {
-            $teamModel = $this->team->create($person, $parameters);
+            $teamModel = $this->team->create($person, $request->request->all());
         } catch (ValidationException $e) {
             return new JsonResponse(
                 [
@@ -37,6 +36,6 @@ class CreateTeamController
             );
         }
 
-        return new Response(null, 201);
+        return new JsonResponse(null, 201);
     }
 }

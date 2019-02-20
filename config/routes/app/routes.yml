@@ -15,6 +15,8 @@ login.post:
     controller: Lithos\App\LoginController::postAction
     defaults:
         unsecured: true
+        _before_middlewares:
+            - require_json_content_type_middleware:before
 
 join.post:
     path: /_/join
@@ -22,8 +24,13 @@ join.post:
     controller: Lithos\App\JoinOrganizationController::postAction
     defaults:
         unsecured: true
+        _before_middlewares:
+            - require_json_content_type_middleware:before
 
 create_team.post:
     path: /_/create-team
     methods: [POST]
     controller: Lithos\App\CreateTeamController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before

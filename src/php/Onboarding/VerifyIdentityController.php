@@ -38,15 +38,14 @@ class VerifyIdentityController
 
     public function postAction(Request $request): Response
     {
-        $content = json_decode($request->getContent(), true);
         $person = $request->attributes->get('person');
 
         try {
-            $this->verifyEmailAddress->verify($person->getId(), $content['phrase']);
+            $this->verifyEmailAddress->verify($person->getId(), $request->request->get('phrase', ''));
         } catch (EmailAddressVerificationNotFoundException $e) {
             return new JsonResponse(null, 400);
         }
 
-        return new Response(null, 200);
+        return new JsonResponse(null, 200);
     }
 }

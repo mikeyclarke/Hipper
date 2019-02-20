@@ -24,24 +24,22 @@ class LoginController
 
     public function postAction(Request $request): Response
     {
-        $content = json_decode($request->getContent(), true);
-
-        $email = $content['email_address'];
-        $password = $content['password'];
+        $email = $request->request->get('email_address');
+        $password = $request->request->get('password');
 
         $person = $this->personRepository->findOneByEmailAddress($email);
         if (null === $person) {
-            return new Response(null, 400);
+            return new JsonResponse(null, 400);
         }
 
         if (!$this->passwordEncoder->isPasswordValid($person['password'], $password)) {
-            return new Response(null, 400);
+            return new JsonResponse(null, 400);
         }
 
         $session = $request->getSession();
         $session->set('_personId', $person['id']);
         $session->set('_password', $person['password']);
 
-        return new RedirectResponse('/');
+        return new JsonResponse(null, 200);
     }
 }

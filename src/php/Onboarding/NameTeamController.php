@@ -32,11 +32,10 @@ class NameTeamController
 
     public function postAction(Request $request): Response
     {
-        $content = json_decode($request->getContent(), true);
         $person = $request->attributes->get('person');
 
         try {
-            $this->organization->update($person->getOrganizationId(), ['name' => $content['name']]);
+            $this->organization->update($person->getOrganizationId(), ['name' => $request->request->get('name', '')]);
         } catch (ValidationException $e) {
             return new JsonResponse(
                 [
@@ -48,6 +47,6 @@ class NameTeamController
             );
         }
 
-        return new Response(null, 200);
+        return new JsonResponse(null, 200);
     }
 }

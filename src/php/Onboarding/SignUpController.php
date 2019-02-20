@@ -33,7 +33,7 @@ class SignUpController
     public function postAction(Request $request): Response
     {
         try {
-            list($person, $encodedPassword) = $this->personCreation->create(json_decode($request->getContent(), true));
+            list($person, $encodedPassword) = $this->personCreation->create($request->request->all());
         } catch (ValidationException $e) {
             return new JsonResponse(
                 [
@@ -49,6 +49,6 @@ class SignUpController
         $session->set('_personId', $person->getId());
         $session->set('_password', $encodedPassword);
 
-        return new Response(null, 201);
+        return new JsonResponse(null, 201);
     }
 }

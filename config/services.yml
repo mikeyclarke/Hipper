@@ -49,3 +49,6 @@ services:
 
     onboarding_verified_person_middleware:
         class: Lithos\Onboarding\VerifiedPersonMiddleware
+
+    require_json_content_type_middleware:
+        class: Lithos\Http\RequireJsonContentTypeMiddleware

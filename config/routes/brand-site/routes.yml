@@ -11,6 +11,8 @@ signup.post:
     methods: [POST]
     defaults:
         unsecured: true
+        _before_middlewares:
+            - require_json_content_type_middleware:before
 
 verify_identity.get:
     path: /verify-identity
@@ -21,6 +23,9 @@ verify_identity.post:
     path: /_/verify-identity
     controller: Lithos\Onboarding\VerifyIdentityController::postAction
     methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
 
 name_team.get:
     path: /name-team
@@ -34,6 +39,9 @@ name_team.post:
     path: /_/name-team
     controller: Lithos\Onboarding\NameTeamController::postAction
     methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
 
 choose_team_url.get:
     path: /choose-team-url
@@ -47,6 +55,17 @@ choose_team_url.post:
     path: /_/choose-team-url
     controller: Lithos\Onboarding\ChooseTeamUrlController::postAction
     methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+invite.get:
+    path: /invite
+    controller: Lithos\Onboarding\InviteController::getAction
+    methods: [GET]
+    defaults:
+        _before_middlewares:
+            - onboarding_verified_person_middleware:before
 
 finalize.get:
     path: /begin

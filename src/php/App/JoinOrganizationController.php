@@ -21,11 +21,10 @@ class JoinOrganizationController
 
     public function postAction(Request $request): Response
     {
-        $parameters = json_decode($request->getContent(), true);
         $organization = $request->attributes->get('organization');
 
         try {
-            list($person, $encodedPassword) = $this->personCreation->create($organization, $parameters);
+            list($person, $encodedPassword) = $this->personCreation->create($organization, $request->request->all());
         } catch (ValidationException $e) {
             return new JsonResponse(
                 [
@@ -41,6 +40,6 @@ class JoinOrganizationController
         $session->set('_personId', $person->getId());
         $session->set('_password', $encodedPassword);
 
-        return new Response(null, 201);
+        return new JsonResponse(null, 201);
     }
 }

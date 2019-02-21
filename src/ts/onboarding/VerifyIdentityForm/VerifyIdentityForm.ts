@@ -59,7 +59,7 @@ export class VerifyIdentityForm implements IEventEnabled {
     }
 
     private gotoNameOrganisationStep(): void {
-        window.location.pathname = "/name-team";
+        window.location.pathname = '/name-team';
     }
 
     private getFormData(): VerifyIdentityFormData {

@@ -1,5 +1,5 @@
 export class VerifyIdentityFormData {
-    private verififcationCode: string;
+    private readonly verififcationCode: string;
 
     constructor(verififcationCode: string) {
         this.verififcationCode = verififcationCode;

@@ -1,5 +1,5 @@
 export class NameTeamFormData {
-    private teamName: string;
+    private readonly teamName: string;
 
     constructor(teamName: string) {
         this.teamName = teamName;

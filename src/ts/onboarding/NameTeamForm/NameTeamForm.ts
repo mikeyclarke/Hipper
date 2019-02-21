@@ -5,6 +5,8 @@ import { IEvents } from '../../hleo/EventDelegator/IEvents';
 import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
 import { NameTeamFormData } from './NameTeamFormData';
+import { injectValidationErrors } from 'hleo/FormValidation/ValidationMessageInjector';
+import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
 
 export class NameTeamForm implements IEventEnabled {
     private readonly eventDelegator: EventDelegator;
@@ -36,7 +38,7 @@ export class NameTeamForm implements IEventEnabled {
     protected onSubmit(event: Event): void {
         event.preventDefault();
         const formData = this.getFormData();
-        nameTeam(this.onSubmitResponse.bind(this), formData.get());
+        nameTeam(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
     }
 
     protected onFormInteraction(): void {
@@ -52,10 +54,14 @@ export class NameTeamForm implements IEventEnabled {
         return this.events;
     }
 
-    private onSubmitResponse(response: Response): void {
-        if (response.status === 200) {
-            this.gotoTeamUrlStep();
-        }
+    private onFormSubmitSuccess(response: Response): void {
+        this.gotoTeamUrlStep();
+    }
+
+    private onFormSubmitFail(validationErrors: FormValidationErrors): void {
+        Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
+            injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
+        });
     }
 
     private gotoTeamUrlStep(): void {

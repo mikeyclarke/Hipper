@@ -5,6 +5,8 @@ import { IEvents } from '../../hleo/EventDelegator/IEvents';
 import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
 import { TeamSubdomainFormData } from './TeamSubdomainFormData';
+import { injectValidationErrors } from 'hleo/FormValidation/ValidationMessageInjector';
+import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
 
 export class TeamSubdomainForm implements IEventEnabled {
     private readonly eventDelegator: EventDelegator;
@@ -36,7 +38,7 @@ export class TeamSubdomainForm implements IEventEnabled {
     protected onSubmit(event: Event): void {
         event.preventDefault();
         const formData = this.getFormData();
-        setTeamSubdomain(this.onSubmitResponse.bind(this), formData.get());
+        setTeamSubdomain(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
     }
 
     protected onFormInteraction(): void {
@@ -52,14 +54,18 @@ export class TeamSubdomainForm implements IEventEnabled {
         return this.events;
     }
 
-    private onSubmitResponse(response: Response): void {
-        if (response.status === 200) {
-            this.gotoApp();
-        }
+    private onFormSubmitSuccess(): void {
+        this.gotoApp();
+    }
+
+    private onFormSubmitFail(validationErrors: FormValidationErrors): void {
+        Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
+            injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
+        });
     }
 
     private gotoApp(): void {
-        window.location.pathname = "/begin";
+        window.location.pathname = '/begin';
     }
 
     private getFormData(): TeamSubdomainFormData {

@@ -6,6 +6,7 @@ import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
 import { SignupFormData } from './SignupFormData';
 import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
+import { injectValidationErrors } from 'hleo/FormValidation/ValidationMessageInjector';
 
 export class SignupForm implements IEventEnabled {
     private isPasswordVisible: boolean = false;
@@ -78,25 +79,9 @@ export class SignupForm implements IEventEnabled {
     }
 
     private onFormSubmitFail(validationErrors: FormValidationErrors): void {
-        Object.entries(validationErrors.violations).forEach(([key, value]) => {
-            this.injectValidationErrors(key, value);
+        Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
+            injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
         });
-    }
-
-    private injectValidationErrors(target: string, errors: string[]): void {
-        const containerSelector = `[data-validation-error-container=${target}`;
-        const validationContainerEl = <HTMLElement> this.elementCache.get('form').querySelector(containerSelector);
-        errors.forEach((error: string) => {
-            const validationError = this.createValidationErrorElement(error);
-            validationContainerEl.appendChild(validationError);
-        });
-    }
-
-    private createValidationErrorElement(error: string): HTMLElement {
-        const newErrorEl = document.createElement('p');
-        newErrorEl.classList.add('c-signup-form__field-error', 'js-form-error');
-        newErrorEl.innerText = error;
-        return newErrorEl;
     }
 
     private clearValidationErrors(): void {

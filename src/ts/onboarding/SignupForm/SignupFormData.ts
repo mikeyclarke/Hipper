@@ -1,8 +1,8 @@
 export class SignupFormData {
-    private name: string;
-    private email: string;
-    private password: string;
-    private termsAgreed: boolean;
+    private readonly name: string;
+    private readonly email: string;
+    private readonly password: string;
+    private readonly termsAgreed: boolean;
 
     constructor(name: string, email: string, password: string, termsAgreed: boolean) {
         this.name = name;

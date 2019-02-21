@@ -46,6 +46,7 @@ export class SignupForm implements IEventEnabled {
         this.clearValidationErrors();
         const formData = this.getFormData();
         submitSignup(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
+        this.elementCache.get('submitButton').setAttribute('disabled', 'true');
     }
 
     public getEvents(): IEvents {
@@ -82,11 +83,16 @@ export class SignupForm implements IEventEnabled {
         Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
             injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
         });
+        this.elementCache.get('submitButton').removeAttribute('disabled');
     }
 
     private clearValidationErrors(): void {
         this.elementCache.get('form').querySelectorAll('.js-form-error').forEach((el: Element) => {
             el.remove();
+        });
+
+        this.elementCache.get('form').querySelectorAll('.js-form-input').forEach((el: Element) => {
+            el.classList.remove('validation-error');
         });
     }
 

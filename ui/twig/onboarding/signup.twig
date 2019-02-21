@@ -13,13 +13,13 @@
 
                     <fieldset class="c-signup-form__field">
                         <label for="person-name" class="c-signup-form__label">Your name</label>
-                        <input class="c-signup-form__input js-name-input" type="text" name="name" id="person-name" required="required" aria-required="true" placeholder="e.g. Buzz Lightyear" autocapitalize="words" autocomplete="name" spellcheck="false">
+                        <input class="c-signup-form__input js-name-input js-form-input" type="text" name="name" id="person-name" required="required" aria-required="true" placeholder="e.g. Buzz Lightyear" autocapitalize="words" autocomplete="name" spellcheck="false" data-validation-error-input="name">
                         <div class="c-signup-form__validation-error-container" data-validation-error-container="name"></div>
                     </fieldset>
 
                     <fieldset class="c-signup-form__field">
                         <label for="person-email-address" class="c-signup-form__label">Your email address</label>
-                        <input class="c-signup-form__input js-email-input" type="email" name="email_address" id="person-email-address" required="required" aria-required="true" placeholder="e.g. space-ranger@example.com" autocomplete="email">
+                        <input class="c-signup-form__input js-email-input js-form-input" type="email" name="email_address" id="person-email-address" required="required" aria-required="true" placeholder="e.g. space-ranger@example.com" autocomplete="email" data-validation-error-input="email_address">
                         <div class="js-errors-container" data-form-element-key="email_address">
                         </div>
                         <div class="c-signup-form__validation-error-container" data-validation-error-container="email_address"></div>
@@ -28,7 +28,7 @@
                     <fieldset class="c-signup-form__field">
                         <label for="person-password" class="c-signup-form__label">Password</label>
                         <div class="c-password-input">
-                            <input class="c-signup-form__input c-password-input__input js-password-input" type="password" name="password" id="person-password" required="required" aria-required="true" aria-describedby="password-rules" autocomplete="new-password" minlength="8">
+                            <input class="c-signup-form__input c-password-input__input js-password-input js-form-input" type="password" name="password" id="person-password" required="required" aria-required="true" aria-describedby="password-rules" autocomplete="new-password" minlength="8" data-validation-error-input="password">
                             <button class="c-password-input__visibility-button js-toggle-password-visibility" type="button" aria-hidden="true" tabindex="-1">Show</button>
                         </div>
                         <div class="c-signup-form__validation-error-container" data-validation-error-container="password"></div>
@@ -37,7 +37,7 @@
 
                     <fieldset class="c-signup-form__field">
                         <div class="c-checkbox">
-                            <input class="c-checkbox__input js-terms-input" id="terms-privacy-agreement" required="required" aria-required="true"  type="checkbox" autocomplete="off">
+                            <input class="c-checkbox__input js-terms-input js-form-input" id="terms-privacy-agreement" required="required" aria-required="true"  type="checkbox" autocomplete="off" data-validation-error-input="terms-agreed">
                             <label class="c-checkbox__label" for="terms-privacy-agreement">I agree to the Lithos <a href="/terms-of-use" target="_blank">terms of use</a>.</label>
                         </div>
                         <div class="c-signup-form__validation-error-container" data-validation-error-container="terms-agreed"></div>

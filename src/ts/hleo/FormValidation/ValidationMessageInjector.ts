@@ -1,9 +1,12 @@
 export function injectValidationErrors(form: HTMLElement, target: string, errors: string[]): void {
     const containerSelector = `[data-validation-error-container=${target}`;
+    const inputSelector = `[data-validation-error-input=${target}]`;
     const validationContainerEl = <HTMLElement> form.querySelector(containerSelector);
+    const validationInputEl = <HTMLElement> form.querySelector(inputSelector);
     errors.forEach((error: string) => {
         const validationError = createValidationErrorElement(error);
         validationContainerEl.appendChild(validationError);
+        validationInputEl.classList.add('validation-error');
     });
 }
 

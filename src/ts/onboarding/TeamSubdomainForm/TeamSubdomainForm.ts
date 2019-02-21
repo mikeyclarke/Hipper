@@ -39,6 +39,7 @@ export class TeamSubdomainForm implements IEventEnabled {
         event.preventDefault();
         const formData = this.getFormData();
         setTeamSubdomain(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
+        this.elementCache.get('submitButton').setAttribute('disabled', 'true');
     }
 
     protected onFormInteraction(): void {
@@ -62,6 +63,7 @@ export class TeamSubdomainForm implements IEventEnabled {
         Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
             injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
         });
+        this.elementCache.get('submitButton').removeAttribute('disabled');
     }
 
     private gotoApp(): void {

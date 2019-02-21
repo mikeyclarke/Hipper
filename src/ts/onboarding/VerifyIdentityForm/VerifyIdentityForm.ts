@@ -5,6 +5,8 @@ import { IEvents } from '../../hleo/EventDelegator/IEvents';
 import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
 import { VerifyIdentityFormData } from './VerifyIdentityFormData';
+import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
+import { injectValidationErrors } from 'hleo/FormValidation/ValidationMessageInjector';
 
 export class VerifyIdentityForm implements IEventEnabled {
     private readonly eventDelegator: EventDelegator;
@@ -36,7 +38,8 @@ export class VerifyIdentityForm implements IEventEnabled {
     protected onSubmit(event: Event): void {
         event.preventDefault();
         const formData = this.getFormData();
-        verifyIdentity(this.onSubmitResponse.bind(this), formData.get());
+        verifyIdentity(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
+        this.elementCache.get('submitButton').setAttribute('disabled', 'true');
     }
 
     protected onFormInteraction(): void {
@@ -52,10 +55,15 @@ export class VerifyIdentityForm implements IEventEnabled {
         return this.events;
     }
 
-    private onSubmitResponse(response: Response): void {
-        if (response.status === 200) {
-            this.gotoNameOrganisationStep();
-        }
+    private onFormSubmitSuccess(): void {
+        this.gotoNameOrganisationStep();
+    }
+
+    private onFormSubmitFail(validationErrors: FormValidationErrors): void {
+        Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
+            injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
+        });
+        this.elementCache.get('submitButton').removeAttribute('disabled');
     }
 
     private gotoNameOrganisationStep(): void {

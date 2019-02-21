@@ -17,7 +17,7 @@ $signup-form-label-margin-bottom: 7px;
 
 $signup-form-field-info-font-size: 14px;
 $signup-form-field-info-text-color: #b0aeb1;
-$signup-form-field-error-text-color: #d8000c;
+$signup-form-field-error-color: #d8000c;
 
 $signup-form-footer-margin: 36px 0 0;
 $signup-form-footer-text-align: right;
@@ -45,8 +45,13 @@ $signup-form-footer-text-align: right;
 
 .c-signup-form__field {
     border: 0;
+    box-sizing: border-box;
     margin: 0 0 $signup-form-field-margin-bottom;
     padding: 0;
+}
+
+.c-signup-form__field .validation-error {
+    border: 1px solid $signup-form-field-error-color;
 }
 
 .c-signup-form__label {
@@ -70,7 +75,7 @@ $signup-form-footer-text-align: right;
 
 .c-signup-form__field-error {
     font-size: $signup-form-field-info-font-size;
-    color: $signup-form-field-error-text-color;
+    color: $signup-form-field-error-color;
     margin: 3px 0 0;
     @include font-smoothing;
 }

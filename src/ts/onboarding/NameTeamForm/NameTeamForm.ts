@@ -39,6 +39,7 @@ export class NameTeamForm implements IEventEnabled {
         event.preventDefault();
         const formData = this.getFormData();
         nameTeam(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
+        this.elementCache.get('submitButton').setAttribute('disabled', 'true');
     }
 
     protected onFormInteraction(): void {
@@ -62,6 +63,7 @@ export class NameTeamForm implements IEventEnabled {
         Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
             injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
         });
+        this.elementCache.get('submitButton').removeAttribute('disabled');
     }
 
     private gotoTeamUrlStep(): void {

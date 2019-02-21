@@ -17,6 +17,7 @@ $signup-form-label-margin-bottom: 7px;
 
 $signup-form-field-info-font-size: 14px;
 $signup-form-field-info-text-color: #b0aeb1;
+$signup-form-field-error-text-color: #d8000c;
 
 $signup-form-footer-margin: 36px 0 0;
 $signup-form-footer-text-align: right;
@@ -63,6 +64,13 @@ $signup-form-footer-text-align: right;
 .c-signup-form__field-info {
     font-size: $signup-form-field-info-font-size;
     color: $signup-form-field-info-text-color;
+    margin: 3px 0 0;
+    @include font-smoothing;
+}
+
+.c-signup-form__field-error {
+    font-size: $signup-form-field-info-font-size;
+    color: $signup-form-field-error-text-color;
     margin: 3px 0 0;
     @include font-smoothing;
 }

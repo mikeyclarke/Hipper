@@ -5,6 +5,7 @@ import { IEvents } from '../../hleo/EventDelegator/IEvents';
 import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
 import { SignupFormData } from './SignupFormData';
+import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
 
 export class SignupForm implements IEventEnabled {
     private isPasswordVisible: boolean = false;
@@ -41,8 +42,9 @@ export class SignupForm implements IEventEnabled {
 
     protected onSubmit(event: Event): void {
         event.preventDefault();
+        this.clearValidationErrors();
         const formData = this.getFormData();
-        submitSignup(this.onSubmitResponse.bind(this), formData.get());
+        submitSignup(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
     }
 
     public getEvents(): IEvents {
@@ -71,14 +73,40 @@ export class SignupForm implements IEventEnabled {
         this.elementCache.get('passwordInputElement').focus();
     }
 
-    private onSubmitResponse(response: Response): void {
-        if (response.status === 201) {
-            this.gotoVerifyIdentityStep();
-        }
+    private onFormSubmitSuccess(): void {
+        this.gotoVerifyIdentityStep();
+    }
+
+    private onFormSubmitFail(validationErrors: FormValidationErrors): void {
+        Object.entries(validationErrors.violations).forEach(([key, value]) => {
+            this.injectValidationErrors(key, value);
+        });
+    }
+
+    private injectValidationErrors(target: string, errors: string[]): void {
+        const containerSelector = `[data-validation-error-container=${target}`;
+        const validationContainerEl = <HTMLElement> this.elementCache.get('form').querySelector(containerSelector);
+        errors.forEach((error: string) => {
+            const validationError = this.createValidationErrorElement(error);
+            validationContainerEl.appendChild(validationError);
+        });
+    }
+
+    private createValidationErrorElement(error: string): HTMLElement {
+        const newErrorEl = document.createElement('p');
+        newErrorEl.classList.add('c-signup-form__field-error', 'js-form-error');
+        newErrorEl.innerText = error;
+        return newErrorEl;
+    }
+
+    private clearValidationErrors(): void {
+        this.elementCache.get('form').querySelectorAll('.js-form-error').forEach((el: Element) => {
+            el.remove();
+        });
     }
 
     private gotoVerifyIdentityStep(): void {
-        window.location.pathname = "/verify-identity";
+        window.location.pathname = '/verify-identity';
     }
 
     private getFormData(): SignupFormData {

@@ -1,4 +1,4 @@
-function submitSignup(callback: Function, payload: string) {
+function submitSignup(successCallback: Function, failCallback: Function, payload: string) {
     return fetch('/_/sign-up', {
         headers: {
             'Content-Type': 'application/json',
@@ -7,8 +7,18 @@ function submitSignup(callback: Function, payload: string) {
         body: payload,
     })
     .then((response) => {
-        callback(response);
+        if (isResponseOk(response)) {
+            successCallback();
+        } else {
+            response.json().then((res) => {
+                failCallback(res);
+            });
+        }
     });
+}
+
+function isResponseOk(response: Response): boolean {
+    return response.status === 201;
 }
 
 export { submitSignup };

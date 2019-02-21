@@ -10,7 +10,6 @@ services:
         - php
   node:
     build: "config/docker/node"
-    tty: true
     volumes:
         - .:/var/hleo
   php:

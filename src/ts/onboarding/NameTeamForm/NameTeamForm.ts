@@ -65,7 +65,7 @@ export class NameTeamForm implements IEventEnabled {
     }
 
     private gotoTeamUrlStep(): void {
-        window.location.pathname = "/choose-team-url";
+        window.location.pathname = '/choose-team-url';
     }
 
     private getFormData(): NameTeamFormData {

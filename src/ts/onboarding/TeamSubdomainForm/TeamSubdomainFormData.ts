@@ -1,5 +1,5 @@
 export class TeamSubdomainFormData {
-    private subdomain: string;
+    private readonly subdomain: string;
 
     constructor(subdomain: string) {
         this.subdomain = subdomain;

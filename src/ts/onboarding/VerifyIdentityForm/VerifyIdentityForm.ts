@@ -7,10 +7,12 @@ import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
 import { VerifyIdentityFormData } from './VerifyIdentityFormData';
 import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
 import { injectValidationErrors } from 'hleo/FormValidation/ValidationMessageInjector';
+import { Form } from 'onboarding/Form/Form';
 
 export class VerifyIdentityForm implements IEventEnabled {
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
+    private readonly form: Form;
 
     private readonly events: IEvents = {
         keyup: 'onFormInteraction',
@@ -24,9 +26,10 @@ export class VerifyIdentityForm implements IEventEnabled {
         phraseInputElement: '.js-verification-code-input',
     };
 
-    constructor(eventDelegator: EventDelegator, elementCache: ElementCache) {
+    constructor(eventDelegator: EventDelegator, elementCache: ElementCache, form: Form) {
         this.eventDelegator = eventDelegator;
         this.elementCache = elementCache;
+        this.form = form;
     }
 
     public init(): void {
@@ -39,16 +42,11 @@ export class VerifyIdentityForm implements IEventEnabled {
         event.preventDefault();
         const formData = this.getFormData();
         verifyIdentity(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
-        this.elementCache.get('submitButton').setAttribute('disabled', 'true');
+        this.form.disableSubmitButton();
     }
 
     protected onFormInteraction(): void {
-        const form = <HTMLFormElement> this.elementCache.get('form');
-        if (form.checkValidity()) {
-            this.elementCache.get('submitButton').setAttribute('aria-disabled', 'false');
-        } else {
-            this.elementCache.get('submitButton').setAttribute('aria-disabled', 'true');
-        }
+        this.form.enableSubmitIfFormIsValid();
     }
 
     public getEvents(): IEvents {
@@ -60,10 +58,8 @@ export class VerifyIdentityForm implements IEventEnabled {
     }
 
     private onFormSubmitFail(validationErrors: FormValidationErrors): void {
-        Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
-            injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
-        });
-        this.elementCache.get('submitButton').removeAttribute('disabled');
+        this.form.showValidationErrors(validationErrors);
+        this.form.enableSubmitButton();
     }
 
     private gotoNameOrganisationStep(): void {

@@ -1,16 +1,31 @@
 import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
 import { ElementCache } from '../../hleo/ElementCache/ElementCache';
-import { nameTeam } from './NameTeamService';
 import { IEvents } from '../../hleo/EventDelegator/IEvents';
 import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
-import { NameTeamFormData } from './NameTeamFormData';
-import { injectValidationErrors } from 'hleo/FormValidation/ValidationMessageInjector';
-import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
+import { FormValidationErrors } from 'onboarding/Form/FormValidationErrors';
+import { Form } from 'onboarding/Form/Form';
+import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
+
+class NameTeamFormData {
+    private readonly teamName: string;
+
+    constructor(teamName: string) {
+        this.teamName = teamName;
+    }
+
+    public get(): string {
+        return JSON.stringify({
+            name: this.teamName,
+        });
+    }
+}
 
 export class NameTeamForm implements IEventEnabled {
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
+    private readonly form: Form;
+    private readonly submitService: FormSubmitService;
 
     private readonly events: IEvents = {
         keyup: 'onFormInteraction',
@@ -24,9 +39,11 @@ export class NameTeamForm implements IEventEnabled {
         nameInputElement: '.js-organization-name-input',
     };
 
-    constructor(eventDelegator: EventDelegator, elementCache: ElementCache) {
+    constructor(eventDelegator: EventDelegator, elementCache: ElementCache, form: Form, submitService: FormSubmitService) {
         this.eventDelegator = eventDelegator;
         this.elementCache = elementCache;
+        this.submitService = submitService;
+        this.form = form;
     }
 
     public init(): void {
@@ -38,17 +55,12 @@ export class NameTeamForm implements IEventEnabled {
     protected onSubmit(event: Event): void {
         event.preventDefault();
         const formData = this.getFormData();
-        nameTeam(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
-        this.elementCache.get('submitButton').setAttribute('disabled', 'true');
+        this.submitService.submit(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
+        this.form.disableSubmitButton();
     }
 
     protected onFormInteraction(): void {
-        const form = <HTMLFormElement> this.elementCache.get('form');
-        if (form.checkValidity()) {
-            this.elementCache.get('submitButton').setAttribute('aria-disabled', 'false');
-        } else {
-            this.elementCache.get('submitButton').setAttribute('aria-disabled', 'true');
-        }
+        this.form.enableSubmitIfFormIsValid();
     }
 
     public getEvents(): IEvents {
@@ -60,10 +72,8 @@ export class NameTeamForm implements IEventEnabled {
     }
 
     private onFormSubmitFail(validationErrors: FormValidationErrors): void {
-        Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
-            injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
-        });
-        this.elementCache.get('submitButton').removeAttribute('disabled');
+        this.form.showValidationErrors(validationErrors);
+        this.form.enableSubmitButton();
     }
 
     private gotoTeamUrlStep(): void {

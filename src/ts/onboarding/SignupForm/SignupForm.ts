@@ -1,17 +1,39 @@
 import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
 import { ElementCache } from '../../hleo/ElementCache/ElementCache';
-import { submitSignup } from './SignupService';
 import { IEvents } from '../../hleo/EventDelegator/IEvents';
 import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
-import { SignupFormData } from './SignupFormData';
 import { Form } from 'onboarding/Form/Form';
-import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
+import { FormValidationErrors } from 'onboarding/Form/FormValidationErrors';
+import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
 
+class SignupFormData {
+    private readonly name: string;
+    private readonly email: string;
+    private readonly password: string;
+    private readonly termsAgreed: boolean;
+
+    constructor(name: string, email: string, password: string, termsAgreed: boolean) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.termsAgreed = termsAgreed;
+    }
+
+    public get(): string {
+        return JSON.stringify({
+            name: this.name,
+            email_address: this.email,
+            password: this.password,
+            terms_agreed: this.termsAgreed,
+        });
+    }
+}
 export class SignupForm implements IEventEnabled {
     private isPasswordVisible: boolean = false;
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
+    private readonly submitService: FormSubmitService;
     private readonly form: Form;
 
     private readonly events: IEvents = {
@@ -31,9 +53,10 @@ export class SignupForm implements IEventEnabled {
         termsInputElement: '.js-terms-input',
     };
 
-    constructor(eventDelegator: EventDelegator, elementCache: ElementCache, form: Form) {
+    constructor(eventDelegator: EventDelegator, elementCache: ElementCache, form: Form, submitService: FormSubmitService) {
         this.eventDelegator = eventDelegator;
         this.elementCache = elementCache;
+        this.submitService = submitService;
         this.form = form;
     }
 
@@ -60,7 +83,7 @@ export class SignupForm implements IEventEnabled {
         this.form.clearValidationErrors();
         const formData = this.getFormData();
         this.form.disableSubmitButton();
-        submitSignup(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
+        this.submitService.submit(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
     }
 
     private onFormSubmitSuccess(): void {

@@ -1,17 +1,29 @@
 import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
 import { ElementCache } from '../../hleo/ElementCache/ElementCache';
-import { verifyIdentity } from './VerifyIdentityService';
 import { IEvents } from '../../hleo/EventDelegator/IEvents';
 import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
-import { VerifyIdentityFormData } from './VerifyIdentityFormData';
-import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
-import { injectValidationErrors } from 'hleo/FormValidation/ValidationMessageInjector';
+import { FormValidationErrors } from 'onboarding/Form/FormValidationErrors';
 import { Form } from 'onboarding/Form/Form';
+import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
 
+class VerifyIdentityFormData {
+    private readonly verififcationCode: string;
+
+    constructor(verififcationCode: string) {
+        this.verififcationCode = verififcationCode;
+    }
+
+    public get(): string {
+        return JSON.stringify({
+            phrase: this.verififcationCode,
+        });
+    }
+}
 export class VerifyIdentityForm implements IEventEnabled {
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
+    private readonly submitService: FormSubmitService;
     private readonly form: Form;
 
     private readonly events: IEvents = {
@@ -26,9 +38,10 @@ export class VerifyIdentityForm implements IEventEnabled {
         phraseInputElement: '.js-verification-code-input',
     };
 
-    constructor(eventDelegator: EventDelegator, elementCache: ElementCache, form: Form) {
+    constructor(eventDelegator: EventDelegator, elementCache: ElementCache, form: Form, submitService: FormSubmitService) {
         this.eventDelegator = eventDelegator;
         this.elementCache = elementCache;
+        this.submitService = submitService;
         this.form = form;
     }
 
@@ -41,7 +54,7 @@ export class VerifyIdentityForm implements IEventEnabled {
     protected onSubmit(event: Event): void {
         event.preventDefault();
         const formData = this.getFormData();
-        verifyIdentity(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
+        this.submitService.submit(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
         this.form.disableSubmitButton();
     }
 

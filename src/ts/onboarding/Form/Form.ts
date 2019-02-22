@@ -1,5 +1,5 @@
-import { injectValidationErrors } from 'hleo/FormValidation/ValidationMessageInjector';
-import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
+import { injectValidationErrors } from 'onboarding/Form/ValidationMessageInjector';
+import { FormValidationErrors } from 'onboarding/Form/FormValidationErrors';
 
 export class Form {
     private readonly form: HTMLFormElement;

@@ -5,13 +5,14 @@ import { IEvents } from '../../hleo/EventDelegator/IEvents';
 import { IElementHash } from 'hleo/ElementCache/IElementHash';
 import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
 import { SignupFormData } from './SignupFormData';
+import { Form } from 'onboarding/Form/Form';
 import { FormValidationErrors } from 'hleo/FormValidation/FormValidationErrors';
-import { injectValidationErrors } from 'hleo/FormValidation/ValidationMessageInjector';
 
 export class SignupForm implements IEventEnabled {
     private isPasswordVisible: boolean = false;
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
+    private readonly form: Form;
 
     private readonly events: IEvents = {
         keyup: 'onFormInteraction',
@@ -30,9 +31,10 @@ export class SignupForm implements IEventEnabled {
         termsInputElement: '.js-terms-input',
     };
 
-    constructor(eventDelegator: EventDelegator, elementCache: ElementCache) {
+    constructor(eventDelegator: EventDelegator, elementCache: ElementCache, form: Form) {
         this.eventDelegator = eventDelegator;
         this.elementCache = elementCache;
+        this.form = form;
     }
 
     public init(): void {
@@ -41,25 +43,37 @@ export class SignupForm implements IEventEnabled {
         this.eventDelegator.delegate();
     }
 
-    protected onSubmit(event: Event): void {
-        event.preventDefault();
-        this.clearValidationErrors();
-        const formData = this.getFormData();
-        submitSignup(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
-        this.elementCache.get('submitButton').setAttribute('disabled', 'true');
-    }
-
     public getEvents(): IEvents {
         return this.events;
     }
 
+    private getFormData(): SignupFormData {
+        const passwordEl = <HTMLInputElement> this.elementCache.get('passwordInputElement');
+        const emailEl = <HTMLInputElement> this.elementCache.get('emailInputElement');
+        const nameEl = <HTMLInputElement> this.elementCache.get('nameInputElement');
+        const termsEl = <HTMLInputElement> this.elementCache.get('termsInputElement');
+        return new SignupFormData(nameEl.value, emailEl.value, passwordEl.value, termsEl.checked);
+    }
+
+    protected onSubmit(event: Event): void {
+        event.preventDefault();
+        this.form.clearValidationErrors();
+        const formData = this.getFormData();
+        this.form.disableSubmitButton();
+        submitSignup(this.onFormSubmitSuccess.bind(this), this.onFormSubmitFail.bind(this), formData.get());
+    }
+
+    private onFormSubmitSuccess(): void {
+        this.gotoVerifyIdentityStep();
+    }
+
+    private onFormSubmitFail(validationErrors: FormValidationErrors): void {
+        this.form.showValidationErrors(validationErrors);
+        this.form.enableSubmitButton();
+    }
+
     protected onFormInteraction(): void {
-        const form = <HTMLFormElement> this.elementCache.get('form');
-        if (form.checkValidity()) {
-            this.elementCache.get('submitButton').setAttribute('aria-disabled', 'false');
-        } else {
-            this.elementCache.get('submitButton').setAttribute('aria-disabled', 'true');
-        }
+        this.form.enableSubmitIfFormIsValid();
     }
 
     protected onTogglePasswordVisibilityClick(): void {
@@ -75,39 +89,6 @@ export class SignupForm implements IEventEnabled {
         this.elementCache.get('passwordInputElement').focus();
     }
 
-    private onFormSubmitSuccess(): void {
-        this.gotoVerifyIdentityStep();
-    }
-
-    private onFormSubmitFail(validationErrors: FormValidationErrors): void {
-        Object.entries(validationErrors.violations).forEach(([inputKey, errors]) => {
-            injectValidationErrors(this.elementCache.get('form'), inputKey, errors);
-        });
-        this.elementCache.get('submitButton').removeAttribute('disabled');
-    }
-
-    private clearValidationErrors(): void {
-        this.elementCache.get('form').querySelectorAll('.js-form-error').forEach((el: Element) => {
-            el.remove();
-        });
-
-        this.elementCache.get('form').querySelectorAll('.js-form-input').forEach((el: Element) => {
-            el.classList.remove('validation-error');
-        });
-    }
-
-    private gotoVerifyIdentityStep(): void {
-        window.location.pathname = '/verify-identity';
-    }
-
-    private getFormData(): SignupFormData {
-        const passwordEl = <HTMLInputElement> this.elementCache.get('passwordInputElement');
-        const emailEl = <HTMLInputElement> this.elementCache.get('emailInputElement');
-        const nameEl = <HTMLInputElement> this.elementCache.get('nameInputElement');
-        const termsEl = <HTMLInputElement> this.elementCache.get('termsInputElement');
-        return new SignupFormData(nameEl.value, emailEl.value, passwordEl.value, termsEl.checked);
-    }
-
     private setTogglePasswordVisibilityText(text: string): void {
         this.elementCache.get('togglePasswordVisibilityButton').innerText = text;
     }
@@ -115,5 +96,9 @@ export class SignupForm implements IEventEnabled {
     private setPasswordFieldType(type: string): void {
         const passwordField = <HTMLInputElement> this.elementCache.get('passwordInputElement');
         passwordField.type = type;
+    }
+
+    private gotoVerifyIdentityStep(): void {
+        window.location.pathname = '/verify-identity';
     }
 }

@@ -55,10 +55,13 @@ class OrganizationModel
 
     public function setApprovedEmailDomains(?string $approvedEmailDomains): void
     {
+        if (null !== $approvedEmailDomains) {
+            $approvedEmailDomains = json_decode($approvedEmailDomains, true);
+        }
         $this->approvedEmailDomains = $approvedEmailDomains;
     }
 
-    public function getApprovedEmailDomains(): ?string
+    public function getApprovedEmailDomains(): ?array
     {
         return $this->approvedEmailDomains;
     }

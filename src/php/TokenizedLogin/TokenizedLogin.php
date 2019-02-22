@@ -5,6 +5,7 @@ namespace Lithos\TokenizedLogin;
 
 use Lithos\IdGenerator\IdGenerator;
 use Lithos\Person\PersonModel;
+use Lithos\Security\TokenGenerator;
 
 class TokenizedLogin
 {

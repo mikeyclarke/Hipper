@@ -8,12 +8,12 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class NotReservedSubdomainValidator extends ConstraintValidator
+class NotPersonalEmailDomainValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof NotReservedSubdomain) {
-            throw new UnexpectedTypeException($constraint, NotReservedSubdomain::class);
+        if (!$constraint instanceof NotPersonalEmailDomain) {
+            throw new UnexpectedTypeException($constraint, NotPersonalEmailDomain::class);
         }
 
         if (null === $value || '' === $value) {
@@ -24,9 +24,9 @@ class NotReservedSubdomainValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $reserved = require __DIR__ . '/../../data/reserved_subdomains.php';
+        $blacklist = require __DIR__ . '/../../data/webmail_domains.php';
 
-        foreach ($reserved['regexPatterns'] as $pattern) {
+        foreach ($blacklist['regexPatterns'] as $pattern) {
             if (preg_match($pattern, $value)) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ string }}', $value)
@@ -35,7 +35,7 @@ class NotReservedSubdomainValidator extends ConstraintValidator
             }
         }
 
-        if (in_array($value, $reserved['subdomains'])) {
+        if (in_array($value, $blacklist['domains'])) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ string }}', $value)
                 ->addViolation();

@@ -43,6 +43,11 @@ services:
             $emailFromAddress: '%transactional_email_from_addr%'
             $emailReplyToAddress: '%transactional_email_reply_to_addr%'
 
+    Lithos\TransactionalEmail\BulkInvite:
+        arguments:
+            $emailFromAddress: '%transactional_email_from_addr%'
+            $emailReplyToAddress: '%transactional_email_reply_to_addr%'
+
     lithos_session_storage:
         class: Lithos\Session\SessionStorage
         arguments: ['%session.storage.options%', '@session.handler', '@session.storage.metadata_bag', '@request_stack']

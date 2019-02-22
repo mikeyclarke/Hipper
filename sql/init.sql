@@ -11,7 +11,7 @@ CREATE TABLE organization (
     name                    text CHECK (LENGTH(name) <= 50) NOT NULL,
     subdomain               text CHECK (LENGTH(subdomain) <= 63) DEFAULT NULL,
     approved_email_domain_signup_allowed boolean DEFAULT false,
-    approved_email_domains  text DEFAULT NULL,
+    approved_email_domains  jsonb DEFAULT NULL,
     created                 timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated                 timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -147,4 +147,21 @@ CREATE TABLE person_metadata (
 CREATE TRIGGER update_person_metadata_updated_timestamp
 BEFORE UPDATE
 ON person_metadata
+FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
+
+CREATE TABLE invite (
+    id                  UUID NOT NULL PRIMARY KEY,
+    email_address       text CHECK (LENGTH(email_address) <= 255) NOT NULL,
+    invited_by          UUID DEFAULT NULL references person(id),
+    organization_id     UUID NOT NULL references organization(id),
+    token               text CHECK (LENGTH(token) <= 32) DEFAULT NULL,
+    sent                boolean DEFAULT false,
+    expires             timestamp without time zone NOT NULL,
+    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_invite_updated_timestamp
+BEFORE UPDATE
+ON invite
 FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();

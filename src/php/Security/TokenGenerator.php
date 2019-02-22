@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\TokenizedLogin;
+namespace Lithos\Security;
 
 use RandomLib\Factory;
 

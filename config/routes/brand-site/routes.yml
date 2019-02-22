@@ -67,6 +67,22 @@ invite.get:
         _before_middlewares:
             - onboarding_verified_person_middleware:before
 
+invite.post:
+    path: /_/invite
+    controller: Lithos\Onboarding\InviteController::postAction
+    methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+invite.emails.post:
+    path: /_/invite/emails
+    controller: Lithos\Onboarding\InviteController::postEmailInvitesAction
+    methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
 finalize.get:
     path: /begin
     controller: Lithos\Onboarding\FinalizeController::getAction

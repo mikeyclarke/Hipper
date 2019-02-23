@@ -1,8 +1,8 @@
 import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
 import { ElementCache } from '../../hleo/ElementCache/ElementCache';
-import { IEvents } from '../../hleo/EventDelegator/IEvents';
-import { IElementHash } from 'hleo/ElementCache/IElementHash';
-import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
+import { EventsHash } from '../../hleo/EventDelegator/EventsHash';
+import { ElementHash } from 'hleo/ElementCache/ElementHash';
+import { EventsEnabled } from '../../hleo/EventDelegator/EventsEnabled';
 import { FormValidationErrors } from 'onboarding/Form/FormValidationErrors';
 import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
 import { Form } from 'onboarding/Form/Form';
@@ -21,19 +21,19 @@ class TeamSubdomainFormData {
     }
 }
 
-export class TeamSubdomainForm implements IEventEnabled {
+export class TeamSubdomainForm implements EventsEnabled {
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
     private readonly form: Form;
     private readonly submitService: FormSubmitService;
 
-    private readonly events: IEvents = {
+    private readonly events: EventsHash = {
         keyup: 'onFormInteraction',
         change: 'onFormInteraction',
         submit: 'onSubmit',
     };
 
-    public static readonly elements: IElementHash = {
+    public static readonly elements: ElementHash = {
         form: '.js-choose-team-url-form',
         submitButton: '.js-form-submit',
         subdomainInputElement: '.js-team-url-input',
@@ -63,7 +63,7 @@ export class TeamSubdomainForm implements IEventEnabled {
         this.form.enableSubmitIfFormIsValid();
     }
 
-    public getEvents(): IEvents {
+    public getEvents(): EventsHash {
         return this.events;
     }
 

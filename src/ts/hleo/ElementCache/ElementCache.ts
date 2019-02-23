@@ -1,4 +1,4 @@
-import { IElementHash } from './IElementHash';
+import { ElementHash } from './ElementHash';
 
 /** Provides an API to store and retrieve DOM elements associated with a component */
 export class ElementCache {
@@ -11,7 +11,7 @@ export class ElementCache {
      * @param baseElementSelector - CSS selector for the base element
      * @param elementHash - A hash of keys and css selectors for later retrieval
      */
-    constructor(baseElementSelector: string, elementHash: IElementHash) {
+    constructor(baseElementSelector: string, elementHash: ElementHash) {
         this.baseElementSelector = baseElementSelector;
         this.baseElement = this.getBaseElement();
         this.cacheElements(elementHash);
@@ -27,7 +27,7 @@ export class ElementCache {
         return <HTMLElement> matches.item(0);
     }
 
-    private cacheElements(elementHash: IElementHash): void {
+    private cacheElements(elementHash: ElementHash): void {
         for (const selector in elementHash) {
             if (elementHash[selector] === this.baseElementSelector) {
                 this.cachedElements[selector] = this.baseElement;

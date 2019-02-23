@@ -1,11 +1,11 @@
 import { EventDelegate } from './EventDelegate';
-import { IEvents } from './IEvents';
-import { IEventEnabled } from './IEventEnabled';
+import { EventsHash } from './EventsHash';
+import { EventsEnabled } from './EventsEnabled';
 
 export class EventDelegator {
     private readonly element: HTMLElement;
-    private events!: IEvents;
-    private context!: IEventEnabled;
+    private events!: EventsHash;
+    private context!: EventsEnabled;
     private readonly eventSplitter: RegExp = /^(\S+)\s*(.*)$/;
     private readonly eventDelegates: IDelegateCollection = {};
     private readonly boundHandler: EventListenerOrEventListenerObject;
@@ -28,11 +28,11 @@ export class EventDelegator {
         }
     }
 
-    public setContext(context: IEventEnabled): void {
+    public setContext(context: EventsEnabled): void {
         this.context = context;
     }
 
-    public setEvents(events: IEvents): void {
+    public setEvents(events: EventsHash): void {
         this.events = events;
     }
 

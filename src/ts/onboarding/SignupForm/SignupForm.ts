@@ -1,8 +1,8 @@
 import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
 import { ElementCache } from '../../hleo/ElementCache/ElementCache';
-import { IEvents } from '../../hleo/EventDelegator/IEvents';
-import { IElementHash } from 'hleo/ElementCache/IElementHash';
-import { IEventEnabled } from '../../hleo/EventDelegator/IEventEnabled';
+import { EventsHash } from '../../hleo/EventDelegator/EventsHash';
+import { ElementHash } from 'hleo/ElementCache/ElementHash';
+import { EventsEnabled } from '../../hleo/EventDelegator/EventsEnabled';
 import { Form } from 'onboarding/Form/Form';
 import { FormValidationErrors } from 'onboarding/Form/FormValidationErrors';
 import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
@@ -29,21 +29,21 @@ class SignupFormData {
         });
     }
 }
-export class SignupForm implements IEventEnabled {
+export class SignupForm implements EventsEnabled {
     private isPasswordVisible: boolean = false;
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
     private readonly submitService: FormSubmitService;
     private readonly form: Form;
 
-    private readonly events: IEvents = {
+    private readonly events: EventsHash = {
         keyup: 'onFormInteraction',
         change: 'onFormInteraction',
         submit: 'onSubmit',
         'click .js-toggle-password-visibility': 'onTogglePasswordVisibilityClick',
     };
 
-    public static readonly elements: IElementHash = {
+    public static readonly elements: ElementHash = {
         form: '.js-signup-form',
         togglePasswordVisibilityButton: '.js-toggle-password-visibility',
         submitButton: '.js-form-submit',
@@ -66,7 +66,7 @@ export class SignupForm implements IEventEnabled {
         this.eventDelegator.delegate();
     }
 
-    public getEvents(): IEvents {
+    public getEvents(): EventsHash {
         return this.events;
     }
 

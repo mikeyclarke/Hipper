@@ -1,11 +1,11 @@
-import { IController } from './IController';
-import { VerifyIdentityForm } from '../onboarding/VerifyIdentityForm/VerifyIdentityForm';
+import { Controller } from '../Controller';
+import { VerifyIdentityForm } from '../../onboarding/VerifyIdentityForm/VerifyIdentityForm';
 import { ElementCache } from 'hleo/ElementCache/ElementCache';
 import { EventDelegator } from 'hleo/EventDelegator/EventDelegator';
 import { Form } from 'onboarding/Form/Form';
 import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
 
-export class VerifyIdentityController implements IController {
+export class VerifyIdentityController implements Controller {
     private verifyIdentityForm!: VerifyIdentityForm;
 
     public start(): void {

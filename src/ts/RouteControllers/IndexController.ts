@@ -1,7 +1,7 @@
-import { IController } from './IController';
+import { Controller } from './Controller';
 import { TextEditor } from '../TextEditor/TextEditor';
 
-export class IndexController implements IController {
+export class IndexController implements Controller {
     private readonly textEditor: TextEditor;
 
     constructor(textEditor: TextEditor) {

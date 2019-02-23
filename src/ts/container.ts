@@ -2,16 +2,16 @@ import * as Bottle from 'bottlejs';
 import { CKeditor } from './TextEditor/CKEditor/CKEditor';
 import { TextEditor } from './TextEditor/TextEditor';
 import { IndexController } from './RouteControllers/IndexController';
-import { SignupController } from './RouteControllers/SignupController';
-import { VerifyIdentityController } from './RouteControllers/VerifyIdentityController';
-import { TeamSubdomainController } from './RouteControllers/TeamSubdomainController';
-import { NameTeamController } from './RouteControllers/NameTeamController';
-import { IController } from 'RouteControllers/IController';
+import { SignupController } from './RouteControllers/onboarding/SignupController';
+import { VerifyIdentityController } from './RouteControllers/onboarding/VerifyIdentityController';
+import { TeamSubdomainController } from './RouteControllers/onboarding/TeamSubdomainController';
+import { NameTeamController } from './RouteControllers/onboarding/NameTeamController';
+import { Controller } from 'RouteControllers/Controller';
 
 const bottle = new Bottle();
 
 interface Iroute {
-    [key: string]: IController;
+    [key: string]: Controller;
 }
 
 bottle.factory('indexController', (container) => {

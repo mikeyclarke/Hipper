@@ -1,11 +1,11 @@
-import { IController } from './IController';
-import { NameTeamForm } from '../onboarding/NameTeamForm/NameTeamForm';
+import { Controller } from '../Controller';
+import { NameTeamForm } from '../../onboarding/NameTeamForm/NameTeamForm';
 import { ElementCache } from 'hleo/ElementCache/ElementCache';
 import { EventDelegator } from 'hleo/EventDelegator/EventDelegator';
 import { Form } from 'onboarding/Form/Form';
 import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
 
-export class NameTeamController implements IController {
+export class NameTeamController implements Controller {
     private nameTeamForm!: NameTeamForm;
 
     public start(): void {

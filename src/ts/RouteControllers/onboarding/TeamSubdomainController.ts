@@ -1,11 +1,11 @@
-import { IController } from './IController';
-import { TeamSubdomainForm } from '../onboarding/TeamSubdomainForm/TeamSubdomainForm';
+import { Controller } from '../Controller';
+import { TeamSubdomainForm } from '../../onboarding/TeamSubdomainForm/TeamSubdomainForm';
 import { ElementCache } from 'hleo/ElementCache/ElementCache';
 import { EventDelegator } from 'hleo/EventDelegator/EventDelegator';
 import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
 import { Form } from 'onboarding/Form/Form';
 
-export class TeamSubdomainController implements IController {
+export class TeamSubdomainController implements Controller {
     private teamSubdomainForm!: TeamSubdomainForm;
 
     public start(): void {

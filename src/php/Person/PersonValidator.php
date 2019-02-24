@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lithos\Person;
 
+use Lithos\Validation\Constraints\UniqueEmailAddress;
 use Lithos\Validation\ConstraintViolationListFormatter;
 use Lithos\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -14,37 +15,21 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PersonValidator
 {
-    private $personRepository;
+    private $validatorInterface;
 
     public function __construct(
-        PersonRepository $personRepository
+        ValidatorInterface $validatorInterface
     ) {
-        $this->personRepository = $personRepository;
+        $this->validatorInterface = $validatorInterface;
     }
 
     public function validate(array $input, bool $isNew = false): void
     {
         $this->validateInput($input, $isNew);
-        $this->validateUniqueEmailAddress($input);
-    }
-
-    private function validateUniqueEmailAddress(array $input): void
-    {
-        if (!isset($input['email_address'])) {
-            return;
-        }
-
-        if (null !== $this->personRepository->findOneByEmailAddress($input['email_address'])) {
-            throw new ValidationException([
-                'email_address' => [
-                    sprintf('Email address %s already in use.', $input['email_address']),
-                ]
-            ]);
-        }
     }
 
     private function validateInput(array $input, bool $isNew): void
@@ -61,6 +46,7 @@ class PersonValidator
             'email_address' => [
                 new NotBlank,
                 new Email,
+                new UniqueEmailAddress,
             ],
             'password' => [
                 new NotBlank,
@@ -87,10 +73,9 @@ class PersonValidator
             }
         }
 
-        $validator = Validation::createValidator();
         $collectionConstraint = new Collection($constraints);
 
-        $violations = $validator->validate($input, $collectionConstraint);
+        $violations = $this->validatorInterface->validate($input, $collectionConstraint);
 
         if (count($violations) > 0) {
             throw new ValidationException(

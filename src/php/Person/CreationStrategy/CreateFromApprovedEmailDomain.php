@@ -78,7 +78,6 @@ class CreateFromApprovedEmailDomain
             throw new MalformedEmailAddressException;
         }
 
-        $allowedDomains = explode(',', $allowedDomains);
         $inputDomain = $parts[1];
         return in_array($inputDomain, $allowedDomains);
     }

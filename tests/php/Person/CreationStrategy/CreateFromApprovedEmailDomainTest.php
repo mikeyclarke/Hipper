@@ -52,7 +52,7 @@ class CreateFromApprovedEmailDomainTest extends TestCase
         ];
         $organization = new OrganizationModel;
         $organization->setApprovedEmailDomainSignupAllowed(true);
-        $organization->setApprovedEmailDomains('tryhleo.com');
+        $organization->setApprovedEmailDomains('["tryhleo.com"]');
 
         $person = new PersonModel;
         $encodedPassword = 'encoded-password';
@@ -85,7 +85,7 @@ class CreateFromApprovedEmailDomainTest extends TestCase
         ];
         $organization = new OrganizationModel;
         $organization->setApprovedEmailDomainSignupAllowed(true);
-        $organization->setApprovedEmailDomains('tryhleo.test,tryhleo.com');
+        $organization->setApprovedEmailDomains('["tryhleo.test", "tryhleo.com"]');
 
         $this->createPersonValidatorExpectation($input);
 

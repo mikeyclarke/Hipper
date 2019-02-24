@@ -54,4 +54,15 @@ class OrganizationRepository
 
         return $result;
     }
+
+    public function existsWithSubdomain(string $subdomain): bool
+    {
+        $stmt = $this->connection->executeQuery(
+            'SELECT EXISTS (
+                SELECT 1 FROM organization WHERE subdomain = ?
+            )',
+            [$subdomain]
+        );
+        return (bool) $stmt->fetchColumn();
+    }
 }

@@ -4,10 +4,19 @@ declare(strict_types=1);
 namespace Lithos\Organization;
 
 use Lithos\Validation\Constraints\NotReservedSubdomain;
-use Symfony\Component\Validator\Validation;
+use Lithos\Validation\Constraints\UniqueSubdomain;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrganizationSubdomainGenerator
 {
+    private $validatorInterface;
+
+    public function __construct(
+        ValidatorInterface $validatorInterface
+    ) {
+        $this->validatorInterface = $validatorInterface;
+    }
+
     public function generate(string $organizationName): string
     {
         $subdomain = $this->stripInvalidCharacters($organizationName);
@@ -15,7 +24,7 @@ class OrganizationSubdomainGenerator
         $subdomain = $this->stripDuplicateDashes($subdomain);
         $subdomain = $this->stripOuterDashes($subdomain);
         $subdomain = $this->toLowercase($subdomain);
-        $subdomain = $this->checkAgainstBlacklist($subdomain);
+        $subdomain = $this->checkIsNotTakenAndNotBlacklisted($subdomain);
         return $subdomain;
     }
 
@@ -44,10 +53,12 @@ class OrganizationSubdomainGenerator
         return strtolower($value);
     }
 
-    private function checkAgainstBlacklist(string $value): string
+    private function checkIsNotTakenAndNotBlacklisted(string $value): string
     {
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($value, [new NotReservedSubdomain]);
+        $violations = $this->validatorInterface->validate($value, [
+            new NotReservedSubdomain,
+            new UniqueSubdomain,
+        ]);
         if (count($violations) > 0) {
             return '';
         }

@@ -6,6 +6,7 @@ namespace Lithos\Organization;
 use Lithos\Validation\ConstraintViolationListFormatter;
 use Lithos\Validation\Constraints\NotPersonalEmailDomain;
 use Lithos\Validation\Constraints\NotReservedSubdomain;
+use Lithos\Validation\Constraints\UniqueSubdomain;
 use Lithos\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrganizationValidator
 {
@@ -22,6 +23,14 @@ class OrganizationValidator
     // https://bit.ly/2IrHgZR
     const EMAIL_DOMAIN_PATTERN =
         '/[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/';
+
+    private $validatorInterface;
+
+    public function __construct(
+        ValidatorInterface $validatorInterface
+    ) {
+        $this->validatorInterface = $validatorInterface;
+    }
 
     public function validate(array $input): void
     {
@@ -51,6 +60,7 @@ class OrganizationValidator
                         'pattern' => '/[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?/',
                     ]),
                     new NotReservedSubdomain,
+                    new UniqueSubdomain,
                 ]),
             ],
             'approved_email_domain_signup_allowed' => [
@@ -74,10 +84,9 @@ class OrganizationValidator
             ],
         ];
 
-        $validator = Validation::createValidator();
         $collectionConstraint = new Collection($constraints);
 
-        $violations = $validator->validate($input, $collectionConstraint);
+        $violations = $this->validatorInterface->validate($input, $collectionConstraint);
 
         if (count($violations) > 0) {
             throw new ValidationException(

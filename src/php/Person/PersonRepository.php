@@ -54,4 +54,15 @@ class PersonRepository
 
         return $result;
     }
+
+    public function existsWithEmailAddress(string $emailAddress): bool
+    {
+        $stmt = $this->connection->executeQuery(
+            'SELECT EXISTS (
+                SELECT 1 FROM person WHERE email_address = ?
+            )',
+            [$emailAddress]
+        );
+        return (bool) $stmt->fetchColumn();
+    }
 }

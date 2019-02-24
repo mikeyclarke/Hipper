@@ -3,17 +3,27 @@ declare(strict_types=1);
 
 namespace Lithos\Invite;
 
+use Lithos\Validation\Constraints\UniqueEmailAddress;
+use Lithos\Validation\Constraints\UniqueInvite;
 use Lithos\Validation\ConstraintViolationListFormatter;
 use Lithos\Validation\Exception\ValidationException;
-use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BulkInvitationValidator
 {
     const MAX_BULK_INVITES = 20;
+
+    private $validatorInterface;
+
+    public function __construct(
+        ValidatorInterface $validatorInterface
+    ) {
+        $this->validatorInterface = $validatorInterface;
+    }
 
     public function validate(array $input): void
     {
@@ -47,14 +57,15 @@ class BulkInvitationValidator
                 new All([
                     new NotBlank,
                     new Email,
+                    new UniqueInvite,
+                    new UniqueEmailAddress,
                 ]),
             ],
         ];
 
-        $validator = Validation::createValidator();
         $collectionConstraint = new Collection($constraints);
 
-        $violations = $validator->validate($input, $collectionConstraint);
+        $violations = $this->validatorInterface->validate($input, $collectionConstraint);
 
         if (count($violations) > 0) {
             throw new ValidationException(

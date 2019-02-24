@@ -31,4 +31,15 @@ class InviteRepository
         }
         return $indexed;
     }
+
+    public function existsWithEmailAddress(string $emailAddress): bool
+    {
+        $stmt = $this->connection->executeQuery(
+            'SELECT EXISTS (
+                SELECT 1 FROM invite WHERE email_address = ?
+            )',
+            [$emailAddress]
+        );
+        return (bool) $stmt->fetchColumn();
+    }
 }

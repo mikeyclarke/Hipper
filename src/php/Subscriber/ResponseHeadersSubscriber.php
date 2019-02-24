@@ -10,6 +10,17 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ResponseHeadersSubscriber implements EventSubscriberInterface
 {
+    private $hstsEnabled;
+    private $hstsMaxAge;
+
+    public function __construct(
+        bool $hstsEnabled,
+        int $hstsMaxAge
+    ) {
+        $this->hstsEnabled = $hstsEnabled;
+        $this->hstsMaxAge = $hstsMaxAge;
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -24,11 +35,20 @@ class ResponseHeadersSubscriber implements EventSubscriberInterface
         }
 
         $response = $event->getResponse();
-        $response->headers->add([
+
+        $headers = [
             'Cache-Control' => 'no-store, no-cache',
             'X-Content-Type-Options' => 'nosniff',
             'X-Frame-Options' => 'DENY',
             'X-XSS-Protection' => '1; mode=block',
-        ]);
+        ];
+        if ($this->hstsEnabled) {
+            $headers['Strict-Transport-Security'] = sprintf(
+                'max-age=%d; includeSubdomains; preload',
+                $this->hstsMaxAge
+            );
+        }
+
+        $response->headers->add($headers);
     }
 }

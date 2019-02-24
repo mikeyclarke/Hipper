@@ -4,46 +4,31 @@ declare(strict_types=1);
 namespace Lithos\Team;
 
 use Lithos\Validation\ConstraintViolationListFormatter;
+use Lithos\Validation\Constraints\UniqueTeamName;
 use Lithos\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Required;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TeamValidator
 {
-    private $teamRepository;
+    private $validatorInterface;
 
     public function __construct(
-        TeamRepository $teamRepository
+        ValidatorInterface $validatorInterface
     ) {
-        $this->teamRepository = $teamRepository;
+        $this->validatorInterface = $validatorInterface;
     }
 
     public function validate(array $input, string $organizationId, bool $isNew = false): void
     {
-        $this->validateInput($input, $isNew);
-        $this->validateUniqueName($organizationId, $input);
+        $this->validateInput($organizationId, $input, $isNew);
     }
 
-    private function validateUniqueName(string $organizationId, array $input): void
-    {
-        if (!isset($input['name'])) {
-            return;
-        }
-
-        if ($this->teamRepository->existsWithName($organizationId, $input['name'])) {
-            throw new ValidationException([
-                'name' => [
-                    'Name already in use.',
-                ]
-            ]);
-        }
-    }
-
-    private function validateInput(array $input, bool $isNew): void
+    private function validateInput(string $organizationId, array $input, bool $isNew): void
     {
         $requiredOnCreate = ['name'];
         $constraints = [
@@ -52,6 +37,9 @@ class TeamValidator
                 new Length([
                     'min' => 3,
                     'max' => 100,
+                ]),
+                new UniqueTeamName([
+                    'organizationId' => $organizationId,
                 ]),
             ],
             'description' => [
@@ -69,10 +57,9 @@ class TeamValidator
             }
         }
 
-        $validator = Validation::createValidator();
         $collectionConstraint = new Collection($constraints);
 
-        $violations = $validator->validate($input, $collectionConstraint);
+        $violations = $this->validatorInterface->validate($input, $collectionConstraint);
 
         if (count($violations) > 0) {
             throw new ValidationException(

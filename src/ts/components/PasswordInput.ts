@@ -14,7 +14,7 @@ export class PasswordInput extends HTMLElement {
         this.button.addEventListener('click', this.toggleVisibility.bind(this));
     }
 
-    private unmask() {
+    private unmask(): void {
         this.input.type = 'text';
         this.input.spellcheck = false;
         this.input.autocorrect = 'off';
@@ -22,7 +22,7 @@ export class PasswordInput extends HTMLElement {
         this.button.textContent = 'Hide';
     }
 
-    private mask() {
+    private mask(): void {
         this.input.type = 'password';
         this.button.textContent = 'Show';
     }

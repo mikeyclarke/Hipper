@@ -27,10 +27,10 @@
 
                     <fieldset class="c-signup-form__field">
                         <label for="person-password" class="c-signup-form__label">Password</label>
-                        <div class="c-password-input">
+                        <password-input class="c-password-input">
                             <input class="c-signup-form__input c-password-input__input js-password-input js-form-input" type="password" name="password" id="person-password" required="required" aria-required="true" aria-describedby="password-rules" autocomplete="new-password" minlength="8" data-validation-error-input="password">
                             <button class="c-password-input__visibility-button js-toggle-password-visibility" type="button" aria-hidden="true" tabindex="-1">Show</button>
-                        </div>
+                        </password-input>
                         <div class="c-signup-form__validation-error-container" data-validation-error-container="password"></div>
                         <p class="c-signup-form__field-info" id="password-rules">Min. 8 characters. Mixing numbers, letters, and symbols is encouraged.</p>
                     </fieldset>

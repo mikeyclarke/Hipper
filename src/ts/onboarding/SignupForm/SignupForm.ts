@@ -30,7 +30,6 @@ class SignupFormData {
     }
 }
 export class SignupForm {
-    private isPasswordVisible: boolean = false;
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
     private readonly submitService: FormSubmitService;
@@ -40,12 +39,10 @@ export class SignupForm {
         keyup: 'onFormInteraction',
         change: 'onFormInteraction',
         submit: 'onSubmit',
-        'click .js-toggle-password-visibility': 'onTogglePasswordVisibilityClick',
     };
 
     public static readonly elements: ElementHash = {
         form: '.js-signup-form',
-        togglePasswordVisibilityButton: '.js-toggle-password-visibility',
         submitButton: '.js-form-submit',
         passwordInputElement: '.js-password-input',
         emailInputElement: '.js-email-input',
@@ -96,28 +93,6 @@ export class SignupForm {
 
     protected onFormInteraction(): void {
         this.form.enableSubmitIfFormIsValid();
-    }
-
-    protected onTogglePasswordVisibilityClick(): void {
-        if (this.isPasswordVisible) {
-            this.setPasswordFieldType('password');
-            this.setTogglePasswordVisibilityText('Show');
-            this.isPasswordVisible = false;
-        } else {
-            this.setPasswordFieldType('text');
-            this.setTogglePasswordVisibilityText('Hide');
-            this.isPasswordVisible = true;
-        }
-        this.elementCache.get('passwordInputElement').focus();
-    }
-
-    private setTogglePasswordVisibilityText(text: string): void {
-        this.elementCache.get('togglePasswordVisibilityButton').innerText = text;
-    }
-
-    private setPasswordFieldType(type: string): void {
-        const passwordField = <HTMLInputElement> this.elementCache.get('passwordInputElement');
-        passwordField.type = type;
     }
 
     private gotoVerifyIdentityStep(): void {

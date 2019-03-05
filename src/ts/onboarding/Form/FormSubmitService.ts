@@ -7,7 +7,7 @@ export class FormSubmitService {
         this.url = url;
     }
 
-    public submit(successCallback: Function, failCallback: Function, payload: string) {
+    public submit(successCallback: Function, failCallback: Function, payload: string): Promise<void> {
         return fetch(this.url, {
             headers: {
                 'Content-Type': 'application/json',

@@ -73,3 +73,6 @@ webpackd:
 
 sqlinitd:
 	docker-compose run db sh -c "psql -U root -d hleo -a -f /var/sql/init.sql"
+
+testjsd:
+	docker-compose run node sh -c "cd /var/hleo; node_modules/.bin/jest --verbose"

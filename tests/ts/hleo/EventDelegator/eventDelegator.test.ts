@@ -6,8 +6,10 @@ let eventTarget: HTMLElement | null;
 let delegator: EventDelegator | null;
 
 const eventsConsumer = {
-    events: {
-        click: 'onClick',
+    getEvents: () => {
+        return {
+            click: 'onClick',
+        };
     },
 
     onClick: () => {
@@ -22,7 +24,6 @@ beforeEach(() => {
     uiContainerElement.appendChild(eventTarget);
     delegator = new EventDelegator(uiContainerElement);
     if (delegator) {
-        delegator.setEvents(eventsConsumer.events);
         delegator.setContext(eventsConsumer);
     }
 });

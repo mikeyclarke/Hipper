@@ -17,6 +17,7 @@ export class EventDelegator {
     }
 
     public delegate(): void {
+        this.setEvents();
         this.eventTypes = this.getEventTypes();
         this.storeEventTypes();
         this.bindTopLevelEvents();
@@ -32,8 +33,8 @@ export class EventDelegator {
         this.context = context;
     }
 
-    public setEvents(events: EventsHash): void {
-        this.events = events;
+    public setEvents(): void {
+        this.events = this.context.getEvents();
     }
 
     private handleEvent(event: Event): void {

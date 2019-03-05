@@ -48,7 +48,6 @@ export class NameTeamForm implements EventsEnabled {
 
     public init(): void {
         this.eventDelegator.setContext(this);
-        this.eventDelegator.setEvents(this.events);
         this.eventDelegator.delegate();
     }
 

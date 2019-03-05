@@ -29,7 +29,7 @@ class SignupFormData {
         });
     }
 }
-export class SignupForm implements EventsEnabled {
+export class SignupForm {
     private isPasswordVisible: boolean = false;
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
@@ -62,7 +62,6 @@ export class SignupForm implements EventsEnabled {
 
     public init(): void {
         this.eventDelegator.setContext(this);
-        this.eventDelegator.setEvents(this.events);
         this.eventDelegator.delegate();
     }
 

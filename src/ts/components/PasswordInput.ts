@@ -20,11 +20,15 @@ export class PasswordInput extends HTMLElement {
         this.input.autocorrect = 'off';
 
         this.button.textContent = 'Hide';
+
+        this.input.focus();
     }
 
     private mask(): void {
         this.input.type = 'password';
         this.button.textContent = 'Show';
+
+        this.input.focus();
     }
 
     private toggleVisibility(): void {

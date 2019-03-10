@@ -4,53 +4,59 @@ declare(strict_types=1);
 namespace Lithos\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
-use Lithos\Organization\Organization;
+use Lithos\Invite\InviteDeleter;
+use Lithos\Invite\InviteRepository;
+use Lithos\Organization\OrganizationModel;
+use Lithos\Person\Exception\InviteNotFoundException;
 use Lithos\Person\PersonCreationValidator;
 use Lithos\Person\PersonCreator;
 
-class CreateFoundingMember
+class CreateFromInvite
 {
     private $connection;
-    private $organization;
+    private $inviteDeleter;
+    private $inviteRepository;
     private $personCreationValidator;
     private $personCreator;
-    private $requestEmailAddressVerification;
 
     public function __construct(
         Connection $connection,
-        Organization $organization,
+        InviteDeleter $inviteDeleter,
+        InviteRepository $inviteRepository,
         PersonCreationValidator $personCreationValidator,
-        PersonCreator $personCreator,
-        RequestEmailAddressVerification $requestEmailAddressVerification
+        PersonCreator $personCreator
     ) {
         $this->connection = $connection;
-        $this->organization = $organization;
+        $this->inviteDeleter = $inviteDeleter;
+        $this->inviteRepository = $inviteRepository;
         $this->personCreationValidator = $personCreationValidator;
         $this->personCreator = $personCreator;
-        $this->requestEmailAddressVerification = $requestEmailAddressVerification;
     }
 
-    public function create(array $input): array
+    public function create(OrganizationModel $organization, array $input): array
     {
-        $this->personCreationValidator->validate($input, 'founding_member');
+        $this->personCreationValidator->validate($input, 'invite');
+
+        $invite = $this->inviteRepository->find($input['invite_id'], $organization->getId(), $input['invite_token']);
+        if (null === $invite) {
+            throw new InviteNotFoundException;
+        }
 
         $this->connection->beginTransaction();
         try {
-            $organization = $this->organization->create();
             list($person, $encodedPassword) = $this->personCreator->create(
                 $organization,
                 $input['name'],
-                $input['email_address'],
-                $input['password']
+                $invite['email_address'],
+                $input['password'],
+                true
             );
+            $this->inviteDeleter->delete($invite['id']);
             $this->connection->commit();
         } catch (\Exception $e) {
             $this->connection->rollBack();
             throw $e;
         }
-
-        $this->requestEmailAddressVerification->sendVerificationRequest($person);
 
         return [$person, $encodedPassword];
     }

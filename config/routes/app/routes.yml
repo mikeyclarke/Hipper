@@ -27,6 +27,22 @@ join.post:
         _before_middlewares:
             - require_json_content_type_middleware:before
 
+join_by_invitation.get:
+    path: /join/by-invitation
+    methods: [GET]
+    controller: Lithos\App\JoinByInvitationController::getAction
+    defaults:
+        unsecured: true
+
+join_by_invitation.post:
+    path: /_/join/by-invitation
+    methods: [POST]
+    controller: Lithos\App\JoinByInvitationController::postAction
+    defaults:
+        unsecured: true
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
 create_team.post:
     path: /_/create-team
     methods: [POST]

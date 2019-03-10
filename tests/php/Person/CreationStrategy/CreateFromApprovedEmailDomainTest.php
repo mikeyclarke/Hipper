@@ -8,9 +8,9 @@ use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
 use Lithos\Organization\OrganizationModel;
 use Lithos\Person\CreationStrategy\CreateFromApprovedEmailDomain;
 use Lithos\Person\Exception\ApprovedEmailDomainSignupNotAllowedException;
+use Lithos\Person\PersonCreationValidator;
 use Lithos\Person\PersonCreator;
 use Lithos\Person\PersonModel;
-use Lithos\Person\PersonValidator;
 use Lithos\Validation\Exception\ValidationException;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -20,22 +20,22 @@ class CreateFromApprovedEmailDomainTest extends TestCase
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $connection;
+    private $personCreationValidator;
     private $personCreator;
-    private $personValidator;
     private $requestEmailAddressVerification;
     private $createFromApprovedEmailDomain;
 
     public function setUp(): void
     {
         $this->connection = m::mock(Connection::class);
+        $this->personCreationValidator = m::mock(PersonCreationValidator::class);
         $this->personCreator = m::mock(PersonCreator::class);
-        $this->personValidator = m::mock(PersonValidator::class);
         $this->requestEmailAddressVerification = m::mock(RequestEmailAddressVerification::class);
 
         $this->createFromApprovedEmailDomain = new CreateFromApprovedEmailDomain(
             $this->connection,
+            $this->personCreationValidator,
             $this->personCreator,
-            $this->personValidator,
             $this->requestEmailAddressVerification
         );
     }
@@ -57,7 +57,7 @@ class CreateFromApprovedEmailDomainTest extends TestCase
         $person = new PersonModel;
         $encodedPassword = 'encoded-password';
 
-        $this->createPersonValidatorExpectation($input);
+        $this->createPersonCreationValidatorExpectation($input);
         $this->createConnectionBeginTransactionExpectation();
         $this->createPersonCreatorExpectation(
             $organization,
@@ -87,7 +87,7 @@ class CreateFromApprovedEmailDomainTest extends TestCase
         $organization->setApprovedEmailDomainSignupAllowed(true);
         $organization->setApprovedEmailDomains('["tryhleo.test", "tryhleo.com"]');
 
-        $this->createPersonValidatorExpectation($input);
+        $this->createPersonCreationValidatorExpectation($input);
 
         $this->createFromApprovedEmailDomain->create($organization, $input);
     }
@@ -103,7 +103,7 @@ class CreateFromApprovedEmailDomainTest extends TestCase
         $organization = new OrganizationModel;
         $organization->setApprovedEmailDomainSignupAllowed(false);
 
-        $this->createPersonValidatorExpectation($input);
+        $this->createPersonCreationValidatorExpectation($input);
 
         $this->createFromApprovedEmailDomain->create($organization, $input);
     }
@@ -140,11 +140,11 @@ class CreateFromApprovedEmailDomainTest extends TestCase
             ->once();
     }
 
-    private function createPersonValidatorExpectation($input)
+    private function createPersonCreationValidatorExpectation($input)
     {
-        $this->personValidator
+        $this->personCreationValidator
             ->shouldReceive('validate')
             ->once()
-            ->with($input, true);
+            ->with($input, 'approved_email_domain');
     }
 }

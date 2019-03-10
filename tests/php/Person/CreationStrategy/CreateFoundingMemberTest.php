@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Person\CreationStrategy;
+namespace LithosTests\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
 use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
@@ -10,7 +10,7 @@ use Lithos\Organization\OrganizationModel;
 use Lithos\Person\CreationStrategy\CreateFoundingMember;
 use Lithos\Person\PersonCreator;
 use Lithos\Person\PersonModel;
-use Lithos\Person\PersonValidator;
+use Lithos\Person\PersonCreationValidator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
@@ -20,8 +20,8 @@ class CreateFoundingMemberTest extends TestCase
 
     private $connection;
     private $organization;
+    private $personCreationValidator;
     private $personCreator;
-    private $personValidator;
     private $requestEmailAddressVerification;
     private $createFoundingMember;
 
@@ -29,15 +29,15 @@ class CreateFoundingMemberTest extends TestCase
     {
         $this->connection = m::mock(Connection::class);
         $this->organization = m::mock(Organization::class);
+        $this->personCreationValidator = m::mock(PersonCreationValidator::class);
         $this->personCreator = m::mock(PersonCreator::class);
-        $this->personValidator = m::mock(PersonValidator::class);
         $this->requestEmailAddressVerification = m::mock(RequestEmailAddressVerification::class);
 
         $this->createFoundingMember = new CreateFoundingMember(
             $this->connection,
             $this->organization,
+            $this->personCreationValidator,
             $this->personCreator,
-            $this->personValidator,
             $this->requestEmailAddressVerification
         );
     }
@@ -57,7 +57,7 @@ class CreateFoundingMemberTest extends TestCase
         $person = new PersonModel;
         $encodedPassword = 'encoded-password';
 
-        $this->createPersonValidatorExpectation($input);
+        $this->createPersonCreationValidatorExpectation($input);
         $this->createConnectionBeginTransactionExpectation();
         $this->createOrganizationExpectation($organization);
         $this->createPersonCreatorExpectation(
@@ -113,11 +113,11 @@ class CreateFoundingMemberTest extends TestCase
             ->once();
     }
 
-    private function createPersonValidatorExpectation($input)
+    private function createPersonCreationValidatorExpectation($input)
     {
-        $this->personValidator
+        $this->personCreationValidator
             ->shouldReceive('validate')
             ->once()
-            ->with($input, true);
+            ->with($input, 'founding_member');
     }
 }

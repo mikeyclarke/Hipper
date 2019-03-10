@@ -8,32 +8,32 @@ use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
 use Lithos\Organization\OrganizationModel;
 use Lithos\Person\Exception\ApprovedEmailDomainSignupNotAllowedException;
 use Lithos\Person\Exception\MalformedEmailAddressException;
+use Lithos\Person\PersonCreationValidator;
 use Lithos\Person\PersonCreator;
-use Lithos\Person\PersonValidator;
 use Lithos\Validation\Exception\ValidationException;
 
 class CreateFromApprovedEmailDomain
 {
     private $connection;
+    private $personCreationValidator;
     private $personCreator;
-    private $personValidator;
     private $requestEmailAddressVerification;
 
     public function __construct(
         Connection $connection,
+        PersonCreationValidator $personCreationValidator,
         PersonCreator $personCreator,
-        PersonValidator $personValidator,
         RequestEmailAddressVerification $requestEmailAddressVerification
     ) {
         $this->connection = $connection;
+        $this->personCreationValidator = $personCreationValidator;
         $this->personCreator = $personCreator;
-        $this->personValidator = $personValidator;
         $this->requestEmailAddressVerification = $requestEmailAddressVerification;
     }
 
     public function create(OrganizationModel $organization, array $input): array
     {
-        $this->personValidator->validate($input, true);
+        $this->personCreationValidator->validate($input, 'approved_email_domain');
 
         if (!$organization->isApprovedEmailDomainSignupAllowed()) {
             throw new ApprovedEmailDomainSignupNotAllowedException;

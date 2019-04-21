@@ -35,9 +35,11 @@ class PersonCreator
         string $rawPassword,
         bool $emailAddressVerified = false
     ): array {
+        $abbreviatedName = $this->getAbbreviatedName($name);
         $person = $this->personInserter->insert(
             $this->idGenerator->generate(),
             $name,
+            $abbreviatedName,
             $emailAddress,
             $this->passwordEncoder->encodePassword($rawPassword),
             $organization->getId(),
@@ -56,5 +58,11 @@ class PersonCreator
     {
         $id = $this->idGenerator->generate();
         $this->personMetadataInserter->insert($id, $personId);
+    }
+
+    private function getAbbreviatedName(string $name): string
+    {
+        $nameRepresentation = new NameRepresentation($name);
+        return $nameRepresentation->abbreviated();
     }
 }

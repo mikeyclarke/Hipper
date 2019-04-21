@@ -11,8 +11,10 @@ class PersonModelMapper
     private $fields = [
         'id' => 'id',
         'name' => 'name',
+        'abbreviated_name' => 'abbreviatedName',
         'email_address' => 'emailAddress',
         'email_address_verified' => 'emailAddressVerified',
+        'onboarding_completed' => 'onboardingCompleted',
         'organization_id' => 'organizationId',
         'created' => 'created',
         'updated' => 'updated',

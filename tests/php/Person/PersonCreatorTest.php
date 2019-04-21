@@ -50,6 +50,7 @@ class PersonCreatorTest extends TestCase
         $organization = new OrganizationModel;
         $organization->setId('16fd2706-8baf-433b-82eb-8c7fada847da');
         $name = 'Mikey Clarke';
+        $abbreviatedName = 'MC';
         $emailAddress = 'mikey@tryhleo.com';
         $rawPassword = 'foobar';
 
@@ -67,6 +68,7 @@ class PersonCreatorTest extends TestCase
         $this->createPersonInserterExpectation(
             $personId,
             $name,
+            $abbreviatedName,
             $emailAddress,
             $encodedPassword,
             $organization->getId(),
@@ -89,6 +91,7 @@ class PersonCreatorTest extends TestCase
         $organization = new OrganizationModel;
         $organization->setId('16fd2706-8baf-433b-82eb-8c7fada847da');
         $name = 'Mikey Clarke';
+        $abbreviatedName = 'MC';
         $emailAddress = 'mikey@tryhleo.com';
         $rawPassword = 'foobar';
         $emailAddressVerified = true;
@@ -107,6 +110,7 @@ class PersonCreatorTest extends TestCase
         $this->createPersonInserterExpectation(
             $personId,
             $name,
+            $abbreviatedName,
             $emailAddress,
             $encodedPassword,
             $organization->getId(),
@@ -147,6 +151,7 @@ class PersonCreatorTest extends TestCase
     private function createPersonInserterExpectation(
         $personId,
         $name,
+        $abbreviatedName,
         $emailAddress,
         $encodedPassword,
         $organizationId,
@@ -156,7 +161,15 @@ class PersonCreatorTest extends TestCase
         $this->personInserter
             ->shouldReceive('insert')
             ->once()
-            ->with($personId, $name, $emailAddress, $encodedPassword, $organizationId, $emailAddressVerified)
+            ->with(
+                $personId,
+                $name,
+                $abbreviatedName,
+                $emailAddress,
+                $encodedPassword,
+                $organizationId,
+                $emailAddressVerified
+            )
             ->andReturn($result);
     }
 

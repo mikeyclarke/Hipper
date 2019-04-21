@@ -53,6 +53,9 @@ services:
             $hstsEnabled: '%env(bool:HSTS_ENABLED)%'
             $hstsMaxAge: '%env(int:HSTS_MAX_AGE)%'
 
+    Lithos\Person\NameRepresentation:
+        autowire: false
+
     lithos_session_storage:
         class: Lithos\Session\SessionStorage
         arguments: ['%session.storage.options%', '@session.handler', '@session.storage.metadata_bag', '@request_stack']

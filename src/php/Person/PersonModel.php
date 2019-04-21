@@ -7,8 +7,10 @@ class PersonModel
 {
     private $id;
     private $name;
+    private $abbreviatedName;
     private $emailAddress;
     private $emailAddressVerified;
+    private $onboardingCompleted;
     private $organizationId;
     private $created;
     private $updated;
@@ -33,6 +35,16 @@ class PersonModel
         return $this->name;
     }
 
+    public function setAbbreviatedName(string $abbreviatedName): void
+    {
+        $this->abbreviatedName = $abbreviatedName;
+    }
+
+    public function getAbbreviatedName(): string
+    {
+        return $this->abbreviatedName;
+    }
+
     public function setEmailAddress(string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
@@ -51,6 +63,16 @@ class PersonModel
     public function getEmailAddressVerified(): bool
     {
         return $this->emailAddressVerified;
+    }
+
+    public function setOnboardingCompleted(bool $onboardingCompleted): void
+    {
+        $this->onboardingCompleted = $onboardingCompleted;
+    }
+
+    public function isOnboardingCompleted(): bool
+    {
+        return $this->onboardingCompleted;
     }
 
     public function setOrganizationId(string $organizationId): void

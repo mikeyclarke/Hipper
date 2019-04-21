@@ -16,11 +16,19 @@ class PersonInserter
         $this->connection = $connection;
     }
 
-    public function insert($id, $name, $emailAddress, $password, $organizationId, $emailAddressVerified): ?array
-    {
+    public function insert(
+        $id,
+        $name,
+        $abbreviatedName,
+        $emailAddress,
+        $password,
+        $organizationId,
+        $emailAddressVerified
+    ): ?array {
         $args = [
             $id => PDO::PARAM_STR,
             $name => PDO::PARAM_STR,
+            $abbreviatedName => PDO::PARAM_STR,
             $emailAddress => PDO::PARAM_STR,
             $password => PDO::PARAM_STR,
             $organizationId => PDO::PARAM_STR,
@@ -28,8 +36,9 @@ class PersonInserter
         ];
 
         $stmt = $this->connection->executeQuery(
-            "INSERT INTO person (id, name, email_address, password, organization_id, email_address_verified) " .
-            "VALUES (?, ?, ?, ?, ?, ?) RETURNING *",
+            "INSERT INTO person " .
+            "(id, name, abbreviated_name, email_address, password, organization_id, email_address_verified) " .
+            "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING *",
             array_keys($args),
             array_values($args)
         );

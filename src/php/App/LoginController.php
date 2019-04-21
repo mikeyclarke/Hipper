@@ -5,6 +5,7 @@ namespace Lithos\App;
 
 use Lithos\Person\PersonPasswordEncoder;
 use Lithos\Person\PersonRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

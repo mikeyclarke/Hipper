@@ -1,6 +1,9 @@
 index:
     path: /
     controller: Lithos\Controller\DefaultController::index
+    defaults:
+        _before_middlewares:
+            - app_onboarding_completed_middleware:before
 
 tokenized_login.get:
     path: /tokenized-login
@@ -42,6 +45,11 @@ join_by_invitation.post:
         unsecured: true
         _before_middlewares:
             - require_json_content_type_middleware:before
+
+welcome.get:
+    path: /welcome
+    methods: [GET]
+    controller: Lithos\App\WelcomeController::getAction
 
 create_team.post:
     path: /_/create-team

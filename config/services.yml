@@ -65,3 +65,6 @@ services:
 
     require_json_content_type_middleware:
         class: Lithos\Http\RequireJsonContentTypeMiddleware
+
+    app_onboarding_completed_middleware:
+        class: Lithos\App\OnboardingCompletedMiddleware

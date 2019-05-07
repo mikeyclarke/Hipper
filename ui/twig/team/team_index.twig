@@ -1,0 +1,66 @@
+{% extends 'base_layout.twig' %}
+
+{% block content %}
+
+<header class="l-team-page__global-header">
+    <div class="l-team-page__global-header-content">
+        <h1 class="l-team-page__global-header-brand"><a href="/">hleo</a></h1>
+
+        <button class="l-team-page__global-header-search" type="button" aria-label="Search">
+            {% include 'icon_search.twig' with {hideFromScreenReaders: true} %}
+        </button>
+
+        <nav class="l-team-page__global-header-navigation">
+            <ol class="l-team-page__global-header-navigation-list">
+                <li class="l-team-page__global-header-navigation-list-item">
+                    <a class="l-team-page__global-header-navigation-list-link" href="/teams">Teams</a>
+                </li>
+                <li class="l-team-page__global-header-navigation-list-item">
+                    <a class="l-team-page__global-header-navigation-list-link" href="/projects">Projects</a>
+                </li>
+                <li class="l-team-page__global-header-navigation-list-item">
+                    <a class="l-team-page__global-header-navigation-list-link" href="/docs">Docs</a>
+                </li>
+            </ol>
+
+            <div class="l-team-page__global-header-navigation-stuff">
+                <button class="l-team-page__global-header-new-button" type="button" aria-label="Add new…">
+                    {% include 'icon_add_new.twig' with {hideFromScreenReaders: true} %}
+                </button>
+                <button class="l-team-page__global-header-account-button" type="button" aria-label="Your account">
+                    <span aria-hidden="true">{{ person.abbreviatedName }}</span>
+                </button>
+            </ol>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <header class="l-team-page__page-header">
+        <div class="l-team-page__page-header-content">
+            <span class="l-team-page__page-header-context">Team</span>
+            <h1 class="l-team-page__page-header-title">{{ team.name }}</h1>
+            <p class="l-team-page__page-header-description">{{ team.description }}</p>
+
+            {% if personIsInTeam %}
+                <div class="l-team-page__page-header-label">
+                    {% include 'icon_check.twig' with {hideFromScreenReaders: true} %}
+                    <span class="l-team-page__page-header-label-text">You’re part of this team</span>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <nav>
+        <ol>
+            <li>
+                <a href="/team/{{ team.urlId }}" aria-selected="true">Team docs</a>
+            </li>
+            <li>
+                <a href="/team/{{ team.urlId }}/members">Members</a>
+            </li>
+        </ol>
+    </nav>
+</main>
+
+{% endblock %}

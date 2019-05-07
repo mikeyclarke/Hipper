@@ -1,0 +1,119 @@
+$popover-alert-error-container-background-color: config-get(global, color, error);
+$popover-alert-error-text-color: #fafafc;
+$popover-alert-font-size: 14px;
+$floating-layout-min-width: 725px;
+
+@mixin floating-layout {
+    @media only screen and (min-width: $floating-layout-min-width) {
+        @content;
+    }
+}
+
+popover-alert {
+    display: flex;
+    justify-content: center;
+}
+
+popover-alert .container {
+    animation: popover-alert-animation .2s;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    padding: 14px 20px 20px;
+    position: fixed;
+    right: 0;
+    transition: transform .5s, opacity .5s;
+
+    @include floating-layout {
+        box-shadow: 0 2px 4px 0 rgba(#000, .2);
+        border-radius: 24px;
+        bottom: 40px;
+        flex-direction: row;
+        left: auto;
+        padding: 17px 32px;
+        right: auto;
+    }
+}
+
+popover-alert.error .container {
+    background-color: $popover-alert-error-container-background-color;
+}
+
+popover-alert .container.is-hiding {
+    opacity: 0;
+    transform: translateY(100%);
+}
+
+popover-alert .title {
+    color: $popover-alert-error-text-color;
+    font-size: $popover-alert-font-size;
+    font-weight: 600;
+    line-height: 16.1px;
+    margin: 0;
+    text-transform: uppercase;
+    @include font-smoothing;
+}
+
+popover-alert .message {
+    color: $popover-alert-error-text-color;
+    font-size: $popover-alert-font-size;
+    line-height: 16.1px;
+    margin: 0;
+    @include font-smoothing;
+}
+
+popover-alert .title + .message {
+    margin: 8px 0 0;
+
+    @include floating-layout {
+        margin: 0 48px 0 18px;
+    }
+}
+
+popover-alert .close-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    display: flex;
+    height: 44px;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 44px;
+
+    @include floating-layout {
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+popover-alert .close-button:focus {
+    outline: 0;
+}
+
+popover-alert .close-button:focus .close-button-icon {
+    fill: rgba(#000, .75);
+    transform: scale(1.1);
+}
+
+popover-alert .close-button-icon {
+    height: 12px;
+    width: 12px;
+    fill: rgba(#000, .5);
+}
+
+@keyframes popover-alert-animation {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

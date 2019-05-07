@@ -3,6 +3,8 @@ $config: (
         color: (
             primary: #11ae83,
             white: #fefeff,
+            dark: #3d3d3d,
+            error: #f5515f,
         ),
         font: (
             stack: "'Proxima Nova Soft', sans-serif",
@@ -11,11 +13,10 @@ $config: (
     element: (
         page: (
             background-color: #fcfcfc,
-            foreground-color: #3d3d3d,
+            foreground-color: '_self.global.color.dark',
         ),
         input: (
             background-color: #fff,
-            border-color--is-focused: #2786ee,
             border-color: #c4c2c5,
             border-radius: 4px,
             border-width: 1px,
@@ -23,10 +24,41 @@ $config: (
             height: 44px,
             padding: 14px,
             placeholder-color: #b0aeb1,
-            text-color: config-get(page, foreground-color),
+            text-color: '_self.global.color.dark',
+            focused: (
+                border-color: #2786ee,
+            ),
+            disabled: (
+                opacity: .2,
+            ),
+        ),
+        textarea: (
+            height: 140px,
+            line-height: 22px,
+            resize: none,
+        ),
+    ),
+    layout: (
+        sheet: (
+            background-color: #fcfcfc,
         ),
     ),
 );
+
+@function split-str($string, $separator) {
+    $split-arr: ();
+    $index: str-index($string, $separator);
+
+    @while $index != null {
+        $item: str-slice($string, 1, $index - 1);
+        $split-arr: append($split-arr, $item);
+        $string: str-slice($string, $index + 1);
+        $index: str-index($string, $separator);
+    }
+
+    $split-arr: append($split-arr, $string);
+    @return $split-arr;
+}
 
 // Usage: config-get('namespace', 'subnamespace', 'property');
 // * E.g. config-get('global', 'color', 'primary');
@@ -39,6 +71,12 @@ $config: (
             @warn 'Config entry not found';
         }
         $c: map-get($c, $arg);
+    }
+
+    @if type-of($c) == 'string' and str-index($c, '_self.') != null {
+        $pointer: str-slice($c, str-length('_self.') + 1);
+        $pointer-list: split-str($pointer, '.');
+        @return config-get($pointer-list...);
     }
 
     @return $c;

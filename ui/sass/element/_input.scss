@@ -38,8 +38,18 @@ $selector: ();
 
 // [type="text|email|number|…"]:focus
 #{$selector} {
-    border-color: config-get(element, input, border-color--is-focused);
+    border-color: config-get(element, input, focused, border-color);
     outline: 0;
+}
+
+$selector: ();
+@each $type in $box-input-types {
+    $selector: append($selector, unquote('[type="#{$type}"]:disabled'), 'comma');
+}
+
+// [type="text|email|number|…"]:disabled
+#{$selector} {
+    opacity: config-get(element, input, disabled, opacity);
 }
 
 ::placeholder {

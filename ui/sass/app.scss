@@ -6,14 +6,24 @@
 @import 'config/config';
 
 @import 'element/page';
+@import 'element/button';
+@import 'element/fieldset';
 @import 'element/input';
+@import 'element/textarea';
+
+@import 'custom-element/editable-form-field';
+@import 'custom-element/popover-alert';
 
 @import 'component/button';
 @import 'component/checkbox';
 @import 'component/password-input';
+@import 'component/form';
 @import 'component/signup-form';
+@import 'component/sheet';
 
 @import 'layout/splash-screen';
+@import 'layout/team-page';
+@import 'layout/sheet';
 
 .editor-container {
     padding: 80px 80px;

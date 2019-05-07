@@ -33,10 +33,14 @@ class TeamValidator
         $requiredOnCreate = ['name'];
         $constraints = [
             'name' => [
-                new NotBlank,
+                new NotBlank([
+                    'message' => 'A team can’t have a blank name.',
+                ]),
                 new Length([
-                    'min' => 3,
+                    'min' => 2,
                     'max' => 100,
+                    'minMessage' => 'Team names can’t be less than {{ limit }} characters long.',
+                    'maxMessage' => 'Team names can’t be more than {{ limit }} characters long.',
                 ]),
                 new UniqueTeamName([
                     'organizationId' => $organizationId,
@@ -45,6 +49,7 @@ class TeamValidator
             'description' => [
                 new Length([
                     'max' => 300,
+                    'maxMessage' => 'Team descriptions can’t be more than {{ limit }} characters long.',
                 ]),
             ],
         ];

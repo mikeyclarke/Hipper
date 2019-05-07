@@ -15,6 +15,7 @@ class Team
     private $personToTeamMapInserter;
     private $teamInserter;
     private $teamMetadataInserter;
+    private $teamModelMapper;
     private $teamValidator;
 
     public function __construct(
@@ -23,6 +24,7 @@ class Team
         PersonToTeamMapInserter $personToTeamMapInserter,
         TeamInserter $teamInserter,
         TeamMetadataInserter $teamMetadataInserter,
+        TeamModelMapper $teamModelMapper,
         TeamValidator $teamValidator
     ) {
         $this->idGenerator = $idGenerator;
@@ -30,10 +32,11 @@ class Team
         $this->personToTeamMapInserter = $personToTeamMapInserter;
         $this->teamInserter = $teamInserter;
         $this->teamMetadataInserter = $teamMetadataInserter;
+        $this->teamModelMapper = $teamModelMapper;
         $this->teamValidator = $teamValidator;
     }
 
-    public function create(PersonModel $person, array $parameters): void
+    public function create(PersonModel $person, array $parameters): TeamModel
     {
         $this->teamValidator->validate($parameters, $person->getOrganizationId(), true);
 
@@ -44,6 +47,7 @@ class Team
         $team = $this->teamInserter->insert(
             $id,
             $parameters['name'],
+            $parameters['description'],
             $urlId,
             $knowledgebase['id'],
             $person->getOrganizationId()
@@ -51,6 +55,8 @@ class Team
 
         $this->createMetadata($team['id']);
         $this->createPersonTeamMap($person->getId(), $team['id']);
+
+        return $this->teamModelMapper->createFromArray($team);
     }
 
     private function createMetadata(string $teamId): void

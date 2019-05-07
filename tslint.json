@@ -182,7 +182,7 @@
       "unified-signatures": true,
       "use-isnan": true,
       "valid-typeof": false,
-      "variable-name": true,
+      "variable-name": [true, "allow-leading-underscore"],
       "whitespace": [
         true,
         "check-branch",

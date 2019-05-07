@@ -51,10 +51,28 @@ welcome.get:
     methods: [GET]
     controller: Lithos\App\WelcomeController::getAction
 
-create_team.post:
-    path: /_/create-team
+create_team.get:
+    path: /teams/new
+    methods: [GET]
+    controller: Lithos\App\Team\CreateTeamController::getAction
+
+create_team_suggest_description.post:
+    path: /_/suggest-team-description
     methods: [POST]
-    controller: Lithos\App\CreateTeamController::postAction
+    controller: Lithos\App\Team\CreateTeamController::suggestAction
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
+
+create_team.post:
+    path: /_/create-team
+    methods: [POST]
+    controller: Lithos\App\Team\CreateTeamController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+team.get:
+    path: /team/{url_id}
+    methods: [GET]
+    controller: Lithos\App\Team\TeamController::getAction

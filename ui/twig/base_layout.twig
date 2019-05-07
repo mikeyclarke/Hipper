@@ -7,7 +7,9 @@
         <link rel="stylesheet" href="{{ asset('app.css') }}">
     </head>
 
-    <body>
+    <body{% if bodyClassList %} class="{{ bodyClassList|join(' ') }}"{% endif %}>
+        {% include 'icon_sprite.twig' %}
+
         {% block content %}{% endblock %}
 
         <script src="{{ asset('app.js') }}"></script>

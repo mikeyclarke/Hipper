@@ -1,0 +1,22 @@
+textarea {
+    appearance: none;
+    background-color: config-get(element, input, background-color);
+    border: config-get(element, input, border-width) solid config-get(element, input, border-color);
+    border-radius: config-get(element, input, border-radius);
+    box-shadow: config-get(element, input, box-shadow);
+    color: config-get(element, input, text-color);
+    height: config-get(element, textarea, height);
+    line-height: config-get(element, textarea, line-height);
+    padding: config-get(element, input, padding);
+    resize: config-get(element, textarea, resize);
+    @include font-smoothing;
+}
+
+textarea:focus {
+    border-color: config-get(element, input, focused, border-color);
+    outline: 0;
+}
+
+textarea:disabled {
+    opacity: config-get(element, input, disabled, opacity);
+}

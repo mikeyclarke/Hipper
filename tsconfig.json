@@ -10,8 +10,9 @@
         "target": "ES2015",
         "lib": [
             "es2017",
-            "dom"
-        ],
+            "dom",
+            "es2018.promise"
+        ]
     },
     "include": ["src/ts"]
 }

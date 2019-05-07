@@ -1,0 +1,145 @@
+$form-margin: 40px 30px;
+
+$form-header-margin-bottom: 32px;
+
+$form-title-font-size: 32px;
+$form-title-font-weight: 700;
+$form-title-margin-bottom: 18px;
+$form-title-text-color: #130c17;
+
+$form-subtitle-font-size: 20px;
+
+$form-field-margin-bottom: 24px;
+
+$form-field-visibility-transition-duration: .3s;
+
+$form-label-font-size: 14px;
+$form-label-font-weight: 500;
+$form-label-margin-bottom: 7px;
+
+$form-footer-margin: 36px 0 0;
+$form-footer-text-align: right;
+
+.c-form {
+    margin: $form-margin;
+}
+
+.c-form__header {
+    margin: 0 0 $form-header-margin-bottom;
+    text-align: center;
+}
+
+.c-form__title {
+    font-weight: $form-title-font-weight;
+    font-size: $form-title-font-size;
+    color: $form-title-text-color;
+    margin: 0 0 $form-title-margin-bottom;
+}
+
+.c-form__subtitle {
+    font-size: $form-subtitle-font-size;
+    margin: 0;
+}
+
+.c-form__field {
+    border: 0;
+    box-sizing: border-box;
+    display: block;
+    margin: 0 0 $form-field-margin-bottom;
+    padding: 0;
+    position: relative;
+}
+
+.c-form__field.will-change-visibility {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity, transform;
+    transition-duration: $form-field-visibility-transition-duration;
+}
+
+.c-form__field.is-invisible {
+    opacity: 0;
+    transform: translateY(-10%);
+    visibility: hidden;
+}
+
+.c-form__label {
+    display: block;
+    font-weight: $form-label-font-weight;
+    font-size: $form-label-font-size;
+    margin-bottom: $form-label-margin-bottom;
+    @include font-smoothing;
+}
+
+.c-form__input {
+    transition: border-color .35s;
+    width: 100%;
+}
+
+.c-form__input[aria-invalid="true"] {
+    animation: error-input-animation .65s;
+    border-color: rgba(config-get(global, color, error), .85);
+}
+
+.c-form__input[aria-invalid="true"]:focus {
+    border-color: config-get(global, color, error);
+}
+
+.c-form__input:read-only {
+    border-color: transparent;
+}
+
+.c-form__error {
+    background-color: config-get(global, color, error);
+    color: config-get(global, color, white);
+    display: none;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    padding: 8px;
+    position: absolute;
+    top: -18px;
+    @include font-smoothing;
+}
+
+.c-form__error::before {
+    border: 6px solid transparent;
+    border-top-color: config-get(global, color, error);
+    bottom: -12px;
+    content: '';
+    left: 14px;
+    position: absolute;
+}
+
+.c-form__input[aria-invalid="true"]:focus + .c-form__error {
+    display: block;
+}
+
+.c-form__footer {
+    margin: $form-footer-margin;
+    text-align: $form-footer-text-align;
+}
+
+$keyframe-coordinates: (
+    (0%, 0), (2%, -4px), (4%, 2px), (6%, -3px),
+    (8%, 9px), (10%, 2px), (12%, -6px), (14%, -7px),
+    (16%, 2px), (18%, 7px), (20%, -1px), (22%,-10px),
+    (24%, -10px), (26%, 3px), (28%, -5px), (30%, 4px),
+    (32%, -6px), (34%, -2px), (36%, -6px), (38%, -2px),
+    (40%, 4px), (42%, 8px), (44%, -3px), (46%, -10px),
+    (48%, 4px), (50%, -6px), (52%, 6px), (54%, -8px),
+    (56%, 5px), (58%, 9px), (60%, 7px), (62%, 1px),
+    (64%, 2px), (66%, -2px), (68%, -7px), (70%, -1px),
+    (72%, -6px), (74%, 5px), (76%, 0), (78%, 9px),
+    (80%, -3px), (82%, 8px), (84%, -2px), (86%, -1px),
+    (88%, -3px), (90%, 4px), (92%, 0), (94%, 4px),
+    (96%, 2px), (98%, -2px),
+);
+
+@keyframes error-input-animation {
+    @each $co in $keyframe-coordinates {
+        #{nth($co, 1)} {
+            transform: translateX(#{nth($co, 2)});
+        }
+    }
+}

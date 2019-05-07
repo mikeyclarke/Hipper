@@ -1,0 +1,5 @@
+button:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="button"]:not(:disabled) {
+    cursor: pointer;
+}

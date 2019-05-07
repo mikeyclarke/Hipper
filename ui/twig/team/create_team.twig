@@ -1,0 +1,32 @@
+{% extends 'base_layout.twig' %}
+
+{% block content %}
+<main class="c-sheet">
+    <div class="c-sheet__inner">
+        <header class="c-sheet__header">
+            <a class="c-sheet__back-button" href="{{ backLink }}">
+                {% include 'icons/icon_arrow_left.twig' with {
+                    className: 'c-sheet__back-button-icon',
+                    hideFromScreenReaders: true
+                } %}
+                <span class="c-sheet__back-button-label">Back</span>
+            </a>
+            <h1 class="c-sheet__title">New team</h1>
+        </header>
+
+        <form class="js-create-team-form" novalidate>
+            <editable-form-field class="c-form__field js-team-name-field" role="group">
+                <label for="new-team-name" class="c-form__label">What’s this team called?</label>
+                <input class="c-form__input js-team-name" type="text" minlength="2" maxlength="100" name="name" id="new-team-name" placeholder="e.g. {{ placeholderTeamName }}" required autocomplete="off">
+            </editable-form-field>
+
+            <editable-form-field class="c-form__field will-change-visibility is-invisible js-team-description-field" role="group" clear-on-edit="true" aria-hidden="true">
+                <label for="new-team-description" class="c-form__label">What does this team do?</label>
+                <textarea name="description" id="new-team-description" class="c-form__input js-team-description" autocomplete="off" maxlength="300"></textarea>
+            </editable-form-field>
+
+            <button class="c-sheet__submit-button js-submit" type="submit">Next</button>
+        </form>
+    </div>
+</main>
+{% endblock %}

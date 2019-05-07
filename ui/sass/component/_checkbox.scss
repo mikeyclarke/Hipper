@@ -3,7 +3,7 @@ $checkbox-border-color: config-get(element, input, border-color);
 $checkbox-border-radius: 2px;
 $checkbox-border-width: config-get(element, input, border-width);
 $checkbox-box-shadow--is-focused: 0 0 4px 2px rgba(#000, .14);
-$checkbox-box-shadow--is-checked--is-focused: 0 0 4px 2px rgba(#11ae83, .14);
+$checkbox-box-shadow--is-checked--is-focused: 0 0 4px 2px rgba(config-get(global, color, primary), .14);
 $checkbox-height: 18px;
 $checkbox-width: 18px;
 $checkbox-checked-color: config-get(global, color, primary);

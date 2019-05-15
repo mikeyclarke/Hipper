@@ -1,9 +1,7 @@
 const path = require('path');
-const autoprefixer = require('autoprefixer');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { styles: ckEditorStyles } = require( '@ckeditor/ckeditor5-dev-utils' );
 
 module.exports = {
     entry: {
@@ -71,15 +69,6 @@ module.exports = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            plugins: [
-                                autoprefixer,
-                            ]
-                        },
-                    },
                     'sass-loader',
                 ],
             },
@@ -88,12 +77,7 @@ module.exports = {
                 loader: 'twig-loader',
             },
             {
-                test: /ckeditor5-[^/]+\/theme\/icons\/[^/]+\.svg$/,
-                use: ['raw-loader'],
-            },
-            {
-                // WARNING: Mikey’s shitty regex strikes again, this separates our SVGs from those of CKEditor
-                test: /^(?!ckeditor5)[\_\-\/a-zA-Z0-9]+\.svg$/,
+                test: /\.svg$/,
                 use: {
                     loader: 'url-loader',
                     options: {
@@ -111,23 +95,6 @@ module.exports = {
                         limit: 50000,
                     },
                 },
-            },
-            {
-                // WARNING: Mikey’s shitty regex below, may cause performance issues 🤷
-                test: /ckeditor5-[^/]+[\/a-zA-Z0-9]+\/[^/]+\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    {
-                        loader: 'postcss-loader',
-                        options: ckEditorStyles.getPostCssConfig({
-                            themeImporter: {
-                                themePath: require.resolve('@ckeditor/ckeditor5-theme-lark'),
-                            },
-                            minify: true,
-                        }),
-                    },
-                ],
             },
         ],
     },

@@ -85,6 +85,10 @@ $form-footer-text-align: right;
     border-color: config-get(global, color, error);
 }
 
+.c-form__input:-moz-read-only {
+    border-color: transparent;
+}
+
 .c-form__input:read-only {
     border-color: transparent;
 }

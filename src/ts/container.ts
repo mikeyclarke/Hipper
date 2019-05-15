@@ -1,7 +1,4 @@
 import * as Bottle from 'bottlejs';
-import { CKeditor } from './TextEditor/CKEditor/CKEditor';
-import { TextEditor } from './TextEditor/TextEditor';
-import { IndexController } from './RouteControllers/IndexController';
 import { SignupController } from './RouteControllers/onboarding/SignupController';
 import { VerifyIdentityController } from './RouteControllers/onboarding/VerifyIdentityController';
 import { TeamSubdomainController } from './RouteControllers/onboarding/TeamSubdomainController';
@@ -23,10 +20,6 @@ bottle.factory('appHttpClient', (container) => {
     return factory.create();
 });
 
-bottle.factory('indexController', (container) => {
-    return new IndexController(container.textEditor);
-});
-
 bottle.factory('signupController', () => new SignupController());
 
 bottle.factory('verifyIdentityController', () => new VerifyIdentityController());
@@ -41,18 +34,9 @@ bottle.factory('createTeamController', (container) => {
     );
 });
 
-bottle.factory('CKEditor', () => {
-    return new CKeditor();
-});
-
-bottle.factory('textEditor', (container) => {
-    return new TextEditor(container.CKEditor);
-});
-
 bottle.factory('bootstrap', (container) => {
     const path: string = window.location.pathname;
     const routes: Iroute = {
-        '/': container.indexController,
         '/sign-up': container.signupController,
         '/verify-identity': container.verifyIdentityController,
         '/name-team': container.nameTeamController,

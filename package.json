@@ -16,8 +16,6 @@
     "jest": "^24.1.0",
     "mini-css-extract-plugin": "^0.4.1",
     "node-sass": "^4.9.2",
-    "postcss-loader": "^3.0.0",
-    "raw-loader": "^0.5.1",
     "sass-loader": "^7.1.0",
     "ts-jest": "^24.0.0",
     "ts-loader": "^4.4.2",
@@ -31,20 +29,6 @@
     "webpack-manifest-plugin": "^2.0.3"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-autoformat": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-basic-styles": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-block-quote": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-core": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-dev-utils": "8.0.0",
-    "@ckeditor/ckeditor5-editor-balloon": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-essentials": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-heading": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-highlight": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-image": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-link": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-list": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-paragraph": "1.0.0-beta.4",
-    "@ckeditor/ckeditor5-theme-lark": "1.0.0-beta.4",
     "ky": "^0.10.0",
     "twig": "^1.12.0"
   }

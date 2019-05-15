@@ -24,25 +24,3 @@
 @import 'layout/splash-screen';
 @import 'layout/team-page';
 @import 'layout/sheet';
-
-.editor-container {
-    padding: 80px 80px;
-}
-
-.navigation {
-    height: 80px;
-    background: #3c8bdb;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px;
-}
-
-.title {
-    font-size: 40px;
-    color: #fff;
-}
-
-.text-editor {
-    height: 100%;
-}

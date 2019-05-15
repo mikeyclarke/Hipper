@@ -17,14 +17,7 @@ module.exports = {
         maxModules: 0,
     },
     plugins: [
-        new CleanWebpackPlugin(
-            [
-                path.resolve(__dirname, 'public-roots/assets/public/build'),
-            ],
-            {
-                beforeEmit: true,
-            }
-        ),
+        new CleanWebpackPlugin(),
         new ManifestPlugin(),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',

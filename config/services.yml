@@ -66,6 +66,10 @@ services:
             $hstsEnabled: '%env(bool:HSTS_ENABLED)%'
             $hstsMaxAge: '%env(int:HSTS_MAX_AGE)%'
 
+    Lithos\Subscriber\TwigGlobalsSubscriber:
+        arguments:
+            $assetDomain: 'https://%env(string:ASSET_DOMAIN)%'
+
     Lithos\Security\ContentSecurityPolicyBuilder:
         arguments:
             $assetDomain: '%env(string:ASSET_DOMAIN)%'

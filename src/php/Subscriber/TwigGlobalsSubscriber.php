@@ -12,11 +12,14 @@ use Twig_Environment;
 class TwigGlobalsSubscriber implements EventSubscriberInterface
 {
     private $twig;
+    private $assetDomain;
 
     public function __construct(
-        Twig_Environment $twig
+        Twig_Environment $twig,
+        string $assetDomain
     ) {
         $this->twig = $twig;
+        $this->assetDomain = $assetDomain;
     }
 
     public static function getSubscribedEvents(): array
@@ -43,5 +46,7 @@ class TwigGlobalsSubscriber implements EventSubscriberInterface
             $person = $request->attributes->get('person');
             $this->twig->addGlobal('person', $person);
         }
+
+        $this->twig->addGlobal('asset_domain', $this->assetDomain);
     }
 }

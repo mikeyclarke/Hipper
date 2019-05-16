@@ -62,8 +62,13 @@ services:
 
     Lithos\Subscriber\ResponseHeadersSubscriber:
         arguments:
+            $cspEnabled: '%env(bool:CSP_ENABLED)%'
             $hstsEnabled: '%env(bool:HSTS_ENABLED)%'
             $hstsMaxAge: '%env(int:HSTS_MAX_AGE)%'
+
+    Lithos\Security\ContentSecurityPolicyBuilder:
+        arguments:
+            $assetDomain: '%env(string:ASSET_DOMAIN)%'
 
     Lithos\Person\NameRepresentation:
         autowire: false

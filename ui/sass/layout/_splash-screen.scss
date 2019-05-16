@@ -9,6 +9,7 @@ $splash-screen-dialog-width: 784px;
 $splash-screen-dialog-content-background-color: config-get(global, color, white);
 $splash-screen-dialog-content-width: 50%;
 
+$splash-screen-dialog-graphic-background-color: #2a2a3b;
 $splash-screen-dialog-graphic-width: 50%;
 
 $splash-screen-footer-margin: 0 0 18px;
@@ -65,6 +66,7 @@ $splash-screen-dual-pane-viewport-width: 914px;
 }
 
 .l-splash-screen__dialog-graphic {
+    background-color: $splash-screen-dialog-graphic-background-color;
     border-radius: 0 $splash-screen-dialog-border-radius $splash-screen-dialog-border-radius 0;
     display: none;
 

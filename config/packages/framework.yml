@@ -1,7 +1,8 @@
 framework:
     assets:
         json_manifest_path: '%kernel.project_dir%/public-roots/assets/public/build/manifest.json'
-        base_url: 'https://%env(ASSET_DOMAIN)%/'
+        base_urls: 
+            - 'https://%env(ASSET_DOMAIN)%/'
 
     secret: '%env(APP_SECRET)%'
 

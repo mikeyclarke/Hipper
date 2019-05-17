@@ -89,9 +89,9 @@ CREATE TABLE document (
     html                text DEFAULT NULL,
     url_id              text CHECK (LENGTH(url_id) <= 150) NOT NULL,
     chapter_id          UUID NOT NULL references chapter(id),
-    knowledgebase_id    UUID NOT NULL references knowledgebase(id)
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+    knowledgebase_id    UUID NOT NULL references knowledgebase(id),
 );
 
 CREATE TRIGGER update_document_updated_timestamp

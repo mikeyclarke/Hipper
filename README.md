@@ -1,5 +1,26 @@
 # Lithos
 
+## Homebrew installation
+
+### Installation
+
+- PHP 7.3 – `brew install php`
+- nginx with more headers and http2 modules – `brew install --with-headers-more-module --with-http2 nginx-full`
+- PostgreSQL – `brew install postgresql`
+- Redis – `brew install redis`
+- Redis PHP extension – `pecl install redis`
+
+### Configuration
+
+- PostgreSQL – `/usr/local/var/postgres/postgresql.conf` change `timezone` to `UTC`
+
+### Set up
+
+- Install composer
+    - https://getcomposer.org/download/
+    - `mv composer.phar /usr/local/bin/composer`
+- Install node
+
 ## Make targets
 
 | make target               | description                                 |

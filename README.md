@@ -23,7 +23,11 @@
 
 ### Configuration
 
-- PostgreSQL – `/usr/local/var/postgres/postgresql.conf` change `timezone` to `UTC`
+- PostgreSQL
+    - `/usr/local/var/postgres/postgresql.conf` change `timezone` to `UTC`
+    - 'createdb `whoami`'
+    - Log into psql and `create database hleo`
+    - Run `psql -d hleo -a -f sql/init.sql`
 - SSL certs
     - `mkcert -install`
     - `mkcert tryhleo.test "*.tryhleo.test"`

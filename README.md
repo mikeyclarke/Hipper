@@ -9,6 +9,8 @@
 - PostgreSQL – `brew install postgresql`
 - Redis – `brew install redis`
 - Redis PHP extension – `pecl install redis`
+- mkcert – `brew install mkcert`
+- nss – `brew install nss`
 
 ### Configuration
 

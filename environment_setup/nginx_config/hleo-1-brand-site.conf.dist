@@ -9,8 +9,8 @@ server {
     server_name www.tryhleo.test;
 
     ssl on;
-    ssl_certificate /usr/local/etc/nginx/ssl/hleo/wildcard.tryhleo.test.crt;
-    ssl_certificate_key /usr/local/etc/nginx/ssl/hleo/wildcard.tryhleo.test.key;
+    ssl_certificate /usr/local/etc/nginx/ssl/hleo/tryhleo.test.pem;
+    ssl_certificate_key /usr/local/etc/nginx/ssl/hleo/tryhleo.test-key.pem;
 
 	ssl_session_timeout 5m;
  
@@ -34,8 +34,8 @@ server {
     root /path/to/hleo/public-roots/brand-site/public/;
 
     ssl on;
-    ssl_certificate /usr/local/etc/nginx/ssl/hleo/naked.tryhleo.test.crt;
-    ssl_certificate_key /usr/local/etc/nginx/ssl/hleo/naked.tryhleo.test.key;
+    ssl_certificate /usr/local/etc/nginx/ssl/hleo/tryhleo.test.pem;
+    ssl_certificate_key /usr/local/etc/nginx/ssl/hleo/tryhleo.test-key.pem;
 
 	ssl_session_timeout 5m;
  

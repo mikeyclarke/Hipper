@@ -24,6 +24,12 @@
 ### Configuration
 
 - PostgreSQL – `/usr/local/var/postgres/postgresql.conf` change `timezone` to `UTC`
+- SSL certs
+    - `mkcert -install`
+    - `mkcert tryhleo.test "*.tryhleo.test"`
+    - `mkdir -p /usr/local/etc/nginx/ssl/hleo`
+    - `mv tryhleo.test.pem /usr/local/etc/nginx/ssl/hleo/tryhleo.test.pem`
+    - `mv tryhleo.test-key.pem /usr/local/etc/nginx/ssl/hleo/tryhleo.test-key.pem`
 
 ### Set up
 

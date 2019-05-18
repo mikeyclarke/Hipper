@@ -13,6 +13,13 @@
 - Redis PHP extension – `pecl install redis`
 - mkcert – `brew install mkcert`
 - nss – `brew install nss`
+- dnsmasq
+    - `brew install dnsmasq`
+    - Add `address=/.test/127.0.0.1` to `/usr/local/etc/dnsmasq.conf`
+    - Create `mkdir -p /etc/resolver`
+    - Create `/etc/resolver/test`
+    - Add `nameserver 127.0.0.1` to `/etc/resolver/test`
+    - Restart macOS
 
 ### Configuration
 

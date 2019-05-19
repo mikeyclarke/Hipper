@@ -13,6 +13,7 @@ framework:
         name: 's'
         cookie_httponly: true
         cookie_secure: true
+        cookie_samesite: 'lax'
 
     php_errors:
         log: false

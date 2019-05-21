@@ -209,7 +209,7 @@
       "no-unnecessary-type-assertion": false,
       "number-literal-format": true,
       "prefer-conditional-expression": false,
-      "prefer-object-spread": true,
+      "prefer-object-spread": false,
       "prefer-switch": false,
       "space-within-parens": true,
       "switch-final-break": true,

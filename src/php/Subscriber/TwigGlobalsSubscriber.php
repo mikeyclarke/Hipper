@@ -37,6 +37,10 @@ class TwigGlobalsSubscriber implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
+        if ($request->headers->has('X-Requested-With') && $request->headers->get('X-Requested-With') === 'Fetch') {
+            return;
+        }
+
         if ($request->attributes->get('isOrganizationContext') === true) {
             $organization = $request->attributes->get('organization');
             $this->twig->addGlobal('organization', $organization);
@@ -45,6 +49,11 @@ class TwigGlobalsSubscriber implements EventSubscriberInterface
         if ($request->attributes->has('person')) {
             $person = $request->attributes->get('person');
             $this->twig->addGlobal('person', $person);
+        }
+
+        $session = $request->getSession();
+        if ($session->has('csrf_token')) {
+            $this->twig->addGlobal('csrf_token', $session->get('csrf_token'));
         }
 
         $this->twig->addGlobal('asset_domain', $this->assetDomain);

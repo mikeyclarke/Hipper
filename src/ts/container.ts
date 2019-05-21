@@ -4,7 +4,7 @@ import { VerifyIdentityController } from './RouteControllers/onboarding/VerifyId
 import { TeamSubdomainController } from './RouteControllers/onboarding/TeamSubdomainController';
 import { NameTeamController } from './RouteControllers/onboarding/NameTeamController';
 import { CreateTeamController } from './RouteControllers/app/Team/CreateTeamController';
-import { HttpClientFactory } from 'Http/HttpClientFactory';
+import { HttpClient } from 'Http/HttpClient';
 import { Controller } from 'RouteControllers/Controller';
 import { DocumentCookies } from 'Cookie/DocumentCookies';
 import { TimeZoneCookie } from 'TimeZone/TimeZoneCookie';
@@ -16,11 +16,10 @@ interface Iroute {
     [key: string]: Controller;
 }
 
-bottle.service('httpClientFactory', HttpClientFactory);
-
-bottle.factory('appHttpClient', (container) => {
-    const factory = container.httpClientFactory;
-    return factory.create();
+bottle.factory('httpClient', (container) => {
+    return new HttpClient(
+        container.config.csrf_token
+    );
 });
 
 bottle.factory('documentCookies', () => new DocumentCookies());
@@ -44,7 +43,7 @@ bottle.factory('teamSubdomainController', () => new TeamSubdomainController());
 
 bottle.factory('createTeamController', (container) => {
     return new CreateTeamController(
-        container.appHttpClient,
+        container.httpClient,
     );
 });
 
@@ -62,5 +61,20 @@ bottle.factory('bootstrap', (container) => {
     }
     return null;
 });
+
+function getCsrfToken(): string | null {
+    const metaElement = document.querySelector('.js-csrf');
+    if (null === metaElement) {
+        return null;
+    }
+
+    return metaElement.getAttribute('content');
+}
+
+const config = {
+    csrf_token: getCsrfToken(),
+};
+
+bottle.constant('config', config);
 
 export { bottle };

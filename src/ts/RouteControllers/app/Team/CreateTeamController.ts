@@ -1,10 +1,11 @@
 import { Controller } from 'RouteControllers/Controller';
 import { EditableFormField } from 'components/EditableFormField';
 import { showFieldError } from 'Validation/showFieldError';
-import ky, { HTTPError } from 'ky';
+import { HttpClient } from 'Http/HttpClient';
+import { HTTPError } from 'ky';
 
 export class CreateTeamController implements Controller {
-    private readonly httpClient: typeof ky;
+    private readonly httpClient: HttpClient;
     private handleNameSubmitHandler!: EventListener;
     private formElement!: HTMLFormElement;
     private submitButton!: HTMLButtonElement;
@@ -14,7 +15,7 @@ export class CreateTeamController implements Controller {
     private descriptionInput!: HTMLTextAreaElement;
 
     constructor(
-        httpClient: typeof ky
+        httpClient: HttpClient
     ) {
         this.httpClient = httpClient;
     }

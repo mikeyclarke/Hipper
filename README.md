@@ -23,6 +23,8 @@
 
 ### Configuration
 
+- PHP
+    - `/usr/local/etc/php/7.3/php.ini` add `date.timezone = UTC`
 - PostgreSQL
     - `/usr/local/var/postgres/postgresql.conf` change `timezone` to `UTC`
     - 'createdb `whoami`'

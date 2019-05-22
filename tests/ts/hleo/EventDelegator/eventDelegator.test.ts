@@ -1,4 +1,4 @@
-import { EventDelegator } from '../../../../src/ts/hleo/EventDelegator/EventDelegator';
+import { EventDelegator } from 'hleo/EventDelegator/EventDelegator';
 
 let eventFired: boolean = false;
 let uiContainerElement: HTMLElement | null;

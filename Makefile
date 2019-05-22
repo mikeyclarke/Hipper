@@ -3,10 +3,7 @@
 ## ---------
 
 test_js: ## Run the JavaScript unit tests and watch
-	karma start
-
-test_js_single_run: ## Single run for JavaScript unit tests
-	karma start --single-run
+	./node_modules/.bin/jest --verbose
 
 test_php:
 	./vendor/bin/phpunit tests/php
@@ -37,12 +34,6 @@ composer_install: ## Install composer packages
 ## ---------
 ##	Environment
 ## ---------
-
-server: ## Run the dev server
-	php -S 127.0.0.1:8000 -t public-roots/app/public
-
-run: ## Run webpack once and start the dev server
-	./node_modules/.bin/webpack --mode=development && php -S 127.0.0.1:8000 -t public-roots/app/public
 
 webpack: ## Run a one-off webpack build
 	./node_modules/.bin/webpack --watch --mode=development

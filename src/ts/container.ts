@@ -6,6 +6,9 @@ import { NameTeamController } from './RouteControllers/onboarding/NameTeamContro
 import { CreateTeamController } from './RouteControllers/app/Team/CreateTeamController';
 import { HttpClientFactory } from 'Http/HttpClientFactory';
 import { Controller } from 'RouteControllers/Controller';
+import { DocumentCookies } from 'Cookie/DocumentCookies';
+import { TimeZoneCookie } from 'TimeZone/TimeZoneCookie';
+import { TimeZoneRetriever } from 'TimeZone/TimeZoneRetriever';
 
 const bottle = new Bottle();
 
@@ -18,6 +21,17 @@ bottle.service('httpClientFactory', HttpClientFactory);
 bottle.factory('appHttpClient', (container) => {
     const factory = container.httpClientFactory;
     return factory.create();
+});
+
+bottle.factory('documentCookies', () => new DocumentCookies());
+
+bottle.factory('timeZoneRetriever', () => new TimeZoneRetriever());
+
+bottle.factory('timeZoneCookie', (container) => {
+    return new TimeZoneCookie(
+        container.documentCookies,
+        container.timeZoneRetriever
+    );
 });
 
 bottle.factory('signupController', () => new SignupController());

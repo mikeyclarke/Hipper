@@ -1,0 +1,32 @@
+server {
+    {% include 'includes/serverinfo.twig' %}
+
+    listen 80;
+    listen [::]:80;
+
+    server_name *.{{ domain }};
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    {% include 'includes/serverinfo.twig' %}
+
+    fastcgi_buffers 8 16k;
+    fastcgi_buffer_size 32k;
+
+    listen 443 ssl{% if http2 %} http2{% endif %};
+    listen [::]:443 ssl{% if http2 %} http2{% endif %};
+
+    server_name *.{{ domain }};
+
+    root {{ path_to_code }}/public-roots/app/public/;
+
+    {% include 'includes/ssl.twig' %}
+
+    client_max_body_size 20m;
+
+    {% include 'includes/dotfiles.twig' %}
+
+    {% include 'includes/phpfpm.twig' %}
+}

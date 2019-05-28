@@ -1,0 +1,39 @@
+server {
+    {% include 'includes/serverinfo.twig' %}
+
+    listen 80;
+    listen [::]:80;
+
+    server_name assets.{{ domain }};
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    {% include 'includes/serverinfo.twig' %}
+
+    fastcgi_buffers 8 16k;
+    fastcgi_buffer_size 32k;
+
+    listen 443 ssl{% if http2 %} http2{% endif %};
+    listen [::]:443 ssl{% if http2 %} http2{% endif %};
+
+    server_name assets.{{ domain }};
+
+    root {{ path_to_code }}/public-roots/assets/public/;
+
+    {% include 'includes/ssl.twig' %}
+
+    gzip on;
+    gzip_types text/plain text/xml text/css application/x-javascript application/javascript application/json image/svg+xml;
+
+    {% include 'includes/dotfiles.twig' %}
+
+    location ~* \.(jpg|jpeg|gif|png|css|js|ico|webp|tiff|ttf|svg)$ {
+        expires 1y;
+    }
+
+    location / {
+        try_files $uri $uri/ $uri.html =404;
+    }
+}

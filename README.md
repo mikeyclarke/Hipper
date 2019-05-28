@@ -24,7 +24,7 @@
 ### Configuration
 
 - PHP
-    - `/usr/local/etc/php/7.3/php.ini` add `date.timezone = UTC`
+    - `/usr/local/etc/php/7.3/php.ini` add `date.timezone = UTC`, add `cgi.fix_pathinfo=0`
 - PostgreSQL
     - `/usr/local/var/postgres/postgresql.conf` change `timezone` to `UTC`
     - 'createdb `whoami`'
@@ -33,9 +33,11 @@
 - SSL certs
     - `mkcert -install`
     - `mkcert tryhleo.test "*.tryhleo.test"`
-    - `mkdir -p /usr/local/etc/nginx/ssl/hleo`
-    - `mv tryhleo.test.pem /usr/local/etc/nginx/ssl/hleo/tryhleo.test.pem`
-    - `mv tryhleo.test-key.pem /usr/local/etc/nginx/ssl/hleo/tryhleo.test-key.pem`
+    - `mkdir -p /usr/local/etc/nginx/ssl`
+    - `mv tryhleo.test.pem /usr/local/etc/nginx/ssl/hleo.crt`
+    - `mv tryhleo.test-key.pem /usr/local/etc/nginx/ssl/hleo.key`
+- Nginx
+    - Run `php bin/console app:generate-vhosts tryhleo.test /usr/local/etc/nginx/servers /usr/local/etc/nginx/ssl`
 
 ### Set up
 

@@ -14,10 +14,10 @@ class VerifyIdentityFormData {
         this.verififcationCode = verififcationCode;
     }
 
-    public get(): string {
-        return JSON.stringify({
+    public get(): object {
+        return {
             phrase: this.verififcationCode,
-        });
+        };
     }
 }
 export class VerifyIdentityForm implements EventsEnabled {

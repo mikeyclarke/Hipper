@@ -33,13 +33,29 @@ bottle.factory('timeZoneCookie', (container) => {
     );
 });
 
-bottle.factory('signupController', () => new SignupController());
+bottle.factory('signupController', (container) => {
+    return new SignupController(
+        container.httpClient
+    );
+});
 
-bottle.factory('verifyIdentityController', () => new VerifyIdentityController());
+bottle.factory('verifyIdentityController', (container) => {
+    return new VerifyIdentityController(
+        container.httpClient
+    );
+});
 
-bottle.factory('nameTeamController', () => new NameTeamController());
+bottle.factory('nameTeamController', (container) => {
+    return new NameTeamController(
+        container.httpClient
+    );
+});
 
-bottle.factory('teamSubdomainController', () => new TeamSubdomainController());
+bottle.factory('teamSubdomainController', (container) => {
+    return new TeamSubdomainController(
+        container.httpClient
+    );
+});
 
 bottle.factory('createTeamController', (container) => {
     return new CreateTeamController(

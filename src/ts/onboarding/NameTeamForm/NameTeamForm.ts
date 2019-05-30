@@ -14,10 +14,10 @@ class NameTeamFormData {
         this.teamName = teamName;
     }
 
-    public get(): string {
-        return JSON.stringify({
+    public get(): object {
+        return {
             name: this.teamName,
-        });
+        };
     }
 }
 

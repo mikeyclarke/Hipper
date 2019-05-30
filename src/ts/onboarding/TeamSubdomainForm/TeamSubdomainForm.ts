@@ -14,10 +14,10 @@ class TeamSubdomainFormData {
         this.subdomain = subdomain;
     }
 
-    public get(): string {
-        return JSON.stringify({
+    public get(): object {
+        return {
             subdomain: this.subdomain,
-        });
+        };
     }
 }
 

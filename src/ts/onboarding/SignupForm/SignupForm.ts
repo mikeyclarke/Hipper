@@ -20,13 +20,13 @@ class SignupFormData {
         this.termsAgreed = termsAgreed;
     }
 
-    public get(): string {
-        return JSON.stringify({
+    public get(): object {
+        return {
             name: this.name,
             email_address: this.email,
             password: this.password,
             terms_agreed: this.termsAgreed,
-        });
+        };
     }
 }
 export class SignupForm {

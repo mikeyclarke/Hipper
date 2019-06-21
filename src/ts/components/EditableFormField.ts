@@ -4,7 +4,6 @@ export class EditableFormField extends HTMLElement {
     public _editable: boolean;
     public readonly _inputElement: HTMLInputElement | HTMLTextAreaElement;
     public _editButtonElement: HTMLButtonElement | null;
-    public _clearOnEdit: boolean;
 
     static get observedAttributes(): string[] {
         return ['editable'];
@@ -14,7 +13,6 @@ export class EditableFormField extends HTMLElement {
         super();
 
         this._editable = this.getAttribute('editable') === 'false' ? false : true;
-        this._clearOnEdit = this.getAttribute('clear-on-edit') === 'true';
         this._inputElement = <HTMLInputElement | HTMLTextAreaElement> querySelectorNotNull(this, 'input, textarea');
         this._editButtonElement = <HTMLButtonElement | null> this.querySelector('.js-edit-button');
         addEditButtonClickEvent(this);
@@ -30,9 +28,7 @@ export class EditableFormField extends HTMLElement {
         if (value) {
             this._inputElement.readOnly = false;
             this._inputElement.focus();
-            if (this._clearOnEdit) {
-                this._inputElement.value = '';
-            }
+            this._inputElement.setSelectionRange(0, this._inputElement.value.length);
             removeEditButton(this);
             return;
         }

@@ -6,8 +6,9 @@ namespace Lithos\Subscriber;
 use Lithos\Person\PersonModelMapper;
 use Lithos\Person\PersonRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -48,23 +49,23 @@ class AuthenticationSubscriber implements EventSubscriberInterface
         }
 
         if (!$request->hasPreviousSession() || !$this->hasValidSession($session)) {
-            $this->createUnauthorizedResponse($event);
+            $this->createUnauthorizedResponse($request, $event);
             return;
         }
 
         $person = $this->personRepository->findById($session->get('_personId'));
         if (null === $person) {
-            $this->createUnauthorizedResponse($event);
+            $this->createUnauthorizedResponse($request, $event);
             return;
         }
 
         if ($this->isForeignOrganizationContext($request, $person)) {
-            $this->createUnauthorizedResponse($event);
+            $this->createUnauthorizedResponse($request, $event);
             return;
         }
 
         if (!$this->passesAuthentication($session, $person)) {
-            $this->createUnauthorizedResponse($event);
+            $this->createUnauthorizedResponse($request, $event);
             return;
         }
         unset($person['password']);
@@ -88,9 +89,19 @@ class AuthenticationSubscriber implements EventSubscriberInterface
         return $organization->getId() !== $person['organization_id'];
     }
 
-    private function createUnauthorizedResponse(GetResponseEvent $event): void
+    private function createUnauthorizedResponse(Request $request, GetResponseEvent $event): void
     {
-        $response = new Response(null, 401);
+        if ($request->headers->has('X-Requested-With') === 'Fetch') {
+            $event->setResponse(new JsonResponse(null, 401));
+            return;
+        }
+
+        $url = '/login';
+        if ($request->attributes->get('isOrganizationContext') === false) {
+            $url = '/';
+        }
+
+        $response = new RedirectResponse($url);
         $event->setResponse($response);
     }
 

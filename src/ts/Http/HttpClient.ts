@@ -17,6 +17,7 @@ const safeHttpMethods = ['GET', 'HEAD', 'OPTIONS', 'TRACE'];
 export class HttpClient {
     private csrfToken: string;
     private lastRequest: [Request | URL | string, RequestMethod, Options] | null = null;
+    private retryCount: number = 0;
 
     constructor(
         csrfToken: string
@@ -25,27 +26,37 @@ export class HttpClient {
     }
 
     public get(url: Request | URL | string, options: Omit<Options, 'body'> = {}): ResponsePromise {
+        this.preDispatch();
         return this.makeRequest(url, RequestMethod.GET, options);
     }
 
     public post(url: Request | URL | string, options: Options = {}): ResponsePromise {
+        this.preDispatch();
         return this.makeRequest(url, RequestMethod.POST, options);
     }
 
     public put(url: Request | URL | string, options: Options = {}): ResponsePromise {
+        this.preDispatch();
         return this.makeRequest(url, RequestMethod.PUT, options);
     }
 
     public patch(url: Request | URL | string, options: Options = {}): ResponsePromise {
+        this.preDispatch();
         return this.makeRequest(url, RequestMethod.PATCH, options);
     }
 
     public head(url: Request | URL | string, options: Omit<Options, 'body'> = {}): ResponsePromise {
+        this.preDispatch();
         return this.makeRequest(url, RequestMethod.HEAD, options);
     }
 
     public delete(url: Request | URL | string, options: Options = {}): ResponsePromise {
+        this.preDispatch();
         return this.makeRequest(url, RequestMethod.DELETE, options);
+    }
+
+    private preDispatch(): void {
+        this.retryCount = 0;
     }
 
     private makeRequest(
@@ -92,12 +103,25 @@ export class HttpClient {
             return;
         }
 
-        if (response.status === 419 && response.headers.has('X-CSRF-Reset') && null !== this.lastRequest) {
+        if (response.status === 419 && null !== this.lastRequest && this.shouldRetryCsrfFailure(response)) {
             this.csrfToken = <string> response.headers.get('X-CSRF-Reset');
+            this.retryCount += 1;
             return this.makeRequest(...this.lastRequest);
         }
 
         createAlert();
+    }
+
+    private shouldRetryCsrfFailure(response: Response): boolean {
+        if (!response.headers.has('X-CSRF-Reset')) {
+            return false;
+        }
+
+        if (this.retryCount > 0) {
+            return false;
+        }
+
+        return true;
     }
 }
 

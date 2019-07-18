@@ -31,6 +31,8 @@ server {
 
     location ~* \.(jpg|jpeg|gif|png|css|js|ico|webp|tiff|ttf|svg)$ {
         expires 1y;
+
+        add_header 'Access-Control-Allow-Origin' "*";
     }
 
     location / {

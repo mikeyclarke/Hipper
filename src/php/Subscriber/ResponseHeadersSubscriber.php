@@ -4,7 +4,11 @@ declare(strict_types=1);
 namespace Lithos\Subscriber;
 
 use Lithos\Security\ContentSecurityPolicyBuilder;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -12,20 +16,26 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ResponseHeadersSubscriber implements EventSubscriberInterface
 {
     private $cspBuilder;
+    private $packages;
     private $cspEnabled;
     private $hstsEnabled;
     private $hstsMaxAge;
+    private $resourceHintsEnabled;
 
     public function __construct(
         ContentSecurityPolicyBuilder $cspBuilder,
+        Packages $packages,
         bool $cspEnabled,
         bool $hstsEnabled,
-        int $hstsMaxAge
+        int $hstsMaxAge,
+        bool $resourceHintsEnabled
     ) {
         $this->cspBuilder = $cspBuilder;
+        $this->packages = $packages;
         $this->cspEnabled = $cspEnabled;
         $this->hstsEnabled = $hstsEnabled;
         $this->hstsMaxAge = $hstsMaxAge;
+        $this->resourceHintsEnabled = $resourceHintsEnabled;
     }
 
     public static function getSubscribedEvents(): array
@@ -63,5 +73,29 @@ class ResponseHeadersSubscriber implements EventSubscriberInterface
         }
 
         $response->headers->add($headers);
+
+        if ($this->shouldSendResourceHints($response)) {
+            $this->addResourceHint($response, 'app.css', 'style');
+            $this->addResourceHint($response, 'app.js', 'script');
+        }
+    }
+
+    private function shouldSendResourceHints(Response $response): bool
+    {
+        if (!$this->resourceHintsEnabled) {
+            return false;
+        }
+
+        if ($response instanceOf RedirectResponse || $response instanceOf JsonResponse) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function addResourceHint(Response $response, string $path, string $type): void
+    {
+        $value = sprintf('<%s>; rel=preload; as=%s; crossorigin', $this->packages->getUrl($path), $type);
+        $response->headers->set('Link', $value, false);
     }
 }

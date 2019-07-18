@@ -8,6 +8,10 @@ parameters:
     transactional_email_from_addr: 'notifications@tryhleo.com'
     transactional_email_reply_to_addr: 'help@tryhleo.com'
     locale: 'en'
+    env(CSP_ENABLED): false
+    env(HSTS_ENABLED): false
+    env(HSTS_MAX_AGE): 300
+    env(RESOURCE_HINTS_ENABLED): false
 
 services:
     # default configuration for services in *this* file
@@ -65,6 +69,7 @@ services:
             $cspEnabled: '%env(bool:CSP_ENABLED)%'
             $hstsEnabled: '%env(bool:HSTS_ENABLED)%'
             $hstsMaxAge: '%env(int:HSTS_MAX_AGE)%'
+            $resourceHintsEnabled: '%env(bool:RESOURCE_HINTS_ENABLED)%'
 
     Lithos\Subscriber\TwigGlobalsSubscriber:
         arguments:

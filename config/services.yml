@@ -94,3 +94,6 @@ services:
 
     app_onboarding_completed_middleware:
         class: Lithos\App\OnboardingCompletedMiddleware
+
+    team_model_from_url_id_middleware:
+        class: Lithos\App\Team\TeamModelFromUrlIdMiddleware

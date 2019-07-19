@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 
-class TeamController
+class TeamDocsController
 {
     private $twig;
 
@@ -28,7 +28,7 @@ class TeamController
         ];
 
         return new Response(
-            $this->twig->render('team/team_index.twig', $context)
+            $this->twig->render('team/team_docs.twig', $context)
         );
     }
 }

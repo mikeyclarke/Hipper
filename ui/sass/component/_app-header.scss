@@ -1,0 +1,144 @@
+$app-header-background-color: #f7f8fa;
+$app-header-border-radius: 0 0 12px 12px;
+$app-header-box-shadow: 0 2px 4px 0 rgba(200, 212, 216, .3);
+
+$app-header-compass-text-color: config-get(color-shades, dark, 700);
+
+.c-app-header {
+    background-color: $app-header-background-color;
+    border-radius: $app-header-border-radius;
+    box-shadow: $app-header-box-shadow;
+}
+
+.c-app-header__top-bar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.c-app-header__compass {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 6px 0 0;
+}
+
+.c-app-header__compass-entity {
+    color: $app-header-compass-text-color;
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0.8;
+    text-transform: uppercase;
+    @include font-smoothing;
+}
+
+.c-app-header__compass-name {
+    color: $app-header-compass-text-color;
+    font-weight: 500;
+    font-size: 16px;
+    @include font-smoothing;
+}
+
+%c-app-header__top-bar-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    display: flex;
+    height: 48px;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    width: 48px;
+    z-index: 0;
+}
+
+%c-app-header__top-bar-button:focus {
+    outline: 0;
+}
+
+%c-app-header__top-bar-button:focus::before {
+    background-color: rgba(config-get(color-shades, grey, 1100), .1);
+    border-radius: 2px;
+    bottom: 6px;
+    content: '';
+    left: 6px;
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    z-index: -1;
+}
+
+%c-app-header__top-bar-button-icon {
+    fill: config-get(color-shades, dark, 700);
+    height: 24px;
+    width: 24px;
+}
+
+.c-app-header__top-bar-menu-button,
+.c-app-header__top-bar-options-button {
+    @extend %c-app-header__top-bar-button;
+}
+
+.c-app-header__top-bar-menu-icon,
+.c-app-header__top-bar-options-icon {
+    @extend %c-app-header__top-bar-button-icon;
+}
+
+.c-app-header__tab-list {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.c-app-header__tab-list-item {
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.c-app-header__tab-list-item-control {
+    align-items: center;
+    color: config-get(color-shades, grey, 1100);
+    display: flex;
+    font-size: 16px;
+    font-weight: 500;
+    height: 48px;
+    justify-content: center;
+    position: relative;
+    text-decoration: none;
+    z-index: 0;
+    @include font-smoothing;
+}
+
+.c-app-header__tab-list-item-control:focus {
+    outline: none;
+}
+
+.c-app-header__tab-list-item-control::before {
+    border-radius: 6px;
+    bottom: 8px;
+    content: '';
+    left: 12px;
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    z-index: -1;
+}
+
+.c-app-header__tab-list-item-control:focus::before {
+    background-color: rgba(config-get(color-shades, grey, 1100), .1);
+}
+
+.c-app-header__tab-list-item-control[aria-selected="true"] {
+    color: config-get(global, color, white);
+}
+
+.c-app-header__tab-list-item-control[aria-selected="true"]::before {
+    background-color: config-get(color-shades, primary, 900);
+}
+
+.c-app-header__tab-list-item-control[aria-selected="true"]:focus::before {
+    background-color: config-get(color-shades, primary, 1100);
+}

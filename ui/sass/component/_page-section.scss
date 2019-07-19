@@ -1,0 +1,15 @@
+.c-page-section {
+    margin: 0 0 32px;
+}
+
+.c-page-section__title {
+    color: config-get(color-shades, dark, 1100);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 16px 20px;
+    @include font-smoothing;
+}
+
+.c-page-section__content--contained {
+    padding: 0 16px;
+}

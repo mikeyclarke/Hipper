@@ -13,6 +13,7 @@
 
 @import 'custom-element/editable-form-field';
 @import 'custom-element/popover-alert';
+@import 'custom-element/floating-button';
 
 @import 'component/button';
 @import 'component/checkbox';
@@ -20,7 +21,11 @@
 @import 'component/form';
 @import 'component/signup-form';
 @import 'component/sheet';
+@import 'component/app-header';
+@import 'component/page-header';
+@import 'component/page-section';
+@import 'component/banner';
+@import 'component/empty-page-notice';
 
 @import 'layout/splash-screen';
-@import 'layout/team-page';
 @import 'layout/sheet';

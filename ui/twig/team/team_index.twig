@@ -2,65 +2,54 @@
 
 {% block content %}
 
-<header class="l-team-page__global-header">
-    <div class="l-team-page__global-header-content">
-        <h1 class="l-team-page__global-header-brand"><a href="/">hleo</a></h1>
-
-        <button class="l-team-page__global-header-search" type="button" aria-label="Search">
-            {% include 'icon_search.twig' with {hideFromScreenReaders: true} %}
-        </button>
-
-        <nav class="l-team-page__global-header-navigation">
-            <ol class="l-team-page__global-header-navigation-list">
-                <li class="l-team-page__global-header-navigation-list-item">
-                    <a class="l-team-page__global-header-navigation-list-link" href="/teams">Teams</a>
-                </li>
-                <li class="l-team-page__global-header-navigation-list-item">
-                    <a class="l-team-page__global-header-navigation-list-link" href="/projects">Projects</a>
-                </li>
-                <li class="l-team-page__global-header-navigation-list-item">
-                    <a class="l-team-page__global-header-navigation-list-link" href="/docs">Docs</a>
-                </li>
-            </ol>
-
-            <div class="l-team-page__global-header-navigation-stuff">
-                <button class="l-team-page__global-header-new-button" type="button" aria-label="Add new…">
-                    {% include 'icon_add_new.twig' with {hideFromScreenReaders: true} %}
-                </button>
-                <button class="l-team-page__global-header-account-button" type="button" aria-label="Your account">
-                    <span aria-hidden="true">{{ person.abbreviatedName }}</span>
-                </button>
-            </ol>
-        </nav>
-    </div>
-</header>
+{% include 'team/_team_header.twig' with { activeTab: 'home' } %}
 
 <main>
-    <header class="l-team-page__page-header">
-        <div class="l-team-page__page-header-content">
-            <span class="l-team-page__page-header-context">Team</span>
-            <h1 class="l-team-page__page-header-title">{{ team.name }}</h1>
-            <p class="l-team-page__page-header-description">{{ team.description }}</p>
+    <header class="c-page-header">
+        <span class="c-page-header__title-label">Team</span>
+        <h1 class="c-page-header__title">{{ team.name }}</h1>
 
-            {% if personIsInTeam %}
-                <div class="l-team-page__page-header-label">
-                    {% include 'icon_check.twig' with {hideFromScreenReaders: true} %}
-                    <span class="l-team-page__page-header-label-text">You’re part of this team</span>
-                </div>
-            {% endif %}
+        {% if team.description is null or team.description is empty %}
+            <p class="c-page-header__subheading--muted">This team doesn’t have a description yet</p>
+        {% else %}
+            <p class="c-page-header__subheading">{{ team.description }}</p>
+        {% endif %}
+
+        <div class="c-page-header__attribution">
+            <div class="c-page-header__attribution-avatar--blank"></div>
+            <span class="c-page-header__attribution-copy--muted">No one leads this team</span>
         </div>
+
+        {% if personIsInTeam %}
+            <button type="button" aria-label="Edit team" class="c-page-header__edit-button">
+                <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
+            </button>
+        {% endif %}
     </header>
 
-    <nav>
-        <ol>
-            <li>
-                <a href="/team/{{ team.urlId }}" aria-selected="true">Team docs</a>
-            </li>
-            <li>
-                <a href="/team/{{ team.urlId }}/members">Members</a>
-            </li>
-        </ol>
-    </nav>
+    <section class="c-page-section">
+        <h2 class="c-page-section__title">Team links</h2>
+
+        <div class="c-page-section__content--contained">
+            <div class="c-banner">
+                <h3 class="c-banner__title">Bring your tools together</h3>
+                <p class="c-banner__copy">Add links to Slack, Trello, GitHub, and more to help members of this team and others find you elsewhere.</p>
+                <button type="button" class="c-banner__cta--alt">Add a link</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="c-page-section">
+        <h2 class="c-page-section__title">Pinned docs</h2>
+
+        <div class="c-page-section__content--contained">
+            <div class="c-banner">
+                <h3 class="c-banner__title">Curate your knowledge</h3>
+                <p class="c-banner__copy">Pin docs that you want people to find right away. It’s perfect for things like new starter onboarding guides.</p>
+                <a href="/team/{{ team.urlId }}/docs" class="c-banner__cta">Find docs to pin</a>
+            </div>
+        </div>
+    </section>
 </main>
 
 {% endblock %}

@@ -1,0 +1,63 @@
+.c-banner {
+    background-color: config-get(color-shades, primary, 1100);
+    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 #C4C2C5;
+    padding: 18px 12px;
+}
+
+.c-banner__title {
+    color: config-get(global, color, white);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    @include font-smoothing;
+}
+
+.c-banner__copy {
+    color: config-get(global, color, white);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    margin: 0 0 10px;
+    @include font-smoothing;
+}
+
+%c-banner__cta {
+    border: 0;
+    border-radius: 22px;
+    box-shadow: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 14px;
+    padding: 15px 28px;
+    text-decoration: none;
+    @include font-smoothing;
+}
+
+%c-banner__cta:focus {
+    outline: 0;
+}
+
+.c-banner__cta,
+.c-banner__cta--alt {
+    @extend %c-banner__cta;
+}
+
+.c-banner__cta {
+    background-color: config-get(global, color, white);
+    color: config-get(color-shades, primary, 1100);
+}
+
+.c-banner__cta:focus {
+    background-color: darken(config-get(global, color, white), 10%);
+}
+
+.c-banner__cta--alt {
+    background-color: config-get(color-shades, secondary, 1100);
+    color: config-get(global, color, white);
+}
+
+.c-banner__cta--alt:focus {
+    background-color: darken(config-get(color-shades, secondary, 1100), 10%);
+}

@@ -1,0 +1,22 @@
+.c-empty-page-notice {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.c-empty-page-notice__title {
+    color: config-get(color-shades, dark, 1100);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    text-align: center;
+    @include font-smoothing;
+}
+
+.c-empty-page-notice__copy {
+    color: config-get(color-shades, grey, 1100);
+    font-size: 16px;
+    line-height: 22px;
+    margin: 12px 0 0;
+    text-align: center;
+    @include font-smoothing;
+}

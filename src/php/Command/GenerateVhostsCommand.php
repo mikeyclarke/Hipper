@@ -45,7 +45,6 @@ class GenerateVhostsCommand extends Command
         );
 
         $this->addOption('fastcgi-pass', null, InputOption::VALUE_REQUIRED, 'fastcgi_pass', '127.0.0.1:9000');
-        $this->addOption('http2', null, InputOption::VALUE_NONE, 'Use http2');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -57,7 +56,6 @@ class GenerateVhostsCommand extends Command
         $parameters = [
             'domain' => $input->getArgument('domain'),
             'fastcgi_pass' => $input->getOption('fastcgi-pass'),
-            'http2' => (bool) $input->getOption('http2'),
             'path_to_ssl_cert' => $input->getArgument('path-to-ssl-cert'),
             'path_to_code' => $repositoryRoot,
         ];

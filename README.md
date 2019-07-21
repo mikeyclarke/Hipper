@@ -24,7 +24,10 @@
 ### Configuration
 
 - PHP
-    - `/usr/local/etc/php/7.3/php.ini` add `date.timezone = UTC`, add `cgi.fix_pathinfo=0`
+    - `/usr/local/etc/php/7.3/php.ini`
+        - Set timezone to UTC: add `date.timezone = UTC`
+        - Improve PHP security: add `cgi.fix_pathinfo=0`
+        - Set a more appropriate session lifetime (4 days): replace `session.gc_maxlifetime = 1440` with `session.gc_maxlifetime = 345600`
 - PostgreSQL
     - `/usr/local/var/postgres/postgresql.conf` change `timezone` to `UTC`
     - 'createdb `whoami`'

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -35,7 +35,7 @@ class CsrfTokenSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
             return;
@@ -53,7 +53,7 @@ class CsrfTokenSubscriber implements EventSubscriberInterface
         $this->validateToken($event, $request, $csrfToken);
     }
 
-    private function createInvalidTokenResponse(GetResponseEvent $event, Request $request, string $csrfToken): void
+    private function createInvalidTokenResponse(RequestEvent $event, Request $request, string $csrfToken): void
     {
         if ($request->getContentType() === 'json') {
             $response = new JsonResponse(null, 419, ['X-CSRF-Reset' => $csrfToken]);
@@ -71,7 +71,7 @@ class CsrfTokenSubscriber implements EventSubscriberInterface
         return $request->request->get(self::BODY_TOKEN_NAME);
     }
 
-    private function validateToken(GetResponseEvent $event, Request $request, string $csrfToken): void
+    private function validateToken(RequestEvent $event, Request $request, string $csrfToken): void
     {
         $requestToken = $this->getTokenFromRequest($request);
         if (null === $requestToken || $requestToken !== $csrfToken) {

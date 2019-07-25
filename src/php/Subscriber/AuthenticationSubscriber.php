@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -34,7 +34,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelRequest(GetResponseEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
             return;
@@ -89,7 +89,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface
         return $organization->getId() !== $person['organization_id'];
     }
 
-    private function createUnauthorizedResponse(Request $request, GetResponseEvent $event): void
+    private function createUnauthorizedResponse(Request $request, RequestEvent $event): void
     {
         if ($request->headers->has('X-Requested-With') === 'Fetch') {
             $event->setResponse(new JsonResponse(null, 401));

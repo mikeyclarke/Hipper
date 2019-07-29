@@ -23,12 +23,16 @@ class TeamInserter
         string $knowledgebaseId,
         string $organizationId
     ): array {
-        $stmt = $this->connection->executeQuery(
-            "INSERT INTO team (id, name, description, url_id, knowledgebase_id, organization_id) " .
-            "VALUES (?, ?, ?, ?, ?, ?) RETURNING *",
-            [$id, $name, $description, $urlId, $knowledgebaseId, $organizationId]
-        );
-        $result = $stmt->fetch();
-        return $result;
+        $sql = "INSERT INTO team (id, name, description, url_id, knowledgebase_id, organization_id) " .
+            "VALUES (:id, :name, :description, :url_id, :knowledgebase_id, :organization_id) RETURNING *";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('id', $id);
+        $stmt->bindValue('name', $name);
+        $stmt->bindValue('description', $description);
+        $stmt->bindValue('url_id', $urlId);
+        $stmt->bindValue('knowledgebase_id', $knowledgebaseId);
+        $stmt->bindValue('organization_id', $organizationId);
+        $stmt->execute();
+        return $stmt->fetch();
     }
 }

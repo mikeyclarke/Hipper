@@ -17,12 +17,11 @@ class KnowledgebaseInserter
 
     public function insert(string $id, string $organizationId): array
     {
-        $stmt = $this->connection->executeQuery(
-            "INSERT INTO knowledgebase (id, organization_id) " .
-            "VALUES (?, ?) RETURNING *",
-            [$id, $organizationId]
-        );
-        $result = $stmt->fetch();
-        return $result;
+        $sql = "INSERT INTO knowledgebase (id, organization_id) VALUES (:id, :organization_id) RETURNING *";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('id', $id);
+        $stmt->bindValue('organization_id', $organizationId);
+        $stmt->execute();
+        return $stmt->fetch();
     }
 }

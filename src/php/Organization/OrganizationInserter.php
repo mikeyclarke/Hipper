@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lithos\Organization;
 
 use Doctrine\DBAL\Connection;
@@ -13,12 +15,13 @@ class OrganizationInserter
         $this->connection = $connection;
     }
 
-    public function insert($id, $name)
+    public function insert(string $id, string $name): array
     {
-        $stmt = $this->connection->executeQuery(
-            "INSERT INTO organization (id, name) VALUES (?, ?) RETURNING *",
-            [$id, $name]
-        );
+        $sql = "INSERT INTO organization (id, name) VALUES (:id, :name) RETURNING *";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('id', $id);
+        $stmt->bindValue('name', $name);
+        $stmt->execute();
         return $stmt->fetch();
     }
 }

@@ -50,7 +50,7 @@ class OrganizationSubdomainGenerator
 
     private function toLowercase(string $value): string
     {
-        return strtolower($value);
+        return mb_strtolower($value);
     }
 
     private function checkIsNotTakenAndNotBlacklisted(string $value): string

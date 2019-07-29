@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace Lithos\Team;
 
-use Ausi\SlugGenerator\SlugGenerator;
+use Doctrine\DBAL\Connection;
 use Lithos\IdGenerator\IdGenerator;
 use Lithos\Knowledgebase\Knowledgebase;
 use Lithos\Person\PersonModel;
+use Lithos\Url\UrlSlugGenerator;
 
 class Team
 {
+    private $connection;
     private $idGenerator;
     private $knowledgebase;
     private $personToTeamMapInserter;
@@ -17,16 +19,20 @@ class Team
     private $teamMetadataInserter;
     private $teamModelMapper;
     private $teamValidator;
+    private $urlSlugGenerator;
 
     public function __construct(
+        Connection $connection,
         IdGenerator $idGenerator,
         Knowledgebase $knowledgebase,
         PersonToTeamMapInserter $personToTeamMapInserter,
         TeamInserter $teamInserter,
         TeamMetadataInserter $teamMetadataInserter,
         TeamModelMapper $teamModelMapper,
-        TeamValidator $teamValidator
+        TeamValidator $teamValidator,
+        UrlSlugGenerator $urlSlugGenerator
     ) {
+        $this->connection = $connection;
         $this->idGenerator = $idGenerator;
         $this->knowledgebase = $knowledgebase;
         $this->personToTeamMapInserter = $personToTeamMapInserter;
@@ -34,6 +40,7 @@ class Team
         $this->teamMetadataInserter = $teamMetadataInserter;
         $this->teamModelMapper = $teamModelMapper;
         $this->teamValidator = $teamValidator;
+        $this->urlSlugGenerator = $urlSlugGenerator;
     }
 
     public function create(PersonModel $person, array $parameters): TeamModel
@@ -41,20 +48,27 @@ class Team
         $this->teamValidator->validate($parameters, $person->getOrganizationId(), true);
 
         $id = $this->idGenerator->generate();
-        $urlId = $this->generateUrlId($parameters['name']);
-        $knowledgebase = $this->knowledgebase->create($person->getOrganizationId());
+        $urlId = $this->urlSlugGenerator->generateFromString($parameters['name']);
 
-        $team = $this->teamInserter->insert(
-            $id,
-            $parameters['name'],
-            $parameters['description'],
-            $urlId,
-            $knowledgebase['id'],
-            $person->getOrganizationId()
-        );
+        $this->connection->beginTransaction();
+        try {
+            $knowledgebase = $this->knowledgebase->create($person->getOrganizationId());
+            $team = $this->teamInserter->insert(
+                $id,
+                $parameters['name'],
+                $parameters['description'],
+                $urlId,
+                $knowledgebase['id'],
+                $person->getOrganizationId()
+            );
+            $this->createMetadata($team['id']);
+            $this->createPersonTeamMap($person->getId(), $team['id']);
 
-        $this->createMetadata($team['id']);
-        $this->createPersonTeamMap($person->getId(), $team['id']);
+            $this->connection->commit();
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
 
         return $this->teamModelMapper->createFromArray($team);
     }
@@ -69,11 +83,5 @@ class Team
     {
         $id = $this->idGenerator->generate();
         $this->personToTeamMapInserter->insert($id, $personId, $teamId);
-    }
-
-    private function generateUrlId(string $name): string
-    {
-        $generator = new SlugGenerator;
-        return $generator->generate($name);
     }
 }

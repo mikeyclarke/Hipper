@@ -1,0 +1,215 @@
+<?php
+declare(strict_types=1);
+
+namespace Lithos\Tests\Document;
+
+use Doctrine\DBAL\Connection;
+use Lithos\Document\Document;
+use Lithos\Document\DocumentDescriptionDeducer;
+use Lithos\Document\DocumentInserter;
+use Lithos\Document\DocumentModel;
+use Lithos\Document\DocumentModelMapper;
+use Lithos\Document\DocumentRevision;
+use Lithos\Document\DocumentValidator;
+use Lithos\IdGenerator\IdGenerator;
+use Lithos\Knowledgebase\KnowledgebaseRoute;
+use Lithos\Person\PersonModel;
+use Lithos\Url\UrlIdGenerator;
+use Lithos\Url\UrlSlugGenerator;
+use Mockery as m;
+use PHPUnit\Framework\TestCase;
+
+class DocumentTest extends TestCase
+{
+    private $connection;
+    private $documentDescriptionDeducer;
+    private $documentInserter;
+    private $documentModelMapper;
+    private $documentRevision;
+    private $documentValidator;
+    private $idGenerator;
+    private $knowledgebaseRoute;
+    private $urlIdGenerator;
+    private $urlSlugGenerator;
+    private $document;
+
+    public function setUp(): void
+    {
+        $this->connection = m::mock(Connection::class);
+        $this->documentDescriptionDeducer = m::mock(DocumentDescriptionDeducer::class);
+        $this->documentInserter = m::mock(DocumentInserter::class);
+        $this->documentModelMapper = m::mock(DocumentModelMapper::class);
+        $this->documentRevision = m::mock(DocumentRevision::class);
+        $this->documentValidator = m::mock(DocumentValidator::class);
+        $this->idGenerator = m::mock(IdGenerator::class);
+        $this->knowledgebaseRoute = m::mock(KnowledgebaseRoute::class);
+        $this->urlIdGenerator = m::mock(UrlIdGenerator::class);
+        $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
+
+        $this->document = new Document(
+            $this->connection,
+            $this->documentDescriptionDeducer,
+            $this->documentInserter,
+            $this->documentModelMapper,
+            $this->documentRevision,
+            $this->documentValidator,
+            $this->idGenerator,
+            $this->knowledgebaseRoute,
+            $this->urlIdGenerator,
+            $this->urlSlugGenerator
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function create()
+    {
+        $personId = 'person-uuid';
+        $organizationId = 'org-uuid';
+        $knowledgebaseId = 'kb-uuid';
+
+        $person = new PersonModel;
+        $person->setId($personId);
+        $person->setOrganizationId($organizationId);
+
+        $parameters = [
+            'name' => 'Welcome to Engineering',
+            'description' => null,
+            'content' => ["type" => "text", "text" => "👋 Congrats on joining Hipper!"],
+            'knowledgebase_id' => $knowledgebaseId,
+        ];
+
+        $documentId = 'doc-uuid';
+        $urlSlug = 'welcome-to-engineering';
+        $urlId = 'url-id';
+        $deducedDescription = '👋 Congrats on joining Hipper!';
+
+        $documentRow = ['document-row'];
+        $model = new DocumentModel;
+        $model->setUrlSlug($urlSlug);
+        $model->setUrlId($urlId);
+        $route = '/team/engineering/docs/~/welcome-to-engineering-url-id';
+
+        $this->createDocumentValidatorExpectation([$parameters, $organizationId, true]);
+        $this->createIdGeneratorExpectation($documentId);
+        $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
+        $this->createUrlIdGeneratorExpectation($urlId);
+        $this->createDocumentDescriptionDeducerExpectation([$parameters['content']], $deducedDescription);
+        $this->createConnectionBeginTransactionExpectation();
+        $this->createDocumentInserterExpectation(
+            [
+                $documentId,
+                $parameters['name'],
+                $urlSlug,
+                $urlId,
+                $knowledgebaseId,
+                $organizationId,
+                $personId,
+                $parameters['description'],
+                $deducedDescription,
+                json_encode($parameters['content']),
+            ],
+            $documentRow
+        );
+        $this->createDocumentModelMapperExpectation([$documentRow], $model);
+        $this->createKnowledgebaseRouteExpectation([$model, $route, true, true]);
+        $this->createDocumentRevisionExpectation([$model]);
+        $this->createConnectionCommitExpectation();
+
+        $expected = $model;
+
+        $result = $this->document->create($person, $parameters);
+        $this->assertEquals($expected, $result);
+    }
+
+    private function createConnectionCommitExpectation()
+    {
+        $this->connection
+            ->shouldReceive('commit')
+            ->once();
+    }
+
+    private function createDocumentRevisionExpectation($args)
+    {
+        $this->documentRevision
+            ->shouldReceive('create')
+            ->once()
+            ->with(...$args);
+    }
+
+    private function createKnowledgebaseRouteExpectation($args)
+    {
+        $this->knowledgebaseRoute
+            ->shouldReceive('createForDocument')
+            ->once()
+            ->with(...$args);
+    }
+
+    private function createDocumentModelMapperExpectation($args, $result)
+    {
+        $this->documentModelMapper
+            ->shouldReceive('createFromArray')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createDocumentInserterExpectation($args, $result)
+    {
+        $this->documentInserter
+            ->shouldReceive('insert')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createConnectionBeginTransactionExpectation()
+    {
+        $this->connection
+            ->shouldReceive('beginTransaction')
+            ->once();
+    }
+
+    private function createDocumentDescriptionDeducerExpectation($args, $result)
+    {
+        $this->documentDescriptionDeducer
+            ->shouldReceive('deduce')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createUrlIdGeneratorExpectation($result)
+    {
+        $this->urlIdGenerator
+            ->shouldReceive('generate')
+            ->once()
+            ->andReturn($result);
+    }
+
+    private function createUrlSlugGeneratorExpectation($args, $result)
+    {
+        $this->urlSlugGenerator
+            ->shouldReceive('generateFromString')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createIdGeneratorExpectation($result)
+    {
+        $this->idGenerator
+            ->shouldReceive('generate')
+            ->once()
+            ->andReturn($result);
+    }
+
+    private function createDocumentValidatorExpectation($args)
+    {
+        $this->documentValidator
+            ->shouldReceive('validate')
+            ->once()
+            ->with(...$args);
+    }
+}

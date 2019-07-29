@@ -12,6 +12,23 @@ parameters:
     env(HSTS_ENABLED): false
     env(HSTS_MAX_AGE): 300
     env(RESOURCE_HINTS_ENABLED): false
+    document_allowed_nodes:
+        - 'text'
+        - 'paragraph'
+        - 'blockquote'
+        - 'horizontal_rule'
+        - 'heading'
+        - 'code_block'
+        - 'image'
+        - 'hard_break'
+        - 'ordered_list'
+        - 'bullet_list'
+        - 'list_item'
+    document_allowed_marks:
+        - 'link'
+        - 'em'
+        - 'strong'
+        - 'code'
 
 services:
     # default configuration for services in *this* file
@@ -81,6 +98,11 @@ services:
 
     Lithos\Person\NameRepresentation:
         autowire: false
+
+    Lithos\Validation\Constraints\DocumentStructureValidator:
+        arguments:
+            $documentAllowedMarks: '%document_allowed_marks%'
+            $documentAllowedNodes: '%document_allowed_nodes%'
 
     lithos_session_storage:
         class: Lithos\Session\SessionStorage

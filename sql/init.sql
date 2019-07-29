@@ -39,6 +39,20 @@ BEFORE UPDATE
 ON person
 FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
 
+CREATE TABLE person_metadata (
+    id                  UUID NOT NULL PRIMARY KEY,
+    person_id           UUID DEFAULT NULL references person(id),
+    twitter_screen_name text CHECK (LENGTH(twitter_screen_name) <= 15) DEFAULT NULL,
+    github_username     text CHECK (LENGTH(github_username) <= 39) DEFAULT NULL,
+    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_person_metadata_updated_timestamp
+BEFORE UPDATE
+ON person_metadata
+FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
+
 CREATE TABLE email_address_verification (
     id                      UUID NOT NULL PRIMARY KEY,
     person_id               UUID NOT NULL references person(id),
@@ -67,36 +81,84 @@ CREATE TABLE knowledgebase (
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE chapter (
+CREATE TABLE section (
     id                  UUID NOT NULL PRIMARY KEY,
     name                text CHECK (LENGTH(name) <= 100) NOT NULL,
     description         text CHECK (LENGTH(description) <= 300) DEFAULT NULL,
-    url_id              text CHECK (LENGTH(url_id) <= 100) NOT NULL,
+    url_slug            text CHECK (LENGTH(url_slug) <= 100) NOT NULL,
+    url_id              text CHECK (LENGTH(url_id) <= 8) NOT NULL UNIQUE,
+    parent_section_id   UUID DEFAULT NULL references section(id),
     knowledgebase_id    UUID NOT NULL references knowledgebase(id),
+    organization_id     UUID NOT NULL references organization(id),
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TRIGGER update_chapter_updated_timestamp
+CREATE TRIGGER update_section_updated_timestamp
 BEFORE UPDATE
-ON chapter
+ON section
 FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
 
 CREATE TABLE document (
     id                  UUID NOT NULL PRIMARY KEY,
     name                text CHECK (LENGTH(name) <= 150) NOT NULL,
     description         text CHECK (LENGTH(description) <= 300) DEFAULT NULL,
-    html                text DEFAULT NULL,
-    url_id              text CHECK (LENGTH(url_id) <= 150) NOT NULL,
-    chapter_id          UUID NOT NULL references chapter(id),
+    deduced_description text CHECK (LENGTH(deduced_description) <= 300) DEFAULT NULL,
+    content             json DEFAULT NULL,
+    url_slug            text CHECK (LENGTH(url_slug) <= 100) NOT NULL,
+    url_id              text CHECK (LENGTH(url_id) <= 8) NOT NULL UNIQUE,
+    knowledgebase_id    UUID NOT NULL references knowledgebase(id),
+    organization_id     UUID NOT NULL references organization(id),
+    section_id          UUID DEFAULT NULL references section(id),
+    created_by          UUID NOT NULL references person(id),
+    last_updated_by     UUID NOT NULL references person(id),
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
-    knowledgebase_id    UUID NOT NULL references knowledgebase(id),
 );
 
 CREATE TRIGGER update_document_updated_timestamp
 BEFORE UPDATE
 ON document
+FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
+
+CREATE TABLE document_revision (
+    id                  UUID NOT NULL PRIMARY KEY,
+    name                text CHECK (LENGTH(name) <= 150) NOT NULL,
+    description         text CHECK (LENGTH(description) <= 300) DEFAULT NULL,
+    deduced_description text CHECK (LENGTH(deduced_description) <= 300) DEFAULT NULL,
+    content             json DEFAULT NULL,
+    knowledgebase_id    UUID NOT NULL references knowledgebase(id),
+    organization_id     UUID NOT NULL references organization(id),
+    document_id         UUID NOT NULL references document(id),
+    created_by          UUID NOT NULL references person(id),
+    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_document_revision_updated_timestamp
+BEFORE UPDATE
+ON document_revision
+FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
+
+CREATE TYPE knowledgebase_route_entity AS ENUM ('document', 'section');
+
+CREATE TABLE knowledgebase_route (
+    id                  UUID NOT NULL PRIMARY KEY,
+    url_id              text CHECK (LENGTH(url_id) <= 8) NOT NULL,
+    route               text CHECK (LENGTH(route) <= 500) NOT NULL,
+    is_canonical        boolean DEFAULT true,
+    entity              knowledgebase_route_entity,
+    organization_id     UUID NOT NULL references organization(id),
+    knowledgebase_id    UUID NOT NULL references knowledgebase(id),
+    section_id          UUID DEFAULT NULL references section(id),
+    document_id         UUID DEFAULT NULL references document(id),
+    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_knowledgebase_route_updated_timestamp
+BEFORE UPDATE
+ON knowledgebase_route
 FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
 
 CREATE TABLE team (
@@ -125,11 +187,6 @@ CREATE TABLE team_metadata (
     updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TRIGGER update_team_metadata_updated_timestamp
-BEFORE UPDATE
-ON team_metadata
-FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
-
 CREATE TABLE person_to_team_map (
     id                  UUID NOT NULL PRIMARY KEY,
     person_id           UUID NOT NULL references person(id),
@@ -137,19 +194,48 @@ CREATE TABLE person_to_team_map (
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE person_metadata (
+CREATE TRIGGER update_team_metadata_updated_timestamp
+BEFORE UPDATE
+ON team_metadata
+FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
+
+CREATE TABLE project (
     id                  UUID NOT NULL PRIMARY KEY,
-    person_id           UUID DEFAULT NULL references person(id),
-    twitter_screen_name text CHECK (LENGTH(twitter_screen_name) <= 15) DEFAULT NULL,
-    github_username     text CHECK (LENGTH(github_username) <= 39) DEFAULT NULL,
+    name                text CHECK (LENGTH(name) <= 100) NOT NULL,
+    description         text CHECK (LENGTH(description) <= 300) DEFAULT NULL,
+    url_id              text CHECK (LENGTH(url_id) <= 100) NOT NULL,
+    lead_id             UUID DEFAULT NULL references person(id),
+    knowledgebase_id    UUID DEFAULT NULL references knowledgebase(id),
+    organization_id     UUID NOT NULL references organization(id),
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TRIGGER update_person_metadata_updated_timestamp
+CREATE TRIGGER update_project_updated_timestamp
 BEFORE UPDATE
-ON person_metadata
+ON project
 FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
+
+CREATE TABLE project_metadata (
+    id                  UUID NOT NULL PRIMARY KEY,
+    project_id          UUID DEFAULT NULL references project(id),
+    email_address       text CHECK (LENGTH(email_address) <= 255) DEFAULT NULL,
+    slack_channel_name  text CHECK (LENGTH(slack_channel_name) <= 21) DEFAULT NULL,
+    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_project_metadata_updated_timestamp
+BEFORE UPDATE
+ON project_metadata
+FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
+
+CREATE TABLE person_to_project_map (
+    id                  UUID NOT NULL PRIMARY KEY,
+    person_id           UUID NOT NULL references person(id),
+    project_id          UUID NOT NULL references project(id),
+    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE invite (
     id                  UUID NOT NULL PRIMARY KEY,

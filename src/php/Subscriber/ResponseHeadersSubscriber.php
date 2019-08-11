@@ -86,7 +86,7 @@ class ResponseHeadersSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        if ($response instanceOf RedirectResponse || $response instanceOf JsonResponse) {
+        if ($response instanceof RedirectResponse || $response instanceof JsonResponse) {
             return false;
         }
 

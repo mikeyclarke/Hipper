@@ -9,8 +9,10 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'public-roots/assets/public/build'),
-        publicPath: 'build/',
+        publicPath: 'https://assets.tryhleo.test/build/',
         filename: '[name].[contenthash].js',
+        chunkFilename: '[name].[contenthash].js',
+        crossOriginLoading: 'anonymous',
     },
     stats: {
         children: false,
@@ -36,19 +38,6 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.ts$/,
-                enforce: 'pre',
-                use: [
-                    {
-                        loader: 'tslint-loader',
-                        options: {
-                            configFile: 'tslint.json',
-                            typeCheck: true,
-                        }
-                    }
-                ]
-            },
             {
                 test: /\.ts$/,
                 use: [
@@ -90,6 +79,9 @@ module.exports = {
                 },
             },
         ],
+    },
+    optimization: {
+        splitChunks: false,
     },
     devtool: 'inline-source-map',
     node: {

@@ -1,6 +1,7 @@
 @import 'vendor/normalize/normalize';
 @import './fonts';
 
+@import 'utility/hidden-attribute';
 @import 'helper/font-smoothing';
 
 @import 'config/config';
@@ -26,6 +27,10 @@
 @import 'component/page-section';
 @import 'component/banner';
 @import 'component/empty-page-notice';
+@import 'component/document-editor-header';
+@import 'component/document-editor-document';
+@import 'component/document-editor-menu';
 
 @import 'layout/splash-screen';
 @import 'layout/sheet';
+@import 'layout/document-editor';

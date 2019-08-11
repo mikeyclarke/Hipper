@@ -56,6 +56,10 @@ class TwigGlobalsSubscriber implements EventSubscriberInterface
             $this->twig->addGlobal('csrf_token', $session->get('csrf_token'));
         }
 
+        if ($session->has('user_agent_profile')) {
+            $this->twig->addGlobal('user_agent_profile', $session->get('user_agent_profile'));
+        }
+
         $this->twig->addGlobal('asset_domain', $this->assetDomain);
     }
 }

@@ -1,0 +1,16 @@
+.l-document-editor__container.is-static-layout {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.is-static-layout .l-document-editor__content {
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}

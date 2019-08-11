@@ -4,6 +4,7 @@ import { VerifyIdentityController } from './RouteControllers/onboarding/VerifyId
 import { TeamSubdomainController } from './RouteControllers/onboarding/TeamSubdomainController';
 import { NameTeamController } from './RouteControllers/onboarding/NameTeamController';
 import { CreateTeamController } from './RouteControllers/app/Team/CreateTeamController';
+import { CreateTeamDocController } from './RouteControllers/app/Team/CreateTeamDocController';
 import { HttpClient } from 'Http/HttpClient';
 import { Controller } from 'RouteControllers/Controller';
 import { DocumentCookies } from 'Cookie/DocumentCookies';
@@ -63,6 +64,13 @@ bottle.factory('createTeamController', (container) => {
     );
 });
 
+bottle.factory('createTeamDocController', (container) => {
+    return new CreateTeamDocController(
+        container.httpClient,
+        container.config.user_agent_profile,
+    );
+});
+
 bottle.factory('bootstrap', (container) => {
     const path: string = window.location.pathname;
     const routes: Iroute = {
@@ -71,6 +79,7 @@ bottle.factory('bootstrap', (container) => {
         '/name-team': container.nameTeamController,
         '/choose-team-url': container.teamSubdomainController,
         '/teams/new': container.createTeamController,
+        '/team/engineering/docs/new': container.createTeamDocController,
     };
     if (routes[path]) {
         return routes[path];
@@ -87,8 +96,23 @@ function getCsrfToken(): string | null {
     return metaElement.getAttribute('content');
 }
 
+function getUserAgentProfile(): Record<string, any> | null {
+    const metaElement = document.head.querySelector('.js-user-agent-profile');
+    if (null === metaElement) {
+        return null;
+    }
+
+    const profile = metaElement.getAttribute('content');
+    if (null === profile) {
+        return null;
+    }
+
+    return JSON.parse(profile);
+}
+
 const config = {
     csrf_token: getCsrfToken(),
+    user_agent_profile: getUserAgentProfile(),
 };
 
 bottle.constant('config', config);

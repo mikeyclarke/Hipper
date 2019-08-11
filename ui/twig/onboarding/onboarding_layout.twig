@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="{{ asset('app.css') }}" crossorigin="anonymous">
         <meta name="csrf" class="js-csrf" content="{{ csrf_token }}">
+        <meta name="user_agent_profile" class="js-user-agent-profile" content='{{ user_agent_profile|json_encode|raw }}'>
     </head>
 
     <body>

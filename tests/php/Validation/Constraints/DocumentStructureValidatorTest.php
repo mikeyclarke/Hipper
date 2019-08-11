@@ -11,7 +11,7 @@ class DocumentStructureValidatorTest extends ConstraintValidatorTestCase
 {
     const ALLOWED_NODES = [
         'text', 'paragraph', 'heading', 'image', 'code_block', 'hard_break', 'horizontal_rule', 'blockquote',
-        'bullet_list', 'ordered_list', 'list_item',
+        'unordered_list', 'ordered_list', 'list_item',
     ];
     const ALLOWED_MARKS = ['em', 'strong', 'link', 'code'];
 

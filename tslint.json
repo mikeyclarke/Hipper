@@ -59,7 +59,7 @@
       ],
       "new-parens": true,
       "no-angle-bracket-type-assertion": false,
-      "no-any": true,
+      "no-any": false,
       "no-arg": true,
       "no-bitwise": true,
       "no-boolean-literal-compare": true,
@@ -133,7 +133,7 @@
         "check-whitespace"
       ],
       "one-variable-per-declaration": true,
-      "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"],
+      "only-arrow-functions": false,
       "ordered-imports": [
         false
       ],

@@ -1,0 +1,36 @@
+{% extends 'base_layout.twig' %}
+
+{% block content %}
+
+<div class="l-document-editor__container js-document-editor-container">
+    <div class="l-document-editor__content">
+        <header class="c-document-editor-header">
+            <button class="c-document-editor-header__button" type="button" aria-label="Close">
+                <svg class="c-document-editor-header__button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__close"/></svg>
+            </button>
+            <button class="c-document-editor-header__button" type="button" aria-label="Done">
+                <svg class="js-submit-document c-document-editor-header__button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
+            </button>
+        </header>
+
+        <main>
+            <form class="js-document-form">
+                <input type="hidden" name="knowledgebase_id" value="{{ team.knowledgebaseId }}">
+                <input type="hidden" name="allowed_marks" value='{{ allowed_marks|json_encode|raw }}'>
+                <input type="hidden" name="allowed_nodes" value='{{ allowed_nodes|json_encode|raw }}'>
+
+                <elastic-text-input>
+                    <textarea name="document_name" class="c-document-editor-header__title" placeholder="Add a title" rows="1"></textarea>
+                </elastic-text-input>
+
+                <elastic-text-input>
+                    <textarea name="document_description" class="c-document-editor-header__synopsis" placeholder="Optionally add a synopsis" rows="1"></textarea>
+                </elastic-text-input>
+            </form>
+
+            <div class="js-text-editor c-document-editor-document"></div>
+        </main>
+    </div>
+</div>
+
+{% endblock %}

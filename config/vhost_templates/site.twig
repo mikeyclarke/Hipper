@@ -12,6 +12,17 @@ server {
 server {
     {% include 'includes/serverinfo.twig' %}
 
+    listen 80;
+    listen [::]:80;
+
+    server_name {{ domain }};
+
+    return 301 https://{{ domain }}$1;
+}
+
+server {
+    {% include 'includes/serverinfo.twig' %}
+
     fastcgi_buffers 8 16k;
     fastcgi_buffer_size 32k;
 

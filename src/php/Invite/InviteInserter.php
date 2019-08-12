@@ -7,6 +7,8 @@ use Doctrine\DBAL\Connection;
 
 class InviteInserter
 {
+    private $connection;
+
     public function __construct(
         Connection $connection
     ) {

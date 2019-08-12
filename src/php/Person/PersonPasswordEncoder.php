@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Person;
 
 use Hipper\Person\Exception\PasswordUnsafeForProcessingException;
+use Hipper\Person\Exception\PasswordCouldNotBeHashedException;
 
 class PersonPasswordEncoder
 {
@@ -19,7 +20,12 @@ class PersonPasswordEncoder
             throw new PasswordUnsafeForProcessingException;
         }
 
-        return password_hash($rawPassword, \PASSWORD_ARGON2ID);
+        $result = password_hash($rawPassword, \PASSWORD_ARGON2ID);
+        if (false === $result) {
+            throw new PasswordCouldNotBeHashedException;
+        }
+
+        return $result;
     }
 
     public function isPasswordValid(string $encodedPassword, string $rawPassword): bool

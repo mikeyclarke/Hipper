@@ -42,7 +42,11 @@ class MiddlewareSubscriber implements EventSubscriberInterface
             foreach ($routeParams['_before_middlewares'] as $callback) {
                 list($serviceId, $method) = explode(':', $callback);
                 $service = $this->container->get($serviceId);
-                $return = call_user_func([$service, $method], $request);
+                $callback = [$service, $method];
+                if (!is_callable($callback)) {
+                    return;
+                }
+                $return = call_user_func($callback, $request);
                 if ($return instanceof Response) {
                     $event->setResponse($return);
                 }
@@ -63,7 +67,11 @@ class MiddlewareSubscriber implements EventSubscriberInterface
             foreach ($routeParams['_after_middlewares'] as $callback) {
                 list($serviceId, $method) = explode(':', $callback);
                 $service = $this->container->get($serviceId);
-                $return = call_user_func([$service, $method], $request, $event->getResponse());
+                $callback = [$service, $method];
+                if (!is_callable($callback)) {
+                    return;
+                }
+                $return = call_user_func($callback, $request, $event->getResponse());
                 if ($return instanceof Response) {
                     $event->setResponse($return);
                 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Validation;
 
-use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 class ConstraintViolationListFormatter
@@ -23,7 +23,7 @@ class ConstraintViolationListFormatter
         return $errors;
     }
 
-    private static function formatViolationPropertyPath(ConstraintViolation $violation): string
+    private static function formatViolationPropertyPath(ConstraintViolationInterface $violation): string
     {
         return preg_replace(
             ['(^\[)', '(\]\[)', '(\]$)'],

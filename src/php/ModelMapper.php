@@ -14,11 +14,12 @@ class ModelMapper
 
             $methodName = 'set' . $fields[$key];
 
-            if (!is_callable([$model, $methodName])) {
+            $callback = [$model, $methodName];
+            if (!is_callable($callback)) {
                 continue;
             }
 
-            call_user_func([$model, $methodName], $value);
+            call_user_func($callback, $value);
         }
     }
 }

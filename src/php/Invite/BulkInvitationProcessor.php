@@ -67,6 +67,7 @@ class BulkInvitationProcessor
             $this->connection->commit();
         } catch (\Exception $e) {
             $this->connection->rollBack();
+            throw $e;
         }
 
         $this->bulkInvite->send($emailsToSend);

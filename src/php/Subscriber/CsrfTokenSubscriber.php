@@ -68,7 +68,7 @@ class CsrfTokenSubscriber implements EventSubscriberInterface
         if ($request->getContentType() === 'json') {
             return $request->headers->get(self::TOKEN_HEADER_NAME);
         }
-        return $request->request->get(self::BODY_TOKEN_NAME);
+        return $request->request->get(self::TOKEN_BODY_NAME);
     }
 
     private function validateToken(RequestEvent $event, Request $request, string $csrfToken): void

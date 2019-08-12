@@ -50,6 +50,9 @@ class GenerateVhostsCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $outputDir = $input->getArgument('path-to-vhosts');
+        if (!is_string($outputDir)) {
+            return null;
+        }
         $repositoryRoot = realpath(__DIR__ . '/../../../');
         $this->twig->getLoader()->setPaths($repositoryRoot . '/config/vhost_templates');
 
@@ -62,7 +65,8 @@ class GenerateVhostsCommand extends Command
 
         foreach (self::TEMPLATES as $twigFile => $outputName) {
             $rendered = $this->twig->render($twigFile . '.twig', $parameters);
-            file_put_contents($outputDir . '/' . $outputName . '.conf', $rendered);
+            $path = sprintf('%s/%s.conf', $outputDir, $outputName);
+            file_put_contents($path, $rendered);
         }
 
         $output->writeln('ALL DONE!');

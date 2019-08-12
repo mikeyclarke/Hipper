@@ -91,7 +91,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface
 
     private function createUnauthorizedResponse(Request $request, RequestEvent $event): void
     {
-        if ($request->headers->has('X-Requested-With') === 'Fetch') {
+        if ($request->headers->has('X-Requested-With') && $request->headers->get('X-Requested-With') === 'Fetch') {
             $event->setResponse(new JsonResponse(null, 401));
             return;
         }

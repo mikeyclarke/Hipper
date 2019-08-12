@@ -7,6 +7,8 @@ use Doctrine\DBAL\Connection;
 
 class InviteUpdater
 {
+    private $connection;
+
     public function __construct(
         Connection $connection
     ) {

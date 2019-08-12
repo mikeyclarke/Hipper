@@ -15,6 +15,9 @@ test_php:
 phpcs: ## Check that PHP complies with stylistic rules
 	./vendor/bin/phpcs -p --encoding=utf-8 --standard=PSR2 --error-severity=1 src/php tests/php
 
+phpstan: ## Check that PHP passes static analysis
+	./vendor/bin/phpstan analyse src/php --level 6
+
 tslint: ## Lint Typescript files
 	./node_modules/.bin/tslint -p tsconfig.json -c tslint.json
 

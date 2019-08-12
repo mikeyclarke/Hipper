@@ -16,7 +16,7 @@ class Document
     private $documentDescriptionDeducer;
     private $documentInserter;
     private $documentModelMapper;
-    private $documentRevisionInserter;
+    private $documentRevision;
     private $documentValidator;
     private $idGenerator;
     private $knowledgebaseRoute;

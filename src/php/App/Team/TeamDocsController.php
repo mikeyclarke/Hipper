@@ -23,6 +23,7 @@ class TeamDocsController
         $personIsInTeam = $request->attributes->get('personIsInTeam');
 
         $context = [
+            'html_title' => sprintf('Docs – %s', $team->getName()),
             'team' => $team,
             'personIsInTeam' => $personIsInTeam,
         ];

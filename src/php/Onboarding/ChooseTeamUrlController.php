@@ -38,6 +38,7 @@ class ChooseTeamUrlController
 
         $context = [
             'domain' => $request->getHttpHost(),
+            'html_title' => 'Organization URL',
             'subdomainSuggestion' => $this->subdomainGenerator->generate($organization->getName()),
         ];
 

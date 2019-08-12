@@ -23,6 +23,7 @@ class TeamController
         $personIsInTeam = $request->attributes->get('personIsInTeam');
 
         $context = [
+            'html_title' => $team->getName(),
             'team' => $team,
             'personIsInTeam' => $personIsInTeam,
         ];

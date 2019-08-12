@@ -57,6 +57,7 @@ class CreateTeamController
             'bodyClassList' => [
                 'l-sheet',
             ],
+            'html_title' => 'New team',
             'placeholderTeamName' => $this->getPlaceholderTeamName(),
         ];
 

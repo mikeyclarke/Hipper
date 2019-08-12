@@ -36,6 +36,7 @@ class InviteController
         $emailDomain = substr($email, strrpos($email, '@') + 1);
 
         $context = [
+            'html_title' => 'Invites',
             'isApprovedEmailSignupSupported' => !$this->isEmailDomainPersonal($emailDomain),
             'emailDomain' => $emailDomain,
         ];

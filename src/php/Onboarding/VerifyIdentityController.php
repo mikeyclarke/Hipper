@@ -28,6 +28,7 @@ class VerifyIdentityController
         $person = $request->attributes->get('person');
 
         $context = [
+            'html_title' => 'Verify your email address',
             'person' => $person,
         ];
 

@@ -25,8 +25,12 @@ class NameTeamController
 
     public function getAction(Request $request): Response
     {
+        $context = [
+            'html_title' => 'Name your organization',
+        ];
+
         return new Response(
-            $this->twig->render('onboarding/name_team.twig')
+            $this->twig->render('onboarding/name_team.twig', $context)
         );
     }
 

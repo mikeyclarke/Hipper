@@ -31,10 +31,13 @@ class CreateTeamDocController
 
     public function getAction(Request $request): Response
     {
+        $team = $request->attributes->get('team');
+
         $context = [
             'allowed_marks' => $this->documentAllowedMarks,
             'allowed_nodes' => $this->documentAllowedNodes,
-            'team' => $request->attributes->get('team'),
+            'html_title' => sprintf('New doc – %s', $team->getName()),
+            'team' => $team,
         ];
 
         return new Response(

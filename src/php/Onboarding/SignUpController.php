@@ -25,8 +25,12 @@ class SignUpController
 
     public function getAction(Request $request): Response
     {
+        $context = [
+            'html_title' => 'Sign-up',
+        ];
+
         return new Response(
-            $this->twig->render('onboarding/signup.twig')
+            $this->twig->render('onboarding/signup.twig', $context)
         );
     }
 

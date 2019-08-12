@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\App\Team;
+namespace Hipper\App\Team;
 
-use Lithos\Team\TeamModelMapper;
-use Lithos\Team\TeamRepository;
+use Hipper\Team\TeamModelMapper;
+use Hipper\Team\TeamRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

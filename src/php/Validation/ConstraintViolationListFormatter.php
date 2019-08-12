@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Validation;
+namespace Hipper\Validation;
 
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;

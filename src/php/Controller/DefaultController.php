@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Controller;
+namespace Hipper\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Invite;
+namespace Hipper\Invite;
 
-use Lithos\Validation\Constraints\UniqueEmailAddress;
-use Lithos\Validation\Constraints\UniqueInvite;
-use Lithos\Validation\ConstraintViolationListFormatter;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Validation\Constraints\UniqueEmailAddress;
+use Hipper\Validation\Constraints\UniqueInvite;
+use Hipper\Validation\ConstraintViolationListFormatter;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;

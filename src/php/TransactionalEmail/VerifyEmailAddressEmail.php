@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\TransactionalEmail;
+namespace Hipper\TransactionalEmail;
 
 class VerifyEmailAddressEmail
 {
@@ -30,7 +30,7 @@ class VerifyEmailAddressEmail
                 'ReplyTo' => $this->emailReplyToAddress,
                 'To' => $recipientEmailAddress,
                 'Tag' => self::TAG,
-                'Subject' => 'Lithos verification code',
+                'Subject' => 'Hipper verification code',
                 'HtmlBody' => sprintf(
                     '<html><body>' .
                     '<p>Hey! Copy the below phrase into your open browser window to prove that you’re a human.</p>' .

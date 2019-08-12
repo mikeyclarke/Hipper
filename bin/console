@@ -2,7 +2,7 @@
 <?php
 declare(strict_types=1);
 
-use Lithos\AppKernel;
+use Hipper\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
 

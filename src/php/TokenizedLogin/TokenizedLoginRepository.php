@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\TokenizedLogin;
+namespace Hipper\TokenizedLogin;
 
 use Doctrine\DBAL\Connection;
 

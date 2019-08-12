@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Person\CreationStrategy;
+namespace Hipper\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
-use Lithos\Organization\OrganizationModel;
-use Lithos\Person\Exception\ApprovedEmailDomainSignupNotAllowedException;
-use Lithos\Person\Exception\MalformedEmailAddressException;
-use Lithos\Person\PersonCreationValidator;
-use Lithos\Person\PersonCreator;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Person\Exception\ApprovedEmailDomainSignupNotAllowedException;
+use Hipper\Person\Exception\MalformedEmailAddressException;
+use Hipper\Person\PersonCreationValidator;
+use Hipper\Person\PersonCreator;
+use Hipper\Validation\Exception\ValidationException;
 
 class CreateFromApprovedEmailDomain
 {

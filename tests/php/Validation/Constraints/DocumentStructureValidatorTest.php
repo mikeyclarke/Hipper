@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Validation\Constraints;
+namespace Hipper\Tests\Validation\Constraints;
 
-use Lithos\Validation\Constraints\DocumentStructure;
-use Lithos\Validation\Constraints\DocumentStructureValidator;
+use Hipper\Validation\Constraints\DocumentStructure;
+use Hipper\Validation\Constraints\DocumentStructureValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class DocumentStructureValidatorTest extends ConstraintValidatorTestCase

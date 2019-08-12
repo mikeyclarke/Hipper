@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace LithosTests\Invite;
+namespace Hipper\Tests\Invite;
 
 use Doctrine\DBAL\Connection;
-use Lithos\Invite\BulkInvitationProcessor;
-use Lithos\Invite\InviteRepository;
-use Lithos\Invite\InviteUpdater;
-use Lithos\Organization\Organization;
-use Lithos\Organization\OrganizationModel;
-use Lithos\Person\PersonModel;
-use Lithos\Person\PersonModelMapper;
-use Lithos\Person\PersonRepository;
-use Lithos\Security\TokenGenerator;
-use Lithos\TransactionalEmail\BulkInvite;
+use Hipper\Invite\BulkInvitationProcessor;
+use Hipper\Invite\InviteRepository;
+use Hipper\Invite\InviteUpdater;
+use Hipper\Organization\Organization;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Person\PersonModel;
+use Hipper\Person\PersonModelMapper;
+use Hipper\Person\PersonRepository;
+use Hipper\Security\TokenGenerator;
+use Hipper\TransactionalEmail\BulkInvite;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
@@ -61,7 +61,7 @@ class BulkInvitationProcessorTest extends TestCase
     {
         $organizationId = 'orgamization-id';
         $personId = 'person-id';
-        $domain = 'tryhleo.test';
+        $domain = 'usehipper.test';
         $inviteIds = [
             'invite-id-one',
             'invite-id-two',
@@ -73,7 +73,7 @@ class BulkInvitationProcessorTest extends TestCase
         $organization->setSubdomain('hleo');
         $personArray = ['person'];
         $person = new PersonModel;
-        $person->setEmailAddress('mikey@tryhleo.com');
+        $person->setEmailAddress('mikey@usehipper.com');
         $person->setName('Mikey Clarke');
         $inviteRecords = [
             'invite-id-one' => ['email_address' => 'foo@example.com'],

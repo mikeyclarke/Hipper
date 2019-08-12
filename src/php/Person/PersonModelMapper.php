@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Person;
+namespace Hipper\Person;
 
-use Lithos\ModelMapper;
+use Hipper\ModelMapper;
 
 class PersonModelMapper
 {

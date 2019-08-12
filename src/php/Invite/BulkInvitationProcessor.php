@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Invite;
+namespace Hipper\Invite;
 
 use Doctrine\DBAL\Connection;
-use Lithos\Organization\Organization;
-use Lithos\Organization\OrganizationModel;
-use Lithos\Person\PersonModel;
-use Lithos\Person\PersonModelMapper;
-use Lithos\Person\PersonRepository;
-use Lithos\Security\TokenGenerator;
-use Lithos\TransactionalEmail\BulkInvite;
+use Hipper\Organization\Organization;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Person\PersonModel;
+use Hipper\Person\PersonModelMapper;
+use Hipper\Person\PersonRepository;
+use Hipper\Security\TokenGenerator;
+use Hipper\TransactionalEmail\BulkInvite;
 
 class BulkInvitationProcessor
 {

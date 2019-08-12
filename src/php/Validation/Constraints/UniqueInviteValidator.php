@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Validation\Constraints;
+namespace Hipper\Validation\Constraints;
 
-use Lithos\Invite\InviteRepository;
+use Hipper\Invite\InviteRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

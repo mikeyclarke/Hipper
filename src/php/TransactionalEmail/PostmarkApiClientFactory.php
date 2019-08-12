@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\TransactionalEmail;
+namespace Hipper\TransactionalEmail;
 
 use GuzzleHttp\Client;
 

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Knowledgebase;
+namespace Hipper\Knowledgebase;
 
-use Lithos\IdGenerator\IdGenerator;
+use Hipper\IdGenerator\IdGenerator;
 
 class Knowledgebase
 {

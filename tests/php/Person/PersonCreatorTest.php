@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Person;
+namespace Hipper\Tests\Person;
 
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Organization\OrganizationModel;
-use Lithos\Person\PersonCreator;
-use Lithos\Person\PersonInserter;
-use Lithos\Person\PersonMetadataInserter;
-use Lithos\Person\PersonModel;
-use Lithos\Person\PersonModelMapper;
-use Lithos\Person\PersonPasswordEncoder;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Person\PersonCreator;
+use Hipper\Person\PersonInserter;
+use Hipper\Person\PersonMetadataInserter;
+use Hipper\Person\PersonModel;
+use Hipper\Person\PersonModelMapper;
+use Hipper\Person\PersonPasswordEncoder;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
@@ -51,7 +51,7 @@ class PersonCreatorTest extends TestCase
         $organization->setId('16fd2706-8baf-433b-82eb-8c7fada847da');
         $name = 'Mikey Clarke';
         $abbreviatedName = 'MC';
-        $emailAddress = 'mikey@tryhleo.com';
+        $emailAddress = 'mikey@usehipper.com';
         $rawPassword = 'foobar';
 
         $personId = '20fd0d4f-132f-43af-9280-e4565bf2a44e';
@@ -92,7 +92,7 @@ class PersonCreatorTest extends TestCase
         $organization->setId('16fd2706-8baf-433b-82eb-8c7fada847da');
         $name = 'Mikey Clarke';
         $abbreviatedName = 'MC';
-        $emailAddress = 'mikey@tryhleo.com';
+        $emailAddress = 'mikey@usehipper.com';
         $rawPassword = 'foobar';
         $emailAddressVerified = true;
 

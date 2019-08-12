@@ -9,7 +9,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'public-roots/assets/public/build'),
-        publicPath: 'https://assets.tryhleo.test/build/',
+        publicPath: 'https://assets.usehipper.test/build/',
         filename: '[name].[contenthash].js',
         chunkFilename: '[name].[contenthash].js',
         crossOriginLoading: 'anonymous',

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LithosTests\Invite;
+namespace Hipper\Tests\Invite;
 
 use Doctrine\DBAL\Connection;
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Invite\BulkInvitationCreator;
-use Lithos\Invite\BulkInvitationProcessor;
-use Lithos\Invite\BulkInvitationValidator;
-use Lithos\Invite\InviteInserter;
-use Lithos\Person\PersonModel;
-use Lithos\TransactionalEmail\BulkInvite;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Invite\BulkInvitationCreator;
+use Hipper\Invite\BulkInvitationProcessor;
+use Hipper\Invite\BulkInvitationValidator;
+use Hipper\Invite\InviteInserter;
+use Hipper\Person\PersonModel;
+use Hipper\TransactionalEmail\BulkInvite;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
@@ -50,7 +50,7 @@ class BulkInvitationCreatorTest extends TestCase
         $person = new PersonModel;
         $person->setId('person-id');
         $person->setOrganizationId('organization-id');
-        $domain = 'tryhleo.test';
+        $domain = 'usehipper.test';
         $input = [
             'email_invites' => [
                 'foo@example.com',
@@ -88,7 +88,7 @@ class BulkInvitationCreatorTest extends TestCase
     public function nullInvitations()
     {
         $person = new PersonModel;
-        $domain = 'tryhleo.test';
+        $domain = 'usehipper.test';
         $input = [
             'email_invites' => null,
         ];
@@ -104,7 +104,7 @@ class BulkInvitationCreatorTest extends TestCase
     public function emptyInvitations()
     {
         $person = new PersonModel;
-        $domain = 'tryhleo.test';
+        $domain = 'usehipper.test';
         $input = [
             'email_invites' => [],
         ];

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Team;
+namespace Hipper\Team;
 
-use Lithos\Validation\ConstraintViolationListFormatter;
-use Lithos\Validation\Constraints\UniqueTeamName;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Validation\ConstraintViolationListFormatter;
+use Hipper\Validation\Constraints\UniqueTeamName;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;

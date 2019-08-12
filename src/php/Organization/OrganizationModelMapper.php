@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Organization;
+namespace Hipper\Organization;
 
-use Lithos\ModelMapper;
+use Hipper\ModelMapper;
 
 class OrganizationModelMapper
 {

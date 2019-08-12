@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\App;
+namespace Hipper\App;
 
-use Lithos\Person\CreationStrategy\CreateFromApprovedEmailDomain;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Person\CreationStrategy\CreateFromApprovedEmailDomain;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

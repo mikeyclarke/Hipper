@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace LithosTests\Person\CreationStrategy;
+namespace Hipper\Tests\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Lithos\Invite\InviteDeleter;
-use Lithos\Invite\InviteRepository;
-use Lithos\Organization\OrganizationModel;
-use Lithos\Person\CreationStrategy\CreateFromInvite;
-use Lithos\Person\Exception\InviteDoesNotBelongToOrganizationException;
-use Lithos\Person\Exception\InviteNotFoundException;
-use Lithos\Person\PersonCreationValidator;
-use Lithos\Person\PersonCreator;
-use Lithos\Person\PersonModel;
+use Hipper\Invite\InviteDeleter;
+use Hipper\Invite\InviteRepository;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Person\CreationStrategy\CreateFromInvite;
+use Hipper\Person\Exception\InviteDoesNotBelongToOrganizationException;
+use Hipper\Person\Exception\InviteNotFoundException;
+use Hipper\Person\PersonCreationValidator;
+use Hipper\Person\PersonCreator;
+use Hipper\Person\PersonModel;
 use PHPUnit\Framework\TestCase;
 use Mockery as m;
 
@@ -61,7 +61,7 @@ class CreateFromInviteTest extends TestCase
 
         $invite = [
             'id' => 'invite-id',
-            'email_address' => 'mikey@tryhleo.com',
+            'email_address' => 'mikey@usehipper.com',
             'organization_id' => 'org-id',
         ];
         $person = new PersonModel;

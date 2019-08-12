@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Person;
+namespace Hipper\Person;
 
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Organization\OrganizationModel;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Organization\OrganizationModel;
 
 class PersonCreator
 {

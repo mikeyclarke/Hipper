@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Security;
+namespace Hipper\Security;
 
 use RandomLib\Factory;
 

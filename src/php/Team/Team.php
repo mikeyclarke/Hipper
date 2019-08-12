@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Team;
+namespace Hipper\Team;
 
 use Doctrine\DBAL\Connection;
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Knowledgebase\Knowledgebase;
-use Lithos\Person\PersonModel;
-use Lithos\Url\UrlSlugGenerator;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Knowledgebase\Knowledgebase;
+use Hipper\Person\PersonModel;
+use Hipper\Url\UrlSlugGenerator;
 
 class Team
 {

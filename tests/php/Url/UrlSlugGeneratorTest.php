@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Url;
+namespace Hipper\Tests\Url;
 
 use Ausi\SlugGenerator\SlugGenerator;
-use Lithos\Url\AusiSlugGeneratorFactory;
-use Lithos\Url\UrlSlugGenerator;
+use Hipper\Url\AusiSlugGeneratorFactory;
+use Hipper\Url\UrlSlugGenerator;
 use Locale;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Document;
+namespace Hipper\Document;
 
 use Doctrine\DBAL\Connection;
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Knowledgebase\KnowledgebaseRoute;
-use Lithos\Person\PersonModel;
-use Lithos\Url\UrlIdGenerator;
-use Lithos\Url\UrlSlugGenerator;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Person\PersonModel;
+use Hipper\Url\UrlIdGenerator;
+use Hipper\Url\UrlSlugGenerator;
 
 class Document
 {

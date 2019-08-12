@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Http;
+namespace Hipper\Tests\Http;
 
-use Lithos\Http\HttpUserAgentProfiler;
+use Hipper\Http\HttpUserAgentProfiler;
 use PHPUnit\Framework\TestCase;
 
 class HttpUserAgentProfilerTest extends TestCase

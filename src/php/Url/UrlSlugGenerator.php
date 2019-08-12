@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Url;
+namespace Hipper\Url;
 
 use Ausi\SlugGenerator\SlugGenerator;
-use Lithos\Url\AusiSlugGeneratorFactory;
+use Hipper\Url\AusiSlugGeneratorFactory;
 use Locale;
 
 class UrlSlugGenerator

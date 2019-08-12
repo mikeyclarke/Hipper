@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\App;
+namespace Hipper\App;
 
-use Lithos\Person\CreationStrategy\CreateFromInvite;
-use Lithos\Person\Exception\InviteNotFoundException;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Person\CreationStrategy\CreateFromInvite;
+use Hipper\Person\Exception\InviteNotFoundException;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

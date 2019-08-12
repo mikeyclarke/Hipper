@@ -1,6 +1,6 @@
 index:
     path: /
-    controller: Lithos\Controller\DefaultController::index
+    controller: Hipper\Controller\DefaultController::index
     defaults:
         _before_middlewares:
             - app_onboarding_completed_middleware:before
@@ -8,14 +8,14 @@ index:
 tokenized_login.get:
     path: /tokenized-login
     methods: [GET]
-    controller: Lithos\App\TokenizedLoginController::getAction
+    controller: Hipper\App\TokenizedLoginController::getAction
     defaults:
         unsecured: true
 
 login.post:
     path: /_/login
     methods: [POST]
-    controller: Lithos\App\LoginController::postAction
+    controller: Hipper\App\LoginController::postAction
     defaults:
         unsecured: true
         _before_middlewares:
@@ -24,7 +24,7 @@ login.post:
 join.post:
     path: /_/join
     methods: [POST]
-    controller: Lithos\App\JoinOrganizationController::postAction
+    controller: Hipper\App\JoinOrganizationController::postAction
     defaults:
         unsecured: true
         _before_middlewares:
@@ -33,14 +33,14 @@ join.post:
 join_by_invitation.get:
     path: /join/by-invitation
     methods: [GET]
-    controller: Lithos\App\JoinByInvitationController::getAction
+    controller: Hipper\App\JoinByInvitationController::getAction
     defaults:
         unsecured: true
 
 join_by_invitation.post:
     path: /_/join/by-invitation
     methods: [POST]
-    controller: Lithos\App\JoinByInvitationController::postAction
+    controller: Hipper\App\JoinByInvitationController::postAction
     defaults:
         unsecured: true
         _before_middlewares:
@@ -49,17 +49,17 @@ join_by_invitation.post:
 welcome.get:
     path: /welcome
     methods: [GET]
-    controller: Lithos\App\WelcomeController::getAction
+    controller: Hipper\App\WelcomeController::getAction
 
 create_team.get:
     path: /teams/new
     methods: [GET]
-    controller: Lithos\App\Team\CreateTeamController::getAction
+    controller: Hipper\App\Team\CreateTeamController::getAction
 
 create_team_suggest_description.post:
     path: /_/suggest-team-description
     methods: [POST]
-    controller: Lithos\App\Team\CreateTeamController::suggestAction
+    controller: Hipper\App\Team\CreateTeamController::suggestAction
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
@@ -67,7 +67,7 @@ create_team_suggest_description.post:
 create_team.post:
     path: /_/create-team
     methods: [POST]
-    controller: Lithos\App\Team\CreateTeamController::postAction
+    controller: Hipper\App\Team\CreateTeamController::postAction
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
@@ -75,7 +75,7 @@ create_team.post:
 team.get:
     path: /team/{url_id}
     methods: [GET]
-    controller: Lithos\App\Team\TeamController::getAction
+    controller: Hipper\App\Team\TeamController::getAction
     defaults:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
@@ -83,7 +83,7 @@ team.get:
 team_docs.get:
     path: /team/{url_id}/docs
     methods: [GET]
-    controller: Lithos\App\Team\TeamDocsController::getAction
+    controller: Hipper\App\Team\TeamDocsController::getAction
     defaults:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
@@ -91,7 +91,7 @@ team_docs.get:
 team_docs_new.get:
     path: /team/{url_id}/docs/new
     methods: [GET]
-    controller: Lithos\App\Team\CreateTeamDocController::getAction
+    controller: Hipper\App\Team\CreateTeamDocController::getAction
     defaults:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
@@ -99,7 +99,7 @@ team_docs_new.get:
 team_docs_new.post:
     path: /_/create-doc
     methods: [POST]
-    controller: Lithos\App\Team\CreateTeamDocController::postAction
+    controller: Hipper\App\Team\CreateTeamDocController::postAction
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\App;
+namespace Hipper\App;
 
-use Lithos\Person\PersonPasswordEncoder;
-use Lithos\Person\PersonRepository;
+use Hipper\Person\PersonPasswordEncoder;
+use Hipper\Person\PersonRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;

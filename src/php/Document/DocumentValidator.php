@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Document;
+namespace Hipper\Document;
 
-use Lithos\Validation\ConstraintViolationListFormatter;
-use Lithos\Validation\Constraints\DocumentStructure;
-use Lithos\Validation\Constraints\KnowledgebaseExistsInOrganization;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Validation\ConstraintViolationListFormatter;
+use Hipper\Validation\Constraints\DocumentStructure;
+use Hipper\Validation\Constraints\KnowledgebaseExistsInOrganization;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Collection;

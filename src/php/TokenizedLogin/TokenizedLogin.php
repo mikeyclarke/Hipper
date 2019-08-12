@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\TokenizedLogin;
+namespace Hipper\TokenizedLogin;
 
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Person\PersonModel;
-use Lithos\Security\TokenGenerator;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Person\PersonModel;
+use Hipper\Security\TokenGenerator;
 
 class TokenizedLogin
 {

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Invite;
+namespace Hipper\Invite;
 
 use Doctrine\DBAL\Connection;
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Person\PersonModel;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Person\PersonModel;
 
 class BulkInvitationCreator
 {

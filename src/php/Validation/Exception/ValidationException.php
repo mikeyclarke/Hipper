@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Validation\Exception;
+namespace Hipper\Validation\Exception;
 
 class ValidationException extends \Exception
 {

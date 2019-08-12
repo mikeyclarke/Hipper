@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Document;
+namespace Hipper\Document;
 
-use Lithos\IdGenerator\IdGenerator;
+use Hipper\IdGenerator\IdGenerator;
 
 class DocumentRevision
 {

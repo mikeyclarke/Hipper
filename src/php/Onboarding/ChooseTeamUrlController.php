@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Onboarding;
+namespace Hipper\Onboarding;
 
-use Lithos\Organization\Organization;
-use Lithos\Organization\OrganizationSubdomainGenerator;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Organization\Organization;
+use Hipper\Organization\OrganizationSubdomainGenerator;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

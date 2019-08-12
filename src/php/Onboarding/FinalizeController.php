@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Onboarding;
+namespace Hipper\Onboarding;
 
-use Lithos\Organization\Organization;
-use Lithos\TokenizedLogin\TokenizedLogin;
+use Hipper\Organization\Organization;
+use Hipper\TokenizedLogin\TokenizedLogin;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 

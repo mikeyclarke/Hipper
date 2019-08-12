@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Knowledgebase;
+namespace Hipper\Knowledgebase;
 
-use Lithos\Document\DocumentModel;
-use Lithos\IdGenerator\IdGenerator;
+use Hipper\Document\DocumentModel;
+use Hipper\IdGenerator\IdGenerator;
 
 class KnowledgebaseRoute
 {

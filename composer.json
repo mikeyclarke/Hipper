@@ -1,5 +1,5 @@
 {
-    "name": "lithos/lithos",
+    "name": "Hipper",
     "license": "proprietary",
     "require": {
         "php": "^7.3",
@@ -32,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Lithos\\": "src/php/"
+            "Hipper\\": "src/php/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Lithos\\Tests\\": "tests/php/"
+            "Hipper\\Tests\\": "tests/php/"
         }
     }
 }

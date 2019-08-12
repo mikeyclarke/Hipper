@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Organization;
+namespace Hipper\Organization;
 
 use Doctrine\DBAL\Connection;
 

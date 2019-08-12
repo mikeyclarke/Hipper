@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Document;
+namespace Hipper\Tests\Document;
 
-use Lithos\Document\DocumentDescriptionDeducer;
+use Hipper\Document\DocumentDescriptionDeducer;
 use PHPUnit\Framework\TestCase;
 
 class DocumentDescriptionDeducerTest extends TestCase

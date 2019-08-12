@@ -8,7 +8,7 @@ framework:
 
     session:
         handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
-        storage_id: lithos_session_storage
+        storage_id: hipper_session_storage
         cookie_lifetime: 345600
         name: 's'
         cookie_httponly: true

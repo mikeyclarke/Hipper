@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\IdGenerator;
+namespace Hipper\IdGenerator;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Onboarding;
+namespace Hipper\Onboarding;
 
-use Lithos\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
-use Lithos\EmailAddressVerification\VerifyEmailAddress;
+use Hipper\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
+use Hipper\EmailAddressVerification\VerifyEmailAddress;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

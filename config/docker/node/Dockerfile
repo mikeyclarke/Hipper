@@ -1,5 +1,5 @@
 FROM mhart/alpine-node:10
 MAINTAINER Matt Arnold (typeof.developer@gmail.com)
-VOLUME ["/var/hleo"]
-WORKDIR /var/hleo
+VOLUME ["/var/hipper"]
+WORKDIR /var/hipper
 CMD ["./node_modules/.bin/webpack", "--watch", "--mode=development"]

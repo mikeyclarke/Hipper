@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Document;
+namespace Hipper\Tests\Document;
 
-use Lithos\Document\DocumentModel;
-use Lithos\Document\DocumentRevision;
-use Lithos\Document\DocumentRevisionInserter;
-use Lithos\IdGenerator\IdGenerator;
+use Hipper\Document\DocumentModel;
+use Hipper\Document\DocumentRevision;
+use Hipper\Document\DocumentRevisionInserter;
+use Hipper\IdGenerator\IdGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 

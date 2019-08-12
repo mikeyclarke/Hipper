@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Lithos\BrandSiteKernel;
+use Hipper\BrandSiteKernel;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 

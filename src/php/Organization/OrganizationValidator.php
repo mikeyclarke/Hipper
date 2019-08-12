@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Organization;
+namespace Hipper\Organization;
 
-use Lithos\Validation\ConstraintViolationListFormatter;
-use Lithos\Validation\Constraints\NotPersonalEmailDomain;
-use Lithos\Validation\Constraints\NotReservedSubdomain;
-use Lithos\Validation\Constraints\UniqueSubdomain;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Validation\ConstraintViolationListFormatter;
+use Hipper\Validation\Constraints\NotPersonalEmailDomain;
+use Hipper\Validation\Constraints\NotReservedSubdomain;
+use Hipper\Validation\Constraints\UniqueSubdomain;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;

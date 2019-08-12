@@ -5,12 +5,12 @@ cd "$parent_path"
 echo Provisioning development certificates using mkcert
 mkcert -install
 echo Creating naked domain certificate
-mkcert -cert-file naked.tryhleo.test.crt -key-file naked.tryhleo.test.key "tryhleo.test"
+mkcert -cert-file naked.usehipper.test.crt -key-file naked.usehipper.test.key "usehipper.test"
 echo Creating wildcard certificate
-mkcert -cert-file wildcard.tryhleo.test.crt -key-file wildcard.tryhleo.test.key "*.tryhleo.test"
+mkcert -cert-file wildcard.usehipper.test.crt -key-file wildcard.usehipper.test.key "*.usehipper.test"
 echo Moving files to docker folder
-mv naked.tryhleo.test.crt ../../config/docker/web/naked.tryhleo.test.crt
-mv naked.tryhleo.test.key ../../config/docker/web/naked.tryhleo.test.key
-mv wildcard.tryhleo.test.crt ../../config/docker/web/wildcard.tryhleo.test.crt
-mv wildcard.tryhleo.test.key ../../config/docker/web/wildcard.tryhleo.test.key
+mv naked.usehipper.test.crt ../../config/docker/web/naked.usehipper.test.crt
+mv naked.usehipper.test.key ../../config/docker/web/naked.usehipper.test.key
+mv wildcard.usehipper.test.crt ../../config/docker/web/wildcard.usehipper.test.crt
+mv wildcard.usehipper.test.key ../../config/docker/web/wildcard.usehipper.test.key
 echo Done

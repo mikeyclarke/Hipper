@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Document;
+namespace Hipper\Document;
 
-use Lithos\ModelMapper;
+use Hipper\ModelMapper;
 
 class DocumentModelMapper
 {

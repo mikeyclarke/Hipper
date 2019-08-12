@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Document;
+namespace Hipper\Tests\Document;
 
 use Doctrine\DBAL\Connection;
-use Lithos\Document\Document;
-use Lithos\Document\DocumentDescriptionDeducer;
-use Lithos\Document\DocumentInserter;
-use Lithos\Document\DocumentModel;
-use Lithos\Document\DocumentModelMapper;
-use Lithos\Document\DocumentRevision;
-use Lithos\Document\DocumentValidator;
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Knowledgebase\KnowledgebaseRoute;
-use Lithos\Person\PersonModel;
-use Lithos\Url\UrlIdGenerator;
-use Lithos\Url\UrlSlugGenerator;
+use Hipper\Document\Document;
+use Hipper\Document\DocumentDescriptionDeducer;
+use Hipper\Document\DocumentInserter;
+use Hipper\Document\DocumentModel;
+use Hipper\Document\DocumentModelMapper;
+use Hipper\Document\DocumentRevision;
+use Hipper\Document\DocumentValidator;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Person\PersonModel;
+use Hipper\Url\UrlIdGenerator;
+use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 

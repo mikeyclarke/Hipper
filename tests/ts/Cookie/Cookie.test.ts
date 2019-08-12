@@ -22,6 +22,6 @@ test('Cookie has the provided path', () => {
 });
 
 test('Cookie has the provided domain', () => {
-    const cookie = new Cookie('foo', 'bar', null, 'tryhleo.test');
-    expect(cookie.toString()).toBe('foo=bar; path=/; domain=tryhleo.test');
+    const cookie = new Cookie('foo', 'bar', null, 'usehipper.test');
+    expect(cookie.toString()).toBe('foo=bar; path=/; domain=usehipper.test');
 });

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\EmailAddressVerification;
+namespace Hipper\EmailAddressVerification;
 
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Person\PersonModel;
-use Lithos\TransactionalEmail\VerifyEmailAddressEmail;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Person\PersonModel;
+use Hipper\TransactionalEmail\VerifyEmailAddressEmail;
 
 class RequestEmailAddressVerification
 {

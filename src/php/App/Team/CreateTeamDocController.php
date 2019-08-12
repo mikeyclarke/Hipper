@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\App\Team;
+namespace Hipper\App\Team;
 
-use Lithos\Document\Document;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Document\Document;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

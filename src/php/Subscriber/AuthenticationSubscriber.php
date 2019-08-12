@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Subscriber;
+namespace Hipper\Subscriber;
 
-use Lithos\Person\PersonModelMapper;
-use Lithos\Person\PersonRepository;
+use Hipper\Person\PersonModelMapper;
+use Hipper\Person\PersonRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Command;
+namespace Hipper\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,9 +13,9 @@ use Twig_Environment;
 class GenerateVhostsCommand extends Command
 {
     const TEMPLATES = [
-        'assets' => '0-hleo-assets',
-        'site' => '1-hleo-site',
-        'app' => '2-hleo-app',
+        'assets' => '0-hipper-assets',
+        'site' => '1-hipper-site',
+        'app' => '2-hipper-app',
     ];
 
     private $twig;
@@ -32,7 +32,7 @@ class GenerateVhostsCommand extends Command
     protected function configure()
     {
         $this->setDescription('Generate nginx vhosts');
-        $this->addArgument('domain', InputArgument::REQUIRED, 'Domain name, e.g. tryhleo.test');
+        $this->addArgument('domain', InputArgument::REQUIRED, 'Domain name, e.g. usehipper.test');
         $this->addArgument(
             'path-to-vhosts',
             InputArgument::REQUIRED,

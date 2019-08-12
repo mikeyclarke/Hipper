@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Person\Exception;
+namespace Hipper\Person\Exception;
 
 class PasswordUnsafeForProcessingException extends \Exception
 {

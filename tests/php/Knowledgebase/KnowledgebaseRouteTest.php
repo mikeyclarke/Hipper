@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Knowledgebase;
+namespace Hipper\Tests\Knowledgebase;
 
-use Lithos\Document\DocumentModel;
-use Lithos\IdGenerator\IdGenerator;
-use Lithos\Knowledgebase\KnowledgebaseRoute;
-use Lithos\Knowledgebase\KnowledgebaseRouteInserter;
-use Lithos\Knowledgebase\KnowledgebaseRouteUpdater;
+use Hipper\Document\DocumentModel;
+use Hipper\IdGenerator\IdGenerator;
+use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteInserter;
+use Hipper\Knowledgebase\KnowledgebaseRouteUpdater;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 

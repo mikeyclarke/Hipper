@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Organization;
+namespace Hipper\Tests\Organization;
 
-use Lithos\Organization\OrganizationSubdomainGenerator;
+use Hipper\Organization\OrganizationSubdomainGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

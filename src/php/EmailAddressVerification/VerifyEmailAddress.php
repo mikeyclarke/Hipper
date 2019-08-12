@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\EmailAddressVerification;
+namespace Hipper\EmailAddressVerification;
 
-use Lithos\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
-use Lithos\Person\PersonUpdater;
+use Hipper\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
+use Hipper\Person\PersonUpdater;
 
 class VerifyEmailAddress
 {

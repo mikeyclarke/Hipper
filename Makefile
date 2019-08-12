@@ -39,7 +39,7 @@ webpack: ## Run a one-off webpack build
 	./node_modules/.bin/webpack --watch --mode=development
 
 sql: ## Run database setup
-	psql -d hleo -a -f sql/init.sql
+	psql -d hipper -a -f sql/init.sql
 
 ## ---------
 ##	Make setup
@@ -57,13 +57,13 @@ help:
 ## --------
 
 npmd: 
-	docker-compose run node sh -c "cd /var/hleo; npm install"
+	docker-compose run node sh -c "cd /var/hipper; npm install"
 
 webpackd:
-	docker-compose run node sh -c "cd /var/hleo; ./node_modules/.bin/webpack --watch --mode=development"
+	docker-compose run node sh -c "cd /var/hipper; ./node_modules/.bin/webpack --watch --mode=development"
 
 sqlinitd:
-	docker-compose run db sh -c "psql -U root -d hleo -a -f /var/sql/init.sql"
+	docker-compose run db sh -c "psql -U root -d hipper -a -f /var/sql/init.sql"
 
 testjsd:
-	docker-compose run node sh -c "cd /var/hleo; node_modules/.bin/jest --verbose"
+	docker-compose run node sh -c "cd /var/hipper; node_modules/.bin/jest --verbose"

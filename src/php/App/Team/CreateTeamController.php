@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\App\Team;
+namespace Hipper\App\Team;
 
-use Lithos\Team\Team;
-use Lithos\Team\TeamDescriptionSuggestor;
-use Lithos\Team\TeamValidator;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Team\Team;
+use Hipper\Team\TeamDescriptionSuggestor;
+use Hipper\Team\TeamValidator;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

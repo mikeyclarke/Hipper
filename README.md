@@ -1,4 +1,4 @@
-# Lithos
+# Hipper
 
 ## Homebrew installation
 
@@ -31,16 +31,16 @@
 - PostgreSQL
     - `/usr/local/var/postgres/postgresql.conf` change `timezone` to `UTC`
     - 'createdb `whoami`'
-    - Log into psql and `create database hleo`
-    - Run `psql -d hleo -a -f sql/init.sql`
+    - Log into psql and `create database hipper`
+    - Run `psql -d hipper -a -f sql/init.sql`
 - SSL certs
     - `mkcert -install`
-    - `mkcert tryhleo.test "*.tryhleo.test"`
+    - `mkcert usehipper.test "*.usehipper.test"`
     - `mkdir -p /usr/local/etc/nginx/ssl`
-    - `mv tryhleo.test.pem /usr/local/etc/nginx/ssl/hleo.crt`
-    - `mv tryhleo.test-key.pem /usr/local/etc/nginx/ssl/hleo.key`
+    - `mv usehipper.test.pem /usr/local/etc/nginx/ssl/hipper.crt`
+    - `mv usehipper.test-key.pem /usr/local/etc/nginx/ssl/hipper.key`
 - Nginx
-    - Run `php bin/console app:generate-vhosts tryhleo.test /usr/local/etc/nginx/servers /usr/local/etc/nginx/ssl`
+    - Run `php bin/console app:generate-vhosts usehipper.test /usr/local/etc/nginx/servers /usr/local/etc/nginx/ssl`
 
 ### Set up
 

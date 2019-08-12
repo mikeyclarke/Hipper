@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Person;
+namespace Hipper\Person;
 
-use Lithos\Person\Exception\PasswordUnsafeForProcessingException;
+use Hipper\Person\Exception\PasswordUnsafeForProcessingException;
 
 class PersonPasswordEncoder
 {

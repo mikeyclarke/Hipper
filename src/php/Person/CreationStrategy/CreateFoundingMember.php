@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Person\CreationStrategy;
+namespace Hipper\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
-use Lithos\Organization\Organization;
-use Lithos\Person\PersonCreationValidator;
-use Lithos\Person\PersonCreator;
+use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
+use Hipper\Organization\Organization;
+use Hipper\Person\PersonCreationValidator;
+use Hipper\Person\PersonCreator;
 
 class CreateFoundingMember
 {

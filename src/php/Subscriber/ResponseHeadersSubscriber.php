@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Subscriber;
+namespace Hipper\Subscriber;
 
-use Lithos\Security\ContentSecurityPolicyBuilder;
+use Hipper\Security\ContentSecurityPolicyBuilder;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

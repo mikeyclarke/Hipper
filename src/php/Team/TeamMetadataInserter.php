@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Team;
+namespace Hipper\Team;
 
 use Doctrine\DBAL\Connection;
 

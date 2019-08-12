@@ -5,20 +5,20 @@ services:
     ports:
         - "443:443"
     volumes:
-        - .:/var/hleo
+        - .:/var/hipper
     links:
         - php
   node:
     build: "config/docker/node"
     volumes:
-        - .:/var/hleo
+        - .:/var/hipper
   php:
     build: "config/docker/php"
     tty: true
     ports:
         - "9000:9000"
     volumes:
-        - .:/var/hleo
+        - .:/var/hipper
     links:
         - postgres
   postgres:
@@ -26,7 +26,7 @@ services:
     environment:
         - POSTGRES_USER=root
         - POSTGRES_PASSWORD=root
-        - POSTGRES_DB=hleo
+        - POSTGRES_DB=hipper
     ports:
         - "5432:5432"
     volumes:

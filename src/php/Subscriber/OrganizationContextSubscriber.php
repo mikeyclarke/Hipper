@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Subscriber;
+namespace Hipper\Subscriber;
 
-use Lithos\Organization\OrganizationModel;
-use Lithos\Organization\OrganizationModelMapper;
-use Lithos\Organization\OrganizationRepository;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Organization\OrganizationModelMapper;
+use Hipper\Organization\OrganizationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     postmark_base_url: 'https://api.postmarkapp.com'
-    transactional_email_from_addr: 'notifications@tryhleo.com'
-    transactional_email_reply_to_addr: 'help@tryhleo.com'
+    transactional_email_from_addr: 'notifications@usehipper.com'
+    transactional_email_reply_to_addr: 'help@usehipper.com'
     locale: 'en'
     env(CSP_ENABLED): false
     env(HSTS_ENABLED): false
@@ -54,74 +54,74 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    Lithos\:
+    Hipper\:
         resource: '../src/php/*'
         exclude: '../src/php/{data,DependencyInjection,Session,Tests,AppKernel.php,BrandSiteKernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    Lithos\Controller\:
+    Hipper\Controller\:
         resource: '../src/php/Controller'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    Lithos\App\Team\CreateTeamDocController:
+    Hipper\App\Team\CreateTeamDocController:
         arguments:
             $documentAllowedMarks: '%document_allowed_marks%'
             $documentAllowedNodes: '%document_allowed_nodes%'
 
-    Lithos\TransactionalEmail\PostmarkApiClientFactory:
+    Hipper\TransactionalEmail\PostmarkApiClientFactory:
         arguments:
             $apiBaseUrl: '%postmark_base_url%'
             $apiToken: '%env(POSTMARK_SERVER_TOKEN)%'
 
-    Lithos\TransactionalEmail\VerifyEmailAddressEmail:
+    Hipper\TransactionalEmail\VerifyEmailAddressEmail:
         arguments:
             $emailFromAddress: '%transactional_email_from_addr%'
             $emailReplyToAddress: '%transactional_email_reply_to_addr%'
 
-    Lithos\TransactionalEmail\BulkInvite:
+    Hipper\TransactionalEmail\BulkInvite:
         arguments:
             $emailFromAddress: '%transactional_email_from_addr%'
             $emailReplyToAddress: '%transactional_email_reply_to_addr%'
 
-    Lithos\Subscriber\ResponseHeadersSubscriber:
+    Hipper\Subscriber\ResponseHeadersSubscriber:
         arguments:
             $cspEnabled: '%env(bool:CSP_ENABLED)%'
             $hstsEnabled: '%env(bool:HSTS_ENABLED)%'
             $hstsMaxAge: '%env(int:HSTS_MAX_AGE)%'
             $resourceHintsEnabled: '%env(bool:RESOURCE_HINTS_ENABLED)%'
 
-    Lithos\Subscriber\TwigGlobalsSubscriber:
+    Hipper\Subscriber\TwigGlobalsSubscriber:
         arguments:
             $assetDomain: 'https://%env(string:ASSET_DOMAIN)%'
 
-    Lithos\Security\ContentSecurityPolicyBuilder:
+    Hipper\Security\ContentSecurityPolicyBuilder:
         arguments:
             $assetDomain: '%env(string:ASSET_DOMAIN)%'
 
-    Lithos\Person\NameRepresentation:
+    Hipper\Person\NameRepresentation:
         autowire: false
 
-    Lithos\Validation\Constraints\DocumentStructureValidator:
+    Hipper\Validation\Constraints\DocumentStructureValidator:
         arguments:
             $documentAllowedMarks: '%document_allowed_marks%'
             $documentAllowedNodes: '%document_allowed_nodes%'
 
-    lithos_session_storage:
-        class: Lithos\Session\SessionStorage
+    hipper_session_storage:
+        class: Hipper\Session\SessionStorage
         arguments: ['%session.storage.options%', '@session.handler', '@session.storage.metadata_bag', '@request_stack']
 
     onboarding_verified_person_middleware:
-        class: Lithos\Onboarding\VerifiedPersonMiddleware
+        class: Hipper\Onboarding\VerifiedPersonMiddleware
 
     require_json_content_type_middleware:
-        class: Lithos\Http\RequireJsonContentTypeMiddleware
+        class: Hipper\Http\RequireJsonContentTypeMiddleware
 
     app_onboarding_completed_middleware:
-        class: Lithos\App\OnboardingCompletedMiddleware
+        class: Hipper\App\OnboardingCompletedMiddleware
 
     team_model_from_url_id_middleware:
-        class: Lithos\App\Team\TeamModelFromUrlIdMiddleware
+        class: Hipper\App\Team\TeamModelFromUrlIdMiddleware

@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Person\CreationStrategy;
+namespace Hipper\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Lithos\Invite\InviteDeleter;
-use Lithos\Invite\InviteRepository;
-use Lithos\Organization\OrganizationModel;
-use Lithos\Person\Exception\InviteNotFoundException;
-use Lithos\Person\PersonCreationValidator;
-use Lithos\Person\PersonCreator;
+use Hipper\Invite\InviteDeleter;
+use Hipper\Invite\InviteRepository;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Person\Exception\InviteNotFoundException;
+use Hipper\Person\PersonCreationValidator;
+use Hipper\Person\PersonCreator;
 
 class CreateFromInvite
 {

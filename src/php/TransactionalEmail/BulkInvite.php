@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\TransactionalEmail;
+namespace Hipper\TransactionalEmail;
 
 use Twig_Environment;
 
@@ -44,7 +44,7 @@ class BulkInvite
                 'To' => $invite['recipient_email_address'],
                 'Tag' => self::TAG,
                 'Subject' => sprintf(
-                    '%s invited you to join %s on hleo',
+                    '%s invited you to join %s on Hipper',
                     $invite['sender_name'],
                     $invite['organization_name']
                 ),

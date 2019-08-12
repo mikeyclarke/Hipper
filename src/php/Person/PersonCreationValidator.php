@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Person;
+namespace Hipper\Person;
 
-use Lithos\Validation\Constraints\UniqueEmailAddress;
-use Lithos\Validation\ConstraintViolationListFormatter;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Validation\Constraints\UniqueEmailAddress;
+use Hipper\Validation\ConstraintViolationListFormatter;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;

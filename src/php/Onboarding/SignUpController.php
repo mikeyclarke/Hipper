@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Onboarding;
+namespace Hipper\Onboarding;
 
-use Lithos\Person\CreationStrategy\CreateFoundingMember;
-use Lithos\Validation\Exception\ValidationException;
+use Hipper\Person\CreationStrategy\CreateFoundingMember;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

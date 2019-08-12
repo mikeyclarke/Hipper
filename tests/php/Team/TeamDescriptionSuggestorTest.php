@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Tests\Team;
+namespace Hipper\Tests\Team;
 
-use Lithos\Team\TeamDescriptionSuggestor;
+use Hipper\Team\TeamDescriptionSuggestor;
 use PHPUnit\Framework\TestCase;
 
 class TeamDescriptionSuggestorTest extends TestCase

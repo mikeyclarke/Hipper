@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace LithosTests\Person\CreationStrategy;
+namespace Hipper\Tests\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Lithos\EmailAddressVerification\RequestEmailAddressVerification;
-use Lithos\Organization\Organization;
-use Lithos\Organization\OrganizationModel;
-use Lithos\Person\CreationStrategy\CreateFoundingMember;
-use Lithos\Person\PersonCreator;
-use Lithos\Person\PersonModel;
-use Lithos\Person\PersonCreationValidator;
+use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
+use Hipper\Organization\Organization;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Person\CreationStrategy\CreateFoundingMember;
+use Hipper\Person\PersonCreator;
+use Hipper\Person\PersonModel;
+use Hipper\Person\PersonCreationValidator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
@@ -49,7 +49,7 @@ class CreateFoundingMemberTest extends TestCase
     {
         $input = [
             'name' => 'Mikey Clarke',
-            'email_address' => 'mikey@tryhleo.com',
+            'email_address' => 'mikey@usehipper.com',
             'password' => '32gyewg7sy',
         ];
         $organization = new OrganizationModel;

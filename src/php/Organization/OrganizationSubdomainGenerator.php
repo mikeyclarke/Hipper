@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Lithos\Organization;
+namespace Hipper\Organization;
 
-use Lithos\Validation\Constraints\NotReservedSubdomain;
-use Lithos\Validation\Constraints\UniqueSubdomain;
+use Hipper\Validation\Constraints\NotReservedSubdomain;
+use Hipper\Validation\Constraints\UniqueSubdomain;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrganizationSubdomainGenerator

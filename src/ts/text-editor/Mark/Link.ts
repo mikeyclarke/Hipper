@@ -32,7 +32,17 @@ export class Link implements MarkInterface {
             toDOM(node: ProsemirrorNode): (string | number | object)[] {
                 const { href, title, spellcheck } = node.attrs;
                 const rel = 'noopener noreferrer';
-                return ['a', { href, title, spellcheck, rel, }, 0];
+                const htmlAttributes = { href, title, spellcheck, rel };
+
+                try {
+                    const url = new URL(href, window.location.href);
+                    if (url.origin === window.location.origin) {
+                        delete htmlAttributes.rel;
+                    }
+                } catch (error) {
+                }
+
+                return ['a', htmlAttributes, 0];
             }
         };
     }

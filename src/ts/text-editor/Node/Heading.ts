@@ -1,4 +1,4 @@
-import { Node as ProsemirrorNode } from 'prosemirror-model';
+import { Node as ProseMirrorNode } from 'prosemirror-model';
 import { NodeInterface } from 'text-editor/Node/NodeInterface';
 
 export class Heading implements NodeInterface {
@@ -54,7 +54,7 @@ export class Heading implements NodeInterface {
                     }
                 }
             ],
-            toDOM(node: ProsemirrorNode): (string | number)[] {
+            toDOM(node: ProseMirrorNode): (string | number)[] {
                 return ['h' + node.attrs.level, 0];
             }
         };

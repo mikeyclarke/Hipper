@@ -1,4 +1,4 @@
-import { Node as ProsemirrorNode } from 'prosemirror-model';
+import { Node as ProseMirrorNode } from 'prosemirror-model';
 import { NodeInterface } from 'text-editor/Node/NodeInterface';
 
 export class Image implements NodeInterface {
@@ -32,7 +32,7 @@ export class Image implements NodeInterface {
                     }
                 }
             ],
-            toDOM(node: ProsemirrorNode): (string | object)[] {
+            toDOM(node: ProseMirrorNode): (string | object)[] {
                 const { src, alt, title } = node.attrs;
                 return ['img', { src, alt, title }];
             }

@@ -1,4 +1,4 @@
-import { Node as ProsemirrorNode } from 'prosemirror-model';
+import { Node as ProseMirrorNode } from 'prosemirror-model';
 import { NodeInterface } from 'text-editor/Node/NodeInterface';
 
 export class OrderedList implements NodeInterface {
@@ -36,7 +36,7 @@ export class OrderedList implements NodeInterface {
                     }
                 }
             ],
-            toDOM(node: ProsemirrorNode): (string | number | object)[] {
+            toDOM(node: ProseMirrorNode): (string | number | object)[] {
                 return (node.attrs.start === 1) ? ['ol', 0] : ['ol', { start: node.attrs.start }, 0];
             }
         };

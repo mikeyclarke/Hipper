@@ -3,7 +3,7 @@ import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { DOMParser, Node as ProsemirrorNode, Schema } from 'prosemirror-model';
+import { DOMParser, Node as ProseMirrorNode, Schema } from 'prosemirror-model';
 import { MarkInterface } from 'text-editor/Mark/MarkInterface';
 import { MarkLoader } from 'text-editor/Mark/MarkLoader';
 import { NodeInterface } from 'text-editor/Node/NodeInterface';
@@ -26,7 +26,7 @@ export class TextEditor {
     private readonly commands: Record<string, object>;
     private readonly keymaps: Plugin[];
     private readonly plugins: Plugin[];
-    private readonly content: ProsemirrorNode;
+    private readonly content: ProseMirrorNode;
     private readonly state: EditorState;
     private readonly view: EditorView;
 
@@ -129,7 +129,7 @@ export class TextEditor {
         return plugins;
     }
 
-    private createContent(content: InitialContent): ProsemirrorNode {
+    private createContent(content: InitialContent): ProseMirrorNode {
         if (content instanceof HTMLElement) {
             return DOMParser.fromSchema(this.schema).parse(content);
         }

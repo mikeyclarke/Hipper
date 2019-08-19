@@ -1,4 +1,4 @@
-import { Node as ProsemirrorNode } from 'prosemirror-model';
+import { Node as ProseMirrorNode } from 'prosemirror-model';
 import { MarkInterface } from 'text-editor/Mark/MarkInterface';
 
 export class Link implements MarkInterface {
@@ -29,7 +29,7 @@ export class Link implements MarkInterface {
                     }
                 }
             ],
-            toDOM(node: ProsemirrorNode): (string | number | object)[] {
+            toDOM(node: ProseMirrorNode): (string | number | object)[] {
                 const { href, title, spellcheck } = node.attrs;
                 const rel = 'noopener noreferrer';
                 const htmlAttributes = { href, title, spellcheck, rel };

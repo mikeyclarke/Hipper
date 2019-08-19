@@ -26,7 +26,7 @@ class TeamModelFromUrlIdMiddleware
         $organization = $request->attributes->get('organization');
         $person = $request->attributes->get('person');
 
-        $urlId = $request->attributes->get('url_id');
+        $urlId = $request->attributes->get('team_url_id');
         $result = $this->teamRepository->findByUrlId($organization->getId(), $urlId);
         if (null === $result) {
             throw new NotFoundHttpException;

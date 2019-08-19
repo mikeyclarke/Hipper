@@ -83,7 +83,7 @@ class Document
 
             $this->knowledgebaseRoute->createForDocument(
                 $model,
-                sprintf('/team/engineering/docs/~/%s-%s', $model->getUrlSlug(), $model->getUrlId()),
+                $model->getUrlSlug(),
                 true,
                 true
             );

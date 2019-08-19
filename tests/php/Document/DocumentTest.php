@@ -113,7 +113,7 @@ class DocumentTest extends TestCase
             $documentRow
         );
         $this->createDocumentModelMapperExpectation([$documentRow], $model);
-        $this->createKnowledgebaseRouteExpectation([$model, $route, true, true]);
+        $this->createKnowledgebaseRouteExpectation([$model, $urlSlug, true, true]);
         $this->createDocumentRevisionExpectation([$model]);
         $this->createConnectionCommitExpectation();
 

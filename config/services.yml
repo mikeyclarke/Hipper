@@ -72,6 +72,14 @@ services:
             $documentAllowedMarks: '%document_allowed_marks%'
             $documentAllowedNodes: '%document_allowed_nodes%'
 
+    Hipper\Document\Renderer\HtmlFragmentRendererContext:
+        autowire: false
+
+    Hipper\Document\Renderer\HtmlRenderer:
+        arguments:
+            $allowedMarks: '%document_allowed_marks%'
+            $allowedNodes: '%document_allowed_nodes%'
+
     Hipper\TransactionalEmail\PostmarkApiClientFactory:
         arguments:
             $apiBaseUrl: '%postmark_base_url%'
@@ -125,3 +133,6 @@ services:
 
     team_model_from_url_id_middleware:
         class: Hipper\App\Team\TeamModelFromUrlIdMiddleware
+
+    knowledgebase_routing_middleware:
+        class: Hipper\App\KnowledgebaseRoutingMiddleware

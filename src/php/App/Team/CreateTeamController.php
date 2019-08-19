@@ -112,7 +112,7 @@ class CreateTeamController
         }
 
         return new JsonResponse([
-            'team_url' => $this->router->generate('team.get', ['url_id' => $teamModel->getUrlId()]),
+            'team_url' => $this->router->generate('team.get', ['team_url_id' => $teamModel->getUrlId()]),
         ], 201);
     }
 

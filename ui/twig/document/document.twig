@@ -1,0 +1,25 @@
+{% extends 'base_layout.twig' %}
+
+{% block content %}
+
+<div class="l-document-editor__container js-document-editor-container">
+    <div class="l-document-editor__content">
+        <header class="c-document-editor-header">
+            <button class="c-document-editor-header__button" type="button" aria-label="Close">
+                <svg class="c-document-editor-header__button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__close"/></svg>
+            </button>
+            <button class="c-document-editor-header__button" type="button" aria-label="Done">
+                <svg class="js-submit-document c-document-editor-header__button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
+            </button>
+        </header>
+
+        <main>
+            <h1 class="c-document-editor-header__title">{{ document.name }}</h1>
+            <p class="c-document-editor-header__synopsis">{{ document.description }}</p>
+
+            <div class="c-document-editor-document">{{ document_html|raw }}</div>
+        </main>
+    </div>
+</div>
+
+{% endblock %}

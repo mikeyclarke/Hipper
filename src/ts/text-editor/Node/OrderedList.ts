@@ -9,7 +9,7 @@ export class OrderedList implements NodeInterface {
     get spec(): object {
         return {
             attrs: {
-                order: {
+                start: {
                     default: 1
                 }
             },
@@ -20,7 +20,7 @@ export class OrderedList implements NodeInterface {
                     tag: 'ol',
                     getAttrs(dom: HTMLElement): object {
                         const attrs = {
-                            order: 1
+                            start: 1
                         };
 
                         if (!dom.hasAttribute('start')) {
@@ -29,7 +29,7 @@ export class OrderedList implements NodeInterface {
 
                         const attributeValue = Number(dom.getAttribute('start'));
                         if (!Number.isNaN(attributeValue)) {
-                            attrs.order = attributeValue;
+                            attrs.start = attributeValue;
                         }
 
                         return attrs;
@@ -37,7 +37,7 @@ export class OrderedList implements NodeInterface {
                 }
             ],
             toDOM(node: ProsemirrorNode): (string | number | object)[] {
-                return (node.attrs.order === 1) ? ['ol', 0] : ['ol', { start: node.attrs.order }, 0];
+                return (node.attrs.start === 1) ? ['ol', 0] : ['ol', { start: node.attrs.start }, 0];
             }
         };
     }

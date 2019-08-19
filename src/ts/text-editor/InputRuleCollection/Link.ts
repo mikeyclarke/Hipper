@@ -20,12 +20,12 @@ export class Link implements InputRuleCollectionInterface {
 
         return [
             new InputRule(
-                /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+~#?&//=]*)).?\s$/,
-                autoDetectLinkHandler.bind(null, type)
+                /\[(.+)\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+~#?&//=]*))\)(.)?$/,
+                markdownLinkHandler.bind(null, type)
             ),
             new InputRule(
-                /\[(.+)\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+~#?&//=]*))\)$/,
-                markdownLinkHandler.bind(null, type)
+                /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+~#?&//=]*)).?\s$/,
+                autoDetectLinkHandler.bind(null, type)
             ),
         ];
     }
@@ -38,12 +38,33 @@ function markdownLinkHandler(
     start: number,
     end: number
 ): Transaction | null {
+    const [fullString, text, link, linkWww, linkPath, trailingCharacter] = match;
+
     if (state.doc.rangeHasMark(start, end, markType)) {
         return null;
     }
+
+    let markDisallowed = false;
+    state.doc.nodesBetween(start, end, (node) => {
+        if (markDisallowed) {
+            return false;
+        }
+        markDisallowed = node.marks.some(mark => mark.type.excludes(markType));
+    });
+
+    if (markDisallowed) {
+        return null;
+    }
+
+    let replacement = text;
+    const markEnd = start + text.length;
+    if (trailingCharacter && trailingCharacter !== '') {
+        replacement += trailingCharacter;
+    }
+
     const transaction = state.tr;
-    transaction.insertText(match[1], start, end);
-    transaction.addMark(start, start + match[1].length, markType.create({ href: match[2] }));
+    transaction.insertText(replacement, start, end);
+    transaction.addMark(start, markEnd, markType.create({ href: link }));
     transaction.removeStoredMark(markType);
     return transaction;
 }
@@ -58,6 +79,19 @@ function autoDetectLinkHandler(
     if (state.doc.rangeHasMark(start, end, markType)) {
         return null;
     }
+
+    let markDisallowed = false;
+    state.doc.nodesBetween(start, end, (node) => {
+        if (markDisallowed) {
+            return false;
+        }
+        markDisallowed = node.marks.some(mark => mark.type.excludes(markType));
+    });
+
+    if (markDisallowed) {
+        return null;
+    }
+
     const transaction = state.tr;
     transaction.insertText(match[0], start, end);
     transaction.addMark(start, start + match[1].length, markType.create({ href: match[1], spellcheck: 'false' }));

@@ -5,12 +5,14 @@
 test_js: ## Run the JavaScript unit tests and watch
 	./node_modules/.bin/jest --verbose
 
-test_php:
-	./vendor/bin/phpunit tests/php
+test_php: phpunit phpcs phpstan ## Run all PHP tests (PHPCS, PHPUnit, and PHPStan)
 
 ## ---------
 ##	Coding standards
 ## ---------
+
+phpunit: ## Check that PHP unit tests pass
+	./vendor/bin/phpunit tests/php
 
 phpcs: ## Check that PHP complies with stylistic rules
 	./vendor/bin/phpcs -p --encoding=utf-8 --standard=PSR2 --error-severity=1 src/php tests/php

@@ -61,8 +61,11 @@ BEFORE UPDATE
 ON tokenized_login
 FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
 
+CREATE TYPE knowledgebase_entity AS ENUM ('team', 'project');
+
 CREATE TABLE knowledgebase (
     id                  UUID NOT NULL PRIMARY KEY,
+    entity              knowledgebase_entity,
     organization_id     UUID NOT NULL references organization(id),
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

@@ -49,7 +49,7 @@ class Team
 
         $this->connection->beginTransaction();
         try {
-            $knowledgebase = $this->knowledgebase->create($person->getOrganizationId());
+            $knowledgebase = $this->knowledgebase->create('team', $person->getOrganizationId());
             $team = $this->teamInserter->insert(
                 $id,
                 $parameters['name'],

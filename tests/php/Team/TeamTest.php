@@ -88,7 +88,7 @@ class TeamTest extends TestCase
         $this->createIdGeneratorExpectation($teamId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $teamSlug);
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseExpectation([$this->person->getOrganizationId()], $knowledgebaseResult);
+        $this->createKnowledgebaseExpectation(['team', $this->person->getOrganizationId()], $knowledgebaseResult);
         $this->createTeamInserterExpectation($teamInserterArgs, $teamResult);
         $this->createIdGeneratorExpectation($personToTeamMapId);
         $this->createPersonToTeamMapInserterExpectation([$personToTeamMapId, $this->person->getId(), $teamId]);
@@ -127,7 +127,7 @@ class TeamTest extends TestCase
         $this->createIdGeneratorExpectation($teamId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $teamSlug);
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseExpectation([$this->person->getOrganizationId()], $knowledgebaseResult);
+        $this->createKnowledgebaseExpectation(['team', $this->person->getOrganizationId()], $knowledgebaseResult);
         $this->teamInserter
             ->shouldReceive('insert')
             ->once()

@@ -9,20 +9,17 @@ use Hipper\Organization\OrganizationModel;
 class PersonCreator
 {
     private $personInserter;
-    private $personMetadataInserter;
     private $personModelMapper;
     private $passwordEncoder;
     private $idGenerator;
 
     public function __construct(
         PersonInserter $personInserter,
-        PersonMetadataInserter $personMetadataInserter,
         PersonModelMapper $personModelMapper,
         PersonPasswordEncoder $passwordEncoder,
         IdGenerator $idGenerator
     ) {
         $this->personInserter = $personInserter;
-        $this->personMetadataInserter = $personMetadataInserter;
         $this->personModelMapper = $personModelMapper;
         $this->passwordEncoder = $passwordEncoder;
         $this->idGenerator = $idGenerator;
@@ -45,19 +42,12 @@ class PersonCreator
             $organization->getId(),
             $emailAddressVerified
         );
-        $this->createPersonMetadata($person['id']);
 
         $model = $this->personModelMapper->createFromArray($person);
 
         // TODO: If email address verified send welcome email
 
         return [$model, $person['password']];
-    }
-
-    private function createPersonMetadata(string $personId): void
-    {
-        $id = $this->idGenerator->generate();
-        $this->personMetadataInserter->insert($id, $personId);
     }
 
     private function getAbbreviatedName(string $name): string

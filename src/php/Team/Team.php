@@ -16,7 +16,6 @@ class Team
     private $knowledgebase;
     private $personToTeamMapInserter;
     private $teamInserter;
-    private $teamMetadataInserter;
     private $teamModelMapper;
     private $teamValidator;
     private $urlSlugGenerator;
@@ -27,7 +26,6 @@ class Team
         Knowledgebase $knowledgebase,
         PersonToTeamMapInserter $personToTeamMapInserter,
         TeamInserter $teamInserter,
-        TeamMetadataInserter $teamMetadataInserter,
         TeamModelMapper $teamModelMapper,
         TeamValidator $teamValidator,
         UrlSlugGenerator $urlSlugGenerator
@@ -37,7 +35,6 @@ class Team
         $this->knowledgebase = $knowledgebase;
         $this->personToTeamMapInserter = $personToTeamMapInserter;
         $this->teamInserter = $teamInserter;
-        $this->teamMetadataInserter = $teamMetadataInserter;
         $this->teamModelMapper = $teamModelMapper;
         $this->teamValidator = $teamValidator;
         $this->urlSlugGenerator = $urlSlugGenerator;
@@ -61,7 +58,6 @@ class Team
                 $knowledgebase['id'],
                 $person->getOrganizationId()
             );
-            $this->createMetadata($team['id']);
             $this->createPersonTeamMap($person->getId(), $team['id']);
 
             $this->connection->commit();
@@ -71,12 +67,6 @@ class Team
         }
 
         return $this->teamModelMapper->createFromArray($team);
-    }
-
-    private function createMetadata(string $teamId): void
-    {
-        $id = $this->idGenerator->generate();
-        $this->teamMetadataInserter->insert($id, $teamId);
     }
 
     private function createPersonTeamMap(string $personId, string $teamId): void

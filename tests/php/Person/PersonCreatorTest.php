@@ -7,7 +7,6 @@ use Hipper\IdGenerator\IdGenerator;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonCreator;
 use Hipper\Person\PersonInserter;
-use Hipper\Person\PersonMetadataInserter;
 use Hipper\Person\PersonModel;
 use Hipper\Person\PersonModelMapper;
 use Hipper\Person\PersonPasswordEncoder;
@@ -19,7 +18,6 @@ class PersonCreatorTest extends TestCase
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $personInserter;
-    private $personMetadataInserter;
     private $personModelMapper;
     private $passwordEncoder;
     private $idGenerator;
@@ -28,14 +26,12 @@ class PersonCreatorTest extends TestCase
     public function setUp(): void
     {
         $this->personInserter = m::mock(PersonInserter::class);
-        $this->personMetadataInserter = m::mock(PersonMetadataInserter::class);
         $this->personModelMapper = m::mock(PersonModelMapper::class);
         $this->passwordEncoder = m::mock(PersonPasswordEncoder::class);
         $this->idGenerator = m::mock(IdGenerator::class);
 
         $this->personCreator = new PersonCreator(
             $this->personInserter,
-            $this->personMetadataInserter,
             $this->personModelMapper,
             $this->passwordEncoder,
             $this->idGenerator
@@ -60,7 +56,6 @@ class PersonCreatorTest extends TestCase
             'id' => $personId,
             'password' => $encodedPassword,
         ];
-        $metadataId = '63a16b95-2550-438a-a6fb-90b544e2626a';
         $personModel = new PersonModel;
 
         $this->createIdGeneratorExpectation($personId);
@@ -75,8 +70,6 @@ class PersonCreatorTest extends TestCase
             false,
             $personRow
         );
-        $this->createIdGeneratorExpectation($metadataId);
-        $this->createPersonMetadataInserterExpectation($metadataId, $personId);
         $this->createPersonModelMapperExpectation($personRow, $personModel);
 
         $result = $this->personCreator->create($organization, $name, $emailAddress, $rawPassword);
@@ -102,7 +95,6 @@ class PersonCreatorTest extends TestCase
             'id' => $personId,
             'password' => $encodedPassword,
         ];
-        $metadataId = '63a16b95-2550-438a-a6fb-90b544e2626a';
         $personModel = new PersonModel;
 
         $this->createIdGeneratorExpectation($personId);
@@ -117,8 +109,6 @@ class PersonCreatorTest extends TestCase
             $emailAddressVerified,
             $personRow
         );
-        $this->createIdGeneratorExpectation($metadataId);
-        $this->createPersonMetadataInserterExpectation($metadataId, $personId);
         $this->createPersonModelMapperExpectation($personRow, $personModel);
 
         $result = $this->personCreator->create(
@@ -138,14 +128,6 @@ class PersonCreatorTest extends TestCase
             ->once()
             ->with($personRow)
             ->andReturn($result);
-    }
-
-    private function createPersonMetadataInserterExpectation($id, $personId)
-    {
-        $this->personMetadataInserter
-            ->shouldReceive('insert')
-            ->once()
-            ->with($id, $personId);
     }
 
     private function createPersonInserterExpectation(

@@ -39,20 +39,6 @@ BEFORE UPDATE
 ON person
 FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
 
-CREATE TABLE person_metadata (
-    id                  UUID NOT NULL PRIMARY KEY,
-    person_id           UUID DEFAULT NULL references person(id),
-    twitter_screen_name text CHECK (LENGTH(twitter_screen_name) <= 15) DEFAULT NULL,
-    github_username     text CHECK (LENGTH(github_username) <= 39) DEFAULT NULL,
-    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TRIGGER update_person_metadata_updated_timestamp
-BEFORE UPDATE
-ON person_metadata
-FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
-
 CREATE TABLE email_address_verification (
     id                      UUID NOT NULL PRIMARY KEY,
     person_id               UUID NOT NULL references person(id),
@@ -178,26 +164,12 @@ BEFORE UPDATE
 ON team
 FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
 
-CREATE TABLE team_metadata (
-    id                  UUID NOT NULL PRIMARY KEY,
-    team_id             UUID DEFAULT NULL references team(id),
-    email_address       text CHECK (LENGTH(email_address) <= 255) DEFAULT NULL,
-    slack_channel_name  text CHECK (LENGTH(slack_channel_name) <= 21) DEFAULT NULL,
-    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE person_to_team_map (
     id                  UUID NOT NULL PRIMARY KEY,
     person_id           UUID NOT NULL references person(id),
     team_id             UUID NOT NULL references team(id),
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE TRIGGER update_team_metadata_updated_timestamp
-BEFORE UPDATE
-ON team_metadata
-FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
 
 CREATE TABLE project (
     id                  UUID NOT NULL PRIMARY KEY,
@@ -214,20 +186,6 @@ CREATE TABLE project (
 CREATE TRIGGER update_project_updated_timestamp
 BEFORE UPDATE
 ON project
-FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
-
-CREATE TABLE project_metadata (
-    id                  UUID NOT NULL PRIMARY KEY,
-    project_id          UUID DEFAULT NULL references project(id),
-    email_address       text CHECK (LENGTH(email_address) <= 255) DEFAULT NULL,
-    slack_channel_name  text CHECK (LENGTH(slack_channel_name) <= 21) DEFAULT NULL,
-    created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TRIGGER update_project_metadata_updated_timestamp
-BEFORE UPDATE
-ON project_metadata
 FOR EACH ROW EXECUTE PROCEDURE update_updated_timestamp();
 
 CREATE TABLE person_to_project_map (

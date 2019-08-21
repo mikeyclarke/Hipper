@@ -1,3 +1,7 @@
+THIS_FILE := $(lastword $(MAKEFILE_LIST))
+
+include .env
+
 ## ---------
 ##	Testing
 ## ---------
@@ -40,6 +44,17 @@ composer_install: ## Install composer packages
 ##	Environment
 ## ---------
 
+create_migration: ## Create `[timestamp]_RENAME_ME.up.sql` and `[timestamp]_RENAME_ME.down.sql` in `database/migrations`
+	migrate create -ext sql -dir database/migrations/ RENAME_ME
+	find database/migrations -name "*_RENAME_ME.*.sql"
+
+run_migrations: ## Run migrations
+	migrate -database $(subst pgsql,postgres,$(DATABASE_URL))?sslmode=disable -path database/migrations up
+
+## ---------
+##	Environment
+## ---------
+
 webpack: ## Run a one-off webpack build
 	./node_modules/.bin/webpack --watch --mode=development
 
@@ -55,7 +70,7 @@ _PHONY: help
 .DEFAULT_GOAL := help
 
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(THIS_FILE) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 ## --------
 ##  Docker

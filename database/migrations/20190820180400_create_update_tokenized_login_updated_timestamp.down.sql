@@ -1,0 +1,1 @@
+DROP TRIGGER IF EXISTS update_tokenized_login_updated_timestamp ON tokenized_login;

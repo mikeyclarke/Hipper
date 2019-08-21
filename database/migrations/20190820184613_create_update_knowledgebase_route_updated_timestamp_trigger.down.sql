@@ -1,0 +1,1 @@
+DROP TRIGGER IF EXISTS update_knowledgebase_route_updated_timestamp ON knowledgebase_route;

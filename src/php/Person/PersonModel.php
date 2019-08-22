@@ -5,6 +5,20 @@ namespace Hipper\Person;
 
 class PersonModel
 {
+    use \Hipper\ModelTrait;
+
+    const FIELD_MAP = [
+        'id' => 'id',
+        'name' => 'name',
+        'abbreviated_name' => 'abbreviatedName',
+        'email_address' => 'emailAddress',
+        'email_address_verified' => 'emailAddressVerified',
+        'onboarding_completed' => 'onboardingCompleted',
+        'organization_id' => 'organizationId',
+        'created' => 'created',
+        'updated' => 'updated',
+    ];
+
     private $id;
     private $name;
     private $abbreviatedName;
@@ -14,6 +28,13 @@ class PersonModel
     private $organizationId;
     private $created;
     private $updated;
+
+    public static function createFromArray(array $array): PersonModel
+    {
+        $model = new static;
+        $model->mapProperties($array);
+        return $model;
+    }
 
     public function setId(string $id): void
     {

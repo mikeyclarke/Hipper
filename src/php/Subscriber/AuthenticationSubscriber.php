@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Subscriber;
 
-use Hipper\Person\PersonModelMapper;
+use Hipper\Person\PersonModel;
 use Hipper\Person\PersonRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,14 +16,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class AuthenticationSubscriber implements EventSubscriberInterface
 {
-    private $personModelMapper;
     private $personRepository;
 
     public function __construct(
-        PersonModelMapper $personModelMapper,
         PersonRepository $personRepository
     ) {
-        $this->personModelMapper = $personModelMapper;
         $this->personRepository = $personRepository;
     }
 
@@ -70,7 +67,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface
         }
         unset($person['password']);
 
-        $personModel = $this->personModelMapper->createFromArray($person);
+        $personModel = PersonModel::createFromArray($person);
         $request->attributes->set('person', $personModel);
     }
 

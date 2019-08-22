@@ -7,7 +7,6 @@ use Doctrine\DBAL\Connection;
 use Hipper\Organization\Organization;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonModel;
-use Hipper\Person\PersonModelMapper;
 use Hipper\Person\PersonRepository;
 use Hipper\Security\TokenGenerator;
 use Hipper\TransactionalEmail\BulkInvite;
@@ -19,7 +18,6 @@ class BulkInvitationProcessor
     private $inviteRepository;
     private $inviteUpdater;
     private $organization;
-    private $personModelMapper;
     private $personRepository;
     private $tokenGenerator;
 
@@ -29,7 +27,6 @@ class BulkInvitationProcessor
         InviteRepository $inviteRepository,
         InviteUpdater $inviteUpdater,
         Organization $organization,
-        PersonModelMapper $personModelMapper,
         PersonRepository $personRepository,
         TokenGenerator $tokenGenerator
     ) {
@@ -38,7 +35,6 @@ class BulkInvitationProcessor
         $this->inviteRepository = $inviteRepository;
         $this->inviteUpdater = $inviteUpdater;
         $this->organization = $organization;
-        $this->personModelMapper = $personModelMapper;
         $this->personRepository = $personRepository;
         $this->tokenGenerator = $tokenGenerator;
     }
@@ -57,7 +53,7 @@ class BulkInvitationProcessor
         if (null === $person) {
             throw new \UnexpectedValueException('Person does not exist');
         }
-        $person = $this->personModelMapper->createFromArray($person);
+        $person = PersonModel::createFromArray($person);
 
         $inviteRecords = $this->inviteRepository->findWithIds($inviteIds);
 

@@ -8,7 +8,6 @@ use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonCreator;
 use Hipper\Person\PersonInserter;
 use Hipper\Person\PersonModel;
-use Hipper\Person\PersonModelMapper;
 use Hipper\Person\PersonPasswordEncoder;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +17,6 @@ class PersonCreatorTest extends TestCase
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $personInserter;
-    private $personModelMapper;
     private $passwordEncoder;
     private $idGenerator;
     private $personCreator;
@@ -26,13 +24,11 @@ class PersonCreatorTest extends TestCase
     public function setUp(): void
     {
         $this->personInserter = m::mock(PersonInserter::class);
-        $this->personModelMapper = m::mock(PersonModelMapper::class);
         $this->passwordEncoder = m::mock(PersonPasswordEncoder::class);
         $this->idGenerator = m::mock(IdGenerator::class);
 
         $this->personCreator = new PersonCreator(
             $this->personInserter,
-            $this->personModelMapper,
             $this->passwordEncoder,
             $this->idGenerator
         );
@@ -56,7 +52,6 @@ class PersonCreatorTest extends TestCase
             'id' => $personId,
             'password' => $encodedPassword,
         ];
-        $personModel = new PersonModel;
 
         $this->createIdGeneratorExpectation($personId);
         $this->createPasswordEncoderExpectation($rawPassword, $encodedPassword);
@@ -70,10 +65,12 @@ class PersonCreatorTest extends TestCase
             false,
             $personRow
         );
-        $this->createPersonModelMapperExpectation($personRow, $personModel);
 
         $result = $this->personCreator->create($organization, $name, $emailAddress, $rawPassword);
-        $this->assertEquals([$personModel, $encodedPassword], $result);
+        $this->assertIsArray($result);
+        $this->assertInstanceOf(PersonModel::class, $result[0]);
+        $this->assertEquals($encodedPassword, $result[1]);
+        $this->assertEquals($personId, $result[0]->getId());
     }
 
     /**
@@ -95,7 +92,6 @@ class PersonCreatorTest extends TestCase
             'id' => $personId,
             'password' => $encodedPassword,
         ];
-        $personModel = new PersonModel;
 
         $this->createIdGeneratorExpectation($personId);
         $this->createPasswordEncoderExpectation($rawPassword, $encodedPassword);
@@ -109,7 +105,6 @@ class PersonCreatorTest extends TestCase
             $emailAddressVerified,
             $personRow
         );
-        $this->createPersonModelMapperExpectation($personRow, $personModel);
 
         $result = $this->personCreator->create(
             $organization,
@@ -118,16 +113,10 @@ class PersonCreatorTest extends TestCase
             $rawPassword,
             $emailAddressVerified
         );
-        $this->assertEquals([$personModel, $encodedPassword], $result);
-    }
-
-    private function createPersonModelMapperExpectation($personRow, $result)
-    {
-        $this->personModelMapper
-            ->shouldReceive('createFromArray')
-            ->once()
-            ->with($personRow)
-            ->andReturn($result);
+        $this->assertIsArray($result);
+        $this->assertInstanceOf(PersonModel::class, $result[0]);
+        $this->assertEquals($encodedPassword, $result[1]);
+        $this->assertEquals($personId, $result[0]->getId());
     }
 
     private function createPersonInserterExpectation(

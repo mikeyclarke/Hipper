@@ -9,8 +9,6 @@ use Hipper\Invite\InviteRepository;
 use Hipper\Invite\InviteUpdater;
 use Hipper\Organization\Organization;
 use Hipper\Organization\OrganizationModel;
-use Hipper\Person\PersonModel;
-use Hipper\Person\PersonModelMapper;
 use Hipper\Person\PersonRepository;
 use Hipper\Security\TokenGenerator;
 use Hipper\TransactionalEmail\BulkInvite;
@@ -26,7 +24,6 @@ class BulkInvitationProcessorTest extends TestCase
     private $inviteRepository;
     private $inviteUpdater;
     private $organization;
-    private $personModelMapper;
     private $personRepository;
     private $tokenGenerator;
     private $processor;
@@ -38,7 +35,6 @@ class BulkInvitationProcessorTest extends TestCase
         $this->inviteRepository = m::mock(InviteRepository::class);
         $this->inviteUpdater = m::mock(InviteUpdater::class);
         $this->organization = m::mock(Organization::class);
-        $this->personModelMapper = m::mock(PersonModelMapper::class);
         $this->personRepository = m::mock(PersonRepository::class);
         $this->tokenGenerator = m::mock(TokenGenerator::class);
 
@@ -48,7 +44,6 @@ class BulkInvitationProcessorTest extends TestCase
             $this->inviteRepository,
             $this->inviteUpdater,
             $this->organization,
-            $this->personModelMapper,
             $this->personRepository,
             $this->tokenGenerator
         );
@@ -71,10 +66,10 @@ class BulkInvitationProcessorTest extends TestCase
         $organization = new OrganizationModel;
         $organization->setName('hleo');
         $organization->setSubdomain('hleo');
-        $personArray = ['person'];
-        $person = new PersonModel;
-        $person->setEmailAddress('mikey@usehipper.com');
-        $person->setName('Mikey Clarke');
+        $personArray = [
+            'email_address' => 'mikey@usehipper.com',
+            'name' => 'Mikey Clarke',
+        ];
         $inviteRecords = [
             'invite-id-one' => ['email_address' => 'foo@example.com'],
             'invite-id-two' => ['email_address' => 'bar@example.com'],
@@ -87,8 +82,8 @@ class BulkInvitationProcessorTest extends TestCase
         ];
         $emailsToSend = [
             [
-                'sender_email_address' => $person->getEmailAddress(),
-                'sender_name' => $person->getName(),
+                'sender_email_address' => $personArray['email_address'],
+                'sender_name' => $personArray['name'],
                 'organization_name' => $organization->getName(),
                 'recipient_email_address' => $inviteRecords['invite-id-one']['email_address'],
                 'invite_link' => sprintf(
@@ -100,8 +95,8 @@ class BulkInvitationProcessorTest extends TestCase
                 ),
             ],
             [
-                'sender_email_address' => $person->getEmailAddress(),
-                'sender_name' => $person->getName(),
+                'sender_email_address' => $personArray['email_address'],
+                'sender_name' => $personArray['name'],
                 'organization_name' => $organization->getName(),
                 'recipient_email_address' => $inviteRecords['invite-id-two']['email_address'],
                 'invite_link' => sprintf(
@@ -113,8 +108,8 @@ class BulkInvitationProcessorTest extends TestCase
                 ),
             ],
             [
-                'sender_email_address' => $person->getEmailAddress(),
-                'sender_name' => $person->getName(),
+                'sender_email_address' => $personArray['email_address'],
+                'sender_name' => $personArray['name'],
                 'organization_name' => $organization->getName(),
                 'recipient_email_address' => $inviteRecords['invite-id-three']['email_address'],
                 'invite_link' => sprintf(
@@ -129,7 +124,6 @@ class BulkInvitationProcessorTest extends TestCase
 
         $this->createOrganizationExpectation($organizationId, $organization);
         $this->createPersonRepositoryExpectation($personId, $personArray);
-        $this->createPersonModelMapperExpectation($personArray, $person);
 
         $this->createInviteRepositoryExpectation($inviteIds, $inviteRecords);
         $this->createConnectionBeginTransactionExpectation();
@@ -197,15 +191,6 @@ class BulkInvitationProcessorTest extends TestCase
             ->shouldReceive('findWithIds')
             ->once()
             ->with($ids)
-            ->andReturn($result);
-    }
-
-    private function createPersonModelMapperExpectation($record, $result)
-    {
-        $this->personModelMapper
-            ->shouldReceive('createFromArray')
-            ->once()
-            ->with($record)
             ->andReturn($result);
     }
 

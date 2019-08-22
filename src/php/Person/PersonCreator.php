@@ -9,18 +9,15 @@ use Hipper\Organization\OrganizationModel;
 class PersonCreator
 {
     private $personInserter;
-    private $personModelMapper;
     private $passwordEncoder;
     private $idGenerator;
 
     public function __construct(
         PersonInserter $personInserter,
-        PersonModelMapper $personModelMapper,
         PersonPasswordEncoder $passwordEncoder,
         IdGenerator $idGenerator
     ) {
         $this->personInserter = $personInserter;
-        $this->personModelMapper = $personModelMapper;
         $this->passwordEncoder = $passwordEncoder;
         $this->idGenerator = $idGenerator;
     }
@@ -43,7 +40,7 @@ class PersonCreator
             $emailAddressVerified
         );
 
-        $model = $this->personModelMapper->createFromArray($person);
+        $model = PersonModel::createFromArray($person);
 
         // TODO: If email address verified send welcome email
 

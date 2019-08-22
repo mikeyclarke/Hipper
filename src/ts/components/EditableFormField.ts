@@ -12,7 +12,7 @@ export class EditableFormField extends HTMLElement {
     constructor() {
         super();
 
-        this._editable = this.getAttribute('editable') === 'false' ? false : true;
+        this._editable = this.hasAttribute('editable');
         this._inputElement = <HTMLInputElement | HTMLTextAreaElement> querySelectorNotNull(this, 'input, textarea');
         this._editButtonElement = <HTMLButtonElement | null> this.querySelector('.js-edit-button');
         addEditButtonClickEvent(this);
@@ -26,12 +26,14 @@ export class EditableFormField extends HTMLElement {
         this._editable = value;
 
         if (value) {
+            this.setAttribute('editable', '');
             this._inputElement.readOnly = false;
             this._inputElement.focus();
             this._inputElement.setSelectionRange(0, this._inputElement.value.length);
             removeEditButton(this);
             return;
         }
+        this.removeAttribute('editable');
         this._inputElement.readOnly = true;
         createEditButton(this);
     }
@@ -44,11 +46,15 @@ export class EditableFormField extends HTMLElement {
         if (name === 'editable') {
             let value = null;
 
-            if (newValue === 'false') {
+            if (newValue === oldValue) {
+                return;
+            }
+
+            if (newValue === null) {
                 value = false;
             }
 
-            if (newValue === 'true') {
+            if (newValue === '') {
                 value = true;
             }
 
@@ -88,9 +94,6 @@ function createEditButton(element: EditableFormField): void {
     element._editButtonElement.type = 'button';
     element._editButtonElement.textContent = 'Edit';
     element._editButtonElement.setAttribute('aria-controls', element._inputElement.id);
-    element._editButtonElement.addEventListener('click', () => {
-        element.editable = true;
-    });
     addEditButtonClickEvent(element);
     element.appendChild(element._editButtonElement);
 }

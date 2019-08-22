@@ -54,9 +54,10 @@ composer_install: ## Install composer packages
 ##	Environment
 ## ---------
 
-create_migration: ## Create `[timestamp]_RENAME_ME.up.sql` and `[timestamp]_RENAME_ME.down.sql` in `database/migrations`
-	migrate create -ext sql -dir database/migrations/ RENAME_ME
-	find database/migrations -name "*_RENAME_ME.*.sql"
+create_migration: ## Create a new “up” and a new “down” migration file in database/migrations
+	@read -p "Enter migration name (e.g. “create_team_table”): " migrationName; \
+	migrate create -ext sql -dir database/migrations/ $$migrationName; \
+	find database/migrations -name "*_$$migrationName.*.sql"
 
 run_migrations: ## Run migrations
 	migrate -database $(subst pgsql,postgres,$(DATABASE_URL))?sslmode=disable -path database/migrations up

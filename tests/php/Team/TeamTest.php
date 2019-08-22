@@ -11,7 +11,6 @@ use Hipper\Team\PersonToTeamMapInserter;
 use Hipper\Team\Team;
 use Hipper\Team\TeamInserter;
 use Hipper\Team\TeamModel;
-use Hipper\Team\TeamModelMapper;
 use Hipper\Team\TeamValidator;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
@@ -26,7 +25,6 @@ class TeamTest extends TestCase
     private $knowledgebase;
     private $personToTeamMapInserter;
     private $teamInserter;
-    private $teamModelMapper;
     private $teamValidator;
     private $urlSlugGenerator;
     private $team;
@@ -39,7 +37,6 @@ class TeamTest extends TestCase
         $this->knowledgebase = m::mock(Knowledgebase::class);
         $this->personToTeamMapInserter = m::mock(PersonToTeamMapInserter::class);
         $this->teamInserter = m::mock(TeamInserter::class);
-        $this->teamModelMapper = m::mock(TeamModelMapper::class);
         $this->teamValidator = m::mock(TeamValidator::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
 
@@ -49,7 +46,6 @@ class TeamTest extends TestCase
             $this->knowledgebase,
             $this->personToTeamMapInserter,
             $this->teamInserter,
-            $this->teamModelMapper,
             $this->teamValidator,
             $this->urlSlugGenerator
         );
@@ -82,7 +78,6 @@ class TeamTest extends TestCase
         ];
         $teamResult = ['id' => $teamId];
         $personToTeamMapId = 'person-to-team-map-uuid';
-        $teamModel = new TeamModel;
 
         $this->createTeamValidatorExpectation([$parameters, $this->person->getOrganizationId(), true]);
         $this->createIdGeneratorExpectation($teamId);
@@ -93,12 +88,10 @@ class TeamTest extends TestCase
         $this->createIdGeneratorExpectation($personToTeamMapId);
         $this->createPersonToTeamMapInserterExpectation([$personToTeamMapId, $this->person->getId(), $teamId]);
         $this->createConnectionCommitExpectation();
-        $this->createTeamModelMapperExpectation([$teamResult], $teamModel);
-
-        $expected = $teamModel;
 
         $result = $this->team->create($this->person, $parameters);
-        $this->assertEquals($expected, $result);
+        $this->assertInstanceOf(TeamModel::class, $result);
+        $this->assertEquals($teamId, $result->getId());
     }
 
     /**
@@ -145,15 +138,6 @@ class TeamTest extends TestCase
         $this->connection
             ->shouldReceive('rollBack')
             ->once();
-    }
-
-    private function createTeamModelMapperExpectation($args, $result)
-    {
-        $this->teamModelMapper
-            ->shouldReceive('createFromArray')
-            ->once()
-            ->with(...$args)
-            ->andReturn($result);
     }
 
     private function createConnectionCommitExpectation()

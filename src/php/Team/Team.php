@@ -16,7 +16,6 @@ class Team
     private $knowledgebase;
     private $personToTeamMapInserter;
     private $teamInserter;
-    private $teamModelMapper;
     private $teamValidator;
     private $urlSlugGenerator;
 
@@ -26,7 +25,6 @@ class Team
         Knowledgebase $knowledgebase,
         PersonToTeamMapInserter $personToTeamMapInserter,
         TeamInserter $teamInserter,
-        TeamModelMapper $teamModelMapper,
         TeamValidator $teamValidator,
         UrlSlugGenerator $urlSlugGenerator
     ) {
@@ -35,7 +33,6 @@ class Team
         $this->knowledgebase = $knowledgebase;
         $this->personToTeamMapInserter = $personToTeamMapInserter;
         $this->teamInserter = $teamInserter;
-        $this->teamModelMapper = $teamModelMapper;
         $this->teamValidator = $teamValidator;
         $this->urlSlugGenerator = $urlSlugGenerator;
     }
@@ -66,7 +63,7 @@ class Team
             throw $e;
         }
 
-        return $this->teamModelMapper->createFromArray($team);
+        return TeamModel::createFromArray($team);
     }
 
     private function createPersonTeamMap(string $personId, string $teamId): void

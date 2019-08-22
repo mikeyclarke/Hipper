@@ -3,21 +3,18 @@ declare(strict_types=1);
 
 namespace Hipper\App\Team;
 
-use Hipper\Team\TeamModelMapper;
+use Hipper\Team\TeamModel;
 use Hipper\Team\TeamRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TeamModelFromUrlIdMiddleware
 {
-    private $teamModelMapper;
     private $teamRepository;
 
     public function __construct(
-        TeamModelMapper $teamModelMapper,
         TeamRepository $teamRepository
     ) {
-        $this->teamModelMapper = $teamModelMapper;
         $this->teamRepository = $teamRepository;
     }
 
@@ -32,7 +29,7 @@ class TeamModelFromUrlIdMiddleware
             throw new NotFoundHttpException;
         }
 
-        $team = $this->teamModelMapper->createFromArray($result);
+        $team = TeamModel::createFromArray($result);
         $request->attributes->set('team', $team);
 
         $personIsInTeam = $this->teamRepository->existsWithMappingForPerson($team->getId(), $person->getId());

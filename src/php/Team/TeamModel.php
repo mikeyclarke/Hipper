@@ -5,6 +5,19 @@ namespace Hipper\Team;
 
 class TeamModel
 {
+    use \Hipper\ModelTrait;
+
+    const FIELD_MAP = [
+        'id' => 'id',
+        'name' => 'name',
+        'description' => 'description',
+        'url_id' => 'urlId',
+        'knowledgebase_id' => 'knowledgebaseId',
+        'organization_id' => 'organizationId',
+        'created' => 'created',
+        'updated' => 'updated',
+    ];
+
     private $id;
     private $name;
     private $description;
@@ -13,6 +26,13 @@ class TeamModel
     private $organizationId;
     private $created;
     private $updated;
+
+    public static function createFromArray(array $array): TeamModel
+    {
+        $model = new static;
+        $model->mapProperties($array);
+        return $model;
+    }
 
     public function setId(string $id): void
     {

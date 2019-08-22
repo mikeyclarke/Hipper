@@ -5,6 +5,18 @@ namespace Hipper\Organization;
 
 class OrganizationModel
 {
+    use \Hipper\ModelTrait;
+
+    const FIELD_MAP = [
+        'id' => 'id',
+        'name' => 'name',
+        'subdomain' => 'subdomain',
+        'approved_email_domain_signup_allowed' => 'approvedEmailDomainSignupAllowed',
+        'approved_email_domains' => 'approvedEmailDomains',
+        'created' => 'created',
+        'updated' => 'updated',
+    ];
+
     private $id;
     private $name;
     private $subdomain;
@@ -12,6 +24,13 @@ class OrganizationModel
     private $approvedEmailDomains;
     private $created;
     private $updated;
+
+    public static function createFromArray(array $array): OrganizationModel
+    {
+        $model = new static;
+        $model->mapProperties($array);
+        return $model;
+    }
 
     public function setId($id): void
     {

@@ -11,7 +11,6 @@ class Organization
 
     private $idGenerator;
     private $organizationInserter;
-    private $organizationModelMapper;
     private $organizationRepository;
     private $organizationUpdater;
     private $organizationValidator;
@@ -19,14 +18,12 @@ class Organization
     public function __construct(
         IdGenerator $idGenerator,
         OrganizationInserter $organizationInserter,
-        OrganizationModelMapper $organizationModelMapper,
         OrganizationRepository $organizationRepository,
         OrganizationUpdater $organizationUpdater,
         OrganizationValidator $organizationValidator
     ) {
         $this->idGenerator = $idGenerator;
         $this->organizationInserter = $organizationInserter;
-        $this->organizationModelMapper = $organizationModelMapper;
         $this->organizationRepository = $organizationRepository;
         $this->organizationUpdater = $organizationUpdater;
         $this->organizationValidator = $organizationValidator;
@@ -38,7 +35,7 @@ class Organization
         if (null == $result) {
             return $result;
         }
-        $model = $this->organizationModelMapper->createFromArray($result);
+        $model = OrganizationModel::createFromArray($result);
         return $model;
     }
 
@@ -48,7 +45,7 @@ class Organization
             $this->idGenerator->generate(),
             self::DEFAULT_NAME
         );
-        $model = $this->organizationModelMapper->createFromArray($organization);
+        $model = OrganizationModel::createFromArray($organization);
         return $model;
     }
 

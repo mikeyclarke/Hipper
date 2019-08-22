@@ -71,6 +71,10 @@ $form-footer-text-align: right;
     @include font-smoothing;
 }
 
+.c-form__label-optional {
+    color: config-get(color-shades, grey, 1000);
+}
+
 .c-form__input {
     transition: border-color .35s;
     width: 100%;

@@ -32,3 +32,11 @@ editable-form-field .edit-button:focus {
     outline: 0;
     transform: scale(1.1);
 }
+
+editable-form-field .c-form__label-optional {
+    display: none;
+}
+
+editable-form-field[editable] .c-form__label-optional {
+    display: inline;
+}

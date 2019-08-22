@@ -136,3 +136,6 @@ services:
 
     knowledgebase_routing_middleware:
         class: Hipper\App\KnowledgebaseRoutingMiddleware
+
+    project_model_from_url_id_middleware:
+        class: Hipper\App\Project\ProjectModelFromUrlIdMiddleware

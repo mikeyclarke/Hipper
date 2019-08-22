@@ -5,6 +5,7 @@ import { TeamSubdomainController } from './RouteControllers/onboarding/TeamSubdo
 import { NameTeamController } from './RouteControllers/onboarding/NameTeamController';
 import { CreateTeamController } from './RouteControllers/app/Team/CreateTeamController';
 import { CreateTeamDocController } from './RouteControllers/app/Team/CreateTeamDocController';
+import { CreateProjectController } from 'RouteControllers/app/Project/CreateProjectController';
 import { HttpClient } from 'Http/HttpClient';
 import { Controller } from 'RouteControllers/Controller';
 import { DocumentCookies } from 'Cookie/DocumentCookies';
@@ -71,6 +72,12 @@ bottle.factory('createTeamDocController', (container) => {
     );
 });
 
+bottle.factory('createProjectController', (container) => {
+    return new CreateProjectController(
+        container.httpClient,
+    );
+});
+
 bottle.factory('bootstrap', (container) => {
     const path: string = window.location.pathname;
     const routes: Iroute = {
@@ -80,6 +87,7 @@ bottle.factory('bootstrap', (container) => {
         '/choose-team-url': container.teamSubdomainController,
         '/teams/new': container.createTeamController,
         '/team/engineering/docs/new': container.createTeamDocController,
+        '/projects/new': container.createProjectController,
     };
     if (routes[path]) {
         return routes[path];

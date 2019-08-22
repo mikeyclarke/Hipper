@@ -6,9 +6,9 @@ namespace Hipper\Validation\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
-class UniqueTeamName extends Constraint
+class UniqueProjectName extends Constraint
 {
-    public $message = 'A team named “{{ string }}” already exists.';
+    public $message = 'A project named “{{ string }}” already exists.';
     public $organizationId;
 
     public function __construct(

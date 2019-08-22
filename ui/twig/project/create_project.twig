@@ -1,0 +1,32 @@
+{% extends 'base_layout.twig' %}
+
+{% block content %}
+<main class="c-sheet">
+    <div class="c-sheet__inner">
+        <header class="c-sheet__header">
+            <a class="c-sheet__back-button" href="{{ backLink }}">
+                {% include 'icons/icon_arrow_left.twig' with {
+                    className: 'c-sheet__back-button-icon',
+                    hideFromScreenReaders: true
+                } %}
+                <span class="c-sheet__back-button-label">Back</span>
+            </a>
+            <h1 class="c-sheet__title">New project</h1>
+        </header>
+
+        <form class="js-create-project-form" novalidate>
+            <fieldset class="c-form__field js-project-name-field">
+                <label for="new-project-name" class="c-form__label">What’s this project called?</label>
+                <input class="c-form__input js-project-name" type="text" minlength="2" maxlength="100" name="name" id="new-project-name" placeholder="e.g. {{ placeholderProjectName }}" required autocomplete="off">
+            </fieldset>
+
+            <fieldset class="c-form__field js-project-description-field">
+                <label for="new-project-description" class="c-form__label">What’s this project about? <span class="c-form__label-optional">(optional)</span></label>
+                <textarea name="description" id="new-project-description" class="c-form__input js-project-description" autocomplete="off" maxlength="300"></textarea>
+            </fieldset>
+
+            <button class="c-sheet__submit-button js-submit" type="submit">Done</button>
+        </form>
+    </div>
+</main>
+{% endblock %}

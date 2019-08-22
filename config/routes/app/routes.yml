@@ -116,3 +116,32 @@ team_doc.get:
             - knowledgebase_routing_middleware:before
     requirements:
         route: '.+'
+
+create_project.get:
+    path: /projects/new
+    methods: [GET]
+    controller: Hipper\App\Project\CreateProjectController::getAction
+
+create_project.post:
+    path: /_/create-project
+    methods: [POST]
+    controller: Hipper\App\Project\CreateProjectController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+project.get:
+    path: /project/{project_url_id}
+    methods: [GET]
+    controller: Hipper\App\Project\ProjectController::getAction
+    defaults:
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
+
+project_docs.get:
+    path: /project/{project_url_id}/docs
+    methods: [GET]
+    controller: Hipper\App\Project\ProjectDocsController::getAction
+    defaults:
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before

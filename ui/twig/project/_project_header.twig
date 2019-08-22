@@ -1,0 +1,30 @@
+<header class="c-app-header">
+    <div class="c-app-header__top-bar">
+        <button type="button" aria-label="Menu" class="c-app-header__top-bar-menu-button">
+            <svg class="c-app-header__top-bar-menu-icon" aria-hidden="true"><use xlink:href="#icon-sprite__menu"/></svg>
+        </button>
+
+        <div class="c-app-header__compass">
+            <span class="c-app-header__compass-entity">Project</span>
+            <span class="c-app-header__compass-name">{{ project.name }}</span>
+        </div>
+
+        <button type="button" aria-label="Project options" class="c-app-header__top-bar-options-button">
+            <svg class="c-app-header__top-bar-options-icon" aria-hidden="true"><use xlink:href="#icon-sprite__options"/></svg>
+        </button>
+    </div>
+
+    <nav class="c-app-header__tab-bar">
+        <ol class="c-app-header__tab-list">
+            <li class="c-app-header__tab-list-item">
+                <a href="/project/{{ project.urlId }}" class="c-app-header__tab-list-item-control"{% if activeTab == 'home' %} aria-selected="true"{% endif %}>Home</a>
+            </li>
+            <li class="c-app-header__tab-list-item">
+                <a href="/project/{{ project.urlId }}/docs" class="c-app-header__tab-list-item-control"{% if activeTab == 'docs' %} aria-selected="true"{% endif %}>Docs</a>
+            </li>
+            <li class="c-app-header__tab-list-item">
+                <a href="/project/{{ project.urlId }}/members" class="c-app-header__tab-list-item-control"{% if activeTab == 'members' %} aria-selected="true"{% endif %}>Members</a>
+            </li>
+        </ol>
+    </nav>
+</header>

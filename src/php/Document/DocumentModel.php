@@ -5,6 +5,25 @@ namespace Hipper\Document;
 
 class DocumentModel
 {
+    use \Hipper\ModelTrait;
+
+    const FIELD_MAP = [
+        'id' => 'id',
+        'name' => 'name',
+        'description' => 'description',
+        'deduced_description' => 'deducedDescription',
+        'content' => 'content',
+        'url_slug' => 'urlSlug',
+        'url_id' => 'urlId',
+        'knowledgebase_id' => 'knowledgebaseId',
+        'organization_id' => 'organizationId',
+        'section_id' => 'sectionId',
+        'created_by' => 'createdBy',
+        'last_updated_by' => 'lastUpdatedBy',
+        'created' => 'created',
+        'updated' => 'updated',
+    ];
+
     private $id;
     private $name;
     private $description;
@@ -19,6 +38,13 @@ class DocumentModel
     private $lastUpdatedBy;
     private $created;
     private $updated;
+
+    public static function createFromArray(array $array): DocumentModel
+    {
+        $model = new static;
+        $model->mapProperties($array);
+        return $model;
+    }
 
     public function setId(string $id): void
     {

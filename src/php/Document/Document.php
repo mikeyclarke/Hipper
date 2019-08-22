@@ -15,7 +15,6 @@ class Document
     private $connection;
     private $documentDescriptionDeducer;
     private $documentInserter;
-    private $documentModelMapper;
     private $documentRevision;
     private $documentValidator;
     private $idGenerator;
@@ -27,7 +26,6 @@ class Document
         Connection $connection,
         DocumentDescriptionDeducer $documentDescriptionDeducer,
         DocumentInserter $documentInserter,
-        DocumentModelMapper $documentModelMapper,
         DocumentRevision $documentRevision,
         DocumentValidator $documentValidator,
         IdGenerator $idGenerator,
@@ -38,7 +36,6 @@ class Document
         $this->connection = $connection;
         $this->documentDescriptionDeducer = $documentDescriptionDeducer;
         $this->documentInserter = $documentInserter;
-        $this->documentModelMapper = $documentModelMapper;
         $this->documentRevision = $documentRevision;
         $this->documentValidator = $documentValidator;
         $this->idGenerator = $idGenerator;
@@ -79,7 +76,7 @@ class Document
                 $deducedDescription,
                 $content
             );
-            $model = $this->documentModelMapper->createFromArray($result);
+            $model = DocumentModel::createFromArray($result);
 
             $this->knowledgebaseRoute->createForDocument(
                 $model,

@@ -8,7 +8,6 @@ use Hipper\Document\Document;
 use Hipper\Document\DocumentDescriptionDeducer;
 use Hipper\Document\DocumentInserter;
 use Hipper\Document\DocumentModel;
-use Hipper\Document\DocumentModelMapper;
 use Hipper\Document\DocumentRevision;
 use Hipper\Document\DocumentValidator;
 use Hipper\IdGenerator\IdGenerator;
@@ -24,7 +23,6 @@ class DocumentTest extends TestCase
     private $connection;
     private $documentDescriptionDeducer;
     private $documentInserter;
-    private $documentModelMapper;
     private $documentRevision;
     private $documentValidator;
     private $idGenerator;
@@ -38,7 +36,6 @@ class DocumentTest extends TestCase
         $this->connection = m::mock(Connection::class);
         $this->documentDescriptionDeducer = m::mock(DocumentDescriptionDeducer::class);
         $this->documentInserter = m::mock(DocumentInserter::class);
-        $this->documentModelMapper = m::mock(DocumentModelMapper::class);
         $this->documentRevision = m::mock(DocumentRevision::class);
         $this->documentValidator = m::mock(DocumentValidator::class);
         $this->idGenerator = m::mock(IdGenerator::class);
@@ -50,7 +47,6 @@ class DocumentTest extends TestCase
             $this->connection,
             $this->documentDescriptionDeducer,
             $this->documentInserter,
-            $this->documentModelMapper,
             $this->documentRevision,
             $this->documentValidator,
             $this->idGenerator,
@@ -85,10 +81,10 @@ class DocumentTest extends TestCase
         $urlId = 'url-id';
         $deducedDescription = '👋 Congrats on joining Hipper!';
 
-        $documentRow = ['document-row'];
-        $model = new DocumentModel;
-        $model->setUrlSlug($urlSlug);
-        $model->setUrlId($urlId);
+        $documentRow = [
+            'url_slug' => $urlSlug,
+            'url_id' => $urlId,
+        ];
         $route = '/team/engineering/docs/~/welcome-to-engineering-url-id';
 
         $this->createDocumentValidatorExpectation([$parameters, $organizationId, true]);
@@ -112,15 +108,14 @@ class DocumentTest extends TestCase
             ],
             $documentRow
         );
-        $this->createDocumentModelMapperExpectation([$documentRow], $model);
-        $this->createKnowledgebaseRouteExpectation([$model, $urlSlug, true, true]);
-        $this->createDocumentRevisionExpectation([$model]);
+        $this->createKnowledgebaseRouteExpectation([m::type(DocumentModel::class), $urlSlug, true, true]);
+        $this->createDocumentRevisionExpectation([m::type(DocumentModel::class)]);
         $this->createConnectionCommitExpectation();
 
-        $expected = $model;
-
         $result = $this->document->create($person, $parameters);
-        $this->assertEquals($expected, $result);
+        $this->assertInstanceOf(DocumentModel::class, $result);
+        $this->assertEquals($urlSlug, $result->getUrlSlug());
+        $this->assertEquals($urlId, $result->getUrlId());
     }
 
     private function createConnectionCommitExpectation()
@@ -144,15 +139,6 @@ class DocumentTest extends TestCase
             ->shouldReceive('createForDocument')
             ->once()
             ->with(...$args);
-    }
-
-    private function createDocumentModelMapperExpectation($args, $result)
-    {
-        $this->documentModelMapper
-            ->shouldReceive('createFromArray')
-            ->once()
-            ->with(...$args)
-            ->andReturn($result);
     }
 
     private function createDocumentInserterExpectation($args, $result)

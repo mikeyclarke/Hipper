@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\App;
 
-use Hipper\Document\DocumentModelMapper;
+use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRepository;
 use Hipper\Document\Renderer\HtmlRenderer;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,18 +13,15 @@ use Twig_Environment;
 
 class DocumentController
 {
-    private $documentModelMapper;
     private $documentRepository;
     private $htmlRenderer;
     private $twig;
 
     public function __construct(
-        DocumentModelMapper $documentModelMapper,
         DocumentRepository $documentRepository,
         HtmlRenderer $htmlRenderer,
         Twig_Environment $twig
     ) {
-        $this->documentModelMapper = $documentModelMapper;
         $this->documentRepository = $documentRepository;
         $this->htmlRenderer = $htmlRenderer;
         $this->twig = $twig;
@@ -40,7 +37,7 @@ class DocumentController
             throw new NotFoundHttpException;
         }
 
-        $document = $this->documentModelMapper->createFromArray($result);
+        $document = DocumentModel::createFromArray($result);
 
         $context = [
             'document' => $document,

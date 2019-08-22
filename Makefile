@@ -6,26 +6,36 @@ include .env
 ##	Testing
 ## ---------
 
-test_js: ## Run the JavaScript unit tests and watch
-	./node_modules/.bin/jest --verbose
+test_js: tslint jest ## Run all JS tests (TSLint, and Jest)
 
 test_php: phpunit phpcs phpstan ## Run all PHP tests (PHPCS, PHPUnit, and PHPStan)
+
+## ---------
+##	Unit tests
+## ---------
+
+jest: ## Check that JS unit tests pass
+	./node_modules/.bin/jest --verbose
+
+phpunit: ## Check that PHP unit tests pass
+	./vendor/bin/phpunit tests/php
 
 ## ---------
 ##	Coding standards
 ## ---------
 
-phpunit: ## Check that PHP unit tests pass
-	./vendor/bin/phpunit tests/php
-
 phpcs: ## Check that PHP complies with stylistic rules
 	./vendor/bin/phpcs -p --encoding=utf-8 --standard=PSR2 --error-severity=1 src/php tests/php
 
-phpstan: ## Check that PHP passes static analysis
-	./vendor/bin/phpstan analyse src/php --level 6
-
 tslint: ## Lint Typescript files
 	./node_modules/.bin/tslint -p tsconfig.json -c tslint.json
+
+## ---------
+##	Static analysis
+## ---------
+
+phpstan: ## Check that PHP passes static analysis
+	./vendor/bin/phpstan analyse src/php --level 6
 
 ## ---------
 ##	Dependancies
@@ -55,11 +65,8 @@ run_migrations: ## Run migrations
 ##	Environment
 ## ---------
 
-webpack: ## Run a one-off webpack build
+webpack: ## Run webpack in watch mode
 	./node_modules/.bin/webpack --watch --mode=development
-
-sql: ## Run database setup
-	psql -d hipper -a -f sql/init.sql
 
 ## ---------
 ##	Make setup

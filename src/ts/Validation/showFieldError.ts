@@ -7,7 +7,6 @@ export function showFieldError(
     const id = fieldInputElement.id + '-error';
     errorElement.id = id;
     errorElement.textContent = errorMessage;
-    errorElement.hidden = true;
     errorElement.classList.add(className);
     errorElement.setAttribute('aria-live', 'assertive');
 

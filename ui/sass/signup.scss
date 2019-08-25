@@ -1,23 +1,23 @@
 @import 'vendor/normalize/normalize';
+@import './fonts';
 
-html,
-body {
-    font-family: 'Proxima Nova Soft', sans-serif;
-    height: 100%;
-}
+@import 'utility/hidden-attribute';
+@import 'helper/font-smoothing';
 
-body {
-    background: #eaeaea;
-}
+@import 'config/config';
 
-.page-container {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+@import 'element/page';
+@import 'element/button';
+@import 'element/fieldset';
+@import 'element/input';
+@import 'element/textarea';
 
-.signup-container {
-    height: 850px;
-    width: 800px;
-}
+@import 'custom-element/popover-alert';
+
+@import 'component/button';
+@import 'component/checkbox';
+@import 'component/password-input';
+@import 'component/form';
+@import 'component/signup-form';
+
+@import 'layout/splash-screen';

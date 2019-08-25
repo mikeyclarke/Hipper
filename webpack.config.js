@@ -5,7 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     entry: {
-        app: ['./src/ts/bootstrap.ts', './ui/sass/app.scss'],
+        app: ['./src/ts/bootstrap/app.ts', './ui/sass/app.scss'],
+        signup: ['./src/ts/bootstrap/signup.ts', './ui/sass/signup.scss'],
     },
     output: {
         path: path.resolve(__dirname, 'public-roots/assets/public/build'),

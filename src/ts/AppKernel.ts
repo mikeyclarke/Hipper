@@ -1,15 +1,15 @@
-import { appRoutes } from 'routes/appRoutes';
-import { appServices } from 'container/appServices';
-import { sharedServices } from 'container/sharedServices';
-import { Kernel } from 'Kernel';
-import { DocumentHeadConfigurationProvider } from 'DocumentHeadConfigurationProvider';
+import appRoutes from 'routes/appRoutes';
+import appServices from 'container/appServices';
+import sharedServices from 'container/sharedServices';
+import Kernel from 'Kernel';
+import DocumentHeadConfigurationProvider from 'DocumentHeadConfigurationProvider';
 
 const htmlHeadConfigVars = [
     { name: 'csrf_token', selector: '.js-csrf', parseAsJson: false },
     { name: 'user_agent_profile', selector: '.js-user-agent-profile', parseAsJson: true },
 ];
 
-export class AppKernel extends Kernel {
+export default class AppKernel extends Kernel {
     constructor() {
         super();
     }

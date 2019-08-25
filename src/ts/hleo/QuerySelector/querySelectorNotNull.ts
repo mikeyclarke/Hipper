@@ -1,6 +1,6 @@
-import { DOMQueryable } from './DOMQueryable';
+import DOMQueryable from 'hleo/QuerySelector/DOMQueryable';
 
-export function querySelectorNotNull(context: DOMQueryable, selector: string): HTMLElement {
+export default function querySelectorNotNull(context: DOMQueryable, selector: string): HTMLElement {
     const result = context.querySelector(selector);
     if (result) {
         return result;

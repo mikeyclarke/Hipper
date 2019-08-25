@@ -1,6 +1,6 @@
 import * as Bottle from 'bottlejs';
 
-export class ContainerBuilder {
+export default class ContainerBuilder {
     public build(bottle: Bottle, serviceCollections: Function[], configs: object[], routes: Function): void {
         serviceCollections.forEach((collection) => {
             collection(bottle);

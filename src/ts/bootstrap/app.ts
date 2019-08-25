@@ -1,4 +1,4 @@
-import { AppKernel } from 'AppKernel';
+import AppKernel from 'AppKernel';
 
 document.addEventListener('DOMContentLoaded', () => {
     const kernel = new AppKernel();

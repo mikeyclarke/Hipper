@@ -1,10 +1,10 @@
-import { Controller } from 'RouteControllers/Controller';
-import { EditableFormField } from 'components/EditableFormField';
-import { showFieldError } from 'Validation/showFieldError';
-import { HttpClient } from 'Http/HttpClient';
+import Controller from 'RouteControllers/Controller';
+import EditableFormField from 'components/EditableFormField';
+import showFieldError from 'Validation/showFieldError';
+import HttpClient from 'Http/HttpClient';
 import { HTTPError } from 'ky';
 
-export class CreateTeamController implements Controller {
+export default class CreateTeamController implements Controller {
     private readonly httpClient: HttpClient;
     private handleNameSubmitHandler!: EventListener;
     private formElement!: HTMLFormElement;

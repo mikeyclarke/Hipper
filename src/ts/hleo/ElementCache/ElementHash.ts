@@ -1,3 +1,3 @@
-export interface ElementHash {
+export default interface ElementHash {
     [key: string]: string;
 }

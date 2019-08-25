@@ -1,6 +1,6 @@
 const supportedTypes = ['error'];
 
-export class PopoverAlert extends HTMLElement {
+export default class PopoverAlert extends HTMLElement {
     public _containerElement!: HTMLDivElement;
     public _buttonElement!: HTMLButtonElement;
     public _closeTimeoutId!: number;

@@ -1,4 +1,4 @@
-export class FloatingButton extends HTMLElement {
+export default class FloatingButton extends HTMLElement {
     public _expanded: boolean;
     public _button: HTMLButtonElement | null;
     public _list: HTMLOListElement | null;

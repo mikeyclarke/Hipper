@@ -1,7 +1,7 @@
 import * as Bottle from 'bottlejs';
-import { RouteDefinition } from 'routes/route';
+import RouteDefinition from 'routes/route';
 
-export const signupRoutes = function (bottle: Bottle): Record<string, RouteDefinition> {
+export default function signupRoutes(bottle: Bottle): Record<string, RouteDefinition> {
     return {
         sign_up: {
             path: '/sign-up',
@@ -23,4 +23,4 @@ export const signupRoutes = function (bottle: Bottle): Record<string, RouteDefin
             controller: () => bottle.container.teamSubdomainController,
         }
     };
-};
+}

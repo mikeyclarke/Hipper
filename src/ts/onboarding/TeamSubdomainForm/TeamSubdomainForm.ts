@@ -1,11 +1,11 @@
-import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
-import { ElementCache } from '../../hleo/ElementCache/ElementCache';
-import { EventsHash } from '../../hleo/EventDelegator/EventsHash';
-import { ElementHash } from 'hleo/ElementCache/ElementHash';
-import { EventsEnabled } from '../../hleo/EventDelegator/EventsEnabled';
-import { FormValidationErrors } from 'onboarding/Form/FormValidationErrors';
-import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
-import { Form } from 'onboarding/Form/Form';
+import EventDelegator from 'hleo/EventDelegator/EventDelegator';
+import ElementCache from 'hleo/ElementCache/ElementCache';
+import EventsHash from 'hleo/EventDelegator/EventsHash';
+import ElementHash from 'hleo/ElementCache/ElementHash';
+import EventsEnabled from 'hleo/EventDelegator/EventsEnabled';
+import FormValidationErrors from 'onboarding/Form/FormValidationErrors';
+import FormSubmitService from 'onboarding/Form/FormSubmitService';
+import Form from 'onboarding/Form/Form';
 
 class TeamSubdomainFormData {
     private readonly subdomain: string;
@@ -21,7 +21,7 @@ class TeamSubdomainFormData {
     }
 }
 
-export class TeamSubdomainForm implements EventsEnabled {
+export default class TeamSubdomainForm implements EventsEnabled {
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
     private readonly form: Form;

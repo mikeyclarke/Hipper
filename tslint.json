@@ -79,7 +79,7 @@
       ],
       "no-construct": true,
       "no-debugger": true,
-      "no-default-export": true,
+      "no-default-export": false,
       "no-duplicate-super": true,
       "no-duplicate-variable": true,
       "no-empty": [true, "allow-empty-catch"],

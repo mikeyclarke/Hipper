@@ -16,7 +16,7 @@ import { detachableMenu } from 'text-editor/Plugin/detachableMenu';
 
 type InitialContent = string | object | HTMLElement;
 
-export class TextEditor {
+export default class TextEditor {
     private readonly defaultNodes: string[] = ['doc', 'text', 'paragraph'];
     private readonly containerElement: HTMLElement;
     private readonly marks: MarkInterface[];

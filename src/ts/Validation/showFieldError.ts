@@ -1,4 +1,4 @@
-export function showFieldError(
+export default function showFieldError(
     fieldInputElement: HTMLElement,
     errorMessage: string,
     className: string = 'c-form__error'

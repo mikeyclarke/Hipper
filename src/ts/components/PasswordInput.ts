@@ -1,6 +1,6 @@
-import { querySelectorNotNull } from 'hleo/QuerySelector/querySelectorNotNull';
+import querySelectorNotNull from 'hleo/QuerySelector/querySelectorNotNull';
 
-export class PasswordInput extends HTMLElement {
+export default class PasswordInput extends HTMLElement {
     private button!: HTMLElement;
     private input!: HTMLFormElement;
 

@@ -1,5 +1,5 @@
-import { EventsHash } from './EventsHash';
+import EventsHash from 'hleo/EventDelegator/EventsHash';
 
-export interface EventsEnabled {
+export default interface EventsEnabled {
     getEvents(): EventsHash;
 }

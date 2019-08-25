@@ -1,7 +1,7 @@
 import * as Bottle from 'bottlejs';
-import { RouteDefinition } from 'routes/route';
+import RouteDefinition from 'routes/route';
 
-export const appRoutes = function (bottle: Bottle): Record<string, RouteDefinition> {
+export default function appRoutes(bottle: Bottle): Record<string, RouteDefinition> {
     return {
         create_team: {
             path: '/teams/new',
@@ -18,4 +18,4 @@ export const appRoutes = function (bottle: Bottle): Record<string, RouteDefiniti
             controller: () => bottle.container.createProjectController,
         },
     };
-};
+}

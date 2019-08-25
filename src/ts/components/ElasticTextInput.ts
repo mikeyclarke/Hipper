@@ -1,6 +1,6 @@
 import * as autosize from 'autosize';
 
-export class ElasticTextInput extends HTMLElement {
+export default class ElasticTextInput extends HTMLElement {
     constructor() {
         super();
 

@@ -1,9 +1,9 @@
-import { Controller } from 'RouteControllers/Controller';
-import { HttpClient } from 'Http/HttpClient';
+import Controller from 'RouteControllers/Controller';
+import TextEditor from 'text-editor/TextEditor';
+import HttpClient from 'Http/HttpClient';
 import { HTTPError } from 'ky';
-import { TextEditor } from 'text-editor/TextEditor';
 
-export class CreateTeamDocController implements Controller {
+export default class CreateTeamDocController implements Controller {
     private readonly httpClient: HttpClient;
     private readonly userAgentProfile: Record<string, any> | null;
     private knowledgebaseId: string | null = null;
@@ -60,7 +60,7 @@ export class CreateTeamDocController implements Controller {
 
     private setUpTextEditor(): void {
         import (/* webpackChunkName: "editor" */ 'text-editor/TextEditor').then(module => {
-            this.textEditor = new module.TextEditor(
+            this.textEditor = new module.default(
                 this.textEditorElement,
                 '',
                 this.allowedMarks,

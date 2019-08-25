@@ -1,6 +1,6 @@
-import { Cookie } from 'Cookie/Cookie';
+import Cookie from 'Cookie/Cookie';
 
-export class DocumentCookies {
+export default class DocumentCookies {
     public enabled(): boolean {
         return navigator.cookieEnabled;
     }

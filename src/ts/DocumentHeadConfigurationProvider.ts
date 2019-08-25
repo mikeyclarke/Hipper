@@ -1,4 +1,4 @@
-export class DocumentHeadConfigurationProvider {
+export default class DocumentHeadConfigurationProvider {
     private readonly htmlHead: HTMLHeadElement;
 
     constructor() {

@@ -1,10 +1,10 @@
-import { Cookie } from 'Cookie/Cookie';
-import { DocumentCookies } from 'Cookie/DocumentCookies';
-import { TimeZoneRetriever } from 'TimeZone/TimeZoneRetriever';
+import Cookie from 'Cookie/Cookie';
+import DocumentCookies from 'Cookie/DocumentCookies';
+import TimeZoneRetriever from 'TimeZone/TimeZoneRetriever';
 
 const cookieName = 'tz';
 
-export class TimeZoneCookie {
+export default class TimeZoneCookie {
     private readonly documentCookies: DocumentCookies;
     private readonly timeZoneRetriever: TimeZoneRetriever;
 

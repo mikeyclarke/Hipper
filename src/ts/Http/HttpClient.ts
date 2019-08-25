@@ -1,4 +1,4 @@
-import { PopoverAlert } from 'components/PopoverAlert';
+import PopoverAlert from 'components/PopoverAlert';
 import ky, { Options, ResponsePromise } from 'ky';
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -14,7 +14,7 @@ enum RequestMethod {
 
 const safeHttpMethods = ['GET', 'HEAD', 'OPTIONS', 'TRACE'];
 
-export class HttpClient {
+export default class HttpClient {
     private csrfToken: string;
     private lastRequest: [Request | URL | string, RequestMethod, Options] | null = null;
     private retryCount: number = 0;

@@ -1,6 +1,6 @@
-import { querySelectorNotNull } from 'hleo/QuerySelector/querySelectorNotNull';
+import querySelectorNotNull from 'hleo/QuerySelector/querySelectorNotNull';
 
-export class EditableFormField extends HTMLElement {
+export default class EditableFormField extends HTMLElement {
     public _editable: boolean;
     public readonly _inputElement: HTMLInputElement | HTMLTextAreaElement;
     public _editButtonElement: HTMLButtonElement | null;

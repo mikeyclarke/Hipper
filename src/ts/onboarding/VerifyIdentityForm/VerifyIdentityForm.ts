@@ -1,11 +1,11 @@
-import { EventDelegator } from '../../hleo/EventDelegator/EventDelegator';
-import { ElementCache } from '../../hleo/ElementCache/ElementCache';
-import { EventsHash } from '../../hleo/EventDelegator/EventsHash';
-import { ElementHash } from 'hleo/ElementCache/ElementHash';
-import { EventsEnabled } from '../../hleo/EventDelegator/EventsEnabled';
-import { FormValidationErrors } from 'onboarding/Form/FormValidationErrors';
-import { Form } from 'onboarding/Form/Form';
-import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
+import EventDelegator from 'hleo/EventDelegator/EventDelegator';
+import ElementCache from 'hleo/ElementCache/ElementCache';
+import EventsHash from 'hleo/EventDelegator/EventsHash';
+import ElementHash from 'hleo/ElementCache/ElementHash';
+import EventsEnabled from 'hleo/EventDelegator/EventsEnabled';
+import FormValidationErrors from 'onboarding/Form/FormValidationErrors';
+import Form from 'onboarding/Form/Form';
+import FormSubmitService from 'onboarding/Form/FormSubmitService';
 
 class VerifyIdentityFormData {
     private readonly verififcationCode: string;
@@ -20,7 +20,8 @@ class VerifyIdentityFormData {
         };
     }
 }
-export class VerifyIdentityForm implements EventsEnabled {
+
+export default class VerifyIdentityForm implements EventsEnabled {
     private readonly eventDelegator: EventDelegator;
     private readonly elementCache: ElementCache;
     private readonly submitService: FormSubmitService;

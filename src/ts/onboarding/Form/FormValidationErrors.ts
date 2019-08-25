@@ -1,4 +1,4 @@
-export interface FormValidationErrors {
+export default interface FormValidationErrors {
     message: string;
     name: string;
     violations: {

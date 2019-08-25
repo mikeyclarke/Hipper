@@ -1,7 +1,7 @@
-import { Cookie } from 'Cookie/Cookie';
-import { DocumentCookies } from 'Cookie/DocumentCookies';
-import { TimeZoneCookie } from 'TimeZone/TimeZoneCookie';
-import { TimeZoneRetriever } from 'TimeZone/TimeZoneRetriever';
+import Cookie from 'Cookie/Cookie';
+import DocumentCookies from 'Cookie/DocumentCookies';
+import TimeZoneCookie from 'TimeZone/TimeZoneCookie';
+import TimeZoneRetriever from 'TimeZone/TimeZoneRetriever';
 
 jest.mock('Cookie/DocumentCookies');
 jest.mock('TimeZone/TimeZoneRetriever');

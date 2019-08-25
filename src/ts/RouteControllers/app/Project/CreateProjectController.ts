@@ -1,9 +1,9 @@
-import { Controller } from 'RouteControllers/Controller';
-import { showFieldError } from 'Validation/showFieldError';
-import { HttpClient } from 'Http/HttpClient';
+import Controller from 'RouteControllers/Controller';
+import showFieldError from 'Validation/showFieldError';
+import HttpClient from 'Http/HttpClient';
 import { HTTPError } from 'ky';
 
-export class CreateProjectController implements Controller {
+export default class CreateProjectController implements Controller {
     private readonly httpClient: HttpClient;
     private formElement!: HTMLFormElement;
     private submitButton!: HTMLButtonElement;

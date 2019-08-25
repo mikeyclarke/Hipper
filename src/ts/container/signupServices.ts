@@ -1,11 +1,11 @@
 import * as Bottle from 'bottlejs';
-import { Controller } from 'RouteControllers/Controller';
-import { SignupController } from 'RouteControllers/onboarding/SignupController';
-import { VerifyIdentityController } from 'RouteControllers/onboarding/VerifyIdentityController';
-import { TeamSubdomainController } from 'RouteControllers/onboarding/TeamSubdomainController';
-import { NameTeamController } from 'RouteControllers/onboarding/NameTeamController';
+import Controller from 'RouteControllers/Controller';
+import SignupController from 'RouteControllers/onboarding/SignupController';
+import VerifyIdentityController from 'RouteControllers/onboarding/VerifyIdentityController';
+import TeamSubdomainController from 'RouteControllers/onboarding/TeamSubdomainController';
+import NameTeamController from 'RouteControllers/onboarding/NameTeamController';
 
-export const signupServices = function (bottle: Bottle): void {
+export default function signupServices(bottle: Bottle): void {
     bottle.factory('signupController', (container) => {
         return new SignupController(
             container.httpClient
@@ -29,4 +29,4 @@ export const signupServices = function (bottle: Bottle): void {
             container.httpClient
         );
     });
-};
+}

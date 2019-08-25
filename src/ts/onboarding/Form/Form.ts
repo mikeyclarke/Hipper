@@ -1,7 +1,7 @@
-import { injectValidationErrors } from 'onboarding/Form/ValidationMessageInjector';
-import { FormValidationErrors } from 'onboarding/Form/FormValidationErrors';
+import injectValidationErrors from 'onboarding/Form/ValidationMessageInjector';
+import FormValidationErrors from 'onboarding/Form/FormValidationErrors';
 
-export class Form {
+export default class Form {
     private readonly form: HTMLFormElement;
     private readonly submitButton: HTMLElement;
 

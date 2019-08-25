@@ -1,4 +1,4 @@
-export class EventDelegate {
+export default class EventDelegate {
     public selector: string;
     public callback: string;
     public eventType: string;

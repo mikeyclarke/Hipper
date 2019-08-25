@@ -1,12 +1,12 @@
-import { Controller } from '../Controller';
-import { NameTeamForm } from '../../onboarding/NameTeamForm/NameTeamForm';
-import { ElementCache } from 'hleo/ElementCache/ElementCache';
-import { EventDelegator } from 'hleo/EventDelegator/EventDelegator';
-import { Form } from 'onboarding/Form/Form';
-import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
-import { HttpClient } from 'Http/HttpClient';
+import Controller from 'RouteControllers/Controller';
+import NameTeamForm from 'onboarding/NameTeamForm/NameTeamForm';
+import ElementCache from 'hleo/ElementCache/ElementCache';
+import EventDelegator from 'hleo/EventDelegator/EventDelegator';
+import Form from 'onboarding/Form/Form';
+import FormSubmitService from 'onboarding/Form/FormSubmitService';
+import HttpClient from 'Http/HttpClient';
 
-export class NameTeamController implements Controller {
+export default class NameTeamController implements Controller {
     private readonly httpClient: HttpClient;
     private nameTeamForm!: NameTeamForm;
 

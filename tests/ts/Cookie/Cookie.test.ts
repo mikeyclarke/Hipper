@@ -1,4 +1,4 @@
-import { Cookie } from 'Cookie/Cookie';
+import Cookie from 'Cookie/Cookie';
 
 test('Cookie is correctly formatted', () => {
     const cookie = new Cookie('foo', 'bar');

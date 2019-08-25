@@ -1,6 +1,6 @@
-import { HttpClient } from 'Http/HttpClient';
+import HttpClient from 'Http/HttpClient';
 
-export class FormSubmitService {
+export default class FormSubmitService {
     private readonly httpClient: HttpClient;
     private readonly httpStatusOK: number;
     private readonly url: string;

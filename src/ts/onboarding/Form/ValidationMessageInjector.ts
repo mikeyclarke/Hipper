@@ -1,4 +1,4 @@
-export function injectValidationErrors(form: HTMLElement, target: string, errors: string[]): void {
+export default function injectValidationErrors(form: HTMLElement, target: string, errors: string[]): void {
     const containerSelector = `[data-validation-error-container=${target}`;
     const inputSelector = `[data-validation-error-input=${target}]`;
     const validationContainerEl = <HTMLElement> form.querySelector(containerSelector);

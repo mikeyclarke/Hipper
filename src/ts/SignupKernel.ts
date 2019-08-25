@@ -1,14 +1,14 @@
-import { signupRoutes } from 'routes/signupRoutes';
-import { signupServices } from 'container/signupServices';
-import { sharedServices } from 'container/sharedServices';
-import { Kernel } from 'Kernel';
-import { DocumentHeadConfigurationProvider } from 'DocumentHeadConfigurationProvider';
+import signupRoutes from 'routes/signupRoutes';
+import signupServices from 'container/signupServices';
+import sharedServices from 'container/sharedServices';
+import Kernel from 'Kernel';
+import DocumentHeadConfigurationProvider from 'DocumentHeadConfigurationProvider';
 
 const htmlHeadConfigVars = [
     { name: 'csrf_token', selector: '.js-csrf', parseAsJson: false },
 ];
 
-export class SignupKernel extends Kernel {
+export default class SignupKernel extends Kernel {
     constructor() {
         super();
     }

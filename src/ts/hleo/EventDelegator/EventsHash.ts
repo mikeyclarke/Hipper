@@ -1,3 +1,3 @@
-export interface EventsHash {
+export default interface EventsHash {
     [key: string]: string;
 }

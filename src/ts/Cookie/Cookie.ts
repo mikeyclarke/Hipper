@@ -1,4 +1,4 @@
-export class Cookie {
+export default class Cookie {
     private readonly name: string;
     private readonly value: string;
     private readonly expires: string | null;

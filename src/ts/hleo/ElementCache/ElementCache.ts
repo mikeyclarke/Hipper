@@ -1,7 +1,7 @@
-import { ElementHash } from './ElementHash';
+import ElementHash from 'hleo/ElementCache/ElementHash';
 
 /** Provides an API to store and retrieve DOM elements associated with a component */
-export class ElementCache {
+export default class ElementCache {
     private readonly baseElement: HTMLElement;
     private readonly baseElementSelector: string;
     private readonly cachedElements: IElementCache = {};

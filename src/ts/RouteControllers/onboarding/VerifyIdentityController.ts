@@ -1,12 +1,12 @@
-import { Controller } from '../Controller';
-import { VerifyIdentityForm } from '../../onboarding/VerifyIdentityForm/VerifyIdentityForm';
-import { ElementCache } from 'hleo/ElementCache/ElementCache';
-import { EventDelegator } from 'hleo/EventDelegator/EventDelegator';
-import { Form } from 'onboarding/Form/Form';
-import { FormSubmitService } from 'onboarding/Form/FormSubmitService';
-import { HttpClient } from 'Http/HttpClient';
+import Controller from 'RouteControllers/Controller';
+import VerifyIdentityForm from 'onboarding/VerifyIdentityForm/VerifyIdentityForm';
+import ElementCache from 'hleo/ElementCache/ElementCache';
+import EventDelegator from 'hleo/EventDelegator/EventDelegator';
+import Form from 'onboarding/Form/Form';
+import FormSubmitService from 'onboarding/Form/FormSubmitService';
+import HttpClient from 'Http/HttpClient';
 
-export class VerifyIdentityController implements Controller {
+export default class VerifyIdentityController implements Controller {
     private readonly httpClient: HttpClient;
     private verifyIdentityForm!: VerifyIdentityForm;
 

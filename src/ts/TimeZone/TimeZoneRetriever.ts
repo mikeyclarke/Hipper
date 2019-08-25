@@ -1,4 +1,4 @@
-export class TimeZoneRetriever {
+export default class TimeZoneRetriever {
     public getTimeZoneName(): string | null {
         const dateTimeFormatter = new Intl.DateTimeFormat();
         const options = dateTimeFormatter.resolvedOptions();

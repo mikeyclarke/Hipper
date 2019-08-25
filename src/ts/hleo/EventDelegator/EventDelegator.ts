@@ -1,8 +1,8 @@
-import { EventDelegate } from './EventDelegate';
-import { EventsHash } from './EventsHash';
-import { EventsEnabled } from './EventsEnabled';
+import EventDelegate from 'hleo/EventDelegator/EventDelegate';
+import EventsHash from 'hleo/EventDelegator/EventsHash';
+import EventsEnabled from 'hleo/EventDelegator/EventsEnabled';
 
-export class EventDelegator {
+export default class EventDelegator {
     private readonly element: HTMLElement;
     private events!: EventsHash;
     private context!: EventsEnabled;

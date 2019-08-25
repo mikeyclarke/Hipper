@@ -1,8 +1,8 @@
 import * as Bottle from 'bottlejs';
-import { ContainerBuilder } from 'ContainerBuilder';
-import { loadComponents } from 'components/componentLoader';
+import ContainerBuilder from 'ContainerBuilder';
+import loadComponents from 'components/componentLoader';
 
-export abstract class Kernel {
+export default abstract class Kernel {
     private readonly bottle: Bottle;
     private readonly containerBuilder: ContainerBuilder;
 

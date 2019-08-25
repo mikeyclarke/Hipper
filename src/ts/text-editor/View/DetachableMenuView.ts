@@ -1,5 +1,5 @@
 import { EditorView } from 'prosemirror-view';
-import { timeout } from 'Timeout/timeout';
+import timeout from 'Timeout/timeout';
 
 declare global {
     interface Window {

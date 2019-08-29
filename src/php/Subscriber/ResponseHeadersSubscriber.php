@@ -51,6 +51,7 @@ class ResponseHeadersSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $request = $event->getRequest();
         $response = $event->getResponse();
 
         $headers = [
@@ -74,9 +75,15 @@ class ResponseHeadersSubscriber implements EventSubscriberInterface
 
         $response->headers->add($headers);
 
-        if ($this->shouldSendResourceHints($response)) {
-            $this->addResourceHint($response, 'app.css', 'style');
-            $this->addResourceHint($response, 'app.js', 'script');
+        if ($this->shouldSendResourceHints($response) && $request->attributes->has('assets_to_preload')) {
+            $preloads = $request->attributes->get('assets_to_preload');
+            if (!is_array($preloads)) {
+                return;
+            }
+
+            foreach ($preloads as $name => $type) {
+                $this->addResourceHint($response, $name, $type);
+            }
         }
     }
 

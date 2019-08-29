@@ -28,6 +28,10 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
 
 $kernel = new BrandSiteKernel($env, $debug);
 $request = Request::createFromGlobals();
+$request->attributes->set('assets_to_preload', [
+    'signup.css' => 'style',
+    'signup.js' => 'script',
+]);
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);

@@ -3,7 +3,9 @@ import HttpClient from 'Http/HttpClient';
 import DocumentCookies from 'Cookie/DocumentCookies';
 import TimeZoneCookie from 'TimeZone/TimeZoneCookie';
 import TimeZoneRetriever from 'TimeZone/TimeZoneRetriever';
-import RouteDefinition from 'routes/route';
+import CallbackControllerInvoker from 'Routing/CallbackControllerInvoker';
+import RouteMatcher from 'Routing/RouteMatcher';
+import Router from 'Routing/Router';
 
 export default function sharedServices(bottle: Bottle): void {
     bottle.factory('httpClient', (container) => {
@@ -23,16 +25,18 @@ export default function sharedServices(bottle: Bottle): void {
         );
     });
 
-    bottle.factory('bootstrap', (container) => {
-        const path: string = window.location.pathname;
-        const routes: Record<string, Function> = {};
-        Object.entries(<Record<string, RouteDefinition>> container.config.routes).forEach(([name, route]) => {
-            routes[route.path] = route.controller;
-        });
+    bottle.factory('routeMatcher', (container) => {
+        return new RouteMatcher(
+            container.config.routes
+        );
+    });
 
-        if (routes[path]) {
-            return routes[path];
-        }
-        return null;
+    bottle.service('callbackControllerInvoker', CallbackControllerInvoker);
+
+    bottle.factory('router', (container) => {
+        return new Router(
+            container.routeMatcher,
+            container.callbackControllerInvoker
+        );
     });
 }

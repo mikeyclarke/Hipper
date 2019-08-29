@@ -41,6 +41,7 @@
   "dependencies": {
     "autosize": "^4.0.2",
     "ky": "^0.11",
+    "path-to-regexp": "^3.0.0",
     "prosemirror-commands": "^1.0.8",
     "prosemirror-dropcursor": "^1.1.1",
     "prosemirror-gapcursor": "^1.0.4",

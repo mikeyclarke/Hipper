@@ -1,9 +1,8 @@
 import * as Bottle from 'bottlejs';
 import ContainerBuilder from 'ContainerBuilder';
-import loadComponents from 'components/componentLoader';
 
 export default abstract class Kernel {
-    private readonly bottle: Bottle;
+    protected readonly bottle: Bottle;
     private readonly containerBuilder: ContainerBuilder;
 
     constructor() {
@@ -14,12 +13,8 @@ export default abstract class Kernel {
     public run(): void {
         this.configureContainer();
 
-        loadComponents();
-        this.bottle.container.timeZoneCookie.createOrUpdate();
-        if (null !== this.bottle.container.bootstrap) {
-            const controller = this.bottle.container.bootstrap();
-            controller.start();
-        }
+        this.onBeforeRouting();
+        this.bottle.container.router.run();
     }
 
     private configureContainer(): void {
@@ -29,6 +24,8 @@ export default abstract class Kernel {
 
         this.containerBuilder.build(this.bottle, services, configs, routes);
     }
+
+    protected abstract onBeforeRouting(): void;
 
     protected abstract getServices(): Function[];
 

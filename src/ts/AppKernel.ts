@@ -1,8 +1,10 @@
+import * as Bottle from 'bottlejs';
 import appRoutes from 'routes/appRoutes';
 import appServices from 'container/appServices';
 import sharedServices from 'container/sharedServices';
 import Kernel from 'Kernel';
 import DocumentHeadConfigurationProvider from 'DocumentHeadConfigurationProvider';
+import loadComponents from 'components/componentLoader';
 
 const htmlHeadConfigVars = [
     { name: 'csrf_token', selector: '.js-csrf', parseAsJson: false },
@@ -12,6 +14,11 @@ const htmlHeadConfigVars = [
 export default class AppKernel extends Kernel {
     constructor() {
         super();
+    }
+
+    protected onBeforeRouting(): void {
+        loadComponents();
+        this.bottle.container.timeZoneCookie.createOrUpdate();
     }
 
     protected getServices(): Function[] {

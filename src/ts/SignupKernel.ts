@@ -3,6 +3,7 @@ import signupServices from 'container/signupServices';
 import sharedServices from 'container/sharedServices';
 import Kernel from 'Kernel';
 import DocumentHeadConfigurationProvider from 'DocumentHeadConfigurationProvider';
+import loadComponents from 'components/componentLoader';
 
 const htmlHeadConfigVars = [
     { name: 'csrf_token', selector: '.js-csrf', parseAsJson: false },
@@ -11,6 +12,10 @@ const htmlHeadConfigVars = [
 export default class SignupKernel extends Kernel {
     constructor() {
         super();
+    }
+
+    protected onBeforeRouting(): void {
+        loadComponents();
     }
 
     protected getServices(): Function[] {

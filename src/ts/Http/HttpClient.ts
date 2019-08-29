@@ -1,8 +1,6 @@
 import PopoverAlert from 'components/PopoverAlert';
 import ky, { Options, ResponsePromise } from 'ky';
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
 enum RequestMethod {
     GET = 'GET',
     PUT = 'PUT',
@@ -25,7 +23,7 @@ export default class HttpClient {
         this.csrfToken = csrfToken;
     }
 
-    public get(url: Request | URL | string, options: Omit<Options, 'body'> = {}): ResponsePromise {
+    public get(url: Request | URL | string, options: Options = {}): ResponsePromise {
         this.preDispatch();
         return this.makeRequest(url, RequestMethod.GET, options);
     }
@@ -45,7 +43,7 @@ export default class HttpClient {
         return this.makeRequest(url, RequestMethod.PATCH, options);
     }
 
-    public head(url: Request | URL | string, options: Omit<Options, 'body'> = {}): ResponsePromise {
+    public head(url: Request | URL | string, options: Options = {}): ResponsePromise {
         this.preDispatch();
         return this.makeRequest(url, RequestMethod.HEAD, options);
     }

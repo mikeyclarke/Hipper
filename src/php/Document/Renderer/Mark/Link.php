@@ -29,7 +29,7 @@ class Link implements MarkInterface
         $htmlAttributes = [];
         $organizationDomain = $this->context->getOrganizationDomain();
 
-        if (null === $organizationDomain || $organizationDomain !== parse_url($attributes['href'], PHP_URL_HOST)) {
+        if ($organizationDomain !== parse_url($attributes['href'], PHP_URL_HOST)) {
             $htmlAttributes[] = 'rel="noopener noreferrer"';
         }
 

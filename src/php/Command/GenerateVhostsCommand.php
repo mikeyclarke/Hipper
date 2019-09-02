@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Twig\Loader\FilesystemLoader;
 use Twig_Environment;
 
 class GenerateVhostsCommand extends Command
@@ -54,7 +55,11 @@ class GenerateVhostsCommand extends Command
             return null;
         }
         $repositoryRoot = realpath(__DIR__ . '/../../../');
-        $this->twig->getLoader()->setPaths($repositoryRoot . '/config/vhost_templates');
+
+        $loader = $this->twig->getLoader();
+        if ($loader instanceof FilesystemLoader) {
+            $loader->setPaths($repositoryRoot . '/config/vhost_templates');
+        }
 
         $parameters = [
             'domain' => $input->getArgument('domain'),

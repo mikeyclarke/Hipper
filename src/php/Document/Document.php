@@ -12,6 +12,7 @@ use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Person\PersonModel;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
+use JSON_THROW_ON_ERROR;
 
 class Document
 {
@@ -69,7 +70,7 @@ class Document
 
         $content = null;
         if (isset($parameters['content']) && is_array($parameters['content'])) {
-            $content = json_encode($parameters['content']);
+            $content = json_encode($parameters['content'], JSON_THROW_ON_ERROR);
         }
 
         $this->connection->beginTransaction();

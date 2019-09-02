@@ -32,7 +32,7 @@ class Organization
     public function get(string $id): ?OrganizationModel
     {
         $result = $this->organizationRepository->findById($id);
-        if (null == $result) {
+        if (null === $result) {
             return $result;
         }
         $model = OrganizationModel::createFromArray($result);

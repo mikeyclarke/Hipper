@@ -33,7 +33,7 @@ class ChooseTeamUrlController
         $person = $request->attributes->get('person');
         $organization = $this->organization->get($person->getOrganizationId());
 
-        if (null === $organization->getName()) {
+        if (Organization::DEFAULT_NAME === $organization->getName()) {
             return new RedirectResponse('/name-team');
         }
 

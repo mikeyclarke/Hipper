@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Hipper\Validation;
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class ConstraintViolationListFormatter
 {
-    public static function format(ConstraintViolationList $violations): array
+    public static function format(ConstraintViolationListInterface $violations): array
     {
         $errors = [];
 

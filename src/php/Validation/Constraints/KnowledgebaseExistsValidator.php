@@ -3,26 +3,18 @@ declare(strict_types=1);
 
 namespace Hipper\Validation\Constraints;
 
-use Hipper\Knowledgebase\KnowledgebaseRepository;
+use Hipper\Knowledgebase\KnowledgebaseModel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class KnowledgebaseExistsInOrganizationValidator extends ConstraintValidator
+class KnowledgebaseExistsValidator extends ConstraintValidator
 {
-    private $knowledgebaseRepository;
-
-    public function __construct(
-        KnowledgebaseRepository $knowledgebaseRepository
-    ) {
-        $this->knowledgebaseRepository = $knowledgebaseRepository;
-    }
-
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof KnowledgebaseExistsInOrganization) {
-            throw new UnexpectedTypeException($constraint, KnowledgebaseExistsInOrganization::class);
+        if (!$constraint instanceof KnowledgebaseExists) {
+            throw new UnexpectedTypeException($constraint, KnowledgebaseExists::class);
         }
 
         if (null === $value || '' === $value) {
@@ -33,9 +25,7 @@ class KnowledgebaseExistsInOrganizationValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $organizationId = $constraint->organizationId;
-
-        if (!$this->knowledgebaseRepository->exists($organizationId, $value)) {
+        if (!($constraint->knowledgebase instanceof KnowledgebaseModel)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ knowledgebase_id }}', $value)
                 ->addViolation();

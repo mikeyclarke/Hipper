@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace Hipper\Document;
 
+use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Validation\ConstraintViolationListFormatter;
 use Hipper\Validation\Constraints\DocumentStructure;
-use Hipper\Validation\Constraints\KnowledgebaseExistsInOrganization;
+use Hipper\Validation\Constraints\KnowledgebaseExists;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -24,12 +25,12 @@ class DocumentValidator
         $this->validatorInterface = $validatorInterface;
     }
 
-    public function validate(array $input, string $organizationId, bool $isNew = false): void
+    public function validate(array $input, ?KnowledgebaseModel $knowledgebase, bool $isNew = false): void
     {
-        $this->validateInput($organizationId, $input, $isNew);
+        $this->validateInput($input, $knowledgebase, $isNew);
     }
 
-    private function validateInput(string $organizationId, array $input, bool $isNew): void
+    private function validateInput(array $input, ?KnowledgebaseModel $knowledgebase, bool $isNew): void
     {
         $requiredOnCreate = ['name', 'knowledgebase_id'];
         $constraints = [
@@ -59,8 +60,8 @@ class DocumentValidator
                 new NotBlank([
                     'message' => 'Knowledgebase ID can’t be blank',
                 ]),
-                new KnowledgebaseExistsInOrganization([
-                    'organizationId' => $organizationId,
+                new KnowledgebaseExists([
+                    'knowledgebase' => $knowledgebase,
                 ]),
             ],
         ];

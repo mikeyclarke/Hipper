@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Hipper\Project;
 
-class ProjectModel
+use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
+
+class ProjectModel implements KnowledgebaseOwnerModelInterface
 {
     use \Hipper\ModelTrait;
 

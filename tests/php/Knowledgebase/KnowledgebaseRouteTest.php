@@ -7,6 +7,7 @@ use Hipper\Document\DocumentModel;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Knowledgebase\KnowledgebaseRouteInserter;
+use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteUpdater;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -62,12 +63,13 @@ class KnowledgebaseRouteTest extends TestCase
             $routeRow
         );
 
-        $this->knowledgebaseRoute->createForDocument(
+        $result = $this->knowledgebaseRoute->createForDocument(
             $model,
             $route,
             $isCanonical,
             $isNewDocument
         );
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result);
     }
 
     /**
@@ -105,12 +107,13 @@ class KnowledgebaseRouteTest extends TestCase
         );
         $this->createKnowledgebaseRouteUpdaterExpectation([$routeId, $urlId, $knowledgebaseId, $organizationId]);
 
-        $this->knowledgebaseRoute->createForDocument(
+        $result = $this->knowledgebaseRoute->createForDocument(
             $model,
             $route,
             $isCanonical,
             $isNewDocument
         );
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result);
     }
 
     private function createKnowledgebaseRouteUpdaterExpectation($args)

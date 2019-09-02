@@ -11,8 +11,13 @@ use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRevision;
 use Hipper\Document\DocumentValidator;
 use Hipper\IdGenerator\IdGenerator;
+use Hipper\Knowledgebase\KnowledgebaseModel;
+use Hipper\Knowledgebase\KnowledgebaseOwner;
+use Hipper\Knowledgebase\KnowledgebaseRepository;
 use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Person\PersonModel;
+use Hipper\Team\TeamModel;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
@@ -20,12 +25,16 @@ use PHPUnit\Framework\TestCase;
 
 class DocumentTest extends TestCase
 {
+    use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
     private $connection;
     private $documentDescriptionDeducer;
     private $documentInserter;
     private $documentRevision;
     private $documentValidator;
     private $idGenerator;
+    private $knowledgebaseOwner;
+    private $knowledgebaseRepository;
     private $knowledgebaseRoute;
     private $urlIdGenerator;
     private $urlSlugGenerator;
@@ -39,6 +48,8 @@ class DocumentTest extends TestCase
         $this->documentRevision = m::mock(DocumentRevision::class);
         $this->documentValidator = m::mock(DocumentValidator::class);
         $this->idGenerator = m::mock(IdGenerator::class);
+        $this->knowledgebaseOwner = m::mock(KnowledgebaseOwner::class);
+        $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
         $this->knowledgebaseRoute = m::mock(KnowledgebaseRoute::class);
         $this->urlIdGenerator = m::mock(UrlIdGenerator::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
@@ -50,6 +61,8 @@ class DocumentTest extends TestCase
             $this->documentRevision,
             $this->documentValidator,
             $this->idGenerator,
+            $this->knowledgebaseOwner,
+            $this->knowledgebaseRepository,
             $this->knowledgebaseRoute,
             $this->urlIdGenerator,
             $this->urlSlugGenerator
@@ -76,6 +89,7 @@ class DocumentTest extends TestCase
             'knowledgebase_id' => $knowledgebaseId,
         ];
 
+        $kbResult = ['knowledgebase'];
         $documentId = 'doc-uuid';
         $urlSlug = 'welcome-to-engineering';
         $urlId = 'url-id';
@@ -85,9 +99,11 @@ class DocumentTest extends TestCase
             'url_slug' => $urlSlug,
             'url_id' => $urlId,
         ];
-        $route = '/team/engineering/docs/~/welcome-to-engineering-url-id';
+        $routeModel = new KnowledgebaseRouteModel;
+        $knowledgebaseOwnerModel = new TeamModel;
 
-        $this->createDocumentValidatorExpectation([$parameters, $organizationId, true]);
+        $this->createKnowledgebaseRepositoryExpectation([$parameters['knowledgebase_id'], $organizationId], $kbResult);
+        $this->createDocumentValidatorExpectation([$parameters, m::type(KnowledgebaseModel::class), true]);
         $this->createIdGeneratorExpectation($documentId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
         $this->createUrlIdGeneratorExpectation($urlId);
@@ -108,14 +124,27 @@ class DocumentTest extends TestCase
             ],
             $documentRow
         );
-        $this->createKnowledgebaseRouteExpectation([m::type(DocumentModel::class), $urlSlug, true, true]);
+        $this->createKnowledgebaseRouteExpectation([m::type(DocumentModel::class), $urlSlug, true, true], $routeModel);
         $this->createDocumentRevisionExpectation([m::type(DocumentModel::class)]);
         $this->createConnectionCommitExpectation();
+        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
 
         $result = $this->document->create($person, $parameters);
-        $this->assertInstanceOf(DocumentModel::class, $result);
-        $this->assertEquals($urlSlug, $result->getUrlSlug());
-        $this->assertEquals($urlId, $result->getUrlId());
+        $this->assertIsArray($result);
+        $this->assertInstanceOf(DocumentModel::class, $result[0]);
+        $this->assertEquals($urlSlug, $result[0]->getUrlSlug());
+        $this->assertEquals($urlId, $result[0]->getUrlId());
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[1]);
+        $this->assertEquals($knowledgebaseOwnerModel, $result[2]);
+    }
+
+    private function createKnowledgebaseOwnerExpectation($args, $result)
+    {
+        $this->knowledgebaseOwner
+            ->shouldReceive('get')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
     }
 
     private function createConnectionCommitExpectation()
@@ -133,12 +162,13 @@ class DocumentTest extends TestCase
             ->with(...$args);
     }
 
-    private function createKnowledgebaseRouteExpectation($args)
+    private function createKnowledgebaseRouteExpectation($args, $result)
     {
         $this->knowledgebaseRoute
             ->shouldReceive('createForDocument')
             ->once()
-            ->with(...$args);
+            ->with(...$args)
+            ->andReturn($result);
     }
 
     private function createDocumentInserterExpectation($args, $result)
@@ -197,5 +227,14 @@ class DocumentTest extends TestCase
             ->shouldReceive('validate')
             ->once()
             ->with(...$args);
+    }
+
+    private function createKnowledgebaseRepositoryExpectation($args, $result)
+    {
+        $this->knowledgebaseRepository
+            ->shouldReceive('findById')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
     }
 }

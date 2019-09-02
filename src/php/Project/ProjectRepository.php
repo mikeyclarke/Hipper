@@ -39,6 +39,30 @@ class ProjectRepository
         return $result;
     }
 
+    public function findByKnowledgebaseId(string $knowledgebaseId, string $organizationId): ?array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('*')
+            ->from('project')
+            ->andWhere('organization_id = :organization_id')
+            ->andWhere('knowledgebase_id = :knowledgebase_id');
+
+        $qb->setParameters([
+            'organization_id' => $organizationId,
+            'knowledgebase_id' => $knowledgebaseId,
+        ]);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetch();
+
+        if (false === $result) {
+            return null;
+        }
+
+        return $result;
+    }
+
     public function existsWithName(string $name, string $organizationId): bool
     {
         $stmt = $this->connection->executeQuery(

@@ -10,12 +10,17 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
 
         create_team_doc: {
             path: '/team/:team_url_id/docs/new',
-            controller: () => [bottle.container.createTeamDocController, 'start'],
+            controller: () => [bottle.container.createDocumentController, 'start'],
         },
 
         create_project: {
             path: '/projects/new',
             controller: () => [bottle.container.createProjectController, 'start'],
+        },
+
+        create_project_doc: {
+            path: '/project/:project_url_id/docs/new',
+            controller: () => [bottle.container.createDocumentController, 'start'],
         },
     };
 }

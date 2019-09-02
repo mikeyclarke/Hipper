@@ -67,7 +67,7 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    Hipper\App\Team\CreateTeamDocController:
+    Hipper\App\Document\CreateDocumentController:
         arguments:
             $documentAllowedMarks: '%document_allowed_marks%'
             $documentAllowedNodes: '%document_allowed_nodes%'

@@ -91,15 +91,25 @@ team_docs.get:
 team_docs_new.get:
     path: /team/{team_url_id}/docs/new
     methods: [GET]
-    controller: Hipper\App\Team\CreateTeamDocController::getAction
+    controller: Hipper\App\Document\CreateDocumentController::getAction
     defaults:
+        knowledgebase_type: 'team'
         _before_middlewares:
             - team_model_from_url_id_middleware:before
 
-team_docs_new.post:
+project_docs_new.get:
+    path: /project/{project_url_id}/docs/new
+    methods: [GET]
+    controller: Hipper\App\Document\CreateDocumentController::getAction
+    defaults:
+        knowledgebase_type: 'project'
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
+
+doc_new.post:
     path: /_/create-doc
     methods: [POST]
-    controller: Hipper\App\Team\CreateTeamDocController::postAction
+    controller: Hipper\App\Document\CreateDocumentController::postAction
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
@@ -113,6 +123,19 @@ team_doc.get:
         action: 'getAction'
         _before_middlewares:
             - team_model_from_url_id_middleware:before
+            - knowledgebase_routing_middleware:before
+    requirements:
+        route: '.+'
+
+project_doc.get:
+    path: /project/{project_url_id}/docs/{path}
+    methods: [GET]
+    controller: Hipper\App\DocumentOrSectionControllerRouter::route
+    defaults:
+        knowledgebase_type: 'project'
+        action: 'getAction'
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
             - knowledgebase_routing_middleware:before
     requirements:
         route: '.+'

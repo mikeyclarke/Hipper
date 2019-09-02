@@ -27,7 +27,7 @@ class KnowledgebaseRoute
         string $route,
         bool $isCanonicalRoute = true,
         bool $isNewDocument = false
-    ): void {
+    ): KnowledgebaseRouteModel {
         $id = $this->idGenerator->generate();
 
         $result = $this->knowledgebaseRouteInserter->insert(
@@ -50,5 +50,7 @@ class KnowledgebaseRoute
                 $result['organization_id']
             );
         }
+
+        return KnowledgebaseRouteModel::createFromArray($result);
     }
 }

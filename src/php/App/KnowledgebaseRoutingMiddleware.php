@@ -98,6 +98,11 @@ class KnowledgebaseRoutingMiddleware
             $team = $request->attributes->get('team');
             return $team->getKnowledgebaseId();
         }
+
+        if ($knowledgebaseType === 'project') {
+            $project = $request->attributes->get('project');
+            return $project->getKnowledgebaseId();
+        }
     }
 
     private function generateRouteRedirectUrl(Request $request, array $route): string

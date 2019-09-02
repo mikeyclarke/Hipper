@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Hipper\Team;
 
-class TeamModel
+use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
+
+class TeamModel implements KnowledgebaseOwnerModelInterface
 {
     use \Hipper\ModelTrait;
 

@@ -15,6 +15,29 @@ class KnowledgebaseRepository
         $this->connection = $connection;
     }
 
+    public function findById(string $knowledgebaseId, string $organizationId): ?array
+    {
+        $qb = $this->connection->createQueryBuilder();
+        $qb->select('*')
+            ->from('knowledgebase')
+            ->andWhere('id = :id')
+            ->andWhere('organization_id = :organization_id');
+
+        $qb->setParameters([
+            'id' => $knowledgebaseId,
+            'organization_id' => $organizationId,
+        ]);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetch();
+
+        if (false === $result) {
+            return null;
+        }
+
+        return $result;
+    }
+
     public function exists(string $organizationId, string $knowledgebaseId): bool
     {
         $stmt = $this->connection->executeQuery(

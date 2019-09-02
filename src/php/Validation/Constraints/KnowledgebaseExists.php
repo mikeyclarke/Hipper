@@ -6,19 +6,19 @@ namespace Hipper\Validation\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
-class KnowledgebaseExistsInOrganization extends Constraint
+class KnowledgebaseExists extends Constraint
 {
     public $message = 'Knowledgebase "{{ knowledgebase_id }}" not found';
-    public $organizationId;
+    public $knowledgebase;
 
     public function __construct(
         $options = null
     ) {
         parent::__construct($options);
 
-        if (null === $this->organizationId) {
+        if (null === $this->knowledgebase) {
             throw new MissingOptionsException(
-                sprintf('"organizationId" must be given for constraint %s', __CLASS__),
+                sprintf('"knowledgebase" must be given for constraint %s', __CLASS__),
                 ['organizationId']
             );
         }

@@ -3,7 +3,7 @@ import TextEditor from 'text-editor/TextEditor';
 import HttpClient from 'Http/HttpClient';
 import { HTTPError } from 'ky';
 
-export default class CreateTeamDocController implements Controller {
+export default class CreateDocumentController implements Controller {
     private readonly httpClient: HttpClient;
     private readonly userAgentProfile: Record<string, any> | null;
     private knowledgebaseId: string | null = null;
@@ -68,9 +68,10 @@ export default class CreateTeamDocController implements Controller {
                 this.userAgentProfile,
             );
 
-            this.doneButton.addEventListener('click', () => {
+            this.doneButton.addEventListener('click', async () => {
                 const payload = this.composePayload();
-                this.createDoc(payload);
+                const docUrl = await this.createDoc(payload);
+                window.location.assign(docUrl);
             });
         });
     }
@@ -84,13 +85,13 @@ export default class CreateTeamDocController implements Controller {
         };
     }
 
-    private async createDoc(payload: object): Promise<number> {
+    private async createDoc(payload: object): Promise<string> {
         const endpoint = '/_/create-doc';
 
         const response = await this.httpClient.post(endpoint, {
             json: payload,
         });
-        const result = await response.status;
-        return result;
+        const json = await response.json();
+        return json.doc_url;
     }
 }

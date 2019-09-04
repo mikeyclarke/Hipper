@@ -1,0 +1,12 @@
+<ol class="c-document-list">
+    {% for document in documentList %}
+        <li class="c-document-list__document" data-id="{{ document.id }}">
+            <a class="c-document-list__document-link" href="{{ document.route }}">
+                <svg class="c-document-list__document-icon" aria-hidden="true"><use xlink:href="#icon-sprite__document"/></svg>
+                <h2 class="c-document-list__document-name">{{ document.name }}</h2>
+                <p class="c-document-list__document-description">{{ document.description }}</p>
+                <span class="c-document-list__document-updated-timestamp">Updated <time datetime="{{ document.updated.utc_datetime }}" title="{{ document.updated.verbose }}">{{ document.updated.time_ago }}</time></span>
+            </a>
+        </li>
+    {% endfor %}
+</ol>

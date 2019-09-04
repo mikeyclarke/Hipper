@@ -5,10 +5,14 @@
 {% include 'team/_team_header.twig' with { activeTab: 'docs' } %}
 
 <main>
-    <div class="c-empty-page-notice">
-        <h1 class="c-empty-page-notice__title">Start sharing knowledge</h1>
-        <p class="c-empty-page-notice__copy">Use docs to keep everyone in this team on the same page about how you work and what you’re working on.</p>
-    </div>
+    {% if documentList is empty %}
+        <div class="c-empty-page-notice">
+            <h1 class="c-empty-page-notice__title">Start sharing knowledge</h1>
+            <p class="c-empty-page-notice__copy">Use docs to keep everyone in this team on the same page about how you work and what you’re working on.</p>
+        </div>
+    {% else %}
+        {% include '_document_list.twig' %}
+    {% endif %}
 
     <floating-button>
         <ol class="floating-button__list js-list" hidden>

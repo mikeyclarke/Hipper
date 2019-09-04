@@ -41,6 +41,7 @@ class CreateDocumentController
         $context = [
             'allowed_marks' => $this->documentAllowedMarks,
             'allowed_nodes' => $this->documentAllowedNodes,
+            'htmlClassList' => ['l-document-editor'],
         ];
 
         switch ($knowledgebaseType) {

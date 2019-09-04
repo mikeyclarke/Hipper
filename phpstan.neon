@@ -2,3 +2,4 @@ parameters:
     inferPrivatePropertyTypeFromConstructor: true
     ignoreErrors:
         - '#Cannot call method fetch(All)?\(\) on Doctrine\DBAL\Driver\Statement|int#'
+        - '#Cannot call method [a-zA-Z]+\(\) on Carbon\Carbon|string.#'

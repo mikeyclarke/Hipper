@@ -5,14 +5,14 @@ namespace Hipper\App;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class WelcomeController
 {
     private $twig;
 
     public function __construct(
-        Twig_Environment $twig
+        Twig $twig
     ) {
         $this->twig = $twig;
     }

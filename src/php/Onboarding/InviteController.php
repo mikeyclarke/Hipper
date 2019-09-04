@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validation;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class InviteController
 {
@@ -22,7 +22,7 @@ class InviteController
     public function __construct(
         BulkInvitationCreator $bulkInvitationCreator,
         Organization $organization,
-        Twig_Environment $twig
+        Twig $twig
     ) {
         $this->bulkInvitationCreator = $bulkInvitationCreator;
         $this->organization = $organization;

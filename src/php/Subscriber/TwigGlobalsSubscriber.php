@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class TwigGlobalsSubscriber implements EventSubscriberInterface
 {
@@ -15,7 +15,7 @@ class TwigGlobalsSubscriber implements EventSubscriberInterface
     private $assetDomain;
 
     public function __construct(
-        Twig_Environment $twig,
+        Twig $twig,
         string $assetDomain
     ) {
         $this->twig = $twig;

@@ -8,7 +8,7 @@ use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class NameTeamController
 {
@@ -17,7 +17,7 @@ class NameTeamController
 
     public function __construct(
         Organization $organization,
-        Twig_Environment $twig
+        Twig $twig
     ) {
         $this->organization = $organization;
         $this->twig = $twig;

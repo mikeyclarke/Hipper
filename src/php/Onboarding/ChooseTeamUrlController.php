@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class ChooseTeamUrlController
 {
@@ -21,7 +21,7 @@ class ChooseTeamUrlController
     public function __construct(
         Organization $organization,
         OrganizationSubdomainGenerator $subdomainGenerator,
-        Twig_Environment $twig
+        Twig $twig
     ) {
         $this->organization = $organization;
         $this->subdomainGenerator = $subdomainGenerator;

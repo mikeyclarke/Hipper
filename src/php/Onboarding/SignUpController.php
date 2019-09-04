@@ -8,7 +8,7 @@ use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class SignUpController
 {
@@ -17,7 +17,7 @@ class SignUpController
 
     public function __construct(
         CreateFoundingMember $personCreation,
-        Twig_Environment $twig
+        Twig $twig
     ) {
         $this->personCreation = $personCreation;
         $this->twig = $twig;

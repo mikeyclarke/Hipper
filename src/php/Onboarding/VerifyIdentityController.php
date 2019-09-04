@@ -8,7 +8,7 @@ use Hipper\EmailAddressVerification\VerifyEmailAddress;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class VerifyIdentityController
 {
@@ -17,7 +17,7 @@ class VerifyIdentityController
 
     public function __construct(
         VerifyEmailAddress $verifyEmailAddress,
-        Twig_Environment $twig
+        Twig $twig
     ) {
         $this->verifyEmailAddress = $verifyEmailAddress;
         $this->twig = $twig;

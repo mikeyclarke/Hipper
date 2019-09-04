@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\TransactionalEmail;
 
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class BulkInvite
 {
@@ -16,7 +16,7 @@ class BulkInvite
 
     public function __construct(
         PostmarkApiClientFactory $apiClientFactory,
-        Twig_Environment $twig,
+        Twig $twig,
         string $emailFromAddress,
         string $emailReplyToAddress
     ) {

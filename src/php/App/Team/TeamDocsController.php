@@ -9,7 +9,7 @@ use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\TimeZone\TimeZoneFromRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class TeamDocsController
 {
@@ -22,7 +22,7 @@ class TeamDocsController
         DocumentListFormatter $documentListFormatter,
         DocumentRepository $documentRepository,
         TimeZoneFromRequest $timeZoneFromRequest,
-        Twig_Environment $twig
+        Twig $twig
     ) {
         $this->documentListFormatter = $documentListFormatter;
         $this->documentRepository = $documentRepository;

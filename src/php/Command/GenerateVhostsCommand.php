@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Twig\Loader\FilesystemLoader;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class GenerateVhostsCommand extends Command
 {
@@ -23,7 +23,7 @@ class GenerateVhostsCommand extends Command
     protected static $defaultName = 'app:generate-vhosts';
 
     public function __construct(
-        Twig_Environment $twig
+        Twig $twig
     ) {
         $this->twig = $twig;
 

@@ -10,7 +10,7 @@ use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class CreateDocumentController
 {
@@ -23,7 +23,7 @@ class CreateDocumentController
     public function __construct(
         Document $document,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
-        Twig_Environment $twig,
+        Twig $twig,
         array $documentAllowedMarks,
         array $documentAllowedNodes
     ) {

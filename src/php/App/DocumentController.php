@@ -9,7 +9,7 @@ use Hipper\Document\Renderer\HtmlRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class DocumentController
 {
@@ -20,7 +20,7 @@ class DocumentController
     public function __construct(
         DocumentRepository $documentRepository,
         HtmlRenderer $htmlRenderer,
-        Twig_Environment $twig
+        Twig $twig
     ) {
         $this->documentRepository = $documentRepository;
         $this->htmlRenderer = $htmlRenderer;

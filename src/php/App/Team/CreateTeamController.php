@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Environment;
+use Twig\Environment as Twig;
 
 class CreateTeamController
 {
@@ -40,7 +40,7 @@ class CreateTeamController
         Team $team,
         TeamDescriptionSuggestor $teamDescriptionSuggestor,
         TeamValidator $teamValidator,
-        Twig_Environment $twig,
+        Twig $twig,
         UrlGeneratorInterface $router
     ) {
         $this->team = $team;

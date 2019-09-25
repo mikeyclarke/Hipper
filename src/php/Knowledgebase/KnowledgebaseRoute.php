@@ -5,6 +5,8 @@ namespace Hipper\Knowledgebase;
 
 use Hipper\Document\DocumentModel;
 use Hipper\IdGenerator\IdGenerator;
+use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseContentTypeException;
+use Hipper\Section\SectionModel;
 
 class KnowledgebaseRoute
 {
@@ -22,27 +24,40 @@ class KnowledgebaseRoute
         $this->knowledgebaseRouteUpdater = $knowledgebaseRouteUpdater;
     }
 
-    public function createForDocument(
-        DocumentModel $document,
+    public function create(
+        KnowledgebaseContentModelInterface $content,
         string $route,
         bool $isCanonicalRoute = true,
-        bool $isNewDocument = false
+        bool $isNewContent = false
     ): KnowledgebaseRouteModel {
+        $contentType = $this->getContentType($content);
         $id = $this->idGenerator->generate();
+
+        $documentId = null;
+        $sectionId = null;
+
+        switch ($contentType) {
+            case 'document':
+                $documentId = $content->getId();
+                break;
+            case 'section':
+                $sectionId = $content->getId();
+                break;
+        }
 
         $result = $this->knowledgebaseRouteInserter->insert(
             $id,
-            $document->getUrlId(),
+            $content->getUrlId(),
             $route,
-            'document',
-            $document->getOrganizationId(),
-            $document->getKnowledgebaseId(),
-            null,
-            $document->getId(),
+            $contentType,
+            $content->getOrganizationId(),
+            $content->getKnowledgebaseId(),
+            $sectionId,
+            $documentId,
             $isCanonicalRoute
         );
 
-        if ($isCanonicalRoute && !$isNewDocument) {
+        if ($isCanonicalRoute && !$isNewContent) {
             $this->knowledgebaseRouteUpdater->updatePreviousCanonicalRoutes(
                 $result['id'],
                 $result['url_id'],
@@ -52,5 +67,18 @@ class KnowledgebaseRoute
         }
 
         return KnowledgebaseRouteModel::createFromArray($result);
+    }
+
+    private function getContentType(KnowledgebaseContentModelInterface $content): string
+    {
+        if ($content instanceof DocumentModel) {
+            return 'document';
+        }
+
+        if ($content instanceof SectionModel) {
+            return 'section';
+        }
+
+        throw new UnsupportedKnowledgebaseContentTypeException;
     }
 }

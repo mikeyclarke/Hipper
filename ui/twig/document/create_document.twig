@@ -20,11 +20,11 @@
                 <input type="hidden" name="allowed_nodes" value='{{ allowed_nodes|json_encode|raw }}'>
 
                 <elastic-text-input>
-                    <textarea name="document_name" class="c-document-editor-header__title" placeholder="Add a title" rows="1"></textarea>
+                    <textarea name="document_name" class="c-document-editor-header__title" placeholder="Add a title" rows="1" maxlength="150"></textarea>
                 </elastic-text-input>
 
                 <elastic-text-input>
-                    <textarea name="document_description" class="c-document-editor-header__synopsis" placeholder="Optionally add a synopsis" rows="1"></textarea>
+                    <textarea name="document_description" class="c-document-editor-header__synopsis" placeholder="Optionally add a synopsis" rows="1" maxlength="300"></textarea>
                 </elastic-text-input>
             </form>
 

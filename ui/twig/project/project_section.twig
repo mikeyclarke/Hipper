@@ -5,12 +5,23 @@
 {% include 'project/_project_header.twig' with { activeTab: 'docs' } %}
 
 <main>
-    {% if knowledgebaseEntries is empty %}
-        <div class="c-empty-page-notice">
-            <h1 class="c-empty-page-notice__title">Start sharing knowledge</h1>
-            <p class="c-empty-page-notice__copy">Use docs to keep everyone in this project on the same page about how you work and what you’re working on.</p>
-        </div>
-    {% else %}
+    <header class="c-page-header">
+        <h1 class="c-page-header__title">{{ section.name }}</h1>
+
+        {% if section.description is null or section.description is empty %}
+            <p class="c-page-header__subheading--muted">This section doesn’t have a description yet</p>
+        {% else %}
+            <p class="c-page-header__subheading">{{ section.description }}</p>
+        {% endif %}
+
+        {% if personIsInProject %}
+            <button type="button" aria-label="Edit section" class="c-page-header__edit-button">
+                <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
+            </button>
+        {% endif %}
+    </header>
+
+    {% if knowledgebaseEntries is not empty %}
         {% include '_knowledgebase_entries.twig' %}
     {% endif %}
 
@@ -18,7 +29,7 @@
         <ol class="floating-button__list js-list" hidden>
             <li class="floating-button__list-item">
                 <a href="/project/{{ project.urlId }}/docs/new" class="floating-button__control">
-                    <svg class="floating-button__control-icon" aria-hidden="true"><use xlink:href="#icon-sprite__document"/></svg>
+                    <svg class="floating-button__control-icon" aria-hidden="true"><use xlink:href="#icon-sprite__doc"/></svg>
                     Add new doc
                 </a>
             </li>

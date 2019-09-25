@@ -3,6 +3,7 @@ import Controller from 'RouteControllers/Controller';
 import CreateTeamController from 'RouteControllers/app/Team/CreateTeamController';
 import CreateDocumentController from 'RouteControllers/app/Document/CreateDocumentController';
 import CreateProjectController from 'RouteControllers/app/Project/CreateProjectController';
+import CreateSectionController from 'RouteControllers/app/Section/CreateSectionController';
 
 export default function (bottle: Bottle): void {
     bottle.factory('createTeamController', (container) => {
@@ -20,6 +21,12 @@ export default function (bottle: Bottle): void {
 
     bottle.factory('createProjectController', (container) => {
         return new CreateProjectController(
+            container.httpClient,
+        );
+    });
+
+    bottle.factory('createSectionController', (container) => {
+        return new CreateSectionController(
             container.httpClient,
         );
     });

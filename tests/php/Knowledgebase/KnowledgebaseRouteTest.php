@@ -9,6 +9,7 @@ use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Knowledgebase\KnowledgebaseRouteInserter;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteUpdater;
+use Hipper\Section\SectionModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +38,7 @@ class KnowledgebaseRouteTest extends TestCase
     /**
      * @test
      */
-    public function createForNewDocument()
+    public function create()
     {
         $urlId = 'c183c427';
         $route = 'route';
@@ -63,7 +64,7 @@ class KnowledgebaseRouteTest extends TestCase
             $routeRow
         );
 
-        $result = $this->knowledgebaseRoute->createForDocument(
+        $result = $this->knowledgebaseRoute->create(
             $model,
             $route,
             $isCanonical,
@@ -75,7 +76,7 @@ class KnowledgebaseRouteTest extends TestCase
     /**
      * @test
      */
-    public function createForDocumentUpdatesPreviousCurrentRoute()
+    public function createUpdatesPreviousCurrentRoute()
     {
         $urlId = 'c183c427';
         $route = 'route';
@@ -107,11 +108,49 @@ class KnowledgebaseRouteTest extends TestCase
         );
         $this->createKnowledgebaseRouteUpdaterExpectation([$routeId, $urlId, $knowledgebaseId, $organizationId]);
 
-        $result = $this->knowledgebaseRoute->createForDocument(
+        $result = $this->knowledgebaseRoute->create(
             $model,
             $route,
             $isCanonical,
             $isNewDocument
+        );
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function createForSection()
+    {
+        $urlId = 'c183c427';
+        $route = 'route';
+        $sectionId = 'section-uuid';
+        $knowledgebaseId = 'knowledgebase-uuid';
+        $organizationId = 'organization-uuid';
+
+        $model = new SectionModel;
+        $model->setUrlId($urlId);
+        $model->setId($sectionId);
+        $model->setKnowledgebaseId($knowledgebaseId);
+        $model->setOrganizationId($organizationId);
+
+        $isCanonical = true;
+        $isNewContent = true;
+
+        $routeId = 'route-uuid';
+        $routeRow = ['route-row'];
+
+        $this->createIdGeneratorExpectation($routeId);
+        $this->createKnowledgebaseRouteInserterExpectation(
+            [$routeId, $urlId, $route, 'section', $organizationId, $knowledgebaseId, $sectionId, null, $isCanonical],
+            $routeRow
+        );
+
+        $result = $this->knowledgebaseRoute->create(
+            $model,
+            $route,
+            $isCanonical,
+            $isNewContent
         );
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result);
     }

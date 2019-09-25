@@ -1,27 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Document;
+namespace Hipper\Section;
 
 use Hipper\Knowledgebase\KnowledgebaseContentModelInterface;
+use Hipper\ModelTrait;
 
-class DocumentModel implements KnowledgebaseContentModelInterface
+class SectionModel implements KnowledgebaseContentModelInterface
 {
-    use \Hipper\ModelTrait;
+    use ModelTrait;
 
     const FIELD_MAP = [
         'id' => 'id',
         'name' => 'name',
         'description' => 'description',
-        'deduced_description' => 'deducedDescription',
-        'content' => 'content',
         'url_slug' => 'urlSlug',
         'url_id' => 'urlId',
+        'parent_section_id' => 'parentSectionId',
         'knowledgebase_id' => 'knowledgebaseId',
         'organization_id' => 'organizationId',
-        'section_id' => 'sectionId',
-        'created_by' => 'createdBy',
-        'last_updated_by' => 'lastUpdatedBy',
         'created' => 'created',
         'updated' => 'updated',
     ];
@@ -29,19 +26,15 @@ class DocumentModel implements KnowledgebaseContentModelInterface
     private $id;
     private $name;
     private $description;
-    private $deducedDescription;
-    private $content;
     private $urlSlug;
     private $urlId;
+    private $parentSectionId;
     private $knowledgebaseId;
     private $organizationId;
-    private $sectionId;
-    private $createdBy;
-    private $lastUpdatedBy;
     private $created;
     private $updated;
 
-    public static function createFromArray(array $array): DocumentModel
+    public static function createFromArray(array $array): SectionModel
     {
         $model = new static;
         $model->mapProperties($array);
@@ -78,26 +71,6 @@ class DocumentModel implements KnowledgebaseContentModelInterface
         return $this->description;
     }
 
-    public function setDeducedDescription(?string $deducedDescription): void
-    {
-        $this->deducedDescription = $deducedDescription;
-    }
-
-    public function getDeducedDescription(): ?string
-    {
-        return $this->deducedDescription;
-    }
-
-    public function setContent(?string $content): void
-    {
-        $this->content = $content;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
     public function setUrlSlug(string $urlSlug): void
     {
         $this->urlSlug = $urlSlug;
@@ -118,6 +91,16 @@ class DocumentModel implements KnowledgebaseContentModelInterface
         return $this->urlId;
     }
 
+    public function setParentSectionId(?string $parentSectionId): void
+    {
+        $this->parentSectionId = $parentSectionId;
+    }
+
+    public function getParentSectionId(): ?string
+    {
+        return $this->parentSectionId;
+    }
+
     public function setKnowledgebaseId(string $knowledgebaseId): void
     {
         $this->knowledgebaseId = $knowledgebaseId;
@@ -136,36 +119,6 @@ class DocumentModel implements KnowledgebaseContentModelInterface
     public function getOrganizationId(): string
     {
         return $this->organizationId;
-    }
-
-    public function setSectionId(?string $sectionId): void
-    {
-        $this->sectionId = $sectionId;
-    }
-
-    public function getSectionId(): ?string
-    {
-        return $this->sectionId;
-    }
-
-    public function setCreatedBy(string $createdBy): void
-    {
-        $this->createdBy = $createdBy;
-    }
-
-    public function getCreatedBy(): string
-    {
-        return $this->createdBy;
-    }
-
-    public function setLastUpdatedBy(string $lastUpdatedBy): void
-    {
-        $this->lastUpdatedBy = $lastUpdatedBy;
-    }
-
-    public function getLastUpdatedBy(): string
-    {
-        return $this->lastUpdatedBy;
     }
 
     public function setCreated(string $created): void

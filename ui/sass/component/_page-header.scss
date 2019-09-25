@@ -15,11 +15,28 @@ $page-header-padding: 24px 16px 32px;
     @include font-smoothing;
 }
 
+.c-page-header__title,
+.c-page-header__subheading {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    height: auto;
+    padding: 0;
+    width: 100%;
+}
+
+.c-page-header__title::placeholder,
+.c-page-header__subheading::placeholder {
+    color: config-get(color-shades, grey, 500);
+}
+
 .c-page-header__title {
     color: config-get(color-shades, dark, 900);
-    font-family: 700;
+    font-weight: 700;
     font-size: 28px;
+    line-height: 34px;
     margin: 0;
+    min-height: 38px;
     width: calc(100% - 60px);
     @include font-smoothing;
 }
@@ -73,7 +90,7 @@ $page-header-padding: 24px 16px 32px;
     color: config-get(color-shades, dark, 400);
 }
 
-.c-page-header__edit-button {
+%c-page-header__action-button {
     align-items: center;
     background: transparent;
     border: 0;
@@ -88,12 +105,11 @@ $page-header-padding: 24px 16px 32px;
     width: 48px;
 }
 
-.c-page-header__edit-button:focus {
+%c-page-header__action-button:focus {
     outline: 0;
 }
 
-.c-page-header__edit-button::before {
-    background-color: config-get(color-shades, grey, 200);
+%c-page-header__action-button::before {
     border-radius: 14px;
     content: '';
     height: 28px;
@@ -105,8 +121,29 @@ $page-header-padding: 24px 16px 32px;
     z-index: -1;
 }
 
+.c-page-header__edit-button,
+.c-page-header__done-button {
+    @extend %c-page-header__action-button;
+}
+
+.c-page-header__edit-button::before {
+    background-color: config-get(color-shades, grey, 200);
+}
+
 .c-page-header__edit-button:focus::before {
     background-color: darken(config-get(color-shades, grey, 200), 10%);
+}
+
+.c-page-header__done-button:disabled {
+    opacity: .6;
+}
+
+.c-page-header__done-button::before {
+    background-color: config-get(color-shades, secondary, 1100);
+}
+
+.c-page-header__done-button:focus::before {
+    background-color: darken(config-get(color-shades, secondary, 1100), 10%);
 }
 
 .c-page-header__edit-button-icon {
@@ -117,4 +154,14 @@ $page-header-padding: 24px 16px 32px;
 
 .c-page-header__edit-button:focus .c-page-header__edit-button-icon {
     fill: darken(config-get(color-shades, grey, 1100), 10%);
+}
+
+.c-page-header__done-button-icon {
+    fill: config-get(global, color, white);
+    height: 24px;
+    width: 24px;
+}
+
+.c-page-header__done-button:focus .c-page-header__done-button-icon {
+    fill: lighten(config-get(global, color, white), 10%);
 }

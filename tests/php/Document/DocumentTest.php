@@ -165,7 +165,7 @@ class DocumentTest extends TestCase
     private function createKnowledgebaseRouteExpectation($args, $result)
     {
         $this->knowledgebaseRoute
-            ->shouldReceive('createForDocument')
+            ->shouldReceive('create')
             ->once()
             ->with(...$args)
             ->andReturn($result);

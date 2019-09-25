@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Hipper\App\Project;
 
-use Hipper\Document\DocumentListFormatter;
-use Hipper\Document\DocumentRepository;
+use Hipper\Knowledgebase\KnowledgebaseEntries;
+use Hipper\Knowledgebase\KnowledgebaseEntriesListFormatter;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\TimeZone\TimeZoneFromRequest;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,19 +13,19 @@ use Twig\Environment as Twig;
 
 class ProjectDocsController
 {
-    private $documentListFormatter;
-    private $documentRepository;
+    private $knowledgebaseEntries;
+    private $knowledgebaseEntriesListFormatter;
     private $timeZoneFromRequest;
     private $twig;
 
     public function __construct(
-        DocumentListFormatter $documentListFormatter,
-        DocumentRepository $documentRepository,
+        KnowledgebaseEntries $knowledgebaseEntries,
+        KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter,
         TimeZoneFromRequest $timeZoneFromRequest,
         Twig $twig
     ) {
-        $this->documentListFormatter = $documentListFormatter;
-        $this->documentRepository = $documentRepository;
+        $this->knowledgebaseEntries = $knowledgebaseEntries;
+        $this->knowledgebaseEntriesListFormatter = $knowledgebaseEntriesListFormatter;
         $this->timeZoneFromRequest = $timeZoneFromRequest;
         $this->twig = $twig;
     }
@@ -36,22 +36,23 @@ class ProjectDocsController
         $project = $request->attributes->get('project');
         $personIsInProject = $request->attributes->get('personIsInProject');
 
-        $docs = $this->documentRepository->getAllForKnowledgebaseInSection(
+        list($docs, $sections) = $this->knowledgebaseEntries->get(
             $project->getKnowledgebaseId(),
             null,
             $organization->getId()
         );
 
         $timeZone = $this->timeZoneFromRequest->get($request);
-        $documentList = $this->documentListFormatter->format(
+        $knowledgebaseEntries = $this->knowledgebaseEntriesListFormatter->format(
             $docs,
+            $sections,
             $timeZone,
             KnowledgebaseRouteUrlGenerator::GET_PROJECT_DOC_ROUTE_NAME,
             ['project_url_id' => $project->getUrlId()]
         );
 
         $context = [
-            'documentList' => $documentList,
+            'knowledgebaseEntries' => $knowledgebaseEntries,
             'html_title' => sprintf('Docs – %s', $project->getName()),
             'project' => $project,
             'personIsInProject' => $personIsInProject,

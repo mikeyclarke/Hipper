@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Document;
+namespace Hipper\Section;
 
 use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
@@ -12,44 +12,37 @@ use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Person\PersonModel;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
-use JSON_THROW_ON_ERROR;
 
-class Document
+class Section
 {
     private $connection;
-    private $documentDescriptionDeducer;
-    private $documentInserter;
-    private $documentRevision;
-    private $documentValidator;
     private $idGenerator;
     private $knowledgebaseOwner;
     private $knowledgebaseRepository;
     private $knowledgebaseRoute;
+    private $sectionInserter;
+    private $sectionValidator;
     private $urlIdGenerator;
     private $urlSlugGenerator;
 
     public function __construct(
         Connection $connection,
-        DocumentDescriptionDeducer $documentDescriptionDeducer,
-        DocumentInserter $documentInserter,
-        DocumentRevision $documentRevision,
-        DocumentValidator $documentValidator,
         IdGenerator $idGenerator,
         KnowledgebaseOwner $knowledgebaseOwner,
         KnowledgebaseRepository $knowledgebaseRepository,
         KnowledgebaseRoute $knowledgebaseRoute,
+        SectionInserter $sectionInserter,
+        SectionValidator $sectionValidator,
         UrlIdGenerator $urlIdGenerator,
         UrlSlugGenerator $urlSlugGenerator
     ) {
         $this->connection = $connection;
-        $this->documentDescriptionDeducer = $documentDescriptionDeducer;
-        $this->documentInserter = $documentInserter;
-        $this->documentRevision = $documentRevision;
-        $this->documentValidator = $documentValidator;
         $this->idGenerator = $idGenerator;
         $this->knowledgebaseOwner = $knowledgebaseOwner;
         $this->knowledgebaseRepository = $knowledgebaseRepository;
         $this->knowledgebaseRoute = $knowledgebaseRoute;
+        $this->sectionInserter = $sectionInserter;
+        $this->sectionValidator = $sectionValidator;
         $this->urlIdGenerator = $urlIdGenerator;
         $this->urlSlugGenerator = $urlSlugGenerator;
     }
@@ -57,37 +50,25 @@ class Document
     public function create(PersonModel $person, array $parameters): array
     {
         $knowledgebase = $this->getKnowledgebase($parameters, $person->getOrganizationId());
-        $this->documentValidator->validate($parameters, $knowledgebase, true);
+        $this->sectionValidator->validate($parameters, $knowledgebase, true);
 
         $id = $this->idGenerator->generate();
         $urlSlug = $this->urlSlugGenerator->generateFromString($parameters['name']);
         $urlId = $this->urlIdGenerator->generate();
 
-        $deducedDescription = null;
-        if (isset($parameters['content']) && is_array($parameters['content'])) {
-            $deducedDescription = $this->documentDescriptionDeducer->deduce($parameters['content']);
-        }
-
-        $content = null;
-        if (isset($parameters['content']) && is_array($parameters['content'])) {
-            $content = json_encode($parameters['content'], JSON_THROW_ON_ERROR);
-        }
-
         $this->connection->beginTransaction();
         try {
-            $result = $this->documentInserter->insert(
+            $result = $this->sectionInserter->insert(
                 $id,
                 $parameters['name'],
                 $urlSlug,
                 $urlId,
                 $parameters['knowledgebase_id'],
                 $person->getOrganizationId(),
-                $person->getId(),
-                $parameters['description'] ?? null,
-                $deducedDescription,
-                $content
+                $parameters['description'] ?? null
             );
-            $model = DocumentModel::createFromArray($result);
+
+            $model = SectionModel::createFromArray($result);
 
             $route = $this->knowledgebaseRoute->create(
                 $model,
@@ -95,7 +76,6 @@ class Document
                 true,
                 true
             );
-            $this->documentRevision->create($model);
 
             $this->connection->commit();
         } catch (\Exception $e) {

@@ -88,6 +88,32 @@ team_docs.get:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
 
+create_project_section.get:
+    path: /project/{project_url_id}/docs/new-section
+    methods: [GET]
+    controller: Hipper\App\Section\CreateSectionController::getAction
+    defaults:
+        knowledgebase_type: 'project'
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
+
+create_team_section.get:
+    path: /team/{team_url_id}/docs/new-section
+    methods: [GET]
+    controller: Hipper\App\Section\CreateSectionController::getAction
+    defaults:
+        knowledgebase_type: 'team'
+        _before_middlewares:
+            - team_model_from_url_id_middleware:before
+
+create_section.post:
+    path: /_/create-section
+    methods: [POST]
+    controller: Hipper\App\Section\CreateSectionController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
 team_docs_new.get:
     path: /team/{team_url_id}/docs/new
     methods: [GET]

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Document;
+namespace Hipper\Section;
 
 use Doctrine\DBAL\Connection;
 use PDO;
 
-class DocumentInserter
+class SectionInserter
 {
     private $connection;
 
@@ -23,19 +23,14 @@ class DocumentInserter
         string $urlId,
         string $knowledgebaseId,
         string $organizationId,
-        string $createdBy,
         string $description = null,
-        string $deducedDescription = null,
-        string $content = null,
-        string $sectionId = null
+        string $parentSectionId = null
     ): array {
         $sql = <<<SQL
-INSERT INTO document (
-    id, name, description, deduced_description, content, url_slug, url_id, knowledgebase_id,
-    organization_id, section_id, created_by, last_updated_by
+INSERT INTO section (
+    id, name, description, url_slug, url_id, knowledgebase_id, organization_id, parent_section_id
 ) VALUES (
-    :id, :name, :description, :deduced_description, :content, :url_slug, :url_id, :knowledgebase_id,
-    :organization_id, :section_id, :created_by, :last_updated_by
+    :id, :name, :description, :url_slug, :url_id, :knowledgebase_id, :organization_id, :parent_section_id
 ) RETURNING *
 SQL;
 
@@ -43,15 +38,11 @@ SQL;
         $stmt->bindValue('id', $id, PDO::PARAM_STR);
         $stmt->bindValue('name', $name, PDO::PARAM_STR);
         $stmt->bindValue('description', $description, PDO::PARAM_STR);
-        $stmt->bindValue('deduced_description', $deducedDescription, PDO::PARAM_STR);
-        $stmt->bindValue('content', $content, PDO::PARAM_STR);
         $stmt->bindValue('url_slug', $urlSlug, PDO::PARAM_STR);
         $stmt->bindValue('url_id', $urlId, PDO::PARAM_STR);
         $stmt->bindValue('knowledgebase_id', $knowledgebaseId, PDO::PARAM_STR);
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
-        $stmt->bindValue('section_id', $sectionId, PDO::PARAM_STR);
-        $stmt->bindValue('created_by', $createdBy, PDO::PARAM_STR);
-        $stmt->bindValue('last_updated_by', $createdBy, PDO::PARAM_STR);
+        $stmt->bindValue('parent_section_id', $parentSectionId, PDO::PARAM_STR);
 
         $stmt->execute();
         return $stmt->fetch();

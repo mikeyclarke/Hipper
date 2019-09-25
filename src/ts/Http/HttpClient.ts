@@ -1,5 +1,16 @@
 import PopoverAlert from 'components/PopoverAlert';
-import ky, { Options, ResponsePromise } from 'ky';
+import ky, { Input, Options, ResponsePromise } from 'ky';
+
+interface NormalizedOptions extends RequestInit {
+    method: RequestInit['method'];
+    credentials: RequestInit['credentials'];
+
+    retry: Options['retry'];
+    prefixUrl: Options['prefixUrl'];
+    onDownloadProgress: Options['onDownloadProgress'];
+
+    headers: Headers;
+}
 
 enum RequestMethod {
     GET = 'GET',
@@ -92,7 +103,7 @@ export default class HttpClient {
         return !safeHttpMethods.includes(method);
     }
 
-    private checkResponse(response: Response): ResponsePromise | void {
+    private checkResponse(input: Input, options: NormalizedOptions, response: Response): ResponsePromise | void {
         if (response.ok) {
             return;
         }

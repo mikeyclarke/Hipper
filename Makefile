@@ -6,7 +6,7 @@ include .env
 ##	Testing
 ## ---------
 
-test_js: tslint jest ## Run all JS tests (TSLint, and Jest)
+test_ts: tslint jest ## Run all TypeScript tests (TSLint, and Jest)
 
 test_php: phpunit phpcs phpstan ## Run all PHP tests (PHPCS, PHPUnit, and PHPStan)
 

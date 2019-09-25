@@ -22,6 +22,8 @@ server {
 
     root {{ path_to_code }}/public-roots/app/public/;
 
+    add_header X-Robots-Tag "noindex, nofollow";
+
     {% include 'includes/ssl.twig' %}
 
     client_max_body_size 20m;

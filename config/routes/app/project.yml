@@ -1,0 +1,59 @@
+create_project.get:
+    path: /projects/new
+    methods: [GET]
+    controller: Hipper\App\Project\CreateProjectController::getAction
+
+create_project.post:
+    path: /_/create-project
+    methods: [POST]
+    controller: Hipper\App\Project\CreateProjectController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+project.get:
+    path: /project/{project_url_id}
+    methods: [GET]
+    controller: Hipper\App\Project\ProjectController::getAction
+    defaults:
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
+
+project_docs.get:
+    path: /project/{project_url_id}/docs
+    methods: [GET]
+    controller: Hipper\App\Project\ProjectDocsController::getAction
+    defaults:
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
+
+create_project_section.get:
+    path: /project/{project_url_id}/docs/new-section
+    methods: [GET]
+    controller: Hipper\App\Section\CreateSectionController::getAction
+    defaults:
+        knowledgebase_type: 'project'
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
+
+project_docs_new.get:
+    path: /project/{project_url_id}/docs/new
+    methods: [GET]
+    controller: Hipper\App\Document\CreateDocumentController::getAction
+    defaults:
+        knowledgebase_type: 'project'
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
+
+project_doc.get:
+    path: /project/{project_url_id}/docs/{path}
+    methods: [GET]
+    controller: Hipper\App\DocumentOrSectionControllerRouter::route
+    defaults:
+        knowledgebase_type: 'project'
+        action: 'getAction'
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
+            - knowledgebase_routing_middleware:before
+    requirements:
+        route: '.+'

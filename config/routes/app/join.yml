@@ -1,0 +1,24 @@
+join.post:
+    path: /_/join
+    methods: [POST]
+    controller: Hipper\App\JoinOrganizationController::postAction
+    defaults:
+        unsecured: true
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+join_by_invitation.get:
+    path: /join/by-invitation
+    methods: [GET]
+    controller: Hipper\App\JoinByInvitationController::getAction
+    defaults:
+        unsecured: true
+
+join_by_invitation.post:
+    path: /_/join/by-invitation
+    methods: [POST]
+    controller: Hipper\App\JoinByInvitationController::postAction
+    defaults:
+        unsecured: true
+        _before_middlewares:
+            - require_json_content_type_middleware:before

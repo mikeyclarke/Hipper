@@ -1,0 +1,15 @@
+tokenized_login.get:
+    path: /tokenized-login
+    methods: [GET]
+    controller: Hipper\App\TokenizedLoginController::getAction
+    defaults:
+        unsecured: true
+
+login.post:
+    path: /_/login
+    methods: [POST]
+    controller: Hipper\App\LoginController::postAction
+    defaults:
+        unsecured: true
+        _before_middlewares:
+            - require_json_content_type_middleware:before

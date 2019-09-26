@@ -1,0 +1,7 @@
+create_section.post:
+    path: /_/create-section
+    methods: [POST]
+    controller: Hipper\App\Section\CreateSectionController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before

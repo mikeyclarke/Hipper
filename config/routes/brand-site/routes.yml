@@ -1,13 +1,13 @@
 signup.get:
     path: /sign-up
-    controller: Hipper\Onboarding\SignUpController::getAction
+    controller: Hipper\FrontEnd\SignUpFlow\Controller\SignUpController::getAction
     methods: [GET]
     defaults:
         unsecured: true
 
 signup.post:
     path: /_/sign-up
-    controller: Hipper\Onboarding\SignUpController::postAction
+    controller: Hipper\Api\SignUpFlow\Controller\SignUpController::postAction
     methods: [POST]
     defaults:
         unsecured: true
@@ -16,12 +16,12 @@ signup.post:
 
 verify_identity.get:
     path: /verify-identity
-    controller: Hipper\Onboarding\VerifyIdentityController::getAction
+    controller: Hipper\FrontEnd\SignUpFlow\Controller\VerifyIdentityController::getAction
     methods: [GET]
 
 verify_identity.post:
     path: /_/verify-identity
-    controller: Hipper\Onboarding\VerifyIdentityController::postAction
+    controller: Hipper\Api\SignUpFlow\Controller\VerifyIdentityController::postAction
     methods: [POST]
     defaults:
         _before_middlewares:
@@ -29,7 +29,7 @@ verify_identity.post:
 
 name_team.get:
     path: /name-team
-    controller: Hipper\Onboarding\NameTeamController::getAction
+    controller: Hipper\FrontEnd\SignUpFlow\Controller\NameTeamController::getAction
     methods: [GET]
     defaults:
         _before_middlewares:
@@ -37,7 +37,7 @@ name_team.get:
 
 name_team.post:
     path: /_/name-team
-    controller: Hipper\Onboarding\NameTeamController::postAction
+    controller: Hipper\Api\SignUpFlow\Controller\NameTeamController::postAction
     methods: [POST]
     defaults:
         _before_middlewares:
@@ -45,7 +45,7 @@ name_team.post:
 
 choose_team_url.get:
     path: /choose-team-url
-    controller: Hipper\Onboarding\ChooseTeamUrlController::getAction
+    controller: Hipper\FrontEnd\SignUpFlow\Controller\ChooseTeamUrlController::getAction
     methods: [GET]
     defaults:
         _before_middlewares:
@@ -53,7 +53,7 @@ choose_team_url.get:
 
 choose_team_url.post:
     path: /_/choose-team-url
-    controller: Hipper\Onboarding\ChooseTeamUrlController::postAction
+    controller: Hipper\Api\SignUpFlow\Controller\ChooseTeamUrlController::postAction
     methods: [POST]
     defaults:
         _before_middlewares:
@@ -61,7 +61,7 @@ choose_team_url.post:
 
 invite.get:
     path: /invite
-    controller: Hipper\Onboarding\InviteController::getAction
+    controller: Hipper\FrontEnd\SignUpFlow\Controller\InviteController::getAction
     methods: [GET]
     defaults:
         _before_middlewares:
@@ -69,7 +69,7 @@ invite.get:
 
 invite.post:
     path: /_/invite
-    controller: Hipper\Onboarding\InviteController::postAction
+    controller: Hipper\Api\SignUpFlow\Controller\InviteController::postAction
     methods: [POST]
     defaults:
         _before_middlewares:
@@ -77,7 +77,7 @@ invite.post:
 
 invite.emails.post:
     path: /_/invite/emails
-    controller: Hipper\Onboarding\InviteController::postEmailInvitesAction
+    controller: Hipper\Api\SignUpFlow\Controller\InviteController::postEmailInvitesAction
     methods: [POST]
     defaults:
         _before_middlewares:
@@ -85,7 +85,7 @@ invite.emails.post:
 
 finalize.get:
     path: /begin
-    controller: Hipper\Onboarding\FinalizeController::getAction
+    controller: Hipper\FrontEnd\SignUpFlow\Controller\FinalizeController::getAction
     methods: [GET]
     defaults:
         _before_middlewares:

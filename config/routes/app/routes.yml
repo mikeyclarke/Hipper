@@ -26,4 +26,4 @@ index:
 welcome.get:
     path: /welcome
     methods: [GET]
-    controller: Hipper\App\WelcomeController::getAction
+    controller: Hipper\FrontEnd\App\Controller\WelcomeController::getAction

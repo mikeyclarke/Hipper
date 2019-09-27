@@ -67,7 +67,7 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    Hipper\App\Document\CreateDocumentController:
+    Hipper\FrontEnd\App\Controller\Document\CreateDocumentController:
         arguments:
             $documentAllowedMarks: '%document_allowed_marks%'
             $documentAllowedNodes: '%document_allowed_nodes%'
@@ -123,19 +123,19 @@ services:
         arguments: ['%session.storage.options%', '@session.handler', '@session.storage.metadata_bag', '@request_stack']
 
     onboarding_verified_person_middleware:
-        class: Hipper\Onboarding\VerifiedPersonMiddleware
+        class: Hipper\FrontEnd\SignUpFlow\Middleware\VerifiedPersonMiddleware
 
     require_json_content_type_middleware:
         class: Hipper\Http\RequireJsonContentTypeMiddleware
 
     app_onboarding_completed_middleware:
-        class: Hipper\App\OnboardingCompletedMiddleware
+        class: Hipper\FrontEnd\App\Middleware\Organization\OnboardingCompletedMiddleware
 
     team_model_from_url_id_middleware:
-        class: Hipper\App\Team\TeamModelFromUrlIdMiddleware
+        class: Hipper\FrontEnd\App\Middleware\Team\TeamModelFromUrlIdMiddleware
 
     knowledgebase_routing_middleware:
-        class: Hipper\App\KnowledgebaseRoutingMiddleware
+        class: Hipper\FrontEnd\App\Middleware\Knowledgebase\KnowledgebaseRoutingMiddleware
 
     project_model_from_url_id_middleware:
-        class: Hipper\App\Project\ProjectModelFromUrlIdMiddleware
+        class: Hipper\FrontEnd\App\Middleware\Project\ProjectModelFromUrlIdMiddleware

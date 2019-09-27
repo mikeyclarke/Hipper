@@ -1,12 +1,12 @@
 create_team.get:
     path: /teams/new
     methods: [GET]
-    controller: Hipper\App\Team\CreateTeamController::getAction
+    controller: Hipper\FrontEnd\App\Controller\Team\CreateTeamController::getAction
 
 create_team_suggest_description.post:
     path: /_/suggest-team-description
     methods: [POST]
-    controller: Hipper\App\Team\CreateTeamController::suggestAction
+    controller: Hipper\Api\App\Controller\Team\SuggestTeamDescriptionController::postAction
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
@@ -14,7 +14,7 @@ create_team_suggest_description.post:
 create_team.post:
     path: /_/create-team
     methods: [POST]
-    controller: Hipper\App\Team\CreateTeamController::postAction
+    controller: Hipper\Api\App\Controller\Team\CreateTeamController::postAction
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
@@ -22,7 +22,7 @@ create_team.post:
 team.get:
     path: /team/{team_url_id}
     methods: [GET]
-    controller: Hipper\App\Team\TeamController::getAction
+    controller: Hipper\FrontEnd\App\Controller\Team\TeamController::getAction
     defaults:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
@@ -30,7 +30,7 @@ team.get:
 team_docs.get:
     path: /team/{team_url_id}/docs
     methods: [GET]
-    controller: Hipper\App\Team\TeamDocsController::getAction
+    controller: Hipper\FrontEnd\App\Controller\Team\TeamDocsController::getAction
     defaults:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
@@ -38,7 +38,7 @@ team_docs.get:
 create_team_section.get:
     path: /team/{team_url_id}/docs/new-section
     methods: [GET]
-    controller: Hipper\App\Section\CreateSectionController::getAction
+    controller: Hipper\FrontEnd\App\Controller\Section\CreateSectionController::getAction
     defaults:
         knowledgebase_type: 'team'
         _before_middlewares:
@@ -47,7 +47,7 @@ create_team_section.get:
 team_docs_new.get:
     path: /team/{team_url_id}/docs/new
     methods: [GET]
-    controller: Hipper\App\Document\CreateDocumentController::getAction
+    controller: Hipper\FrontEnd\App\Controller\Document\CreateDocumentController::getAction
     defaults:
         knowledgebase_type: 'team'
         _before_middlewares:
@@ -56,7 +56,7 @@ team_docs_new.get:
 team_doc.get:
     path: /team/{team_url_id}/docs/{path}
     methods: [GET]
-    controller: Hipper\App\DocumentOrSectionControllerRouter::route
+    controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrSectionControllerRouter::route
     defaults:
         knowledgebase_type: 'team'
         action: 'getAction'

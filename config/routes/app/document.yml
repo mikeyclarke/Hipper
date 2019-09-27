@@ -1,7 +1,7 @@
 doc_new.post:
     path: /_/create-doc
     methods: [POST]
-    controller: Hipper\App\Document\CreateDocumentController::postAction
+    controller: Hipper\Api\App\Controller\Document\CreateDocumentController::postAction
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before

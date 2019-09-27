@@ -1,0 +1,7 @@
+project.create:
+    path: /_/create-project
+    methods: [POST]
+    controller: Hipper\Api\App\Controller\Project\CreateProjectController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before

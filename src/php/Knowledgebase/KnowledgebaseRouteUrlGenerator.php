@@ -12,8 +12,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KnowledgebaseRouteUrlGenerator
 {
-    const GET_TEAM_DOC_ROUTE_NAME = 'team_doc.get';
-    const GET_PROJECT_DOC_ROUTE_NAME = 'project_doc.get';
+    const GET_TEAM_DOC_ROUTE_NAME = 'front_end.app.team.doc.show';
+    const GET_PROJECT_DOC_ROUTE_NAME = 'front_end.app.project.doc.show';
 
     private $router;
 

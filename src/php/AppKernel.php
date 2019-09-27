@@ -36,7 +36,8 @@ final class AppKernel extends BaseKernel
     {
         $configDir = $this->getProjectDir() . '/config';
 
-        $routes->import($configDir . '/routes/app/routes.yml');
+        $routes->import($configDir . '/routes/front_end/app/routes.yml');
+        $routes->import($configDir . '/routes/api/app/routes.yml');
     }
 
     public function getCacheDir(): string

@@ -1,4 +1,4 @@
-doc_new.post:
+document.create:
     path: /_/create-doc
     methods: [POST]
     controller: Hipper\Api\App\Controller\Document\CreateDocumentController::postAction

@@ -1,25 +1,9 @@
-create_team.get:
+team.create:
     path: /teams/new
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\CreateTeamController::getAction
 
-create_team_suggest_description.post:
-    path: /_/suggest-team-description
-    methods: [POST]
-    controller: Hipper\Api\App\Controller\Team\SuggestTeamDescriptionController::postAction
-    defaults:
-        _before_middlewares:
-            - require_json_content_type_middleware:before
-
-create_team.post:
-    path: /_/create-team
-    methods: [POST]
-    controller: Hipper\Api\App\Controller\Team\CreateTeamController::postAction
-    defaults:
-        _before_middlewares:
-            - require_json_content_type_middleware:before
-
-team.get:
+team.show:
     path: /team/{team_url_id}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\TeamController::getAction
@@ -27,7 +11,7 @@ team.get:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
 
-team_docs.get:
+team.docs.list:
     path: /team/{team_url_id}/docs
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\TeamDocsController::getAction
@@ -35,7 +19,7 @@ team_docs.get:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
 
-create_team_section.get:
+team.section.create:
     path: /team/{team_url_id}/docs/new-section
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Section\CreateSectionController::getAction
@@ -44,7 +28,7 @@ create_team_section.get:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
 
-team_docs_new.get:
+team.doc.create:
     path: /team/{team_url_id}/docs/new
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\CreateDocumentController::getAction
@@ -53,7 +37,7 @@ team_docs_new.get:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
 
-team_doc.get:
+team.doc.show:
     path: /team/{team_url_id}/docs/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrSectionControllerRouter::route

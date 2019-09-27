@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateTeamController
 {
+    const TEAM_ROUTE_NAME = 'front_end.app.team.show';
+
     private $team;
     private $router;
 
@@ -40,7 +42,10 @@ class CreateTeamController
         }
 
         return new JsonResponse([
-            'team_url' => $this->router->generate('team.get', ['team_url_id' => $teamModel->getUrlId()]),
+            'team_url' => $this->router->generate(
+                self::TEAM_ROUTE_NAME,
+                ['team_url_id' => $teamModel->getUrlId()]
+            ),
         ], 201);
     }
 }

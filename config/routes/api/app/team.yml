@@ -1,0 +1,15 @@
+team.suggest_description:
+    path: /_/suggest-team-description
+    methods: [POST]
+    controller: Hipper\Api\App\Controller\Team\SuggestTeamDescriptionController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+team.create:
+    path: /_/create-team
+    methods: [POST]
+    controller: Hipper\Api\App\Controller\Team\CreateTeamController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before

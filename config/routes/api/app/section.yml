@@ -1,4 +1,4 @@
-create_section.post:
+section.create:
     path: /_/create-section
     methods: [POST]
     controller: Hipper\Api\App\Controller\Section\CreateSectionController::postAction

@@ -1,29 +1,23 @@
-document_routes:
-    resource: document.yml
-
-join_routes:
-    resource: join.yml
-
-login_routes:
-    resource: login.yml
-
 project_routes:
     resource: project.yml
-
-section_routes:
-     resource: section.yml
+    name_prefix: 'front_end.app.'
 
 team_routes:
     resource: team.yml
+    name_prefix: 'front_end.app.'
 
-index:
+organization_routes:
+    resource: organization.yml
+    name_prefix: 'front_end.app.'
+
+front_end.app.index:
     path: /
     controller: Hipper\Controller\DefaultController::index
     defaults:
         _before_middlewares:
             - app_onboarding_completed_middleware:before
 
-welcome.get:
+front_end.app.welcome.get:
     path: /welcome
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\WelcomeController::getAction

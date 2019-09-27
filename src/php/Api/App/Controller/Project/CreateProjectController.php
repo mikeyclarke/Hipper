@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateProjectController
 {
+    const PROJECT_ROUTE_NAME = 'front_end.app.project.show';
+
     private $project;
     private $router;
 
@@ -40,7 +42,10 @@ class CreateProjectController
         }
 
         return new JsonResponse([
-            'project_url' => $this->router->generate('project.get', ['project_url_id' => $projectModel->getUrlId()]),
+            'project_url' => $this->router->generate(
+                self::PROJECT_ROUTE_NAME,
+                ['project_url_id' => $projectModel->getUrlId()]
+            ),
         ], 201);
     }
 }

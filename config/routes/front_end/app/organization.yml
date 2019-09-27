@@ -1,0 +1,6 @@
+organization.tokenized_login:
+    path: /tokenized-login
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Organization\TokenizedLoginController::getAction
+    defaults:
+        unsecured: true

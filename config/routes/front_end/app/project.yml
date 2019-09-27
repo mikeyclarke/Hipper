@@ -1,17 +1,9 @@
-create_project.get:
+project.create:
     path: /projects/new
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\CreateProjectController::getAction
 
-create_project.post:
-    path: /_/create-project
-    methods: [POST]
-    controller: Hipper\Api\App\Controller\Project\CreateProjectController::postAction
-    defaults:
-        _before_middlewares:
-            - require_json_content_type_middleware:before
-
-project.get:
+project.show:
     path: /project/{project_url_id}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\ProjectController::getAction
@@ -19,7 +11,7 @@ project.get:
         _before_middlewares:
             - project_model_from_url_id_middleware:before
 
-project_docs.get:
+project.docs.list:
     path: /project/{project_url_id}/docs
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\ProjectDocsController::getAction
@@ -27,7 +19,7 @@ project_docs.get:
         _before_middlewares:
             - project_model_from_url_id_middleware:before
 
-create_project_section.get:
+project.section.create:
     path: /project/{project_url_id}/docs/new-section
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Section\CreateSectionController::getAction
@@ -36,7 +28,7 @@ create_project_section.get:
         _before_middlewares:
             - project_model_from_url_id_middleware:before
 
-project_docs_new.get:
+project.doc.create:
     path: /project/{project_url_id}/docs/new
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\CreateDocumentController::getAction
@@ -45,7 +37,7 @@ project_docs_new.get:
         _before_middlewares:
             - project_model_from_url_id_middleware:before
 
-project_doc.get:
+project.doc.show:
     path: /project/{project_url_id}/docs/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrSectionControllerRouter::route

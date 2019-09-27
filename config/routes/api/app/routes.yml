@@ -1,0 +1,19 @@
+document_routes:
+    resource: document.yml
+    name_prefix: 'api.app.'
+
+organization_routes:
+    resource: organization.yml
+    name_prefix: 'api.app.'
+
+project_routes:
+    resource: project.yml
+    name_prefix: 'api.app.'
+
+section_routes:
+    resource: section.yml
+    name_prefix: 'api.app.'
+
+team_routes:
+    resource: team.yml
+    name_prefix: 'api.app.'

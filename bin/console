@@ -2,7 +2,7 @@
 <?php
 declare(strict_types=1);
 
-use Hipper\AppKernel;
+use Hipper\ConsoleKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
 
@@ -19,6 +19,6 @@ if (!isset($_SERVER['APP_ENV'])) {
 $env = $_SERVER['APP_ENV'] ?? 'dev';
 $debug = (bool) ($_SERVER['APP_DEBUG'] ?? ('prod' !== $env));
 
-$kernel = new AppKernel($env, $debug);
+$kernel = new ConsoleKernel($env, $debug);
 $application = new Application($kernel);
 $application->run();

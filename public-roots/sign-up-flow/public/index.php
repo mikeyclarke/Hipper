@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Hipper\BrandSiteKernel;
+use Hipper\SignUpFlowKernel;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,7 +26,7 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
     Request::setTrustedHosts(explode(',', $trustedHosts));
 }
 
-$kernel = new BrandSiteKernel($env, $debug);
+$kernel = new SignUpFlowKernel($env, $debug);
 $request = Request::createFromGlobals();
 $request->attributes->set('assets_to_preload', [
     'signup.css' => 'style',

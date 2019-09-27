@@ -56,7 +56,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     Hipper\:
         resource: '../src/php/*'
-        exclude: '../src/php/{data,DependencyInjection,Session,Tests,AppKernel.php,BrandSiteKernel.php}'
+        exclude: '../src/php/{data,DependencyInjection,Session,Tests,AppKernel.php,SignUpFlowKernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

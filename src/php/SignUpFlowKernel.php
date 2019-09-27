@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
-final class BrandSiteKernel extends BaseKernel
+final class SignUpFlowKernel extends BaseKernel
 {
     use MicroKernelTrait;
 
@@ -36,16 +36,17 @@ final class BrandSiteKernel extends BaseKernel
     {
         $configDir = $this->getProjectDir() . '/config';
 
-        $routes->import($configDir . '/routes/brand-site/routes.yml');
+        $routes->import($configDir . '/routes/api/sign_up_flow/routes.yml');
+        $routes->import($configDir . '/routes/front_end/sign_up_flow/routes.yml');
     }
 
     public function getCacheDir(): string
     {
-        return $this->getProjectDir() . '/var/cache/brand-site/' . $this->environment;
+        return $this->getProjectDir() . '/var/cache/sign-up-flow/' . $this->environment;
     }
 
     public function getLogDir(): string
     {
-        return $this->getProjectDir() . '/var/log/brand-site';
+        return $this->getProjectDir() . '/var/log/sign-up-flow';
     }
 }

@@ -1,0 +1,48 @@
+api.sign_up_flow.signup:
+    path: /_/sign-up
+    controller: Hipper\Api\SignUpFlow\Controller\SignUpController::postAction
+    methods: [POST]
+    defaults:
+        unsecured: true
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+api.sign_up_flow.verify_identity:
+    path: /_/verify-identity
+    controller: Hipper\Api\SignUpFlow\Controller\VerifyIdentityController::postAction
+    methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+api.sign_up_flow.name_team:
+    path: /_/name-team
+    controller: Hipper\Api\SignUpFlow\Controller\NameTeamController::postAction
+    methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+api.sign_up_flow.choose_team_url:
+    path: /_/choose-team-url
+    controller: Hipper\Api\SignUpFlow\Controller\ChooseTeamUrlController::postAction
+    methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+api.sign_up_flow.invite:
+    path: /_/invite
+    controller: Hipper\Api\SignUpFlow\Controller\InviteController::postAction
+    methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+api.sign_up_flow.invite_by_email:
+    path: /_/invite/emails
+    controller: Hipper\Api\SignUpFlow\Controller\InviteController::postEmailInvitesAction
+    methods: [POST]
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before

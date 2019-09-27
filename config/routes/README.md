@@ -1,13 +1,14 @@
 # Route configuration
 
-Routes are located in accordance with their controller locations. For example, the route definition for `src/php/FrontEnd/App/Organization/TokenizedLoginController.php`
-would be found in `config/routes/front_end/app/organization.yml`, and the route definition for `src/php/Api/App/Section/CreateSectionController.php`
+Routes are located in accordance with their controller locations. For example, the route definition for `src/php/FrontEnd/App/Controller/Organization/TokenizedLoginController.php`
+would be found in `config/routes/front_end/app/organization.yml`, and the route definition for `src/php/Api/App/Controller/Section/CreateSectionController.php`
 would be found in `config/routes/api/app/section.yml`.
 
 The source route files loaded from PHP are:
 
 - `config/routes/api/app/routes.yml`
-- `config/routes/front_end/app/routes.yml`
+- `config/routes/api/sign_up_flow/routes.yml`
+- `config/routes/front_end/sign_up_flow/routes.yml`
 
 These files should ideally define no routes of their own and only import other files that do contain actual definitions.
 

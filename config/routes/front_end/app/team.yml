@@ -4,7 +4,7 @@ team.create:
     controller: Hipper\FrontEnd\App\Controller\Team\CreateTeamController::getAction
 
 team.show:
-    path: /team/{team_url_id}
+    path: /teams/{team_url_id}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\TeamController::getAction
     defaults:
@@ -12,7 +12,7 @@ team.show:
             - team_model_from_url_id_middleware:before
 
 team.docs.list:
-    path: /team/{team_url_id}/docs
+    path: /teams/{team_url_id}/docs
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\TeamDocsController::getAction
     defaults:
@@ -20,7 +20,7 @@ team.docs.list:
             - team_model_from_url_id_middleware:before
 
 team.section.create:
-    path: /team/{team_url_id}/docs/new-section
+    path: /teams/{team_url_id}/docs/new-section
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Section\CreateSectionController::getAction
     defaults:
@@ -29,7 +29,7 @@ team.section.create:
             - team_model_from_url_id_middleware:before
 
 team.doc.create:
-    path: /team/{team_url_id}/docs/new
+    path: /teams/{team_url_id}/docs/new
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\CreateDocumentController::getAction
     defaults:
@@ -38,7 +38,7 @@ team.doc.create:
             - team_model_from_url_id_middleware:before
 
 team.doc.show:
-    path: /team/{team_url_id}/docs/{path}
+    path: /teams/{team_url_id}/docs/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrSectionControllerRouter::route
     defaults:

@@ -17,13 +17,13 @@
     <nav class="c-app-header__tab-bar">
         <ol class="c-app-header__tab-list">
             <li class="c-app-header__tab-list-item">
-                <a href="/team/{{ team.urlId }}" class="c-app-header__tab-list-item-control"{% if activeTab == 'home' %} aria-selected="true"{% endif %}>Home</a>
+                <a href="/teams/{{ team.urlId }}" class="c-app-header__tab-list-item-control"{% if activeTab == 'home' %} aria-selected="true"{% endif %}>Home</a>
             </li>
             <li class="c-app-header__tab-list-item">
-                <a href="/team/{{ team.urlId }}/docs" class="c-app-header__tab-list-item-control"{% if activeTab == 'docs' %} aria-selected="true"{% endif %}>Docs</a>
+                <a href="/teams/{{ team.urlId }}/docs" class="c-app-header__tab-list-item-control"{% if activeTab == 'docs' %} aria-selected="true"{% endif %}>Docs</a>
             </li>
             <li class="c-app-header__tab-list-item">
-                <a href="/team/{{ team.urlId }}/members" class="c-app-header__tab-list-item-control"{% if activeTab == 'members' %} aria-selected="true"{% endif %}>Members</a>
+                <a href="/teams/{{ team.urlId }}/members" class="c-app-header__tab-list-item-control"{% if activeTab == 'members' %} aria-selected="true"{% endif %}>Members</a>
             </li>
         </ol>
     </nav>

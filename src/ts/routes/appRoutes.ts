@@ -9,7 +9,7 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
         },
 
         create_team_doc: {
-            path: '/team/:team_url_id/docs/new',
+            path: '/teams/:team_url_id/docs/new',
             controller: () => [bottle.container.createDocumentController, 'start'],
         },
 
@@ -29,7 +29,7 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
         },
 
         create_team_section: {
-            path: '/team/:team_url_id/docs/new-section',
+            path: '/teams/:team_url_id/docs/new-section',
             controller: () => [bottle.container.createSectionController, 'start'],
         },
     };

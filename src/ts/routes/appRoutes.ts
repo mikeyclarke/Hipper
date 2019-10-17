@@ -19,12 +19,12 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
         },
 
         create_project_doc: {
-            path: '/project/:project_url_id/docs/new',
+            path: '/projects/:project_url_id/docs/new',
             controller: () => [bottle.container.createDocumentController, 'start'],
         },
 
         create_project_section: {
-            path: '/project/:project_url_id/docs/new-section',
+            path: '/projects/:project_url_id/docs/new-section',
             controller: () => [bottle.container.createSectionController, 'start'],
         },
 

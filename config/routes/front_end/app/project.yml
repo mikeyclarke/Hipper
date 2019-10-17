@@ -4,7 +4,7 @@ project.create:
     controller: Hipper\FrontEnd\App\Controller\Project\CreateProjectController::getAction
 
 project.show:
-    path: /project/{project_url_id}
+    path: /projects/{project_url_id}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\ProjectController::getAction
     defaults:
@@ -12,7 +12,7 @@ project.show:
             - project_model_from_url_id_middleware:before
 
 project.docs.list:
-    path: /project/{project_url_id}/docs
+    path: /projects/{project_url_id}/docs
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\ProjectDocsController::getAction
     defaults:
@@ -20,7 +20,7 @@ project.docs.list:
             - project_model_from_url_id_middleware:before
 
 project.section.create:
-    path: /project/{project_url_id}/docs/new-section
+    path: /projects/{project_url_id}/docs/new-section
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Section\CreateSectionController::getAction
     defaults:
@@ -29,7 +29,7 @@ project.section.create:
             - project_model_from_url_id_middleware:before
 
 project.doc.create:
-    path: /project/{project_url_id}/docs/new
+    path: /projects/{project_url_id}/docs/new
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\CreateDocumentController::getAction
     defaults:
@@ -38,7 +38,7 @@ project.doc.create:
             - project_model_from_url_id_middleware:before
 
 project.doc.show:
-    path: /project/{project_url_id}/docs/{path}
+    path: /projects/{project_url_id}/docs/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrSectionControllerRouter::route
     defaults:

@@ -1,0 +1,38 @@
+<mobile-navigation class="c-mobile-nav js-mobile-nav" role="navigation" id="mobile-navigation-panel" tabindex="-1" aria-hidden="true" hidden>
+    <button class="c-mobile-nav__account-button" type="button">
+        <div class="c-avatar c-mobile-nav__account-avatar" aria-hidden="true">
+            <span class="c-avatar__initials">{{ person.abbreviatedName }}</span>
+        </div>
+
+        <span class="c-mobile-nav__account-name">{{ person.name }}</span>
+        <svg class="c-mobile-nav__account-arrow" aria-hidden="true"><use xlink:href="#icon-sprite__chevron-down"/></svg>
+    </button>
+
+    <form class="c-mobile-nav__search" action="/search" method="GET">
+        <svg class="c-mobile-nav__search-icon" aria-hidden="true"><use xlink:href="#icon-sprite__search"/></svg>
+        <input class="c-mobile-nav__search-input" type="search" placeholder="Search {{ organization.name }}…">
+    </form>
+
+    <ol class="c-mobile-nav__items">
+        <li class="c-mobile-nav__item">
+            <a class="c-mobile-nav__item-link" href="/">Home</a>
+        </li>
+        <li class="c-mobile-nav__item">
+            <a class="c-mobile-nav__item-link" href="/docs">Docs</a>
+        </li>
+        <li class="c-mobile-nav__item">
+            <a class="c-mobile-nav__item-link" href="/teams">Teams</a>
+        </li>
+        <li class="c-mobile-nav__item">
+            <a class="c-mobile-nav__item-link" href="/projects">Projects</a>
+        </li>
+        <li class="c-mobile-nav__item">
+            <a class="c-mobile-nav__item-link" href="/people">People</a>
+        </li>
+    </ol>
+
+    <button class="c-mobile-nav__add-new-button" type="button">
+        Add new
+        <svg class="c-mobile-nav__add-new-arrow" aria-hidden="true"><use xlink:href="#icon-sprite__chevron-down"/></svg>
+    </button>
+</mobile-navigation>

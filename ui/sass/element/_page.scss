@@ -4,6 +4,11 @@ html {
     color: config-get(element, page, foreground-color);
     font-family: unquote(config-get(global, font, stack));
     min-height: 100%;
+    overflow-x: hidden;
+}
+
+html.navigation-open {
+    overflow-y: hidden;
 }
 
 * {

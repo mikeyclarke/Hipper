@@ -13,7 +13,13 @@
     <body{% if bodyClassList %} class="{{ bodyClassList|join(' ') }}"{% endif %}>
         {% include 'icon_sprite.twig' %}
 
-        {% block content %}{% endblock %}
+        {% if not hideNavigation %}
+            {% include '_navigation.twig' %}
+        {% endif %}
+
+        <div class="c-page-content js-page-content" tabindex="-1">
+            {% block content %}{% endblock %}
+        </div>
 
         <script src="{{ asset('app.js') }}" crossorigin="anonymous"></script>
     </body>

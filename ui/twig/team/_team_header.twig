@@ -1,8 +1,6 @@
 <header class="c-app-header">
     <div class="c-app-header__top-bar">
-        <button type="button" aria-label="Menu" class="c-app-header__top-bar-menu-button">
-            <svg class="c-app-header__top-bar-menu-icon" aria-hidden="true"><use xlink:href="#icon-sprite__menu"/></svg>
-        </button>
+        {% include '_mobile-navigation-toggle.twig' %}
 
         <div class="c-app-header__compass">
             <span class="c-app-header__compass-entity">Team</span>

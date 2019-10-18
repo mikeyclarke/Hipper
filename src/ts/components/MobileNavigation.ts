@@ -43,7 +43,7 @@ export default class MobileNavigation extends HTMLElement {
             this.hidden = true;
         } else {
             this._pageContent.addEventListener('transitionend', (event) => {
-                if (!this._open) {
+                if (!this._open && event.target === this._pageContent) {
                     this.hidden = true;
                 }
             }, { once: true });

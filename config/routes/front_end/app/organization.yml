@@ -4,3 +4,8 @@ organization.tokenized_login:
     controller: Hipper\FrontEnd\App\Controller\Organization\TokenizedLoginController::getAction
     defaults:
         unsecured: true
+
+organization.sign_out:
+    path: /sign-out
+    methods: [POST]
+    controller: Hipper\FrontEnd\App\Controller\Organization\SignOutController::signOut

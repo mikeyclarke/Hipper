@@ -39,6 +39,7 @@
     "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {
+    "@types/tabbable": "^3.1.0",
     "autosize": "^4.0.2",
     "ky": "^0.15.0",
     "path-to-regexp": "^3.1.0",
@@ -54,6 +55,7 @@
     "prosemirror-state": "^1.2.4",
     "prosemirror-transform": "^1.1.5",
     "prosemirror-view": "^1.11.7",
+    "tabbable": "^4.0.0",
     "twig": "^1.13"
   }
 }

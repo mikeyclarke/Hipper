@@ -1,9 +1,9 @@
-import MobileNavigation from 'components/MobileNavigation';
+import ContextMenu from 'components/ContextMenu';
 
-export default class MobileNavigationToggle extends HTMLElement {
+export default class ContextMenuToggle extends HTMLElement {
     public _button: HTMLButtonElement;
-    public _buttonClickListener: EventListener | null;
-    public _mobileNavigation: MobileNavigation;
+    public _buttonClickListener: any;
+    public _contextMenu: ContextMenu;
 
     constructor() {
         super();
@@ -17,21 +17,21 @@ export default class MobileNavigationToggle extends HTMLElement {
 
         this._button = <HTMLButtonElement> button;
 
-        const navId = this._button.getAttribute('aria-controls');
-        if (null === navId) {
-            throw new Error('Button is not associated with a mobile-navigation element');
+        const contextMenuId = this._button.getAttribute('aria-controls');
+        if (null === contextMenuId) {
+            throw new Error('Button is not associated with a context-menu element');
         }
 
-        const mobileNavigation = document.getElementById(navId);
-        if (null === mobileNavigation) {
+        const contextMenu = document.getElementById(contextMenuId);
+        if (null === contextMenu) {
             throw new ReferenceError('Mobile-navigation element does not exist');
         }
 
-        if (!(mobileNavigation instanceof MobileNavigation)) {
-            throw new TypeError('Element is not a MobileNavigation element');
+        if (!(contextMenu instanceof ContextMenu)) {
+            throw new TypeError('Element is not a ContextMenu element');
         }
 
-        this._mobileNavigation = mobileNavigation;
+        this._contextMenu = contextMenu;
     }
 
     public connectedCallback(): void {
@@ -60,15 +60,18 @@ export default class MobileNavigationToggle extends HTMLElement {
     }
 }
 
-function onButtonClick(this: MobileNavigationToggle): void {
-    if (this._mobileNavigation.open) {
-        this._mobileNavigation.open = false;
+function onButtonClick(this: ContextMenuToggle, event: MouseEvent): void {
+    if (this._contextMenu.expanded) {
+        this._contextMenu.expanded = false;
         return;
     }
 
-    this._mobileNavigation.addEventListener('mobilenavigationclosed', () => {
-        this._button.focus();
+    event.stopPropagation();
+
+    this._contextMenu.addEventListener('contextmenucontracted', () => {
+        this._button.setAttribute('aria-expanded', 'false');
     }, { once: true });
 
-    this._mobileNavigation.open = true;
+    this._button.setAttribute('aria-expanded', 'true');
+    this._contextMenu.expanded = true;
 }

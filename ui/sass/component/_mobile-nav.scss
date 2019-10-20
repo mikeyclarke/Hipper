@@ -149,6 +149,10 @@
     z-index: -1;
 }
 
+.c-mobile-nav__add-new {
+    margin-top: auto;
+}
+
 .c-mobile-nav__add-new-button {
     appearance: none;
     background-color: config-get(color-shades, primary, 100);
@@ -160,7 +164,6 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 16px;
-    margin-top: auto;
     padding: 15px 10px 15px 14px;
     transition: background-color .15s;
     @include font-smoothing;

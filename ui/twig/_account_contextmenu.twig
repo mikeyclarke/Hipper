@@ -1,0 +1,40 @@
+<context-menu class="c-context-menu" role="menu" tabindex="-1" aria-hidden="true" id="{{ html_id }}">
+    <div class="c-context-menu__content">
+        <div class="c-context-menu__header">
+            <div class="c-context-menu__identity">
+                <div class="c-avatar c-context-menu__identity-avatar" aria-hidden="true">
+                    <span class="c-avatar__initials">{{ person.abbreviatedName }}</span>
+                </div>
+
+                <div class="c-context-menu__identity-details">
+                    <span class="c-context-menu__identity-name">{{ person.name }}</span>
+                    <span class="c-context-menu__identity-description">{{ person.jobRoleOrTitle|default('A great person') }}</span>
+                </div>
+
+                <a class="c-context-menu__identity-action-link" href="/people/{{ person.urlId }}" aria-label="View your profile" role="menuitem">
+                    <svg class="c-context-menu__identity-action-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="c-context-menu__group">
+            <a href="/account-settings" role="menuitem" class="c-context-menu__item">
+                <svg class="c-context-menu__item-icon" aria-hidden="true"><use xlink:href="#icon-sprite__account"/></svg>
+                Account settings
+            </a>
+            <a href="/organization-settings" role="menuitem" class="c-context-menu__item">
+                <svg class="c-context-menu__item-icon" aria-hidden="true"><use xlink:href="#icon-sprite__organization"/></svg>
+                Organization settings
+            </a>
+        </div>
+
+        <div class="c-context-menu__group">
+            <a href="/sign-out" role="menuitem" class="c-context-menu__item">
+                <svg class="c-context-menu__item-icon" aria-hidden="true"><use xlink:href="#icon-sprite__sign-out"/></svg>
+                Sign out
+            </a>
+        </div>
+
+        <button type="button" role="menuitem" class="c-context-menu__close-button js-close-button">Close</button>
+    </div>
+</context-menu>

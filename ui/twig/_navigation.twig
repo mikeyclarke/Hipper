@@ -1,12 +1,20 @@
-<mobile-navigation class="c-mobile-nav js-mobile-nav" role="navigation" id="mobile-navigation-panel" tabindex="-1" aria-hidden="true" hidden>
-    <button class="c-mobile-nav__account-button" type="button">
-        <div class="c-avatar c-mobile-nav__account-avatar" aria-hidden="true">
-            <span class="c-avatar__initials">{{ person.abbreviatedName }}</span>
-        </div>
+{% set m_account_context_menu_id = 'm-account-menu' %}
+{% set m_add_new_context_menu_id = 'm-add-new-menu' %}
 
-        <span class="c-mobile-nav__account-name">{{ person.name }}</span>
-        <svg class="c-mobile-nav__account-arrow" aria-hidden="true"><use xlink:href="#icon-sprite__chevron-down"/></svg>
-    </button>
+<mobile-navigation class="c-mobile-nav js-mobile-nav" role="navigation" id="mobile-navigation-panel" tabindex="-1" aria-hidden="true" hidden>
+    <div>
+        <context-menu-toggle>
+            <button class="c-mobile-nav__account-button js-button" type="button" aria-label="Hipper settings & log out menu" aria-haspopup="menu" aria-expanded="false" aria-controls="{{ m_account_context_menu_id }}">
+                <div class="c-avatar c-mobile-nav__account-avatar" aria-hidden="true">
+                    <span class="c-avatar__initials">{{ person.abbreviatedName }}</span>
+                </div>
+
+                <span class="c-mobile-nav__account-name">{{ person.name }}</span>
+                <svg class="c-mobile-nav__account-arrow" aria-hidden="true"><use xlink:href="#icon-sprite__chevron-down"/></svg>
+            </button>
+        </context-menu-toggle>
+        {% include '_account_contextmenu.twig' with { html_id: m_account_context_menu_id } %}
+    </div>
 
     <form class="c-mobile-nav__search" action="/search" method="GET">
         <svg class="c-mobile-nav__search-icon" aria-hidden="true"><use xlink:href="#icon-sprite__search"/></svg>
@@ -31,8 +39,13 @@
         </li>
     </ol>
 
-    <button class="c-mobile-nav__add-new-button" type="button">
-        Add new
-        <svg class="c-mobile-nav__add-new-arrow" aria-hidden="true"><use xlink:href="#icon-sprite__chevron-down"/></svg>
-    </button>
+    <div class="c-mobile-nav__add-new">
+        <context-menu-toggle>
+            <button class="c-mobile-nav__add-new-button js-button" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="{{ m_add_new_context_menu_id }}">
+                Add new
+                <svg class="c-mobile-nav__add-new-arrow" aria-hidden="true"><use xlink:href="#icon-sprite__chevron-down"/></svg>
+            </button>
+        </context-menu-toggle>
+        {% include '_nav_add_new_contextmenu.twig' with { html_id: m_add_new_context_menu_id } %}
+    </div>
 </mobile-navigation>

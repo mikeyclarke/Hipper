@@ -94,7 +94,9 @@ function removeHtmlClassName(): void {
 function addCloseEvents(this: MobileNavigation): void {
     if (null === this._escapeKeyHandler) {
         this._escapeKeyHandler = (event: KeyboardEvent) => {
-            if (['Escape', 'Esc'].includes(event.key)) {
+            if (['Escape', 'Esc'].includes(event.key) &&
+                null === this.querySelector('[aria-haspopup][aria-expanded="true"]')
+            ) {
                 this.open = false;
             }
         };
@@ -108,13 +110,13 @@ function addCloseEvents(this: MobileNavigation): void {
         };
     }
 
-    document.addEventListener('keyup', this._escapeKeyHandler);
+    document.addEventListener('keydown', this._escapeKeyHandler);
     document.addEventListener('mousedown', this._mousedownOutsideHandler);
 }
 
 function removeCloseEvents(this: MobileNavigation): void {
     if (null !== this._escapeKeyHandler) {
-        document.removeEventListener('keyup', this._escapeKeyHandler);
+        document.removeEventListener('keydown', this._escapeKeyHandler);
         this._escapeKeyHandler = null;
     }
 

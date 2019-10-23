@@ -6,7 +6,7 @@ export default async function eventRace(
     timeLimitMilliseconds: number,
     onTimeUp: Function,
     ...eventDefinitions: EventDef[]
-) {
+): void {
     let winner: EventDef | null = null;
     const eventHandlerMap = new Map();
 

@@ -24,7 +24,7 @@ export default class ContextMenu extends HTMLElement {
         this._expanded = this.hasAttribute('expanded');
         this._closeButton = this.querySelector('.js-close-button');
 
-        let floatAt = Number.parseFloat(window.getComputedStyle(this).getPropertyValue('--float-at'));
+        const floatAt = Number.parseFloat(window.getComputedStyle(this).getPropertyValue('--float-at'));
         this._floatAtPixels = (!Number.isNaN(floatAt)) ? floatAt : null;
     }
 

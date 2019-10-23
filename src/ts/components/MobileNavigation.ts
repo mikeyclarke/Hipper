@@ -53,7 +53,7 @@ export default class MobileNavigation extends HTMLElement {
                 if (!this._open && event.target === this._pageContent) {
                     this.hidden = true;
                 }
-            }
+            };
             const endEvent: [EventTarget, string, EventListener] = [this._pageContent, 'transitionend', hide];
             const cancelEvent: [EventTarget, string, EventListener] = [this._pageContent, 'transitioncancel', hide];
             eventRace(1000, hide, endEvent, cancelEvent);

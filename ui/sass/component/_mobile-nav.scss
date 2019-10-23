@@ -9,6 +9,7 @@
     position: absolute;
     right: 0;
     top: 0;
+    --hide-at: #{config-get(breakpoints, app, first)};
 }
 
 .c-mobile-nav__account-button {
@@ -42,6 +43,7 @@
 }
 
 .c-mobile-nav__account-avatar {
+    flex-shrink: 0;
     font-size: 42px;
     height: 42px;
     margin: 0 10px 0 0;
@@ -49,10 +51,12 @@
 }
 
 .c-mobile-nav__account-name {
+    @extend %break-text;
     color: #fefeff;
     font-size: 16px;
     font-weight: 500;
     line-height: 16px;
+    text-align: left;
     @include font-smoothing;
 }
 
@@ -90,7 +94,7 @@
     caret-color: config-get(color-shades, dark, 1000);
     color: config-get(global, color, white);
     font-size: 16px;
-    height: auto;
+    height: 38px;
     line-height: 16px;
     padding: 11px 8px 11px 34px;
     transition: background-color .15s;
@@ -104,6 +108,7 @@
 .c-mobile-nav__search-input::placeholder {
     color: #fafafc;
     opacity: 1;
+    padding-top: 2px; // Required for Safari
 }
 
 .c-mobile-nav__items {

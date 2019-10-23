@@ -87,6 +87,12 @@ $config: (
             background-color: #fcfcfc,
         ),
     ),
+    breakpoints: (
+        app: (
+            first: 752px,
+            second: 930px,
+        ),
+    ),
 );
 
 @function split-str($string, $separator) {

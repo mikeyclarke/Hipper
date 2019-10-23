@@ -7,11 +7,6 @@ html {
     overflow-x: hidden;
 }
 
-html.context-menu-open,
-html.navigation-open {
-    overflow-y: hidden;
-}
-
 * {
     &,
     &:before,

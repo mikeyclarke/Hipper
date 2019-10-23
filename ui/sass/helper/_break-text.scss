@@ -1,0 +1,9 @@
+%break-text {
+    @supports not (overflow-wrap: anywhere) {
+        word-break: break-word;
+    }
+
+    @supports (overflow-wrap: anywhere) {
+        overflow-wrap: anywhere;
+    }
+}

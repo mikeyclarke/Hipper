@@ -1,26 +1,70 @@
-.c-context-menu {
+$floating-breakpoint: only screen and (min-width: 620px);
+$left-right-padding: 16px;
+$left-right-padding-floating: 18px;
+$group-margin-top-bottom: 12px;
+$group-margin-top-bottom-floating: 8px;
+
+:root.context-menu-open {
+    overflow-y: hidden;
+    pointer-events: none;
+}
+
+%c-context-menu {
     bottom: 6px;
     display: none;
     left: 6px;
     position: fixed;
     right: 6px;
     z-index: 20;
+    --float-at: 620px;
+
+    @media #{$floating-breakpoint} {
+        bottom: auto;
+        filter: drop-shadow(0 1px 2px rgba(70, 85, 97, 0.40));
+        left: auto;
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        transform: translateY(-10px);
+        transition: transform .2s, opacity .2s;
+        width: 220px;
+    }
 }
 
-.c-context-menu[expanded] {
+.c-context-menu,
+.c-context-menu--large {
+    @extend %c-context-menu;
+}
+
+.c-context-menu--large {
+    @media #{$floating-breakpoint} {
+        width: 280px;
+    }
+}
+
+%c-context-menu[expanded] {
+    display: block;
+    pointer-events: auto;
+}
+
+%c-context-menu.animate-in,
+%c-context-menu.animate-out {
     display: block;
 }
 
-.c-context-menu.animate-in,
-.c-context-menu.animate-out {
-    display: block;
+%c-context-menu.animate-in {
+    @media #{$floating-breakpoint} {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.c-context-menu:focus {
+%c-context-menu:focus {
     outline: none;
 }
 
-.c-context-menu::before {
+%c-context-menu::before {
     background-image: linear-gradient(180deg, rgba(1,22,39,0.25) 0%, rgba(2,49,79,0.60) 100%);
     content: '';
     position: fixed;
@@ -31,9 +75,25 @@
     right: 0;
     bottom: 0;
     z-index: -1;
+
+    @media #{$floating-breakpoint} {
+        background-image: none;
+        border-bottom: 8px solid config-get(global, color, white);
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        bottom: auto;
+        height: 0;
+        left: auto;
+        opacity: 1;
+        position: absolute;
+        right: $left-right-padding-floating;
+        top: -8px;
+        transition: none;
+        width: 0;
+    }
 }
 
-.c-context-menu.animate-in::before {
+%c-context-menu.animate-in::before {
     opacity: 1;
 }
 
@@ -44,9 +104,16 @@
     overflow: auto;
     transition: transform .25s;
     transform: translateY(calc(100% + 32px));
+
+    @media #{$floating-breakpoint} {
+        border-radius: 6px;
+        box-shadow: none;
+        transform: none;
+        transition: none;
+    }
 }
 
-.c-context-menu.animate-in .c-context-menu__content {
+%c-context-menu.animate-in .c-context-menu__content {
     transform: translateY(0);
 }
 
@@ -55,18 +122,29 @@
     content: '';
     display: block;
     height: 1px;
-    margin: 0 16px;
+    margin: 0 $left-right-padding;
+
+    @media #{$floating-breakpoint} {
+        margin: 0;
+    }
 }
 
 .c-context-menu__identity {
     display: flex;
     margin: 12px 0;
-    padding: 8px 16px;
+    padding: 8px $left-right-padding;
     position: relative;
     z-index: 0;
+
+    @media #{$floating-breakpoint} {
+        margin: 10px 0;
+        padding-left: $left-right-padding-floating;
+        padding-right: $left-right-padding-floating;
+    }
 }
 
 .c-context-menu__identity-avatar {
+    flex-shrink: 0;
     font-size: 42px;
     height: 42px;
     margin: 0 10px 0 0;
@@ -82,12 +160,18 @@
 }
 
 .c-context-menu__identity-name {
+    @extend %break-text;
     color: config-get(color-shades, dark, 700);
     font-size: 18px;
     font-weight: 500;
     line-height: 18px;
     margin: 0 0 4px;
     @include font-smoothing;
+
+    @media #{$floating-breakpoint} {
+        font-size: 16px;
+        line-height: 16px;
+    }
 }
 
 .c-context-menu__identity-description {
@@ -129,14 +213,22 @@
     fill: config-get(color-shades, grey, 1100);
     height: 24px;
     position: absolute;
-    right: 16px;
+    right: $left-right-padding;
     top: 50%;
     transform: translateY(-50%);
     width: 24px;
+
+    @media #{$floating-breakpoint} {
+        right: $left-right-padding-floating;
+    }
 }
 
 .c-context-menu__group {
-    margin: 12px 0;
+    margin: $group-margin-top-bottom 0;
+
+    @media #{$floating-breakpoint} {
+        margin: $group-margin-top-bottom-floating 0;
+    }
 }
 
 .c-context-menu__group + .c-context-menu__group::before {
@@ -159,11 +251,19 @@
     height: 46px;
     line-height: 18px;
     margin: 0 0 4px;
-    padding: 0 16px;
+    padding: 0 $left-right-padding;
     text-decoration: none;
     transition: background-color .125s;
     width: 100%;
     @include font-smoothing;
+
+    @media #{$floating-breakpoint} {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 16px;
+        margin: 0;
+        padding: 0 $left-right-padding-floating;
+    }
 }
 
 .c-context-menu__item:focus {
@@ -195,11 +295,15 @@
     height: 46px;
     justify-content: center;
     line-height: 18px;
-    margin: 18px 16px 16px;
+    margin: 18px $left-right-padding 16px;
     text-align: center;
     transition: filter .125s;
     width: calc(100% - 32px);
     @include font-smoothing;
+
+    @media #{$floating-breakpoint} {
+        display: none;
+    }
 }
 
 .c-context-menu__close-button:focus {

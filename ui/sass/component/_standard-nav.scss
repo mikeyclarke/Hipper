@@ -1,0 +1,262 @@
+$standard-nav-height: 46px;
+
+:root.navigation-open {
+    overflow-y: hidden;
+}
+
+.c-standard-nav {
+    background: #f7f8fa;
+    display: none;
+
+    @media only screen and (min-width: config-get(breakpoints, app, first)) {
+        display: block;
+    }
+
+}
+
+.c-standard-nav__content {
+    display: flex;
+    justify-content: space-between;
+
+    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+        padding: 0 28px 0 16px;
+    }
+
+    @media only screen and (min-width: 1015px) {
+        justify-content: flex-start;
+        margin: 0 auto;
+        padding: 0 12px 0 0;
+        max-width: 1240px + 32px;
+    }
+}
+
+.c-standard-nav__brand {
+    display: flex;
+    height: $standard-nav-height;
+    padding: 0 16px;
+
+    @media only screen and (min-width: 1015px) {
+        margin-right: 16px;
+    }
+}
+
+.c-standard-nav__brand:focus {
+    background: rgba(136, 162, 170, 0.1);
+    outline: 0;
+}
+
+.c-standard-nav__wordmark {
+    fill: config-get(color-shades, primary, 1100);
+    width: 60px;
+}
+
+.c-standard-nav__items {
+    font-size: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    @media only screen and (min-width: 1015px) {
+        margin-right: 20px;
+    }
+}
+
+.c-standard-nav__item {
+    display: inline-block;
+    margin: 0 8px 0 0;
+
+    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+        margin-right: 16px;
+    }
+}
+
+.c-standard-nav__item:last-child {
+    margin-right: 0;
+}
+
+.c-standard-nav__item-link {
+    color: config-get(color-shades, dark, 700);
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 16px;
+    padding: 15px 10px;
+    text-decoration: none;
+    @include font-smoothing;
+}
+
+.c-standard-nav__item-link:focus {
+    background: rgba(136, 162, 170, 0.1);
+    outline: 0;
+}
+
+.c-standard-nav__search {
+    align-items: center;
+    display: flex;
+    margin: 0 16px;
+    position: relative;
+}
+
+.c-standard-nav__search-icon {
+    fill: config-get(color-shades, dark, 500);
+    height: 20px;
+    left: 6px;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+}
+
+.c-standard-nav__search-input {
+    -webkit-appearance: none;
+    appearance: none;
+    background: config-get(global, color, white);
+    border: 2px solid config-get(color-shades, dark, 100);
+    border-radius: 6px;
+    box-sizing: border-box;
+    caret-color: config-get(color-shades, dark, 600);
+    color: config-get(color-shades, dark, 800);
+    font-size: 16px;
+    height: 32px;
+    line-height: 16px;
+    padding: 6px 8px 6px 34px;
+
+    @media only screen and (min-width: 1015px) {
+        width: 312px;
+    }
+}
+
+.c-standard-nav__search-input::placeholder {
+    color: config-get(color-shades, dark, 400);
+    line-height: 16px;
+    opacity: 1;
+    padding-top: 2px; // Required for Safari
+}
+
+.c-standard-nav__actions {
+    display: flex;
+
+    @media only screen and (min-width: 1015px) {
+        margin-left: auto;
+    }
+}
+
+.c-standard-nav__dropdown {
+    position: relative;
+}
+
+.c-standard-nav__add-new-button {
+    @extend %unstyled-button;
+    align-items: center;
+    appearance: none;
+    color: config-get(color-shades, primary, 1000);
+    display: flex;
+    font-size: 16px;
+    font-weight: 500;
+    height: $standard-nav-height;
+    line-height: 16px;
+    padding: 0 10px;
+    position: relative;
+    z-index: 0;
+    @include font-smoothing;
+}
+
+.c-standard-nav__add-new-button::before {
+    background: config-get(color-shades, primary, 100);
+    border-radius: 4px;
+    bottom: 9px;
+    content: '';
+    left: 10px;
+    position: absolute;
+    right: 10px;
+    top: 9px;
+    z-index: -1;
+}
+
+.c-standard-nav__add-new-button:focus {
+    background: rgba(136, 162, 170, 0.1);
+    outline: 0;
+}
+
+.c-standard-nav__add-new-icon {
+    fill: config-get(color-shades, primary, 1000);
+    height: 24px;
+    margin: 0 2px;
+    width: 24px;
+
+    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+        display: none;
+    }
+}
+
+.c-standard-nav__add-new-text {
+    display: none;
+    margin: 0 0 0 8px;
+
+    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+        display: block;
+    }
+}
+
+.c-standard-nav__add-new-arrow {
+    display: none;
+    fill: config-get(color-shades, primary, 1000);
+    height: 18px;
+    margin: 0 3px 0 1px;
+    width: 18px;
+
+    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+        display: block;
+    }
+}
+
+.c-standard-nav__account-button {
+    @extend %unstyled-button;
+    align-items: center;
+    appearance: none;
+    display: flex;
+    font-size: 0;
+    height: $standard-nav-height;
+    padding: 0 0 0 6px;
+}
+
+.c-standard-nav__account-button:focus {
+    background: rgba(136, 162, 170, 0.1);
+    outline: 0;
+}
+
+.c-standard-nav__account-avatar {
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+
+    @media only screen and (min-width: 1300px) {
+        margin-right: 6px;
+    }
+}
+
+.c-standard-nav__account-name {
+    color: config-get(color-shades, dark, 700);
+    display: none;
+    font-size: 16px;
+    line-height: 16px;
+    max-width: 278px;
+    text-align: left;
+    @include font-smoothing;
+
+    @media only screen and (min-width: 1300px) {
+        display: block;
+    }
+}
+
+.c-standard-nav__account-arrow {
+    fill: config-get(color-shades, dark, 400);
+    height: 18px;
+    margin: 0 12px 0 0;
+    width: 18px;
+
+    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+        margin-right: 0;
+    }
+}

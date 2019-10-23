@@ -1,13 +1,18 @@
 import * as tabbable from 'tabbable';
+import eventRace from 'Event/eventRace';
 
 const htmlClassName = 'context-menu-open';
+const eventOptions: AddEventListenerOptions & EventListenerOptions = { passive: true };
 
 export default class ContextMenu extends HTMLElement {
     private _expanded: boolean;
     public _closeButton: HTMLButtonElement | null;
     public _clickListener: any = null;
     public _keydownListener: any = null;
+    public _resizeListener: any = null;
     public _tabbableElements: HTMLElement[] = [];
+    public _floating: boolean | null = null;
+    public readonly _floatAtPixels: number | null = null;
 
     static get observedAttributes(): string[] {
         return ['expanded'];
@@ -19,6 +24,8 @@ export default class ContextMenu extends HTMLElement {
         this._expanded = this.hasAttribute('expanded');
         this._closeButton = this.querySelector('.js-close-button');
 
+        let floatAt = Number.parseFloat(window.getComputedStyle(this).getPropertyValue('--float-at'));
+        this._floatAtPixels = (!Number.isNaN(floatAt)) ? floatAt : null;
     }
 
     public set expanded(value: boolean) {
@@ -32,9 +39,10 @@ export default class ContextMenu extends HTMLElement {
             this.focus();
             cacheTabbableDescendants.bind(this)();
             this.dispatchEvent(new CustomEvent('contextmenuexpanded'));
-            window.requestAnimationFrame(() => {
-                this.classList.add('animate-in');
-            });
+            this.classList.add('animate-in');
+            if (null !== this._floatAtPixels) {
+                this._floating = (window.innerWidth >= this._floatAtPixels);
+            }
             return;
         }
 
@@ -44,9 +52,8 @@ export default class ContextMenu extends HTMLElement {
         this.classList.add('animate-out');
         this.setAttribute('aria-hidden', 'true');
         this.removeAttribute('expanded');
-        this.addEventListener('transitionend', () => {
-            this.classList.remove('animate-out');
-        }, { once: true });
+        removeAnimateClass.bind(this)();
+
         this.dispatchEvent(new CustomEvent('contextmenucontracted'));
     }
 
@@ -91,21 +98,59 @@ function removeHtmlClassName(): void {
 
 function attachEvents(this: ContextMenu): void {
     this._clickListener = onDocumentClick.bind(this);
-    document.addEventListener('click', this._clickListener);
+    document.addEventListener('click', this._clickListener, eventOptions);
 
     this._keydownListener = onDocumentKeydown.bind(this);
     document.addEventListener('keydown', this._keydownListener);
+
+    this._resizeListener = onWindowResize.bind(this);
+    window.addEventListener('resize', this._resizeListener, eventOptions);
 }
 
 function detachEvents(this: ContextMenu): void {
     if (null !== this._clickListener) {
-        document.removeEventListener('click', this._clickListener);
+        document.removeEventListener('click', this._clickListener, eventOptions);
         this._clickListener = null;
     }
 
     if (null !== this._keydownListener) {
         document.removeEventListener('keydown', this._keydownListener);
         this._keydownListener = null;
+    }
+
+    if (null !== this._resizeListener) {
+        window.removeEventListener('resize', this._resizeListener, eventOptions);
+        this._resizeListener = null;
+    }
+}
+
+function removeAnimateClass(this: ContextMenu): void {
+    const removeAnimateClassName = () => {
+        this.classList.remove('animate-out');
+    };
+    const endEvent: [EventTarget, string, EventListener] = [this, 'transitionend', removeAnimateClassName];
+    const cancelEvent: [EventTarget, string, EventListener] = [this, 'transitioncancel', removeAnimateClassName];
+    eventRace(1000, removeAnimateClassName, endEvent, cancelEvent);
+}
+
+function onWindowResize(this: ContextMenu, event: Event): void {
+    if (null === this._floatAtPixels || null === this._floating) {
+        return;
+    }
+
+    if (!this._floating && window.innerWidth >= this._floatAtPixels) {
+        this._floating = true;
+        requestAnimationFrame(() => {
+            cacheTabbableDescendants.bind(this)();
+        });
+        return;
+    }
+
+    if (this._floating && window.innerWidth < this._floatAtPixels) {
+        this._floating = false;
+        requestAnimationFrame(() => {
+            cacheTabbableDescendants.bind(this)();
+        });
     }
 }
 
@@ -149,12 +194,12 @@ function onDocumentClick(this: ContextMenu, event: MouseEvent): void {
         return;
     }
 
+    event.stopPropagation();
+
     // Click outside, close the context menu
     if (this !== event.target && !this.contains(event.target)) {
         this.expanded = false;
     }
-
-    event.stopPropagation();
 
     // Click on backdrop (psuedo-element of this element) or close button
     if (this === event.target ||

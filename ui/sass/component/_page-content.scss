@@ -8,6 +8,10 @@
     transition-duration: .2s;
 }
 
+.c-page-content:focus {
+    outline: 0;
+}
+
 .navigation-open .c-page-content {
     box-shadow: 0 2px 12px rgba(#000, .32);
     opacity: .95;

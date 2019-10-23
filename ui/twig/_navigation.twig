@@ -1,5 +1,7 @@
 {% set m_account_context_menu_id = 'm-account-menu' %}
+{% set s_account_context_menu_id = 's-account-menu' %}
 {% set m_add_new_context_menu_id = 'm-add-new-menu' %}
+{% set s_add_new_context_menu_id = 's-add-new-menu' %}
 
 <mobile-navigation class="c-mobile-nav js-mobile-nav" role="navigation" id="mobile-navigation-panel" tabindex="-1" aria-hidden="true" hidden>
     <div>
@@ -49,3 +51,58 @@
         {% include '_nav_add_new_contextmenu.twig' with { html_id: m_add_new_context_menu_id } %}
     </div>
 </mobile-navigation>
+
+<nav class="c-standard-nav">
+    <div class="c-standard-nav__content">
+        <a class="c-standard-nav__brand" href="/">
+            <svg class="c-standard-nav__wordmark" role="img" aria-label="Home"><use xlink:href="#icon-sprite__wordmark"/></svg>
+        </a>
+
+        <ol class="c-standard-nav__items">
+            <li class="c-standard-nav__item">
+                <a class="c-standard-nav__item-link" href="/docs">Docs</a>
+            </li>
+            <li class="c-standard-nav__item">
+                <a class="c-standard-nav__item-link" href="/teams">Teams</a>
+            </li>
+            <li class="c-standard-nav__item">
+                <a class="c-standard-nav__item-link" href="/projects">Projects</a>
+            </li>
+            <li class="c-standard-nav__item">
+                <a class="c-standard-nav__item-link" href="/people">People</a>
+            </li>
+        </ol>
+
+        <form class="c-standard-nav__search" action="/search" method="GET">
+            <svg class="c-standard-nav__search-icon" aria-hidden="true"><use xlink:href="#icon-sprite__search"/></svg>
+            <input class="c-standard-nav__search-input" type="search" placeholder="Search {{ organization.name }}…" name="q" autocomplete="off">
+        </form>
+
+        <div class="c-standard-nav__actions">
+            <div class="c-standard-nav__dropdown">
+                <context-menu-toggle>
+                    <button class="c-standard-nav__add-new-button js-button" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="{{ s_add_new_context_menu_id }}" aria-label="Add new…">
+                        <svg class="c-standard-nav__add-new-icon" aria-hidden="true"><use xlink:href="#icon-sprite__add"/></svg>
+                        <span class="c-standard-nav__add-new-text" aria-hidden="true">Add new</span>
+                        <svg class="c-standard-nav__add-new-arrow" aria-hidden="true"><use xlink:href="#icon-sprite__chevron-down"/></svg>
+                    </button>
+                </context-menu-toggle>
+                {% include '_nav_add_new_contextmenu.twig' with { html_id: s_add_new_context_menu_id } %}
+            </div>
+
+            <div class="c-standard-nav__dropdown">
+                <context-menu-toggle>
+                    <button class="c-standard-nav__account-button js-button" type="button" aria-label="Hipper settings & log out menu" aria-haspopup="menu" aria-expanded="false" aria-controls="{{ s_account_context_menu_id }}">
+                        <div class="c-avatar c-standard-nav__account-avatar" aria-hidden="true">
+                            <span class="c-avatar__initials">{{ person.abbreviatedName }}</span>
+                        </div>
+
+                        <span class="c-standard-nav__account-name">{{ person.name }}</span>
+                        <svg class="c-standard-nav__account-arrow" aria-hidden="true"><use xlink:href="#icon-sprite__chevron-down"/></svg>
+                    </button>
+                </context-menu-toggle>
+                {% include '_account_contextmenu.twig' with { html_id: s_account_context_menu_id } %}
+            </div>
+        </div>
+    </div>
+</nav>

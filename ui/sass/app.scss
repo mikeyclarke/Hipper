@@ -2,6 +2,7 @@
 @import './fonts';
 
 @import 'utility/hidden-attribute';
+@import 'helper/break-text';
 @import 'helper/font-smoothing';
 @import 'helper/unstyled-button';
 
@@ -20,6 +21,7 @@
 @import 'component/page-content';
 @import 'component/avatar';
 @import 'component/mobile-nav';
+@import 'component/standard-nav';
 @import 'component/button';
 @import 'component/checkbox';
 @import 'component/password-input';

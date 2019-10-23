@@ -1,5 +1,7 @@
 import ContextMenu from 'components/ContextMenu';
 
+const clickOptions: AddEventListenerOptions & EventListenerOptions = { passive: true };
+
 export default class ContextMenuToggle extends HTMLElement {
     public _button: HTMLButtonElement;
     public _buttonClickListener: any;
@@ -44,7 +46,7 @@ export default class ContextMenuToggle extends HTMLElement {
         }
 
         this._buttonClickListener = onButtonClick.bind(this);
-        this._button.addEventListener('click', this._buttonClickListener);
+        document.addEventListener('click', this._buttonClickListener, clickOptions);
     }
 
     public disconnectedCallback(): void {
@@ -56,17 +58,23 @@ export default class ContextMenuToggle extends HTMLElement {
             return;
         }
 
-        this._button.removeEventListener('click', this._buttonClickListener);
+        document.removeEventListener('click', this._buttonClickListener, clickOptions);
     }
 }
 
 function onButtonClick(this: ContextMenuToggle, event: MouseEvent): void {
+    if (null === event.target || !(event.target instanceof Node)) {
+        return;
+    }
+
+    if (!this.contains(event.target)) {
+        return;
+    }
+
     if (this._contextMenu.expanded) {
         this._contextMenu.expanded = false;
         return;
     }
-
-    event.stopPropagation();
 
     this._contextMenu.addEventListener('contextmenucontracted', () => {
         this._button.setAttribute('aria-expanded', 'false');

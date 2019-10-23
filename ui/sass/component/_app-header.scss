@@ -6,10 +6,8 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
 
 .c-app-header {
     background-color: $app-header-background-color;
-    border-radius: $app-header-border-radius;
-    box-shadow: $app-header-box-shadow;
+    padding: 0 0 12px;
     position: relative;
-    z-index: 1;
 }
 
 .c-app-header__top-bar {

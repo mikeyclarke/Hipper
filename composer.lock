@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ed8a773de3ec6240fbc6116d815b916",
+    "content-hash": "4f06097332b83de0fd7c16b8744b9cc8",
     "packages": [
         {
             "name": "ausi/slug-generator",
@@ -5899,6 +5899,61 @@
                 "xunit"
             ],
             "time": "2019-10-07T12:57:41+00:00"
+        },
+        {
+            "name": "pyrech/composer-changelogs",
+            "version": "v1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pyrech/composer-changelogs.git",
+                "reference": "bd708afc62b0855fde6c7c731edbd45cbe33f20e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pyrech/composer-changelogs/zipball/bd708afc62b0855fde6c7c731edbd45cbe33f20e",
+                "reference": "bd708afc62b0855fde6c7c731edbd45cbe33f20e",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0 || ^1.1",
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "composer/composer": "~1.0.0-alpha10@dev",
+                "composer/semver": "1.2.0",
+                "friendsofphp/php-cs-fixer": "~1.5",
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                },
+                "class": "Pyrech\\ComposerChangelogs\\ChangelogsPlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pyrech\\ComposerChangelogs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Loïck Piera",
+                    "email": "pyrech@gmail.com"
+                }
+            ],
+            "description": "Display changelogs after each composer update",
+            "keywords": [
+                "changelog",
+                "composer",
+                "plugin",
+                "update"
+            ],
+            "time": "2019-10-21T15:22:05+00:00"
         },
         {
             "name": "roave/security-advisories",

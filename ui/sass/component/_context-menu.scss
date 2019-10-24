@@ -1,4 +1,4 @@
-$floating-breakpoint: only screen and (min-width: 620px);
+$floating-breakpoint: only screen and (min-width: config-get(breakpoints, app, first));
 $left-right-padding: 16px;
 $left-right-padding-floating: 18px;
 $group-margin-top-bottom: 12px;

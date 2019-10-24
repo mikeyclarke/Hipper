@@ -7,7 +7,7 @@
   "devDependencies": {
     "@types/autosize": "^3.0.6",
     "@types/jest": "^24.0.19",
-    "@types/node": "^12.11.1",
+    "@types/node": "^12.11.6",
     "@types/prosemirror-commands": "^1.0.1",
     "@types/prosemirror-dropcursor": "^1.0.0",
     "@types/prosemirror-gapcursor": "^1.0.1",
@@ -26,10 +26,10 @@
     "file-loader": "^4.2",
     "jest": "^24.9.0",
     "mini-css-extract-plugin": "^0.8",
-    "node-sass": "^4.12",
+    "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
     "ts-jest": "^24.1.0",
-    "ts-loader": "^6.2.0",
+    "ts-loader": "^6.2.1",
     "tslint": "^5.20.0",
     "twig-loader": "^0.5",
     "typescript": "^3.6.4",
@@ -54,7 +54,7 @@
     "prosemirror-schema-list": "^1.0.4",
     "prosemirror-state": "^1.2.4",
     "prosemirror-transform": "^1.1.5",
-    "prosemirror-view": "^1.11.7",
+    "prosemirror-view": "^1.12.0",
     "tabbable": "^4.0.0",
     "twig": "^1.13"
   }

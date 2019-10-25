@@ -14,7 +14,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
     display: flex;
     justify-content: space-between;
 
-    @media only screen and (min-width: 1015px) {
+    @media only screen and (min-width: config-get(breakpoints, app, third)) {
         margin: 0 auto;
         max-width: 1240px + 32px;
         padding: 0 16px;
@@ -32,7 +32,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
         margin-left: 16px;
     }
 
-    @media only screen and (min-width: 1015px) {
+    @media only screen and (min-width: config-get(breakpoints, app, third)) {
         margin-left: 0;
     }
 }

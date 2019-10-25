@@ -6,6 +6,10 @@
     position: relative;
     transition: transform, box-shadow, opacity;
     transition-duration: .2s;
+
+    @media only screen and (min-width: config-get(breakpoints, app, first)) {
+        min-height: auto;
+    }
 }
 
 .c-page-content:focus {

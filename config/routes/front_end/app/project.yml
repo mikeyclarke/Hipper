@@ -1,3 +1,8 @@
+projects.show:
+    path: /projects
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Project\ProjectsController::getAction
+
 project.create:
     path: /projects/new
     methods: [GET]

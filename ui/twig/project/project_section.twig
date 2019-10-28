@@ -1,50 +1,48 @@
-{% extends 'base_layout.twig' %}
+{% extends '_app_default_layout.twig' %}
+
+{% block navigational_header %}{% include 'project/_project_header.twig' with { activeTab: 'docs' } %}{% endblock %}
 
 {% block content %}
 
-{% include 'project/_project_header.twig' with { activeTab: 'docs' } %}
+<header class="c-page-header">
+    <h1 class="c-page-header__title">{{ section.name }}</h1>
 
-<main class="c-app-main">
-    <header class="c-page-header">
-        <h1 class="c-page-header__title">{{ section.name }}</h1>
-
-        {% if section.description is null or section.description is empty %}
-            <p class="c-page-header__subheading--muted">This section doesn’t have a description yet</p>
-        {% else %}
-            <p class="c-page-header__subheading">{{ section.description }}</p>
-        {% endif %}
-
-        {% if personIsInProject %}
-            <button type="button" aria-label="Edit section" class="c-page-header__edit-button">
-                <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
-            </button>
-        {% endif %}
-    </header>
-
-    {% if knowledgebaseEntries is not empty %}
-        {% include '_knowledgebase_entries.twig' %}
+    {% if section.description is null or section.description is empty %}
+        <p class="c-page-header__subheading--muted">This section doesn’t have a description yet</p>
+    {% else %}
+        <p class="c-page-header__subheading">{{ section.description }}</p>
     {% endif %}
 
-    <floating-button>
-        <ol class="floating-button__list js-list" hidden>
-            <li class="floating-button__list-item">
-                <a href="/projects/{{ project.urlId }}/docs/new" class="floating-button__control">
-                    <svg class="floating-button__control-icon" aria-hidden="true"><use xlink:href="#icon-sprite__doc"/></svg>
-                    Add new doc
-                </a>
-            </li>
-            <li class="floating-button__list-item">
-                <a href="/projects/{{ project.urlId }}/docs/new-section" class="floating-button__control">
-                    <svg class="floating-button__control-icon" aria-hidden="true"><use xlink:href="#icon-sprite__section"/></svg>
-                    Add new section
-                </a>
-            </li>
-        </ol>
-
-        <button type="button" aria-label="Add content…" class="floating-button__button js-button">
-            <svg class="floating-button__button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__add"/></svg>
+    {% if personIsInProject %}
+        <button type="button" aria-label="Edit section" class="c-page-header__edit-button">
+            <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
         </button>
-    </floating-button>
-</main>
+    {% endif %}
+</header>
+
+{% if knowledgebaseEntries is not empty %}
+    {% include '_knowledgebase_entries.twig' %}
+{% endif %}
+
+<floating-button>
+    <ol class="floating-button__list js-list" hidden>
+        <li class="floating-button__list-item">
+            <a href="/projects/{{ project.urlId }}/docs/new" class="floating-button__control">
+                <svg class="floating-button__control-icon" aria-hidden="true"><use xlink:href="#icon-sprite__doc"/></svg>
+                Add new doc
+            </a>
+        </li>
+        <li class="floating-button__list-item">
+            <a href="/projects/{{ project.urlId }}/docs/new-section" class="floating-button__control">
+                <svg class="floating-button__control-icon" aria-hidden="true"><use xlink:href="#icon-sprite__section"/></svg>
+                Add new section
+            </a>
+        </li>
+    </ol>
+
+    <button type="button" aria-label="Add content…" class="floating-button__button js-button">
+        <svg class="floating-button__button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__add"/></svg>
+    </button>
+</floating-button>
 
 {% endblock %}

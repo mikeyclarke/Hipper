@@ -3,6 +3,7 @@
 
 @import 'utility/hidden-attribute';
 @import 'helper/break-text';
+@import 'helper/breakpoint';
 @import 'helper/font-smoothing';
 @import 'helper/unstyled-button';
 
@@ -18,7 +19,6 @@
 @import 'custom-element/popover-alert';
 @import 'custom-element/floating-button';
 
-@import 'component/page-content';
 @import 'component/avatar';
 @import 'component/mobile-nav';
 @import 'component/standard-nav';
@@ -28,8 +28,8 @@
 @import 'component/form';
 @import 'component/context-menu';
 @import 'component/sheet';
+@import 'component/list';
 @import 'component/app-header';
-@import 'component/app-main';
 @import 'component/page-header';
 @import 'component/page-section';
 @import 'component/banner';
@@ -37,7 +37,7 @@
 @import 'component/document-editor-header';
 @import 'component/document-editor-document';
 @import 'component/document-editor-menu';
-@import 'component/document-list';
 
+@import 'layout/app-default';
 @import 'layout/sheet';
 @import 'layout/document-editor';

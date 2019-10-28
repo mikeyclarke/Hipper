@@ -89,9 +89,8 @@ $config: (
     ),
     breakpoints: (
         app: (
-            first: 752px,
-            second: 930px,
-            third: 1015px,
+            medium: 752px,
+            large: 1015px,
         ),
     ),
 );

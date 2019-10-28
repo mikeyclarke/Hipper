@@ -1,27 +1,25 @@
-{% extends 'base_layout.twig' %}
+{% extends '_app_default_layout.twig' %}
+
+{% block navigational_header %}{% include 'project/_project_header.twig' with { activeTab: 'docs' } %}{% endblock %}
 
 {% block content %}
 
-{% include 'project/_project_header.twig' with { activeTab: 'docs' } %}
+<header class="c-page-header">
+    <form class="js-create-section-form">
+        <input type="hidden" name="knowledgebase_id" value="{{ knowledgebase_id }}">
 
-<main class="c-app-main">
-    <header class="c-page-header">
-        <form class="js-create-section-form">
-            <input type="hidden" name="knowledgebase_id" value="{{ knowledgebase_id }}">
+        <elastic-text-input>
+            <textarea name="name" class="c-page-header__title" placeholder="Name this section" rows="1" maxlength="150" autocomplete="off" autofocus></textarea>
+        </elastic-text-input>
 
-            <elastic-text-input>
-                <textarea name="name" class="c-page-header__title" placeholder="Name this section" rows="1" maxlength="150" autocomplete="off" autofocus></textarea>
-            </elastic-text-input>
+        <elastic-text-input>
+            <textarea name="description" class="c-page-header__subheading" placeholder="Description (optional)" rows="1" maxlength="300" autocomplete="off"></textarea>
+        <elastic-text-input>
 
-            <elastic-text-input>
-                <textarea name="description" class="c-page-header__subheading" placeholder="Description (optional)" rows="1" maxlength="300" autocomplete="off"></textarea>
-            <elastic-text-input>
-
-            <button type="submit" aria-label="Create section" class="c-page-header__done-button js-submit">
-                <svg class="c-page-header__done-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
-            </button>
-        </form>
-    </header>
-</main>
+        <button type="submit" aria-label="Create section" class="c-page-header__done-button js-submit">
+            <svg class="c-page-header__done-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
+        </button>
+    </form>
+</header>
 
 {% endblock %}

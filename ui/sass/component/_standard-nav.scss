@@ -1,4 +1,5 @@
 $standard-nav-height: 46px;
+$medium-large-breakpoint: 930px;
 
 :root.navigation-open {
     overflow-y: hidden;
@@ -9,7 +10,7 @@ $standard-nav-height: 46px;
     display: none;
     height: 67px;
 
-    @media only screen and (min-width: config-get(breakpoints, app, first)) {
+    @include breakpoint(app, medium) {
         display: block;
     }
 
@@ -19,7 +20,7 @@ $standard-nav-height: 46px;
     display: flex;
     justify-content: space-between;
 
-    @media only screen and (min-width: config-get(breakpoints, app, third)) {
+    @include breakpoint(app, large) {
         justify-content: flex-start;
         margin: 0 auto;
         padding: 0 12px 0 0;
@@ -32,7 +33,7 @@ $standard-nav-height: 46px;
     height: $standard-nav-height;
     padding: 0 16px;
 
-    @media only screen and (min-width: config-get(breakpoints, app, third)) {
+    @include breakpoint(app, large) {
         margin-right: 16px;
     }
 }
@@ -53,7 +54,7 @@ $standard-nav-height: 46px;
     margin: 0;
     padding: 0;
 
-    @media only screen and (min-width: config-get(breakpoints, app, third)) {
+    @include breakpoint(app, large) {
         margin-right: 20px;
     }
 }
@@ -62,7 +63,7 @@ $standard-nav-height: 46px;
     display: inline-block;
     margin: 0 8px 0 0;
 
-    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+    @include free-form-breakpoint($medium-large-breakpoint) {
         margin-right: 16px;
     }
 }
@@ -119,7 +120,7 @@ $standard-nav-height: 46px;
     line-height: 16px;
     padding: 6px 8px 6px 34px;
 
-    @media only screen and (min-width: config-get(breakpoints, app, third)) {
+    @include breakpoint(app, large) {
         width: 312px;
     }
 }
@@ -134,7 +135,7 @@ $standard-nav-height: 46px;
 .c-standard-nav__actions {
     display: flex;
 
-    @media only screen and (min-width: config-get(breakpoints, app, third)) {
+    @include breakpoint(app, large) {
         margin-left: auto;
     }
 }
@@ -182,7 +183,7 @@ $standard-nav-height: 46px;
     margin: 0 2px;
     width: 24px;
 
-    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+    @include free-form-breakpoint($medium-large-breakpoint) {
         display: none;
     }
 }
@@ -191,7 +192,7 @@ $standard-nav-height: 46px;
     display: none;
     margin: 0 0 0 8px;
 
-    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+    @include free-form-breakpoint($medium-large-breakpoint) {
         display: block;
     }
 }
@@ -203,7 +204,7 @@ $standard-nav-height: 46px;
     margin: 0 3px 0 1px;
     width: 18px;
 
-    @media only screen and (min-width: config-get(breakpoints, app, second)) {
+    @include free-form-breakpoint($medium-large-breakpoint) {
         display: block;
     }
 }
@@ -229,7 +230,7 @@ $standard-nav-height: 46px;
     height: 32px;
     width: 32px;
 
-    @media only screen and (min-width: 1300px) {
+    @include free-form-breakpoint(1300px) {
         margin-right: 6px;
     }
 }
@@ -243,7 +244,7 @@ $standard-nav-height: 46px;
     text-align: left;
     @include font-smoothing;
 
-    @media only screen and (min-width: 1300px) {
+    @include free-form-breakpoint(1300px) {
         display: block;
     }
 }
@@ -254,7 +255,7 @@ $standard-nav-height: 46px;
     margin: 0 12px 0 0;
     width: 18px;
 
-    @media only screen and (min-width: config-get(breakpoints, app, third)) {
+    @include breakpoint(app, large) {
         margin-right: 0;
     }
 }

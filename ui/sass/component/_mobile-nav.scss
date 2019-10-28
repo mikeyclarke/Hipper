@@ -9,7 +9,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    --hide-at: #{config-get(breakpoints, app, first)};
+    --hide-at: #{config-get(breakpoints, app, medium)};
 }
 
 .c-mobile-nav__account-button {

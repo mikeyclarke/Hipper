@@ -1,0 +1,235 @@
+$list-padding: 16px;
+$list-padding-medium-bp: 20px;
+$content-left-offset-with-icon: 28px;
+$content-left-offset-with-avatar: 44px;
+$content-left-offset-with-icon-medium-bp: 28px;
+$content-left-offset-with-avatar-medium-bp: 66px;
+$content-left-offset-profile-card-medium-bp: 98px;
+$avatar-size: 32px;
+$avatar-size-medium-bp: 48px;
+$profile-card-avatar-size-medium-bp: 80px;
+
+.c-list {
+    background-color: config-get(global, color, white);
+    border-radius: 8px;
+    box-shadow: 0 0 4px rgba(196, 194, 197, .4);
+    list-style: none;
+    margin: 20px 0 86px;
+    padding: 0;
+
+    @include breakpoint(app, medium) {
+        display: grid;
+        background-color: transparent;
+        box-shadow: none;
+        grid-auto-rows: 1fr;
+        grid-column-gap: 24px;
+        grid-row-gap: 24px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @include free-form-breakpoint(1092px) {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+.l-app-default__main-content-inner-container > .c-list:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    margin-top: -6px;
+}
+
+%c-list__item {
+    display: block;
+
+    @include breakpoint(app, medium) {
+        background-color: config-get(global, color, white);
+        border-radius: 2px;
+        box-shadow: 0 1px 4px rgba(196, 194, 197, .4);
+    }
+}
+
+%c-list__item:not(:last-child)::after {
+    background-color: config-get(color-shades, grey, 500);
+    content: '';
+    display: block;
+    height: 1px;
+    margin-left: $list-padding;
+    opacity: .15;
+
+    @include breakpoint(app, medium) {
+        display: none;
+    }
+}
+
+.c-list__item--with-icon,
+.c-list__item--with-avatar,
+.c-list__item--profile-card {
+    @extend %c-list__item;
+}
+
+.c-list__item--with-icon:not(:last-child)::after {
+    margin-left: $list-padding + $content-left-offset-with-icon;
+}
+
+.c-list__item--with-icon:not(:last-child)::after {
+    margin-left: $list-padding + $content-left-offset-with-avatar;
+}
+
+.c-list__item-link {
+    display: block;
+    padding: $list-padding;
+    position: relative;
+
+    @include breakpoint(app, medium) {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: $list-padding-medium-bp;
+    }
+}
+
+.c-list__item-link,
+.c-list__item-link:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+.c-list__item-link:focus {
+    background-color: rgba(config-get(color-shades, grey, 100), .5);
+    outline: 0;
+}
+
+.c-list:focus-within .c-list__item-link:not(:focus) {
+    opacity: .85;
+}
+
+.c-list__item--profile-card .c-list__item-link {
+    @include breakpoint(app, medium) {
+        justify-content: center;
+        min-height: $profile-card-avatar-size-medium-bp + ($list-padding-medium-bp * 2);
+    }
+}
+
+.c-list__item-avatar {
+    font-size: $avatar-size;
+    height: $avatar-size;
+    position: absolute;
+    top: $list-padding + 4px;
+    width: $avatar-size;
+
+    @include breakpoint(app, medium) {
+        font-size: $avatar-size-medium-bp;
+        height: $avatar-size-medium-bp;
+        width: $avatar-size-medium-bp;
+    }
+}
+
+.c-list__item--profile-card .c-list__item-avatar {
+    @include breakpoint(app, medium) {
+        font-size: $profile-card-avatar-size-medium-bp;
+        height: $profile-card-avatar-size-medium-bp;
+        width: $profile-card-avatar-size-medium-bp;
+    }
+}
+
+.c-list__item-icon {
+    fill: config-get(color-shades, primary, 800);
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    top: $list-padding + 4px;
+
+    @include breakpoint(app, medium) {
+        top: $list-padding-medium-bp + 4px;
+    }
+}
+
+.c-list__item-title {
+    color: config-get(color-shades, dark, 1000);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    margin: 0 0 10px;
+    @include font-smoothing;
+
+    @include breakpoint(app, medium) {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+}
+
+.c-list__item--profile-card .c-list__item-title {
+    @include breakpoint(app, medium) {
+        margin-bottom: 8px;
+    }
+}
+
+.c-list__item-description {
+    font-size: 15px;
+    color: config-get(color-shades, dark, 900);
+    line-height: 22px;
+    margin: 0 0 8px;
+    @include font-smoothing;
+
+    @include breakpoint(app, medium) {
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 24px;
+    }
+}
+
+.c-list__item--profile-card .c-list__item-description {
+    @include breakpoint(app, medium) {
+        margin-bottom: 0;
+    }
+}
+
+.c-list__item-meta {
+    color: #b0aeb1;
+    font-size: 12px;
+    line-height: 12px;
+    margin: 0;
+    @include font-smoothing;
+
+    @include breakpoint(app, medium) {
+        font-size: 14px;
+        line-height: 14px;
+        margin-top: auto;
+    }
+}
+
+.c-list__item--with-icon {
+    .c-list__item-title,
+    .c-list__item-description,
+    .c-list__item-meta {
+        margin-left: $content-left-offset-with-icon;
+
+        @include breakpoint(app, medium) {
+            margin-left: $content-left-offset-with-icon-medium-bp;
+        }
+    }
+}
+
+.c-list__item--with-avatar {
+    .c-list__item-title,
+    .c-list__item-description,
+    .c-list__item-meta {
+        margin-left: $content-left-offset-with-avatar;
+
+        @include breakpoint(app, medium) {
+            margin-left: $content-left-offset-with-avatar-medium-bp;
+        }
+    }
+}
+
+.c-list__item--profile-card {
+    .c-list__item-title,
+    .c-list__item-description,
+    .c-list__item-meta {
+        margin-left: $content-left-offset-with-avatar;
+
+        @include breakpoint(app, medium) {
+            margin-left: $content-left-offset-profile-card-medium-bp;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+@mixin breakpoint($namespace, $size) {
+    @media only screen and (min-width: config-get(breakpoints, $namespace, $size)) {
+        @content;
+    }
+}
+
+@mixin free-form-breakpoint($min_width) {
+    @media only screen and (min-width: $min_width) {
+        @content;
+    }
+}

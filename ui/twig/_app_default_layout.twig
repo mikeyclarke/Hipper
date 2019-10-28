@@ -1,0 +1,16 @@
+{% extends 'base_layout.twig' %}
+
+{% block page_content %}
+    {% include '_app_mobile_navigation.twig' %}
+
+    <div class="l-app-default__wrapper js-page-content" tabindex="-1">
+        {% include '_app_standard_navigation.twig' %}
+        {% block navigational_header %}{% endblock %}
+
+        <div class="l-app-default__main-content-outer-container">
+            <main class="l-app-default__main-content-inner-container">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock %}

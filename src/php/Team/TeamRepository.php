@@ -15,6 +15,23 @@ class TeamRepository
         $this->connection = $connection;
     }
 
+    public function getAll(string $organizationId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('*')
+            ->from('team')
+            ->where('organization_id = :organization_id')
+            ->orderBy('created', 'DESC');
+
+        $qb->setParameter('organization_id', $organizationId);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
     public function findByUrlId(string $organizationId, string $urlId): ?array
     {
         $qb = $this->connection->createQueryBuilder();

@@ -1,3 +1,8 @@
+teams.list:
+    path: /teams
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Team\TeamsController::getAction
+
 team.create:
     path: /teams/new
     methods: [GET]

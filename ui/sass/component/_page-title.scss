@@ -1,0 +1,19 @@
+$font-size: 32px;
+
+%c-page-title {
+    color: config-get(color-shades, dark, 900);
+    font-family: 700;
+    font-size: $font-size;
+    line-height: $font-size;
+    margin: 0 0 36px;
+    @include font-smoothing;
+}
+
+.c-page-title--hide-below-medium {
+    @extend %c-page-title;
+    display: none;
+
+    @include breakpoint(app, medium) {
+        display: block;
+    }
+}

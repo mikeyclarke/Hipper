@@ -1,0 +1,34 @@
+{% extends '_app_default_layout.twig' %}
+
+{% block navigational_header %}
+<header class="c-app-header--hide-at-medium">
+    <div class="c-app-header__top-bar">
+        {% include '_mobile_navigation_toggle.twig' %}
+
+        <div class="c-app-header__compass">
+            <span class="c-app-header__compass-name">Teams</span>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<h1 class="c-page-title--hide-below-medium">Teams at {{ organization.name }}</h1>
+
+<ol class="c-list">
+    {% for team in teams_list %}
+        <li class="c-list__item--with-avatar">
+            <a class="c-list__item-link" href="{{ team.route }}">
+                <div class="c-avatar c-list__item-avatar">
+                    <span class="c-avatar__initials">{{ team.name|trim|first|upper }}</span>
+                </div>
+                <h2 class="c-list__item-title">{{ team.name }}</h2>
+                <p class="c-list__item-description">{{ team.description }}</p>
+                <span class="c-list__item-meta">Created <time datetime="{{ team.created.utc_datetime }}" title="{{ team.created.verbose }}">{{ team.created.time_ago }}</time></span>
+            </a>
+        </li>
+    {% endfor %}
+</ol>
+
+{% endblock %}

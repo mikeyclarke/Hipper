@@ -4,9 +4,13 @@ declare(strict_types=1);
 namespace Hipper\Team;
 
 use Doctrine\DBAL\Connection;
+use InvalidArgumentException;
 
 class TeamRepository
 {
+    const ALLOWED_SORT_COLUMNS = ['created', 'name'];
+    const ALLOWED_ORDERINGS = ['ASC', 'DESC'];
+
     private $connection;
 
     public function __construct(
@@ -15,14 +19,22 @@ class TeamRepository
         $this->connection = $connection;
     }
 
-    public function getAll(string $organizationId): array
+    public function getAll(string $organizationId, string $sortBy = 'created', string $orderBy = 'DESC'): array
     {
+        if (!in_array($sortBy, self::ALLOWED_SORT_COLUMNS)) {
+            throw new InvalidArgumentException('Unsupported `sortBy` column');
+        }
+
+        if (!in_array($orderBy, self::ALLOWED_ORDERINGS)) {
+            throw new InvalidArgumentException('Unsupported `orderBy` value');
+        }
+
         $qb = $this->connection->createQueryBuilder();
 
         $qb->select('*')
             ->from('team')
             ->where('organization_id = :organization_id')
-            ->orderBy('created', 'DESC');
+            ->orderBy($sortBy, $orderBy);
 
         $qb->setParameter('organization_id', $organizationId);
 

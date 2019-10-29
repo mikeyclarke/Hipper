@@ -33,7 +33,7 @@ class ProjectsController
     {
         $organization = $request->attributes->get('organization');
         $displayTimeZone = $this->timeZoneFromRequest->get($request);
-        $projects = $this->projectRepository->getAll($organization->getId());
+        $projects = $this->projectRepository->getAll($organization->getId(), 'name', 'ASC');
 
         $projectsList = $this->projectsListFormatter->format($projects, $displayTimeZone);
 

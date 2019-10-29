@@ -32,7 +32,7 @@ class TeamsController
     public function getAction(Request $request): Response
     {
         $organization = $request->attributes->get('organization');
-        $teams = $this->teamRepository->getAll($organization->getId());
+        $teams = $this->teamRepository->getAll($organization->getId(), 'name', 'ASC');
         $displayTimeZone = $this->timeZoneFromRequest->get($request);
 
         $teamsList = $this->teamsListFormatter->format($teams, $displayTimeZone);

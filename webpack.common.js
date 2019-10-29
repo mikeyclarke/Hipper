@@ -90,7 +90,6 @@ module.exports = {
     optimization: {
         splitChunks: false,
     },
-    devtool: 'inline-source-map',
     node: {
         fs: 'empty',
     },

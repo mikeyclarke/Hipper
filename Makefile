@@ -63,11 +63,20 @@ run_migrations: ## Run migrations
 	migrate -database $(subst pgsql,postgres,$(DATABASE_URL))?sslmode=disable -path database/migrations up
 
 ## ---------
-##	Environment
+##	Webpack
 ## ---------
 
 webpack: ## Run webpack in watch mode
-	./node_modules/.bin/webpack --watch --mode=development
+	./node_modules/.bin/webpack --watch --config webpack.dev.js
+
+webpack-production: ## Build webpack assets for production
+	./node_modules/.bin/webpack --config webpack.production.js
+
+## ---------
+##	Production
+## ---------
+
+build: test_ts webpack-production ## Build Hipper for production
 
 ## ---------
 ##	Make setup

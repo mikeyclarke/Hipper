@@ -6,8 +6,8 @@
   "test": "jest",
   "devDependencies": {
     "@types/autosize": "^3.0.6",
-    "@types/jest": "^24.0.19",
-    "@types/node": "^12.11.6",
+    "@types/jest": "^24.0.20",
+    "@types/node": "^12.11.7",
     "@types/prosemirror-commands": "^1.0.1",
     "@types/prosemirror-dropcursor": "^1.0.0",
     "@types/prosemirror-gapcursor": "^1.0.1",
@@ -54,7 +54,7 @@
     "prosemirror-schema-list": "^1.0.4",
     "prosemirror-state": "^1.2.4",
     "prosemirror-transform": "^1.1.5",
-    "prosemirror-view": "^1.12.0",
+    "prosemirror-view": "^1.12.1",
     "tabbable": "^4.0.0",
     "twig": "^1.13"
   }

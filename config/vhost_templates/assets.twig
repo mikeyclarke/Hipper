@@ -24,17 +24,8 @@ server {
     root {{ path_to_code }}/public-roots/assets/public/;
 
     {% include 'includes/ssl.twig' %}
-
-    gzip on;
-    gzip_types text/plain text/xml text/css application/x-javascript application/javascript application/json image/svg+xml;
-
     {% include 'includes/dotfiles.twig' %}
-
-    location ~* \.(jpg|jpeg|gif|png|css|js|ico|webp|tiff|ttf|svg)$ {
-        expires 1y;
-
-        add_header 'Access-Control-Allow-Origin' "*";
-    }
+    {% include 'includes/mediatypes.twig' %}
 
     location / {
         try_files $uri $uri/ $uri.html =404;

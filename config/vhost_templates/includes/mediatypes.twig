@@ -1,0 +1,11 @@
+location ~* \.(jpg|jpeg|gif|png|css|js|ico|webp|tiff|ttf|svg|woff|woff2)$ {
+        gzip on;
+        gzip_types text/plain text/xml text/css application/x-javascript application/javascript application/json image/svg+xml;
+
+        include mime.types;
+        default_type application/octet-stream;
+
+        expires 1y;
+
+        add_header 'Access-Control-Allow-Origin' "*";
+    }

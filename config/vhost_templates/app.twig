@@ -23,7 +23,7 @@ server {
 
     root {{ path_to_code }}/public-roots/app/public/;
 
-    add_header X-Robots-Tag "noindex, nofollow";
+    add_header X-Robots-Tag "noindex, nofollow" always;
 
     {% include 'includes/ssl.twig' %}
 

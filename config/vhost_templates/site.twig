@@ -72,6 +72,10 @@ server {
         internal;
     }
 
+    location ~ \.php$ {
+        return 404;
+    }
+
     {% include 'includes/mediatypes.twig' %}
     {% include 'includes/securityheaders.twig' %}
     {% include 'includes/xxsprotection.twig' %}

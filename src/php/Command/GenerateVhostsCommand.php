@@ -46,6 +46,13 @@ class GenerateVhostsCommand extends Command
         );
 
         $this->addOption('fastcgi-pass', null, InputOption::VALUE_REQUIRED, 'fastcgi_pass', '127.0.0.1:9000');
+        $this->addOption(
+            'internet-visible',
+            null,
+            InputOption::VALUE_NONE,
+            'Make this instance of Hipper crawlable by bots; if this option isn’t present a restrictive ' .
+            'X-Robots-Tag header will be applied to naked domain requests'
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -64,6 +71,7 @@ class GenerateVhostsCommand extends Command
         $parameters = [
             'domain' => $input->getArgument('domain'),
             'fastcgi_pass' => $input->getOption('fastcgi-pass'),
+            'internet_visible' => $input->getOption('internet-visible'),
             'path_to_ssl_cert' => $input->getArgument('path-to-ssl-cert'),
             'path_to_code' => $repositoryRoot,
         ];

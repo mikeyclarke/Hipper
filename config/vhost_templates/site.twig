@@ -48,13 +48,35 @@ server {
 
     server_name {{ domain }};
 
-    root {{ path_to_code }}/public-roots/sign-up-flow/public/;
+    {% if not internet_visible %}
+        add_header X-Robots-Tag "noindex, nofollow" always;
+    {% endif %}
+
+    root {{ path_to_code }}/public-roots/website/public/;
+    index index.html;
+
+    location ~ ^/(sign-up|_) {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location ~ ^/index\.php(/|$) {
+        root {{ path_to_code }}/public-roots/sign-up-flow/public/;
+
+        fastcgi_pass {{ fastcgi_pass }};
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+
+        internal;
+    }
+
+    {% include 'includes/mediatypes.twig' %}
 
     {% include 'includes/ssl.twig' %}
 
     client_max_body_size 20m;
 
     {% include 'includes/dotfiles.twig' %}
-
-    {% include 'includes/phpfpm.twig' %}
 }

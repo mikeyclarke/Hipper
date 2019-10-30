@@ -23,6 +23,7 @@ server {
 
     root {{ path_to_code }}/public-roots/assets/public/;
 
+    {% include 'includes/securityheaders.twig' %}
     {% include 'includes/ssl.twig' %}
     {% include 'includes/dotfiles.twig' %}
     {% include 'includes/mediatypes.twig' %}

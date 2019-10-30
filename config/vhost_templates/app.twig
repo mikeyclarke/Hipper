@@ -25,6 +25,8 @@ server {
 
     add_header X-Robots-Tag "noindex, nofollow" always;
 
+    {% include 'includes/securityheaders.twig' %}
+    {% include 'includes/xxsprotection.twig' %}
     {% include 'includes/ssl.twig' %}
 
     client_max_body_size 20m;

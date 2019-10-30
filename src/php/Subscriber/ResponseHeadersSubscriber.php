@@ -56,10 +56,6 @@ class ResponseHeadersSubscriber implements EventSubscriberInterface
 
         $headers = [
             'Cache-Control' => 'no-store, no-cache',
-            'Referrer-Policy' => 'strict-origin-when-cross-origin',
-            'X-Content-Type-Options' => 'nosniff',
-            'X-Frame-Options' => 'DENY',
-            'X-XSS-Protection' => '1; mode=block',
         ];
 
         if ($this->cspEnabled) {

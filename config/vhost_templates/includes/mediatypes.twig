@@ -7,5 +7,7 @@ location ~* \.(jpg|jpeg|gif|png|css|js|ico|webp|tiff|ttf|svg|woff|woff2)$ {
 
         expires 1y;
 
-        add_header 'Access-Control-Allow-Origin' "*";
+        add_header 'Access-Control-Allow-Origin' "*" always;
+
+        {% include 'includes/securityheaders.twig' %}
     }

@@ -73,7 +73,8 @@ server {
     }
 
     {% include 'includes/mediatypes.twig' %}
-
+    {% include 'includes/securityheaders.twig' %}
+    {% include 'includes/xxsprotection.twig' %}
     {% include 'includes/ssl.twig' %}
 
     client_max_body_size 20m;

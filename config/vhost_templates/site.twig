@@ -48,12 +48,14 @@ server {
 
     server_name {{ domain }};
 
-    {% if not internet_visible %}
-        add_header X-Robots-Tag "noindex, nofollow" always;
-    {% endif %}
-
     root {{ path_to_code }}/public-roots/website/public/;
     index index.html;
+
+    {% if not internet_visible %}
+        location /robots.txt {
+            alias {{ path_to_code }}/public-roots/website/public/robots_staging.txt;
+        }
+    {% endif %}
 
     location ~ ^/(sign-up|_) {
         try_files $uri /index.php$is_args$args;

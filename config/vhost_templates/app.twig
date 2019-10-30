@@ -11,6 +11,7 @@ server {
 
 server {
     {% include 'includes/serverinfo.twig' %}
+    {% include 'includes/characterencoding.twig' %}
 
     fastcgi_buffers 8 16k;
     fastcgi_buffer_size 32k;

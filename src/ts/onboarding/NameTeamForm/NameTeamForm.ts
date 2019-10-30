@@ -76,7 +76,7 @@ export default class NameTeamForm implements EventsEnabled {
     }
 
     private gotoTeamUrlStep(): void {
-        window.location.pathname = '/choose-team-url';
+        window.location.pathname = '/sign-up/choose-team-url';
     }
 
     private getFormData(): NameTeamFormData {

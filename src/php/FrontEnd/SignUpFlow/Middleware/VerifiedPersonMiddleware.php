@@ -12,7 +12,7 @@ class VerifiedPersonMiddleware
     {
         $person = $request->attributes->get('person');
         if (!$person->getEmailAddressVerified()) {
-            return new RedirectResponse('/verify-identity');
+            return new RedirectResponse('/sign-up/verify-identity');
         }
     }
 }

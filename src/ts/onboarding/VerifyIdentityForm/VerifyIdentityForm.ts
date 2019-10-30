@@ -76,7 +76,7 @@ export default class VerifyIdentityForm implements EventsEnabled {
     }
 
     private gotoNameOrganisationStep(): void {
-        window.location.pathname = '/name-team';
+        window.location.pathname = '/sign-up/name-team';
     }
 
     private getFormData(): VerifyIdentityFormData {

@@ -76,7 +76,7 @@ export default class TeamSubdomainForm implements EventsEnabled {
     }
 
     private gotoApp(): void {
-        window.location.pathname = '/begin';
+        window.location.pathname = '/sign-up/begin';
     }
 
     private getFormData(): TeamSubdomainFormData {

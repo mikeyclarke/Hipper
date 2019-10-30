@@ -32,7 +32,7 @@ class ChooseTeamUrlController
         $organization = $this->organization->get($person->getOrganizationId());
 
         if (Organization::DEFAULT_NAME === $organization->getName()) {
-            return new RedirectResponse('/name-team');
+            return new RedirectResponse('/sign-up/name-team');
         }
 
         $context = [

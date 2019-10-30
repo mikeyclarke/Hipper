@@ -97,6 +97,6 @@ export default class SignupForm {
     }
 
     private gotoVerifyIdentityStep(): void {
-        window.location.pathname = '/verify-identity';
+        window.location.pathname = '/sign-up/verify-identity';
     }
 }

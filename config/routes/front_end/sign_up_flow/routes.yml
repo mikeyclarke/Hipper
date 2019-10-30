@@ -6,12 +6,12 @@ front_end.sign_up_flow.signup:
         unsecured: true
 
 front_end.sign_up_flow.verify_identity:
-    path: /verify-identity
+    path: /sign-up/verify-identity
     controller: Hipper\FrontEnd\SignUpFlow\Controller\VerifyIdentityController::getAction
     methods: [GET]
 
 front_end.sign_up_flow.name_team:
-    path: /name-team
+    path: /sign-up/name-team
     controller: Hipper\FrontEnd\SignUpFlow\Controller\NameTeamController::getAction
     methods: [GET]
     defaults:
@@ -19,7 +19,7 @@ front_end.sign_up_flow.name_team:
             - onboarding_verified_person_middleware:before
 
 front_end.sign_up_flow.choose_team_url:
-    path: /choose-team-url
+    path: /sign-up/choose-team-url
     controller: Hipper\FrontEnd\SignUpFlow\Controller\ChooseTeamUrlController::getAction
     methods: [GET]
     defaults:
@@ -27,7 +27,7 @@ front_end.sign_up_flow.choose_team_url:
             - onboarding_verified_person_middleware:before
 
 front_end.sign_up_flow.invite:
-    path: /invite
+    path: /sign-up/invite
     controller: Hipper\FrontEnd\SignUpFlow\Controller\InviteController::getAction
     methods: [GET]
     defaults:
@@ -35,7 +35,7 @@ front_end.sign_up_flow.invite:
             - onboarding_verified_person_middleware:before
 
 front_end.sign_up_flow.finalize:
-    path: /begin
+    path: /sign-up/begin
     controller: Hipper\FrontEnd\SignUpFlow\Controller\FinalizeController::getAction
     methods: [GET]
     defaults:

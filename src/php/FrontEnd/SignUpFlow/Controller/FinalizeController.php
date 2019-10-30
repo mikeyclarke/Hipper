@@ -29,7 +29,7 @@ class FinalizeController
 
         $organizationModel = $this->organization->get($person->getOrganizationId());
         if (null === $organizationModel->getSubdomain()) {
-            return new RedirectResponse('/choose-team-url');
+            return new RedirectResponse('/sign-up/choose-team-url');
         }
 
         $token = $this->tokenizedLogin->create($person);

@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <title>{% if html_title is defined %}{{ html_title }} – {% endif %}Hipper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="{{ asset('signup.css') }}" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('signup.css') }}" crossorigin="anonymous" integrity="{{ asset_integrity('signup.css') }}">
         <meta name="csrf" class="js-csrf" content="{{ csrf_token }}">
     </head>
 
@@ -14,6 +14,6 @@
 
         {% block content %}{% endblock %}
 
-        <script src="{{ asset('signup.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ asset('signup.js') }}" crossorigin="anonymous" integrity="{{ asset_integrity('signup.js') }}"></script>
     </body>
 </html>

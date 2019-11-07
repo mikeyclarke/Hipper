@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Subscriber;
 
+use Hipper\Asset\AssetIntegrity;
 use Hipper\Security\ContentSecurityPolicyBuilder;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ResponseHeadersSubscriber implements EventSubscriberInterface
 {
+    private $assetIntegrity;
     private $cspBuilder;
     private $packages;
     private $cspEnabled;
@@ -23,6 +25,7 @@ class ResponseHeadersSubscriber implements EventSubscriberInterface
     private $resourceHintsEnabled;
 
     public function __construct(
+        AssetIntegrity $assetIntegrity,
         ContentSecurityPolicyBuilder $cspBuilder,
         Packages $packages,
         bool $cspEnabled,
@@ -30,6 +33,7 @@ class ResponseHeadersSubscriber implements EventSubscriberInterface
         int $hstsMaxAge,
         bool $resourceHintsEnabled
     ) {
+        $this->assetIntegrity = $assetIntegrity;
         $this->cspBuilder = $cspBuilder;
         $this->packages = $packages;
         $this->cspEnabled = $cspEnabled;
@@ -98,7 +102,12 @@ class ResponseHeadersSubscriber implements EventSubscriberInterface
 
     private function addResourceHint(Response $response, string $path, string $type): void
     {
-        $value = sprintf('<%s>; rel=preload; as=%s; crossorigin', $this->packages->getUrl($path), $type);
+        $url = $this->packages->getUrl($path);
+        $integrity = $this->assetIntegrity->getIntegrityHashesForAsset($path);
+        if (empty($url) || empty($integrity)) {
+            return;
+        }
+        $value = sprintf('<%s>; rel=preload; as=%s; crossorigin; integrity=%s', $url, $type, $integrity);
         $response->headers->set('Link', $value, false);
     }
 }

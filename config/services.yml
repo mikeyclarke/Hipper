@@ -30,6 +30,7 @@ parameters:
         - 'strong'
         - 'code'
         - 'strike'
+    asset_integrity_manifest_path: '%kernel.project_dir%/public-roots/assets/public/build/integrity.json'
 
 services:
     # default configuration for services in *this* file
@@ -74,6 +75,10 @@ services:
         arguments:
             $documentAllowedMarks: '%document_allowed_marks%'
             $documentAllowedNodes: '%document_allowed_nodes%'
+
+    Hipper\Asset\AssetIntegrity:
+        arguments:
+            $manifestPath: '%asset_integrity_manifest_path%'
 
     Hipper\Document\Renderer\HtmlFragmentRendererContext:
         autowire: false

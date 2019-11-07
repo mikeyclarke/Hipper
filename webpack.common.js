@@ -24,6 +24,17 @@ module.exports = {
         new WebpackAssetsManifest({
             publicPath: true,
         }),
+        new WebpackAssetsManifest({
+            customize(entry, original, manifest, asset) {
+                return {
+                    key: entry.key,
+                    value: asset.integrity,
+                };
+            },
+            integrity: true,
+            integrityHashes: ['sha512'],
+            output: 'integrity.json',
+        }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
         }),

@@ -1,6 +1,6 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
@@ -21,7 +21,9 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new ManifestPlugin(),
+        new WebpackAssetsManifest({
+            publicPath: true,
+        }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
         }),

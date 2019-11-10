@@ -1,8 +1,7 @@
 server {
     {% include 'includes/serverinfo.twig' %}
-
-    listen 80;
-    listen [::]:80;
+    {% include 'includes/listen80.twig' %}
+    {% include 'includes/proxy_protocol.twig' %}
 
     server_name www.{{ domain }};
 
@@ -11,9 +10,8 @@ server {
 
 server {
     {% include 'includes/serverinfo.twig' %}
-
-    listen 80;
-    listen [::]:80;
+    {% include 'includes/listen80.twig' %}
+    {% include 'includes/proxy_protocol.twig' %}
 
     server_name {{ domain }};
 
@@ -22,12 +20,11 @@ server {
 
 server {
     {% include 'includes/serverinfo.twig' %}
+    {% include 'includes/listen443.twig' %}
+    {% include 'includes/proxy_protocol.twig' %}
 
     fastcgi_buffers 8 16k;
     fastcgi_buffer_size 32k;
-
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
 
     server_name www.{{ domain }};
 
@@ -38,13 +35,12 @@ server {
 
 server {
     {% include 'includes/serverinfo.twig' %}
+    {% include 'includes/listen443.twig' %}
+    {% include 'includes/proxy_protocol.twig' %}
     {% include 'includes/characterencoding.twig' %}
 
     fastcgi_buffers 8 16k;
     fastcgi_buffer_size 32k;
-
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
 
     server_name {{ domain }};
 
@@ -67,6 +63,10 @@ server {
         fastcgi_pass {{ fastcgi_pass }};
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
+
+        {% if load_balancer_ip is not null %}
+            fastcgi_param X-FORWARDED-FOR $proxy_protocol_addr;
+        {% endif %}
 
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;

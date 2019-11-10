@@ -7,6 +7,10 @@
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
 
+        {% if load_balancer_ip is not null %}
+            fastcgi_param X-FORWARDED-FOR $proxy_protocol_addr;
+        {% endif %}
+
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;
 

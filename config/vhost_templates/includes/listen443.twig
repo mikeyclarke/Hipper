@@ -1,0 +1,2 @@
+listen 443 ssl http2{% if load_balancer_ip is not null %} proxy_protocol{% endif %};
+    listen [::]:443 ssl http2{% if load_balancer_ip is not null %} proxy_protocol{% endif %};

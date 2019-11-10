@@ -1,0 +1,2 @@
+listen 80{% if load_balancer_ip is not null %} proxy_protocol{% endif %};
+    listen [::]:80{% if load_balancer_ip is not null %} proxy_protocol{% endif %};

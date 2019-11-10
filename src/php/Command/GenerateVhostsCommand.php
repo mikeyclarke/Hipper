@@ -45,6 +45,13 @@ class GenerateVhostsCommand extends Command
             'Path to SSL cert, e.g. `/usr/local/etc/nginx/ssl`'
         );
 
+        $this->addOption(
+            'path-to-code',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Path to the hipper codebase, e.g. /var/hipper',
+            realpath(__DIR__ . '/../../../')
+        );
         $this->addOption('fastcgi-pass', null, InputOption::VALUE_REQUIRED, 'fastcgi_pass', '127.0.0.1:9000');
         $this->addOption(
             'internet-visible',
@@ -52,6 +59,13 @@ class GenerateVhostsCommand extends Command
             InputOption::VALUE_NONE,
             'Make this instance of Hipper crawlable by bots; if this option isn’t present a restrictive ' .
             'X-Robots-Tag header will be applied to naked domain requests'
+        );
+        $this->addOption(
+            'load-balancer-ip',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'IP address of the load balancer sat in front of the web servers; if provided, this will be used to ' .
+            'configure proxy_protocol'
         );
     }
 
@@ -72,8 +86,9 @@ class GenerateVhostsCommand extends Command
             'domain' => $input->getArgument('domain'),
             'fastcgi_pass' => $input->getOption('fastcgi-pass'),
             'internet_visible' => $input->getOption('internet-visible'),
+            'load_balancer_ip' => $input->getOption('load-balancer-ip'),
             'path_to_ssl_cert' => $input->getArgument('path-to-ssl-cert'),
-            'path_to_code' => $repositoryRoot,
+            'path_to_code' => $input->getOption('path-to-code'),
         ];
 
         foreach (self::TEMPLATES as $twigFile => $outputName) {

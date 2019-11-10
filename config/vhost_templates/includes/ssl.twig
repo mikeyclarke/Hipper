@@ -1,5 +1,5 @@
-    ssl_certificate {{ path_to_ssl_cert }}/hipper.crt;
-    ssl_certificate_key {{ path_to_ssl_cert }}/hipper.key;
+    ssl_certificate {{ path_to_ssl_cert }}/fullchain.pem;
+    ssl_certificate_key {{ path_to_ssl_cert }}/privkey.pem;
 
     ssl_session_cache shared:MozSSL:10m;
     ssl_session_timeout 1d;

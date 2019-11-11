@@ -1,0 +1,132 @@
+---
+- name: Remove Hipper code directory
+  file:
+      path: /var/hipper
+      state: absent
+
+- name: Create Hipper code directory
+  file:
+      path: /var/hipper
+      state: directory
+      recurse: yes
+      owner: root
+      group: sysadmin
+      mode: '755'
+
+- name: Set mode of Hipper code directory
+  file:
+      path: /var/hipper
+      state: directory
+      mode: g+s
+
+- name: Make temp directory for git repo
+  tempfile:
+      state: directory
+  register: temp_git_repo
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Clone temporary git repo
+  git:
+      repo: "{{ sourcecode_git_repo }}"
+      dest: "{{ temp_git_repo.path }}"
+      depth: 1
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Create assets output directory
+  file:
+      path: "{{ temp_git_repo.path }}/public-roots/assets/public/build"
+      state: directory
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Compile assets
+  command:
+    chdir: "{{ playbook_dir }}/../"
+    argv:
+        - ./node_modules/.bin/webpack
+        - "--config"
+        - webpack.production.js
+        - "--output-public-path"
+        - "https://{{ env_asset_domain }}/build/"
+        - "--output-path"
+        - "{{ temp_git_repo.path }}/public-roots/assets/public/build"
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Add .env.local
+  template:
+      src: .env.local.j2
+      dest: "{{ temp_git_repo.path }}/.env.local"
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Add .env.prod.local
+  template:
+      src: .env.prod.local.j2
+      dest: "{{ temp_git_repo.path }}/.env.prod.local"
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Make temp directory for archive
+  tempfile:
+      state: directory
+  register: temp_archive
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Create source code archive
+  archive:
+      path:
+          - "{{ temp_git_repo.path }}/bin/console"
+          - "{{ temp_git_repo.path }}/composer.json"
+          - "{{ temp_git_repo.path }}/composer.lock"
+          - "{{ temp_git_repo.path }}/.env"
+          - "{{ temp_git_repo.path }}/.env.local"
+          - "{{ temp_git_repo.path }}/.env.prod"
+          - "{{ temp_git_repo.path }}/.env.prod.local"
+          - "{{ temp_git_repo.path }}/config/bootstrap.php"
+          - "{{ temp_git_repo.path }}/config/packages/*"
+          - "{{ temp_git_repo.path }}/config/routes/*"
+          - "{{ temp_git_repo.path }}/config/services.yml"
+          - "{{ temp_git_repo.path }}/public-roots/*"
+          - "{{ temp_git_repo.path }}/src/php/*"
+          - "{{ temp_git_repo.path }}/ui/*"
+      dest: "{{ temp_archive.path }}/archive.gz"
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Copy Hipper source code
+  unarchive:
+      src: "{{ temp_archive.path }}/archive.gz"
+      dest: /var/hipper
+      owner: root
+      group: sysadmin
+      mode: '755'
+
+- name: Delete temp git repo directory
+  file:
+      path: "{{ temp_git_repo.path }}"
+      state: absent
+  when: temp_git_repo.path is defined
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Delete temp archive directory
+  file:
+      path: "{{ temp_archive.path }}"
+      state: absent
+  when: temp_archive.path is defined
+  delegate_to: localhost
+  become: no
+  changed_when: False

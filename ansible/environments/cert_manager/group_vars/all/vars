@@ -1,0 +1,4 @@
+cloudflare_email: "{{ vault_cloudflare_email }}"
+cloudflare_global_api_key: "{{ vault_cloudflare_global_api_key }}"
+cert_domains: ['tryhleo.com', 'usehipper.com']
+certbot_registration_email_address: certbot@usehipper.com

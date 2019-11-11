@@ -1,0 +1,94 @@
+---
+- name: Install nginx
+  apt:
+      name: nginx
+
+- name: Create nginx SSL certs directory
+  file:
+      path: /etc/nginx/ssl
+      state: directory
+
+- name: Make tenp directory for certs
+  tempfile:
+      state: directory
+  register: temp_certs
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Fetch SSL cert
+  shell: "rsync --copy-links root@{{ groups['cert_manager'][0] }}:/etc/letsencrypt/live/{{ env_domain }}/fullchain.pem {{ temp_certs.path }}/fullchain.pem"
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Fetch SSL key
+  shell: "rsync --copy-links root@{{ groups['cert_manager'][0] }}:/etc/letsencrypt/live/{{ env_domain }}/privkey.pem {{ temp_certs.path }}/privkey.pem"
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Install SSL cert
+  copy:
+      src: "{{ temp_certs.path }}/fullchain.pem"
+      dest: /etc/nginx/ssl/fullchain.pem
+  notify: restart nginx
+
+- name: Install SSL key
+  copy:
+      src: "{{ temp_certs.path }}/privkey.pem"
+      dest: /etc/nginx/ssl/privkey.pem
+  notify: restart nginx
+
+- name: Delete temp cert directory
+  file:
+      path: "{{ temp_certs.path }}"
+      state: absent
+  when: temp_certs.path is defined
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Make temp directory for vhosts
+  tempfile:
+      state: directory
+  register: temp_vhosts
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Create vhosts
+  command:
+    chdir: "{{ playbook_dir }}/../"
+    argv:
+        - ./bin/console
+        - "app:generate-vhosts"
+        - "{{ env_domain }}"
+        - "{{ temp_vhosts.path }}"
+        - /etc/nginx/ssl
+        - "--fastcgi-pass={{ fastcgi_pass }}"
+        - "--path-to-code=/var/hipper"
+        - "--load-balancer-ip={{ load_balancer_ip }}"
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Install hipper vhosts
+  copy:
+      src: "{{ temp_vhosts.path }}/"
+      dest: /etc/nginx/conf.d
+  notify: restart nginx
+
+- name: Delete temp vhosts directory
+  file:
+      path: "{{ temp_vhosts.path }}"
+      state: absent
+  when: temp_vhosts.path is defined
+  delegate_to: localhost
+  become: no
+  changed_when: False
+
+- name: Allow nginx connections through UFW
+  ufw:
+      rule: allow
+      name: Nginx Full

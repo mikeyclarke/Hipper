@@ -1,0 +1,7 @@
+---
+- name: Deploy SSL certs manager
+  remote_user: hipper
+  hosts: cert_manager
+  become: true
+  roles:
+      - certbot

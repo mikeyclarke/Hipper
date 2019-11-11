@@ -1,0 +1,12 @@
+---
+- name: Deploy Hipper
+  remote_user: hipper
+  hosts: webservers
+  become: true
+  roles:
+      - sourcecode
+      - php-fpm
+      - nginx
+      - apt
+      - composer
+      - symfony

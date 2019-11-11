@@ -21,6 +21,7 @@
     - Add `nameserver 127.0.0.1` to `/etc/resolver/test`
     - Restart macOS
 - migrate – `brew install golang-migrate`
+- Ansible – `brew install ansible`
 
 ### Configuration
 

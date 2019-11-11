@@ -1,0 +1,40 @@
+---
+- name: Create var directory
+  file:
+      path: /var/hipper/var
+      state: directory
+      recurse: yes
+      owner: www-data
+      group: sysadmin
+      mode: '755'
+
+- name: Clear cache
+  become: yes
+  become_user: www-data
+  command: php bin/console cache:clear
+  args:
+      chdir: /var/hipper
+
+- name: Remove cached environment variables file
+  file:
+      path: /var/hipper/.env.local.php
+      state: absent
+
+- name: Dump cached environment variables file
+  command: php bin/console app:dump-combined-env-config prod
+  args:
+      chdir: /var/hipper
+
+- name: Set owner of cached environment variables file
+  file:
+      path: /var/hipper/.env.local.php
+      owner: www-data
+      group: sysadmin
+      mode: '755'
+
+- name: Warm-up cache
+  become: yes
+  become_user: www-data
+  command: php bin/console cache:warmup
+  args:
+      chdir: /var/hipper

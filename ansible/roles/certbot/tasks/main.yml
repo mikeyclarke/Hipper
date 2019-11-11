@@ -1,0 +1,48 @@
+---
+- name: Install software-properties-common
+  apt:
+      name: software-properties-common
+      state: present
+      update_cache: yes
+
+- name: Add universe repository
+  apt_repository:
+      repo: "{{ item }}"
+  with_items:
+      - "deb http://archive.ubuntu.com/ubuntu/ bionic universe"
+      - "deb http://archive.ubuntu.com/ubuntu/ bionic-updates universe"
+      - "deb http://security.ubuntu.com/ubuntu/ bionic-security universe"
+
+- name: Add certbot repository
+  apt_repository:
+      repo: ppa:certbot/certbot
+
+- name: Install certbot
+  apt:
+      name: ['certbot', 'python3-certbot-dns-cloudflare']
+      state: present
+
+- name: Create certbot config
+  template:
+      src: cli.ini.j2
+      dest: /etc/letsencrypt/cli.ini
+      owner: root
+      group: sysadmin
+      mode: '0600'
+
+- name: Create credentials directory
+  file:
+      path: ~/.secrets/certbot
+      state: directory
+
+- name: Create DNS challenge credentials
+  template:
+      src: cloudflare.ini.j2
+      dest: ~/.secrets/certbot/cloudflare.ini
+      owner: root
+      group: sysadmin
+      mode: '0600'
+
+- name: Run certbot
+  shell: "certbot certonly --agree-tos --noninteractive --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/certbot/cloudflare.ini -d {{ item }} -d *.{{ item }}"
+  with_items: "{{ cert_domains }}"

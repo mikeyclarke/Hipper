@@ -8,3 +8,4 @@ env_redis_password: "{{ vault_redis_password }}"
 env_trusted_proxies: 134.209.137.196
 env_trusted_hosts: ^([a-z0-9-]*)?(.)?tryhleo.com
 env_db_url: "postgresql://hdb:{{ vault_postgres_password }}@private-db-postgresql-ams3-85643-do-user-6607150-0.db.ondigitalocean.com:25061/default?sslmode=require"
+migrations_db_url: "postgresql://hdb:{{ vault_postgres_password }}@db-postgresql-ams3-85643-do-user-6607150-0.db.ondigitalocean.com:25060/hipper?sslmode=require"

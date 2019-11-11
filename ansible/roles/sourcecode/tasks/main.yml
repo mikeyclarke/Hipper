@@ -75,6 +75,11 @@
   become: no
   changed_when: False
 
+- name: Run database migrations
+  shell: "migrate -database {{ migrations_db_url }} -path {{ temp_git_repo.path }}/database/migrations up"
+  delegate_to: localhost
+  become: no
+
 - name: Make temp directory for archive
   tempfile:
       state: directory

@@ -80,12 +80,14 @@ $form-footer-text-align: right;
     width: 100%;
 }
 
-.c-form__input[aria-invalid="true"] {
+.c-form__input[aria-invalid="true"],
+.c-form__input[aria-invalid="true"] ~ .c-password-input__visibility-button {
     animation: error-input-animation .65s;
     border-color: rgba(config-get(global, color, error), .85);
 }
 
-.c-form__input[aria-invalid="true"]:focus {
+.c-form__input[aria-invalid="true"]:focus,
+.c-form__input[aria-invalid="true"]:focus ~ .c-password-input__visibility-button {
     border-color: config-get(global, color, error);
 }
 

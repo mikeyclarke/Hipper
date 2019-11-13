@@ -20,6 +20,7 @@ $selector: ();
 
 // [type="text|email|number|…"]
 #{$selector} {
+    -webkit-appearance: none;
     appearance: none;
     background-color: config-get(element, input, background-color);
     border: config-get(element, input, border-width) solid config-get(element, input, border-color);

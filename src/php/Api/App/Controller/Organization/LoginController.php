@@ -3,44 +3,48 @@ declare(strict_types=1);
 
 namespace Hipper\Api\App\Controller\Organization;
 
-use Hipper\Person\PersonPasswordEncoder;
-use Hipper\Person\PersonRepository;
+use Hipper\Login\Exception\InvalidCredentialsException;
+use Hipper\Login\Login;
+use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class LoginController
 {
-    private $passwordEncoder;
-    private $personRepository;
+    private $login;
 
     public function __construct(
-        PersonPasswordEncoder $passwordEncoder,
-        PersonRepository $personRepository
+        Login $login
     ) {
-        $this->passwordEncoder = $passwordEncoder;
-        $this->personRepository = $personRepository;
+        $this->login = $login;
     }
 
-    public function postAction(Request $request): Response
+    public function postAction(Request $request): JsonResponse
     {
-        $email = $request->request->get('email_address', '');
-        $password = $request->request->get('password', '');
-
-        $person = $this->personRepository->findOneByEmailAddress($email);
-        if (null === $person) {
-            return new JsonResponse(null, 400);
-        }
-
-        if (!$this->passwordEncoder->isPasswordValid($person['password'], $password)) {
-            return new JsonResponse(null, 400);
-        }
-
+        $organization = $request->attributes->get('organization');
         $session = $request->getSession();
-        $session->set('_personId', $person['id']);
-        $session->set('_password', $person['password']);
 
-        return new JsonResponse(null, 200);
+        try {
+            $this->login->login($organization, $request->request->all(), $session);
+        } catch (ValidationException $e) {
+            return new JsonResponse(
+                [
+                    'name' => $e->getName(),
+                    'message' => $e->getMessage(),
+                    'violations' => $e->getViolations(),
+                ],
+                400
+            );
+        } catch (InvalidCredentialsException $e) {
+            return new JsonResponse(
+                [
+                    'name' => 'invalid_credentials',
+                    'message' => 'We couldn’t sign you in. Check your email address and password',
+                ],
+                400
+            );
+        }
+
+        return new JsonResponse(['url' => '/'], 200);
     }
 }

@@ -35,15 +35,19 @@ class PersonRepository
         return $result;
     }
 
-    public function findOneByEmailAddress(string $emailAddress): ?array
+    public function findOneByEmailAddress(string $emailAddress, string $organizationId): ?array
     {
         $qb = $this->connection->createQueryBuilder();
 
         $qb->select('*')
             ->from('person')
-            ->where('email_address = :email_address');
+            ->andWhere('email_address = :email_address')
+            ->andWhere('organization_id = :organization_id');
 
-        $qb->setParameter('email_address', $emailAddress);
+        $qb->setParameters([
+            'email_address' => $emailAddress,
+            'organization_id' => $organizationId,
+        ]);
 
         $stmt = $qb->execute();
         $result = $stmt->fetch();

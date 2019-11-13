@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Api\App\Controller\Organization;
 
+use Hipper\Login\Login;
 use Hipper\Person\CreationStrategy\CreateFromInvite;
 use Hipper\Person\Exception\InviteNotFoundException;
 use Hipper\Validation\Exception\ValidationException;
@@ -12,11 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 class JoinByInvitationController
 {
     private $personCreation;
+    private $login;
 
     public function __construct(
-        CreateFromInvite $personCreation
+        CreateFromInvite $personCreation,
+        Login $login
     ) {
         $this->personCreation = $personCreation;
+        $this->login = $login;
     }
 
     public function postAction(Request $request): JsonResponse
@@ -45,8 +49,7 @@ class JoinByInvitationController
         }
 
         $session = $request->getSession();
-        $session->set('_personId', $person->getId());
-        $session->set('_password', $encodedPassword);
+        $this->login->populateSession($session, $person);
 
         return new JsonResponse(null, 201);
     }

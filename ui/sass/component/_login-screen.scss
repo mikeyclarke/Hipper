@@ -1,0 +1,226 @@
+$login-screen-background-color: #f7f8fa;
+$login-screen-padded-layout-width: 397px;
+
+$login-screen-header-height: 48px;
+$login-screen-header-margin: 0 0 16px;
+$login-screen-header-padded-layout-margin: 32px 0;
+
+$login-screen-header-logo-fill: config-get(color-shades, primary, 1100);
+$login-screen-header-logo-height: 18px;
+$login-screen-header-logo-padded-layout-height: 24px;
+
+$login-screen-inner-background-color: config-get(global, color, white);
+$login-screen-inner-box-shadow: 0 2px 6px 0 rgba(#000, .1);
+$login-screen-inner-padding: 32px 24px 24px;
+$login-screen-inner-padded-layout-padding: 32px 30px 0;
+$login-screen-inner-padded-layout-border-radius: 8px;
+
+$login-screen-inner-header-text-align: center;
+
+$login-screen-inner-title-color: config-get(color-shades, dark, 900);
+$login-screen-inner-title-font-size: 24px;
+$login-screen-inner-title-font-weight: 700;
+$login-screen-inner-title-margin: 0 0 32px;
+$login-screen-inner-title-padded-layout-font-size: 28px;
+
+$login-screen-submit-button-background-color: config-get(color-shades, primary, 1000);
+$login-screen-submit-button-border-radius: 6px;
+$login-screen-submit-button-box-shadow: 0 1px 8px rgba($login-screen-submit-button-background-color, .45);
+$login-screen-submit-button-color: config-get(global, color, white);
+$login-screen-submit-button-font-size: 14px;
+$login-screen-submit-button-font-weight: 600;
+$login-screen-submit-button-height: 46px;
+$login-screen-submit-button-letter-spacing: .5px;
+$login-screen-submit-button-margin: 42px 0 0;
+$login-screen-submit-button-text-transform: uppercase;
+$login-screen-submit-button-width: 100%;
+
+$login-screen-footer-margin: 32px 0;
+$login-screen-footer-padding: 16px 24px;
+$login-screen-footer-padded-layout-margin: 42px 0 32px;
+$login-screen-footer-padded-layout-padding: 20px 24px;
+
+$login-screen-footer-copy-color: config-get(color-shades, dark, 700);
+$login-screen-footer-copy-font-size: 14px;
+$login-screen-footer-copy-font-weight: 500;
+
+$login-screen-footer-link-color: #0a924b;
+$login-screen-footer-text-decoration: underline;
+
+@mixin padded-layout {
+    @media only screen and (min-width: 600px) {
+        @content;
+    }
+}
+
+.c-login-screen {
+    background-color: $login-screen-background-color;
+    min-height: 100vh;
+
+    @include padded-layout {
+        align-content: center;
+        display: grid;
+        justify-content: center;
+        grid-template-columns: $login-screen-padded-layout-width;
+    }
+}
+
+.c-login-screen__header {
+    display: flex;
+    height: $login-screen-header-height;
+    margin: $login-screen-header-margin;
+
+    @include padded-layout {
+        margin: $login-screen-header-padded-layout-margin;
+    }
+}
+
+.c-login-screen__header a {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+}
+
+.c-login-screen__header a:focus {
+    background-color: rgba(#000, .025);
+    outline: 0;
+}
+
+.c-login-screen__header-logo {
+    fill: $login-screen-header-logo-fill;
+    height: $login-screen-header-logo-height;
+
+    @include padded-layout {
+        height: $login-screen-header-logo-padded-layout-height;
+    }
+}
+
+.c-login-screen__inner {
+    background-color: $login-screen-inner-background-color;
+    box-shadow: $login-screen-inner-box-shadow;
+    padding: $login-screen-inner-padding;
+
+    @include padded-layout {
+        border-radius: $login-screen-inner-padded-layout-border-radius;
+        padding: $login-screen-inner-padded-layout-padding;
+    }
+}
+
+.c-login-screen__inner-header {
+    text-align: $login-screen-inner-header-text-align;
+}
+
+.c-login-screen__inner-title {
+    color: $login-screen-inner-title-color;
+    margin: $login-screen-inner-title-margin;
+    font-size: $login-screen-inner-title-font-size;
+    font-weight: $login-screen-inner-title-font-weight;
+    @include font-smoothing;
+
+    @include padded-layout {
+        font-size: $login-screen-inner-title-padded-layout-font-size;
+    }
+}
+
+.c-login-screen__submit-button {
+    @extend %unstyled-button;
+    background-color: $login-screen-submit-button-background-color;
+    border-radius: $login-screen-submit-button-border-radius;
+    box-shadow: $login-screen-submit-button-box-shadow;
+    color: $login-screen-submit-button-color;
+    display: block;
+    font-size: $login-screen-submit-button-font-size;
+    font-weight: $login-screen-submit-button-font-weight;
+    height: $login-screen-submit-button-height;
+    letter-spacing: $login-screen-submit-button-letter-spacing;
+    line-height: $login-screen-submit-button-font-size;
+    margin: $login-screen-submit-button-margin;
+    text-transform: $login-screen-submit-button-text-transform;
+    transition: background-color .2s;
+    width: $login-screen-submit-button-width;
+    @include font-smoothing;
+
+    @include padded-layout {
+        border-radius: 0 0 $login-screen-inner-padded-layout-border-radius $login-screen-inner-padded-layout-border-radius;
+        position: relative;
+        top: auto;
+        right: auto;
+        left: -#{nth($login-screen-inner-padded-layout-padding, 2)};
+        width: $login-screen-padded-layout-width;
+    }
+}
+
+.c-login-screen__submit-button:focus {
+    background-color: darken($login-screen-submit-button-background-color, 6%);
+    outline: 0;
+}
+
+.c-login-screen__submit-button:active {
+    background-color: darken($login-screen-submit-button-background-color, 8%);
+}
+
+.c-login-screen__footer {
+    display: flex;
+    margin: $login-screen-footer-margin;
+    padding: $login-screen-footer-padding;
+    position: relative;
+
+    @include padded-layout {
+        margin: $login-screen-footer-padded-layout-margin;
+        padding: $login-screen-footer-padded-layout-padding;
+    }
+}
+
+.c-login-screen__footer::before,
+.c-login-screen__footer::after {
+    background-image: linear-gradient(270deg, rgba(245, 246, 247, .1) 0%, #eeeff1 50%, rgba(231, 233, 235, .1) 100%);
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+
+.c-login-screen__footer::before {
+    top: 0;
+}
+
+.c-login-screen__footer::after {
+    bottom: 0;
+}
+
+.c-login-screen__footer-copy {
+    color: $login-screen-footer-copy-color;
+    font-size: $login-screen-footer-copy-font-size;
+    font-weight: $login-screen-footer-copy-font-weight;
+    margin: auto;
+    @include font-smoothing;
+}
+
+.c-login-screen__footer-link {
+    color: $login-screen-footer-link-color;
+    text-decoration: $login-screen-footer-text-decoration;
+}
+
+.c-login-screen__footer-link::before {
+    bottom: 0;
+    content: '';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.c-login-screen__footer-link:focus {
+    outline: 0;
+}
+
+.c-login-screen__footer-link:focus::before {
+    background-color: rgba(#000, .025);
+}
+
+.c-login-screen__footer-link:active::before {
+    background-color: rgba(#000, .04);
+}

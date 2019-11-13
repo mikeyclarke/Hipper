@@ -35,7 +35,6 @@ class SignUpController
 
         $session = $request->getSession();
         $session->set('_personId', $person->getId());
-        $session->set('_password', $encodedPassword);
 
         return new JsonResponse(null, 201);
     }

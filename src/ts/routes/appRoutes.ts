@@ -3,6 +3,11 @@ import RouteDefinition from 'routes/route';
 
 export default function appRoutes(bottle: Bottle): Record<string, RouteDefinition> {
     return {
+        login: {
+            path: '/login',
+            controller: () => [bottle.container.loginController, 'start'],
+        },
+
         create_team: {
             path: '/teams/new',
             controller: () => [bottle.container.createTeamController, 'start'],

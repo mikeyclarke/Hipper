@@ -61,19 +61,8 @@ class AuthenticationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$this->passesAuthentication($session, $person)) {
-            $this->createUnauthorizedResponse($request, $event);
-            return;
-        }
-        unset($person['password']);
-
         $personModel = PersonModel::createFromArray($person);
         $request->attributes->set('person', $personModel);
-    }
-
-    private function passesAuthentication(SessionInterface $session, array $person): bool
-    {
-        return $session->get('_password') === $person['password'];
     }
 
     private function isForeignOrganizationContext(Request $request, array $person): bool
@@ -104,7 +93,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface
 
     private function hasValidSession(SessionInterface $session): bool
     {
-        return $session->has('_password') && $session->has('_personId');
+        return $session->has('_personId');
     }
 
     private function isUnsecuredRoute(array $routeParams): bool

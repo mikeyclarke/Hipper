@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\FrontEnd\App\Controller\Organization;
 
+use Hipper\Login\Login;
 use Hipper\Person\PersonRepository;
 use Hipper\TokenizedLogin\TokenizedLoginRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,13 +12,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TokenizedLoginController
 {
+    private $login;
     private $personRepository;
     private $tokenizedLoginRepository;
 
     public function __construct(
+        Login $login,
         PersonRepository $personRepository,
         TokenizedLoginRepository $tokenizedLoginRepository
     ) {
+        $this->login = $login;
         $this->personRepository = $personRepository;
         $this->tokenizedLoginRepository = $tokenizedLoginRepository;
     }
@@ -39,8 +43,7 @@ class TokenizedLoginController
         $this->tokenizedLoginRepository->deleteAllForPerson($person['id']);
 
         $session = $request->getSession();
-        $session->set('_personId', $person['id']);
-        $session->set('_password', $person['password']);
+        $this->login->populateSession($session, $person);
 
         return new RedirectResponse('/');
     }

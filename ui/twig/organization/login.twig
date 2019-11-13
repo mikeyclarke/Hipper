@@ -1,0 +1,36 @@
+{% extends 'base_layout.twig' %}
+
+{% block page_content %}
+<div class="c-login-screen">
+    <div class="c-login-screen__header">
+        <a href="https://usehipper.com"><svg class="c-login-screen__header-logo" role="img" aria-label="Hipper"><use xlink:href="#icon-sprite__wordmark"/></svg></a>
+    </div>
+
+    <main class="c-login-screen__inner">
+        <header class="c-login-screen__inner-header">
+            <h1 class="c-login-screen__inner-title">Sign in to {{ organization.name }}</h1>
+        </header>
+
+        <form class="js-login-form" novalidate>
+            <fieldset class="c-form__field">
+                <label for="input-email-address" class="c-form__label">Your email address</label>
+                <input class="c-form__input js-email-input" type="email" name="email_address" id="input-email-address" required autocomplete="email">
+            </fieldset>
+
+            <fieldset class="c-form__field">
+                <label for="input-password" class="c-form__label">Your password</label>
+                <password-input class="c-password-input">
+                    <input class="c-form__input c-password-input__input js-password-input" type="password" name="password" id="input-password" required autocomplete="password" minlength="8">
+                    <button class="c-password-input__visibility-button js-toggle-password-visibility" type="button" aria-hidden="true" tabindex="-1" aria-controls="input-password">Show</button>
+                </password-input>
+            </fieldset>
+
+            <button class="c-login-screen__submit-button js-submit" type="submit">Sign in</button>
+        </form>
+    </main>
+
+    <footer class="c-login-screen__footer">
+        <p class="c-login-screen__footer-copy">Not a member of {{ organization.name }} on Hipper yet? <a class="c-login-screen__footer-link" href="/join">Join now</a></p>
+    </footer>
+</div>
+{% endblock %}

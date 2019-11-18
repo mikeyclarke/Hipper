@@ -43,7 +43,6 @@ module.exports = {
         extensions: ['.ts', '.js', '.scss'],
         alias: {
             Sass: path.resolve(__dirname, 'ui/sass'),
-            Twig: path.resolve(__dirname, 'ui/twig'),
         },
         modules: [
             path.resolve('./src/ts'),
@@ -73,10 +72,6 @@ module.exports = {
                         },
                     },
                 ],
-            },
-            {
-                test: /\.twig$/,
-                loader: 'twig-loader',
             },
             {
                 test: /\.svg$/,

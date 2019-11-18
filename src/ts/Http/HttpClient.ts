@@ -103,7 +103,7 @@ export default class HttpClient {
         return !safeHttpMethods.includes(method);
     }
 
-    private checkResponse(input: Input, options: NormalizedOptions, response: Response): ResponsePromise | void {
+    private checkResponse(request: Request, options: NormalizedOptions, response: Response): ResponsePromise | void {
         if (response.ok) {
             return;
         }

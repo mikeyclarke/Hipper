@@ -1,4 +1,4 @@
-import * as pathToRegExp from 'path-to-regexp';
+import { pathToRegexp as pathToRegExp, Key } from 'path-to-regexp';
 import RouteCollection from 'Routing/RouteCollection';
 
 export default class RouteCollectionParser {
@@ -17,7 +17,7 @@ export default class RouteCollectionParser {
                 path = path.replace(`:${prop}`, `:${prop}(${rule})`);
             }
 
-            const placeholders: pathToRegExp.Key[] = [];
+            const placeholders: Key[] = [];
             const regex = pathToRegExp(path, placeholders);
             dynamicRoutes.set(regex, [name, placeholders]);
         }

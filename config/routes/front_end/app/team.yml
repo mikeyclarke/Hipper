@@ -53,4 +53,4 @@ team.doc.show:
             - team_model_from_url_id_middleware:before
             - knowledgebase_routing_middleware:before
     requirements:
-        route: '.+'
+        path: '.+'

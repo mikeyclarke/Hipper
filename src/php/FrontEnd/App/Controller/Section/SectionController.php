@@ -41,11 +41,12 @@ class SectionController
     public function getAction(Request $request): Response
     {
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
+        $knowledgebaseId = $request->attributes->get('knowledgebaseId');
         $organization = $request->attributes->get('organization');
         $sectionId = $request->attributes->get('sectionId');
         $timeZone = $this->timeZoneFromRequest->get($request);
 
-        $result = $this->sectionRepository->findById($sectionId, $organization->getId());
+        $result = $this->sectionRepository->findById($sectionId, $knowledgebaseId, $organization->getId());
         if (null === $result) {
             throw new NotFoundHttpException;
         }

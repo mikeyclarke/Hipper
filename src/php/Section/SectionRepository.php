@@ -15,17 +15,19 @@ class SectionRepository
         $this->connection = $connection;
     }
 
-    public function findById(string $sectionId, string $organizationId): ?array
+    public function findById(string $sectionId, string $knowledgebaseId, string $organizationId): ?array
     {
         $qb = $this->connection->createQueryBuilder();
 
         $qb->select('*')
             ->from('section')
             ->andWhere('id = :id')
+            ->andWhere('knowledgebase_id = :knowledgebase_id')
             ->andWhere('organization_id = :organization_id');
 
         $qb->setParameters([
             'id' => $sectionId,
+            'knowledgebase_id' => $knowledgebaseId,
             'organization_id' => $organizationId,
         ]);
 

@@ -16,7 +16,10 @@ use Hipper\Knowledgebase\KnowledgebaseOwner;
 use Hipper\Knowledgebase\KnowledgebaseRepository;
 use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
+use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Person\PersonModel;
+use Hipper\Section\SectionModel;
+use Hipper\Section\SectionRepository;
 use Hipper\Team\TeamModel;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
@@ -36,6 +39,8 @@ class DocumentTest extends TestCase
     private $knowledgebaseOwner;
     private $knowledgebaseRepository;
     private $knowledgebaseRoute;
+    private $knowledgebaseRouteRepository;
+    private $sectionRepository;
     private $urlIdGenerator;
     private $urlSlugGenerator;
     private $document;
@@ -51,6 +56,8 @@ class DocumentTest extends TestCase
         $this->knowledgebaseOwner = m::mock(KnowledgebaseOwner::class);
         $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
         $this->knowledgebaseRoute = m::mock(KnowledgebaseRoute::class);
+        $this->knowledgebaseRouteRepository = m::mock(KnowledgebaseRouteRepository::class);
+        $this->sectionRepository = m::mock(SectionRepository::class);
         $this->urlIdGenerator = m::mock(UrlIdGenerator::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
 
@@ -64,6 +71,8 @@ class DocumentTest extends TestCase
             $this->knowledgebaseOwner,
             $this->knowledgebaseRepository,
             $this->knowledgebaseRoute,
+            $this->knowledgebaseRouteRepository,
+            $this->sectionRepository,
             $this->urlIdGenerator,
             $this->urlSlugGenerator
         );
@@ -103,7 +112,7 @@ class DocumentTest extends TestCase
         $knowledgebaseOwnerModel = new TeamModel;
 
         $this->createKnowledgebaseRepositoryExpectation([$parameters['knowledgebase_id'], $organizationId], $kbResult);
-        $this->createDocumentValidatorExpectation([$parameters, m::type(KnowledgebaseModel::class), true]);
+        $this->createDocumentValidatorExpectation([$parameters, m::type(KnowledgebaseModel::class), null, true]);
         $this->createIdGeneratorExpectation($documentId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
         $this->createUrlIdGeneratorExpectation($urlId);
@@ -121,10 +130,94 @@ class DocumentTest extends TestCase
                 $parameters['description'],
                 $deducedDescription,
                 json_encode($parameters['content']),
+                null
             ],
             $documentRow
         );
         $this->createKnowledgebaseRouteExpectation([m::type(DocumentModel::class), $urlSlug, true, true], $routeModel);
+        $this->createDocumentRevisionExpectation([m::type(DocumentModel::class)]);
+        $this->createConnectionCommitExpectation();
+        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+
+        $result = $this->document->create($person, $parameters);
+        $this->assertIsArray($result);
+        $this->assertInstanceOf(DocumentModel::class, $result[0]);
+        $this->assertEquals($urlSlug, $result[0]->getUrlSlug());
+        $this->assertEquals($urlId, $result[0]->getUrlId());
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[1]);
+        $this->assertEquals($knowledgebaseOwnerModel, $result[2]);
+    }
+
+    /**
+     * @test
+     */
+    public function createInSection()
+    {
+        $personId = 'person-uuid';
+        $organizationId = 'org-uuid';
+        $knowledgebaseId = 'kb-uuid';
+        $sectionId = 'section-uuid';
+
+        $person = new PersonModel;
+        $person->setId($personId);
+        $person->setOrganizationId($organizationId);
+
+        $parameters = [
+            'name' => 'Welcome to Engineering',
+            'description' => null,
+            'content' => ["type" => "text", "text" => "👋 Congrats on joining Hipper!"],
+            'knowledgebase_id' => $knowledgebaseId,
+            'section_id' => $sectionId,
+        ];
+
+        $kbResult = ['knowledgebase'];
+        $sectionResult = ['id' => $sectionId];
+        $documentId = 'doc-uuid';
+        $urlSlug = 'welcome-to-engineering';
+        $urlId = 'url-id';
+        $deducedDescription = '👋 Congrats on joining Hipper!';
+        $sectionRoute = 'my/nested/section';
+
+        $documentRow = [
+            'url_slug' => $urlSlug,
+            'url_id' => $urlId,
+        ];
+        $sectionRouteResult = ['route' => $sectionRoute];
+        $docRoute = $sectionRoute . '/' . $urlSlug;
+        $routeModel = new KnowledgebaseRouteModel;
+        $knowledgebaseOwnerModel = new TeamModel;
+
+        $this->createKnowledgebaseRepositoryExpectation([$parameters['knowledgebase_id'], $organizationId], $kbResult);
+        $this->createSectionRepositoryExpectation([$sectionId, $knowledgebaseId, $organizationId], $sectionResult);
+        $this->createDocumentValidatorExpectation(
+            [$parameters, m::type(KnowledgebaseModel::class), m::type(SectionModel::class), true]
+        );
+        $this->createIdGeneratorExpectation($documentId);
+        $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
+        $this->createUrlIdGeneratorExpectation($urlId);
+        $this->createDocumentDescriptionDeducerExpectation([$parameters['content']], $deducedDescription);
+        $this->createConnectionBeginTransactionExpectation();
+        $this->createDocumentInserterExpectation(
+            [
+                $documentId,
+                $parameters['name'],
+                $urlSlug,
+                $urlId,
+                $knowledgebaseId,
+                $organizationId,
+                $personId,
+                $parameters['description'],
+                $deducedDescription,
+                json_encode($parameters['content']),
+                $sectionId
+            ],
+            $documentRow
+        );
+        $this->createKnowledgebaseRouteRepositoryExpectation(
+            [$organizationId, $knowledgebaseId, $sectionId],
+            $sectionRouteResult
+        );
+        $this->createKnowledgebaseRouteExpectation([m::type(DocumentModel::class), $docRoute, true, true], $routeModel);
         $this->createDocumentRevisionExpectation([m::type(DocumentModel::class)]);
         $this->createConnectionCommitExpectation();
         $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
@@ -166,6 +259,15 @@ class DocumentTest extends TestCase
     {
         $this->knowledgebaseRoute
             ->shouldReceive('create')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createKnowledgebaseRouteRepositoryExpectation($args, $result)
+    {
+        $this->knowledgebaseRouteRepository
+            ->shouldReceive('findCanonicalRouteForSection')
             ->once()
             ->with(...$args)
             ->andReturn($result);
@@ -227,6 +329,15 @@ class DocumentTest extends TestCase
             ->shouldReceive('validate')
             ->once()
             ->with(...$args);
+    }
+
+    private function createSectionRepositoryExpectation($args, $result)
+    {
+        $this->sectionRepository
+            ->shouldReceive('findById')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
     }
 
     private function createKnowledgebaseRepositoryExpectation($args, $result)

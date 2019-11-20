@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace Hipper\Document;
 
 use Hipper\Knowledgebase\KnowledgebaseModel;
+use Hipper\Section\SectionModel;
 use Hipper\Validation\ConstraintViolationListFormatter;
 use Hipper\Validation\Constraints\DocumentStructure;
 use Hipper\Validation\Constraints\KnowledgebaseExists;
+use Hipper\Validation\Constraints\SectionExists;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -25,13 +27,21 @@ class DocumentValidator
         $this->validatorInterface = $validatorInterface;
     }
 
-    public function validate(array $input, ?KnowledgebaseModel $knowledgebase, bool $isNew = false): void
-    {
-        $this->validateInput($input, $knowledgebase, $isNew);
+    public function validate(
+        array $input,
+        ?KnowledgebaseModel $knowledgebase,
+        ?SectionModel $section,
+        bool $isNew = false
+    ): void {
+        $this->validateInput($input, $knowledgebase, $section, $isNew);
     }
 
-    private function validateInput(array $input, ?KnowledgebaseModel $knowledgebase, bool $isNew): void
-    {
+    private function validateInput(
+        array $input,
+        ?KnowledgebaseModel $knowledgebase,
+        ?SectionModel $section,
+        bool $isNew
+    ): void {
         $requiredOnCreate = ['name', 'knowledgebase_id'];
         $constraints = [
             'name' => [
@@ -62,6 +72,11 @@ class DocumentValidator
                 ]),
                 new KnowledgebaseExists([
                     'knowledgebase' => $knowledgebase,
+                ]),
+            ],
+            'section_id' => [
+                new SectionExists([
+                    'section' => $section,
                 ]),
             ],
         ];

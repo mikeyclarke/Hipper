@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Hipper\Section;
 
 use Hipper\Knowledgebase\KnowledgebaseModel;
+use Hipper\Section\SectionModel;
 use Hipper\Validation\ConstraintViolationListFormatter;
 use Hipper\Validation\Constraints\KnowledgebaseExists;
+use Hipper\Validation\Constraints\SectionExists;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;
@@ -24,13 +26,21 @@ class SectionValidator
         $this->validatorInterface = $validatorInterface;
     }
 
-    public function validate(array $input, ?KnowledgebaseModel $knowledgebase, bool $isNew = false): void
-    {
-        $this->validateInput($input, $knowledgebase, $isNew);
+    public function validate(
+        array $input,
+        ?KnowledgebaseModel $knowledgebase,
+        ?SectionModel $parentSection,
+        bool $isNew = false
+    ): void {
+        $this->validateInput($input, $knowledgebase, $parentSection, $isNew);
     }
 
-    private function validateInput(array $input, ?KnowledgebaseModel $knowledgebase, bool $isNew): void
-    {
+    private function validateInput(
+        array $input,
+        ?KnowledgebaseModel $knowledgebase,
+        ?SectionModel $parentSection,
+        bool $isNew
+    ): void {
         $requiredOnCreate = ['name', 'knowledgebase_id'];
         $constraints = [
             'name' => [
@@ -48,6 +58,12 @@ class SectionValidator
                 new Length([
                     'max' => 300,
                     'maxMessage' => 'Section description can’t be more than {{ limit }} characters long.',
+                ]),
+            ],
+            'parent_section_id' => [
+                new SectionExists([
+                    'message' => 'Parent section "{{ section_id }}" not found',
+                    'section' => $parentSection,
                 ]),
             ],
             'knowledgebase_id' => [

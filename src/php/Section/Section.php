@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace Hipper\Section;
 
 use Doctrine\DBAL\Connection;
+use Hipper\Document\Exception\MissingRouteException;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Knowledgebase\KnowledgebaseOwner;
 use Hipper\Knowledgebase\KnowledgebaseRepository;
 use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Person\PersonModel;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
@@ -20,7 +22,9 @@ class Section
     private $knowledgebaseOwner;
     private $knowledgebaseRepository;
     private $knowledgebaseRoute;
+    private $knowledgebaseRouteRepository;
     private $sectionInserter;
+    private $sectionRepository;
     private $sectionValidator;
     private $urlIdGenerator;
     private $urlSlugGenerator;
@@ -31,7 +35,9 @@ class Section
         KnowledgebaseOwner $knowledgebaseOwner,
         KnowledgebaseRepository $knowledgebaseRepository,
         KnowledgebaseRoute $knowledgebaseRoute,
+        KnowledgebaseRouteRepository $knowledgebaseRouteRepository,
         SectionInserter $sectionInserter,
+        SectionRepository $sectionRepository,
         SectionValidator $sectionValidator,
         UrlIdGenerator $urlIdGenerator,
         UrlSlugGenerator $urlSlugGenerator
@@ -41,7 +47,9 @@ class Section
         $this->knowledgebaseOwner = $knowledgebaseOwner;
         $this->knowledgebaseRepository = $knowledgebaseRepository;
         $this->knowledgebaseRoute = $knowledgebaseRoute;
+        $this->knowledgebaseRouteRepository = $knowledgebaseRouteRepository;
         $this->sectionInserter = $sectionInserter;
+        $this->sectionRepository = $sectionRepository;
         $this->sectionValidator = $sectionValidator;
         $this->urlIdGenerator = $urlIdGenerator;
         $this->urlSlugGenerator = $urlSlugGenerator;
@@ -49,8 +57,10 @@ class Section
 
     public function create(PersonModel $person, array $parameters): array
     {
-        $knowledgebase = $this->getKnowledgebase($parameters, $person->getOrganizationId());
-        $this->sectionValidator->validate($parameters, $knowledgebase, true);
+        $organizationId = $person->getOrganizationId();
+        $knowledgebase = $this->getKnowledgebase($parameters, $organizationId);
+        $parentSection = $this->getParentSection($parameters, $knowledgebase, $organizationId);
+        $this->sectionValidator->validate($parameters, $knowledgebase, $parentSection, true);
 
         $id = $this->idGenerator->generate();
         $urlSlug = $this->urlSlugGenerator->generateFromString($parameters['name']);
@@ -65,14 +75,16 @@ class Section
                 $urlId,
                 $parameters['knowledgebase_id'],
                 $person->getOrganizationId(),
-                $parameters['description'] ?? null
+                $parameters['description'] ?? null,
+                $parameters['parent_section_id'] ?? null
             );
 
             $model = SectionModel::createFromArray($result);
 
+            $routePrefix = $this->getRoutePrefix($organizationId, $parameters['knowledgebase_id'], $parentSection);
             $route = $this->knowledgebaseRoute->create(
                 $model,
-                $model->getUrlSlug(),
+                $routePrefix . $model->getUrlSlug(),
                 true,
                 true
             );
@@ -100,5 +112,52 @@ class Section
         }
 
         return KnowledgebaseModel::createFromArray($result);
+    }
+
+    private function getParentSection(
+        array $parameters,
+        ?KnowledgebaseModel $knowledgebase,
+        string $organizationId
+    ): ?SectionModel {
+        if (!isset($parameters['parent_section_id']) || null === $parameters['parent_section_id']) {
+            return null;
+        }
+
+        if (!$knowledgebase instanceof KnowledgebaseModel) {
+            return null;
+        }
+
+        $result = $this->sectionRepository->findById(
+            $parameters['parent_section_id'],
+            $parameters['knowledgebase_id'],
+            $organizationId
+        );
+        if (null === $result) {
+            return null;
+        }
+
+        return SectionModel::createFromArray($result);
+    }
+
+    private function getRoutePrefix(string $organizationId, string $knowledgebaseId, ?SectionModel $section): string
+    {
+        if (null === $section) {
+            return '';
+        }
+
+        $result = $this->knowledgebaseRouteRepository->findCanonicalRouteForSection(
+            $organizationId,
+            $knowledgebaseId,
+            $section->getId()
+        );
+
+        if (null === $result) {
+            throw new MissingRouteException(sprintf(
+                'Cannot create section because parent section %s is missing a canonical knowledgebase route',
+                $section->getId()
+            ));
+        }
+
+        return $result['route'] . '/';
     }
 }

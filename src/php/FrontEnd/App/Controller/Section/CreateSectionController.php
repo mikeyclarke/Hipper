@@ -48,6 +48,7 @@ class CreateSectionController
         return [
             'knowledgebase_id' => $project->getKnowledgebaseId(),
             'personIsInProject' => $personIsInProject,
+            'parent_section_id' => $request->query->get('in', null),
             'project' => $project,
         ];
     }
@@ -60,6 +61,7 @@ class CreateSectionController
         return [
             'knowledgebase_id' => $team->getKnowledgebaseId(),
             'personIsInTeam' => $personIsInTeam,
+            'parent_section_id' => $request->query->get('in', null),
             'team' => $team,
         ];
     }

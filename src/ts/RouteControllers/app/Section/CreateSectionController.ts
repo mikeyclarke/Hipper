@@ -5,6 +5,7 @@ import showFieldError from 'Validation/showFieldError';
 export default class CreateDocumentController {
     private readonly httpClient: HttpClient;
     private knowledgebaseId: string | null = null;
+    private parentSectionId: string | null = null;
     private formElement!: HTMLFormElement;
     private submitButton!: HTMLButtonElement;
     private nameInput!: HTMLTextAreaElement;
@@ -32,7 +33,13 @@ export default class CreateDocumentController {
             throw new Error('Knowledgebase ID element not found');
         }
 
+        const parentSectionIdInput = this.formElement.querySelector('[name="parent_section_id"]');
+        if (!(parentSectionIdInput instanceof HTMLInputElement)) {
+            throw new Error('Parent section ID element not found');
+        }
+
         this.knowledgebaseId = knowledgebaseIdInput.value;
+        this.parentSectionId = (parentSectionIdInput.value !== '') ? parentSectionIdInput.value : null;
     }
 
     private attachEvents(): void {
@@ -87,6 +94,7 @@ export default class CreateDocumentController {
             name: this.nameInput.value,
             description: this.descriptionInput.value,
             knowledgebase_id: this.knowledgebaseId,
+            parent_section_id: this.parentSectionId,
         };
     }
 

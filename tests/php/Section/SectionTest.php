@@ -11,11 +11,13 @@ use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
 use Hipper\Knowledgebase\KnowledgebaseRepository;
 use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
+use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Person\PersonModel;
 use Hipper\Project\ProjectModel;
 use Hipper\Section\Section;
 use Hipper\Section\SectionInserter;
 use Hipper\Section\SectionModel;
+use Hipper\Section\SectionRepository;
 use Hipper\Section\SectionValidator;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
@@ -31,7 +33,9 @@ class SectionTest extends TestCase
     private $knowledgebaseOwner;
     private $knowledgebaseRepository;
     private $knowledgebaseRoute;
+    private $knowledgebaseRouteRepository;
     private $sectionInserter;
+    private $sectionRepository;
     private $sectionValidator;
     private $urlIdGenerator;
     private $urlSlugGenerator;
@@ -44,7 +48,9 @@ class SectionTest extends TestCase
         $this->knowledgebaseOwner = m::mock(KnowledgebaseOwner::class);
         $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
         $this->knowledgebaseRoute = m::mock(KnowledgebaseRoute::class);
+        $this->knowledgebaseRouteRepository = m::mock(KnowledgebaseRouteRepository::class);
         $this->sectionInserter = m::mock(SectionInserter::class);
+        $this->sectionRepository = m::mock(SectionRepository::class);
         $this->sectionValidator = m::mock(SectionValidator::class);
         $this->urlIdGenerator = m::mock(UrlIdGenerator::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
@@ -55,7 +61,9 @@ class SectionTest extends TestCase
             $this->knowledgebaseOwner,
             $this->knowledgebaseRepository,
             $this->knowledgebaseRoute,
+            $this->knowledgebaseRouteRepository,
             $this->sectionInserter,
+            $this->sectionRepository,
             $this->sectionValidator,
             $this->urlIdGenerator,
             $this->urlSlugGenerator
@@ -89,6 +97,7 @@ class SectionTest extends TestCase
             $parameters['knowledgebase_id'],
             $person->getOrganizationId(),
             $parameters['description'],
+            null,
         ];
         $sectionArray = [
             'id' => $sectionId,
@@ -102,7 +111,7 @@ class SectionTest extends TestCase
             [$parameters['knowledgebase_id'], 'org-uuid'],
             $knowledgebaseResult
         );
-        $this->createSectionValidatorExpectation([$parameters, m::type(KnowledgebaseModel::class), true]);
+        $this->createSectionValidatorExpectation([$parameters, m::type(KnowledgebaseModel::class), null, true]);
         $this->createIdGeneratorExpectation($sectionId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $sectionUrlSlug);
         $this->createUrlIdGeneratorExpectation($sectionUrlId);
@@ -110,6 +119,83 @@ class SectionTest extends TestCase
         $this->createSectionInserterExpectation($sectionInserterArgs, $sectionArray);
         $this->createKnowledgebaseRouteExpectation(
             [m::type(SectionModel::class), $sectionUrlSlug, true, true],
+            $knowledgebaseRouteModel
+        );
+        $this->createConnectionCommitExpectation();
+        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+
+        $result = $this->section->create($person, $parameters);
+        $this->assertIsArray($result);
+        $this->assertInstanceOf(SectionModel::class, $result[0]);
+        $this->assertEquals($sectionId, $result[0]->getId());
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[1]);
+        $this->assertInstanceOf(KnowledgebaseOwnerModelInterface::class, $result[2]);
+    }
+
+    /**
+     * @test
+     */
+    public function createInParentSection()
+    {
+        $person = new PersonModel;
+        $person->setOrganizationId('org-uuid');
+        $parameters = [
+            'name' => 'My section',
+            'description' => 'My description',
+            'knowledgebase_id' => 'kb-uuid',
+            'parent_section_id' => 'parent-section-uuid',
+        ];
+
+        $knowledgebaseResult = [
+            'id' => $parameters['knowledgebase_id'],
+        ];
+        $parentSectionResult = [
+            'id' => $parameters['parent_section_id'],
+        ];
+        $sectionId = 'section-uuid';
+        $sectionUrlSlug = 'my-section';
+        $sectionUrlId = 'abcd1234';
+        $sectionInserterArgs = [
+            $sectionId,
+            $parameters['name'],
+            $sectionUrlSlug,
+            $sectionUrlId,
+            $parameters['knowledgebase_id'],
+            $person->getOrganizationId(),
+            $parameters['description'],
+            $parameters['parent_section_id'],
+        ];
+        $sectionArray = [
+            'id' => $sectionId,
+            'url_slug' => $sectionUrlSlug,
+            'url_id' => $sectionUrlId,
+        ];
+        $parentSectionRouteResult = ['route' => 'i/have/nested'];
+        $knowledgebaseRouteModel = new KnowledgebaseRouteModel;
+        $knowledgebaseOwnerModel = new ProjectModel;
+
+        $this->createKnowledgebaseRepositoryExpectation(
+            [$parameters['knowledgebase_id'], 'org-uuid'],
+            $knowledgebaseResult
+        );
+        $this->createSectionRepositoryExpectation(
+            [$parameters['parent_section_id'], $parameters['knowledgebase_id'], 'org-uuid'],
+            $parentSectionResult
+        );
+        $this->createSectionValidatorExpectation(
+            [$parameters, m::type(KnowledgebaseModel::class), m::type(SectionModel::class), true]
+        );
+        $this->createIdGeneratorExpectation($sectionId);
+        $this->createUrlSlugGeneratorExpectation([$parameters['name']], $sectionUrlSlug);
+        $this->createUrlIdGeneratorExpectation($sectionUrlId);
+        $this->createConnectionBeginTransactionExpectation();
+        $this->createSectionInserterExpectation($sectionInserterArgs, $sectionArray);
+        $this->createKnowledgebaseRouteRepositoryExpectation(
+            ['org-uuid', $parameters['knowledgebase_id'], $parameters['parent_section_id']],
+            $parentSectionRouteResult
+        );
+        $this->createKnowledgebaseRouteExpectation(
+            [m::type(SectionModel::class), $parentSectionRouteResult['route'] . '/' . $sectionUrlSlug, true, true],
             $knowledgebaseRouteModel
         );
         $this->createConnectionCommitExpectation();
@@ -143,6 +229,15 @@ class SectionTest extends TestCase
     {
         $this->knowledgebaseRoute
             ->shouldReceive('create')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createKnowledgebaseRouteRepositoryExpectation($args, $result)
+    {
+        $this->knowledgebaseRouteRepository
+            ->shouldReceive('findCanonicalRouteForSection')
             ->once()
             ->with(...$args)
             ->andReturn($result);
@@ -186,6 +281,15 @@ class SectionTest extends TestCase
         $this->idGenerator
             ->shouldReceive('generate')
             ->once()
+            ->andReturn($result);
+    }
+
+    private function createSectionRepositoryExpectation($args, $result)
+    {
+        $this->sectionRepository
+            ->shouldReceive('findById')
+            ->once()
+            ->with(...$args)
             ->andReturn($result);
     }
 

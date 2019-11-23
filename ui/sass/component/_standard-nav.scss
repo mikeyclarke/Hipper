@@ -1,3 +1,8 @@
+@use '../config/config';
+@use '../helper/breakpoint';
+@use '../helper/font-smoothing';
+@use '../helper/unstyled-button';
+
 $standard-nav-height: 46px;
 $medium-large-breakpoint: 930px;
 
@@ -10,7 +15,7 @@ $medium-large-breakpoint: 930px;
     display: none;
     height: 67px;
 
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         display: block;
     }
 
@@ -20,7 +25,7 @@ $medium-large-breakpoint: 930px;
     display: flex;
     justify-content: space-between;
 
-    @include breakpoint(app, large) {
+    @include breakpoint.breakpoint(app, large) {
         justify-content: flex-start;
         margin: 0 auto;
         padding: 0 12px 0 0;
@@ -33,7 +38,7 @@ $medium-large-breakpoint: 930px;
     height: $standard-nav-height;
     padding: 0 16px;
 
-    @include breakpoint(app, large) {
+    @include breakpoint.breakpoint(app, large) {
         margin-right: 16px;
     }
 }
@@ -44,7 +49,7 @@ $medium-large-breakpoint: 930px;
 }
 
 .c-standard-nav__wordmark {
-    fill: config-get(color-shades, primary, 1100);
+    fill: config.config-get(color-shades, primary, 1100);
     width: 60px;
 }
 
@@ -54,7 +59,7 @@ $medium-large-breakpoint: 930px;
     margin: 0;
     padding: 0;
 
-    @include breakpoint(app, large) {
+    @include breakpoint.breakpoint(app, large) {
         margin-right: 20px;
     }
 }
@@ -63,7 +68,7 @@ $medium-large-breakpoint: 930px;
     display: inline-block;
     margin: 0 8px 0 0;
 
-    @include free-form-breakpoint($medium-large-breakpoint) {
+    @include breakpoint.free-form-breakpoint($medium-large-breakpoint) {
         margin-right: 16px;
     }
 }
@@ -73,14 +78,14 @@ $medium-large-breakpoint: 930px;
 }
 
 .c-standard-nav__item-link {
-    color: config-get(color-shades, dark, 700);
+    color: config.config-get(color-shades, dark, 700);
     display: block;
     font-size: 16px;
     font-weight: 500;
     line-height: 16px;
     padding: 15px 10px;
     text-decoration: none;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-standard-nav__item-link:focus {
@@ -96,7 +101,7 @@ $medium-large-breakpoint: 930px;
 }
 
 .c-standard-nav__search-icon {
-    fill: config-get(color-shades, dark, 500);
+    fill: config.config-get(color-shades, dark, 500);
     height: 20px;
     left: 6px;
     pointer-events: none;
@@ -109,24 +114,24 @@ $medium-large-breakpoint: 930px;
 .c-standard-nav__search-input {
     -webkit-appearance: none;
     appearance: none;
-    background: config-get(global, color, white);
-    border: 2px solid config-get(color-shades, dark, 100);
+    background: config.config-get(global, color, white);
+    border: 2px solid config.config-get(color-shades, dark, 100);
     border-radius: 6px;
     box-sizing: border-box;
-    caret-color: config-get(color-shades, dark, 600);
-    color: config-get(color-shades, dark, 800);
+    caret-color: config.config-get(color-shades, dark, 600);
+    color: config.config-get(color-shades, dark, 800);
     font-size: 16px;
     height: 32px;
     line-height: 16px;
     padding: 6px 8px 6px 34px;
 
-    @include breakpoint(app, large) {
+    @include breakpoint.breakpoint(app, large) {
         width: 312px;
     }
 }
 
 .c-standard-nav__search-input::placeholder {
-    color: config-get(color-shades, dark, 400);
+    color: config.config-get(color-shades, dark, 400);
     line-height: 16px;
     opacity: 1;
     padding-top: 2px; // Required for Safari
@@ -135,7 +140,7 @@ $medium-large-breakpoint: 930px;
 .c-standard-nav__actions {
     display: flex;
 
-    @include breakpoint(app, large) {
+    @include breakpoint.breakpoint(app, large) {
         margin-left: auto;
     }
 }
@@ -148,7 +153,7 @@ $medium-large-breakpoint: 930px;
     @extend %unstyled-button;
     align-items: center;
     appearance: none;
-    color: config-get(color-shades, primary, 1000);
+    color: config.config-get(color-shades, primary, 1000);
     display: flex;
     font-size: 16px;
     font-weight: 500;
@@ -157,11 +162,11 @@ $medium-large-breakpoint: 930px;
     padding: 0 10px;
     position: relative;
     z-index: 0;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-standard-nav__add-new-button::before {
-    background: config-get(color-shades, primary, 100);
+    background: config.config-get(color-shades, primary, 100);
     border-radius: 4px;
     bottom: 9px;
     content: '';
@@ -178,12 +183,12 @@ $medium-large-breakpoint: 930px;
 }
 
 .c-standard-nav__add-new-icon {
-    fill: config-get(color-shades, primary, 1000);
+    fill: config.config-get(color-shades, primary, 1000);
     height: 24px;
     margin: 0 2px;
     width: 24px;
 
-    @include free-form-breakpoint($medium-large-breakpoint) {
+    @include breakpoint.free-form-breakpoint($medium-large-breakpoint) {
         display: none;
     }
 }
@@ -192,19 +197,19 @@ $medium-large-breakpoint: 930px;
     display: none;
     margin: 0 0 0 8px;
 
-    @include free-form-breakpoint($medium-large-breakpoint) {
+    @include breakpoint.free-form-breakpoint($medium-large-breakpoint) {
         display: block;
     }
 }
 
 .c-standard-nav__add-new-arrow {
     display: none;
-    fill: config-get(color-shades, primary, 1000);
+    fill: config.config-get(color-shades, primary, 1000);
     height: 18px;
     margin: 0 3px 0 1px;
     width: 18px;
 
-    @include free-form-breakpoint($medium-large-breakpoint) {
+    @include breakpoint.free-form-breakpoint($medium-large-breakpoint) {
         display: block;
     }
 }
@@ -230,32 +235,32 @@ $medium-large-breakpoint: 930px;
     height: 32px;
     width: 32px;
 
-    @include free-form-breakpoint(1300px) {
+    @include breakpoint.free-form-breakpoint(1300px) {
         margin-right: 6px;
     }
 }
 
 .c-standard-nav__account-name {
-    color: config-get(color-shades, dark, 700);
+    color: config.config-get(color-shades, dark, 700);
     display: none;
     font-size: 16px;
     line-height: 16px;
     max-width: 278px;
     text-align: left;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 
-    @include free-form-breakpoint(1300px) {
+    @include breakpoint.free-form-breakpoint(1300px) {
         display: block;
     }
 }
 
 .c-standard-nav__account-arrow {
-    fill: config-get(color-shades, dark, 400);
+    fill: config.config-get(color-shades, dark, 400);
     height: 18px;
     margin: 0 12px 0 0;
     width: 18px;
 
-    @include breakpoint(app, large) {
+    @include breakpoint.breakpoint(app, large) {
         margin-right: 0;
     }
 }

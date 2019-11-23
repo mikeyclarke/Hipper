@@ -1,3 +1,7 @@
+@use 'sass:color';
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 $page-header-padding: 24px 16px 32px;
 
 .c-page-header {
@@ -6,13 +10,13 @@ $page-header-padding: 24px 16px 32px;
 }
 
 .c-page-header__title-label {
-    color: config-get(color-shades, grey, 1100);
+    color: config.config-get(color-shades, grey, 1100);
     display: block;
     font-size: 10px;
     font-weight: 600;
     margin: 0 0 4px;
     text-transform: uppercase;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-page-header__title,
@@ -27,25 +31,25 @@ $page-header-padding: 24px 16px 32px;
 
 .c-page-header__title::placeholder,
 .c-page-header__subheading::placeholder {
-    color: config-get(color-shades, grey, 500);
+    color: config.config-get(color-shades, grey, 500);
 }
 
 .c-page-header__title {
-    color: config-get(color-shades, dark, 900);
+    color: config.config-get(color-shades, dark, 900);
     font-weight: 700;
     font-size: 28px;
     line-height: 34px;
     margin: 0;
     min-height: 38px;
     width: calc(100% - 60px);
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 %c-page-header__subheading {
     font-size: 16px;
     line-height: 24px;
     margin: 8px 0 0;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-page-header__subheading,
@@ -54,11 +58,11 @@ $page-header-padding: 24px 16px 32px;
 }
 
 .c-page-header__subheading {
-    color: config-get(color-shades, dark, 900);
+    color: config.config-get(color-shades, dark, 900);
 }
 
 .c-page-header__subheading--muted {
-    color: config-get(color-shades, dark, 400);
+    color: config.config-get(color-shades, dark, 400);
 }
 
 .c-page-header__attribution {
@@ -75,19 +79,19 @@ $page-header-padding: 24px 16px 32px;
 
 .c-page-header__attribution-avatar--blank {
     @extend %c-page-header__attribution-avatar;
-    border: 1px dashed config-get(color-shades, grey, 500);
+    border: 1px dashed config.config-get(color-shades, grey, 500);
 }
 
 %c-page-header__attribution-copy {
     font-size: 14px;
     font-weight: 500;
     margin: 0 0 0 8px;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-page-header__attribution-copy--muted {
     @extend %c-page-header__attribution-copy;
-    color: config-get(color-shades, dark, 400);
+    color: config.config-get(color-shades, dark, 400);
 }
 
 %c-page-header__action-button {
@@ -127,11 +131,11 @@ $page-header-padding: 24px 16px 32px;
 }
 
 .c-page-header__edit-button::before {
-    background-color: config-get(color-shades, grey, 200);
+    background-color: config.config-get(color-shades, grey, 200);
 }
 
 .c-page-header__edit-button:focus::before {
-    background-color: darken(config-get(color-shades, grey, 200), 10%);
+    background-color: color.adjust(config.config-get(color-shades, grey, 200), $lightness: -10%);
 }
 
 .c-page-header__done-button:disabled {
@@ -139,29 +143,29 @@ $page-header-padding: 24px 16px 32px;
 }
 
 .c-page-header__done-button::before {
-    background-color: config-get(color-shades, secondary, 1100);
+    background-color: config.config-get(color-shades, secondary, 1100);
 }
 
 .c-page-header__done-button:focus::before {
-    background-color: darken(config-get(color-shades, secondary, 1100), 10%);
+    background-color: color.adjust(config.config-get(color-shades, secondary, 1100), $lightness: -10%);
 }
 
 .c-page-header__edit-button-icon {
-    fill: config-get(color-shades, grey, 1100);
+    fill: config.config-get(color-shades, grey, 1100);
     height: 18px;
     width: 18px;
 }
 
 .c-page-header__edit-button:focus .c-page-header__edit-button-icon {
-    fill: darken(config-get(color-shades, grey, 1100), 10%);
+    fill: color.adjust(config.config-get(color-shades, grey, 1100), $lightness: -10%);
 }
 
 .c-page-header__done-button-icon {
-    fill: config-get(global, color, white);
+    fill: config.config-get(global, color, white);
     height: 24px;
     width: 24px;
 }
 
 .c-page-header__done-button:focus .c-page-header__done-button-icon {
-    fill: lighten(config-get(global, color, white), 10%);
+    fill: color.adjust(config.config-get(global, color, white), $lightness: 10%);
 }

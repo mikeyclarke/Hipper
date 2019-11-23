@@ -1,12 +1,14 @@
+@use '../config/config';
+
 .c-document-editor-menu {
-    background: config-get(global, color, white);
+    background: config.config-get(global, color, white);
     border-radius: 8px;
     bottom: 0;
     height: 48px;
 }
 
 .c-document-editor-menu.is-detached {
-    background: config-get(color-shades, dark, 900);
+    background: config.config-get(color-shades, dark, 900);
     position: absolute;
 }
 
@@ -32,15 +34,15 @@
 }
 
 .c-document-editor-menu__button-icon {
-    fill: config-get(color-shades, dark, 300);
+    fill: config.config-get(color-shades, dark, 300);
     height: 24px;
     width: 24px;
 }
 
 .c-document-editor-menu__button.is-available .c-document-editor-menu__button-icon {
-    fill: config-get(color-shades, dark, 700);
+    fill: config.config-get(color-shades, dark, 700);
 }
 
 .c-document-editor-menu__button.is-applied .c-document-editor-menu__button-icon {
-    fill: config-get(color-shades, primary, 800);
+    fill: config.config-get(color-shades, primary, 800);
 }

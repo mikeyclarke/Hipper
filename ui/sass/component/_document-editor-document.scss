@@ -1,5 +1,8 @@
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 .c-document-editor-document {
-    color: config-get(color-shades, dark, 900);
+    color: config.config-get(color-shades, dark, 900);
     font-size: 18px;
 }
 
@@ -31,10 +34,10 @@
 }
 
 .c-document-editor-document .ProseMirror > p.is-empty:first-child::before {
-    color: config-get(color-shades, grey, 500);
+    color: config.config-get(color-shades, grey, 500);
     content: 'Start writing your doc…';
     cursor: text;
     float: left;
     height: 0;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }

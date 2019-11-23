@@ -1,3 +1,5 @@
+@use '../config/config';
+
 $splash-screen-background-color: #fcfcfc;
 
 $splash-screen-dialog-border-radius: 8px;
@@ -6,7 +8,7 @@ $splash-screen-dialog-margin-bottom: 24px;
 $splash-screen-dialog-margin-top: 36px;
 $splash-screen-dialog-width: 784px;
 
-$splash-screen-dialog-content-background-color: config-get(global, color, white);
+$splash-screen-dialog-content-background-color: config.config-get(global, color, white);
 $splash-screen-dialog-content-width: 50%;
 
 $splash-screen-dialog-graphic-background-color: #2a2a3b;

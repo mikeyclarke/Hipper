@@ -1,5 +1,8 @@
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 floating-button {
-    background: config-get(color-shades, primary, 1100);
+    background: config.config-get(color-shades, primary, 1100);
     border-radius: 27px;
     bottom: 16px;
     box-shadow: 0 1px 9px 0 rgba(21, 104, 240, .45);
@@ -43,7 +46,7 @@ floating-button[expanded=true] .floating-button__button {
 }
 
 .floating-button__button-icon {
-    fill: config-get(global, color, white);
+    fill: config.config-get(global, color, white);
     height: 32px;
     width: 32px;
 }
@@ -63,7 +66,7 @@ floating-button[expanded=true] .floating-button__button {
 
 .floating-button__control {
     align-items: center;
-    color: config-get(global, color, white);
+    color: config.config-get(global, color, white);
     display: flex;
     font-size: 18px;
     font-weight: 600;
@@ -71,11 +74,11 @@ floating-button[expanded=true] .floating-button__button {
     padding: 0 12px;
     text-decoration: none;
     width: 189px;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .floating-button__control-icon {
-    fill: config-get(global, color, white);
+    fill: config.config-get(global, color, white);
     height: 16px;
     margin: 0 10px 0 0;
     width: 16px;

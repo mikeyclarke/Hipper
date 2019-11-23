@@ -1,23 +1,23 @@
-@import 'vendor/normalize/normalize';
-@import './fonts';
+@use 'vendor/normalize/normalize';
+@use './fonts';
 
-@import 'utility/hidden-attribute';
-@import 'helper/font-smoothing';
+@use 'utility/hidden-attribute';
+@use 'helper/font-smoothing';
 
-@import 'config/config';
+@use 'config/config';
 
-@import 'element/page';
-@import 'element/button';
-@import 'element/fieldset';
-@import 'element/input';
-@import 'element/textarea';
+@use 'element/page';
+@use 'element/button';
+@use 'element/fieldset';
+@use 'element/input';
+@use 'element/textarea';
 
-@import 'custom-element/popover-alert';
+@use 'custom-element/popover-alert';
 
-@import 'component/button';
-@import 'component/checkbox';
-@import 'component/password-input';
-@import 'component/form';
-@import 'component/signup-form';
+@use 'component/button' as button-component;
+@use 'component/checkbox';
+@use 'component/password-input';
+@use 'component/form';
+@use 'component/signup-form';
 
-@import 'layout/splash-screen';
+@use 'layout/splash-screen';

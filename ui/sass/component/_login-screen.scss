@@ -1,3 +1,9 @@
+@use 'sass:color';
+@use 'sass:list';
+@use '../config/config';
+@use '../helper/font-smoothing';
+@use '../helper/unstyled-button';
+
 $login-screen-background-color: #f7f8fa;
 $login-screen-padded-layout-width: 397px;
 
@@ -5,11 +11,11 @@ $login-screen-header-height: 48px;
 $login-screen-header-margin: 0 0 16px;
 $login-screen-header-padded-layout-margin: 32px 0;
 
-$login-screen-header-logo-fill: config-get(color-shades, primary, 1100);
+$login-screen-header-logo-fill: config.config-get(color-shades, primary, 1100);
 $login-screen-header-logo-height: 18px;
 $login-screen-header-logo-padded-layout-height: 24px;
 
-$login-screen-inner-background-color: config-get(global, color, white);
+$login-screen-inner-background-color: config.config-get(global, color, white);
 $login-screen-inner-box-shadow: 0 2px 6px 0 rgba(#000, .1);
 $login-screen-inner-padding: 32px 24px 24px;
 $login-screen-inner-padded-layout-padding: 32px 30px 0;
@@ -17,16 +23,16 @@ $login-screen-inner-padded-layout-border-radius: 8px;
 
 $login-screen-inner-header-text-align: center;
 
-$login-screen-inner-title-color: config-get(color-shades, dark, 900);
+$login-screen-inner-title-color: config.config-get(color-shades, dark, 900);
 $login-screen-inner-title-font-size: 24px;
 $login-screen-inner-title-font-weight: 700;
 $login-screen-inner-title-margin: 0 0 32px;
 $login-screen-inner-title-padded-layout-font-size: 28px;
 
-$login-screen-submit-button-background-color: config-get(color-shades, primary, 1000);
+$login-screen-submit-button-background-color: config.config-get(color-shades, primary, 1000);
 $login-screen-submit-button-border-radius: 6px;
 $login-screen-submit-button-box-shadow: 0 1px 8px rgba($login-screen-submit-button-background-color, .45);
-$login-screen-submit-button-color: config-get(global, color, white);
+$login-screen-submit-button-color: config.config-get(global, color, white);
 $login-screen-submit-button-font-size: 14px;
 $login-screen-submit-button-font-weight: 600;
 $login-screen-submit-button-height: 46px;
@@ -40,7 +46,7 @@ $login-screen-footer-padding: 16px 24px;
 $login-screen-footer-padded-layout-margin: 42px 0 32px;
 $login-screen-footer-padded-layout-padding: 20px 24px;
 
-$login-screen-footer-copy-color: config-get(color-shades, dark, 700);
+$login-screen-footer-copy-color: config.config-get(color-shades, dark, 700);
 $login-screen-footer-copy-font-size: 14px;
 $login-screen-footer-copy-font-weight: 500;
 
@@ -117,7 +123,7 @@ $login-screen-footer-text-decoration: underline;
     margin: $login-screen-inner-title-margin;
     font-size: $login-screen-inner-title-font-size;
     font-weight: $login-screen-inner-title-font-weight;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 
     @include padded-layout {
         font-size: $login-screen-inner-title-padded-layout-font-size;
@@ -140,25 +146,25 @@ $login-screen-footer-text-decoration: underline;
     text-transform: $login-screen-submit-button-text-transform;
     transition: background-color .2s;
     width: $login-screen-submit-button-width;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 
     @include padded-layout {
         border-radius: 0 0 $login-screen-inner-padded-layout-border-radius $login-screen-inner-padded-layout-border-radius;
         position: relative;
         top: auto;
         right: auto;
-        left: -#{nth($login-screen-inner-padded-layout-padding, 2)};
+        left: -#{list.nth($login-screen-inner-padded-layout-padding, 2)};
         width: $login-screen-padded-layout-width;
     }
 }
 
 .c-login-screen__submit-button:focus {
-    background-color: darken($login-screen-submit-button-background-color, 6%);
+    background-color: color.adjust($login-screen-submit-button-background-color, $lightness: -6%);
     outline: 0;
 }
 
 .c-login-screen__submit-button:active {
-    background-color: darken($login-screen-submit-button-background-color, 8%);
+    background-color: color.adjust($login-screen-submit-button-background-color, $lightness: -8%);
 }
 
 .c-login-screen__footer {
@@ -196,7 +202,7 @@ $login-screen-footer-text-decoration: underline;
     font-size: $login-screen-footer-copy-font-size;
     font-weight: $login-screen-footer-copy-font-weight;
     margin: auto;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-login-screen__footer-link {

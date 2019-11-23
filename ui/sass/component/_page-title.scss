@@ -1,19 +1,23 @@
+@use '../config/config';
+@use '../helper/breakpoint';
+@use '../helper/font-smoothing';
+
 $font-size: 32px;
 
 %c-page-title {
-    color: config-get(color-shades, dark, 900);
+    color: config.config-get(color-shades, dark, 900);
     font-family: 700;
     font-size: $font-size;
     line-height: $font-size;
     margin: 0 0 36px;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-page-title--hide-below-medium {
     @extend %c-page-title;
     display: none;
 
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         display: block;
     }
 }

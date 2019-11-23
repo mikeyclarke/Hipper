@@ -1,23 +1,26 @@
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 textarea {
     -webkit-appearance: none;
     appearance: none;
-    background-color: config-get(element, input, background-color);
-    border: config-get(element, input, border-width) solid config-get(element, input, border-color);
-    border-radius: config-get(element, input, border-radius);
-    box-shadow: config-get(element, input, box-shadow);
-    color: config-get(element, input, text-color);
-    height: config-get(element, textarea, height);
-    line-height: config-get(element, textarea, line-height);
-    padding: config-get(element, input, padding);
-    resize: config-get(element, textarea, resize);
-    @include font-smoothing;
+    background-color: config.config-get(element, input, background-color);
+    border: config.config-get(element, input, border-width) solid config.config-get(element, input, border-color);
+    border-radius: config.config-get(element, input, border-radius);
+    box-shadow: config.config-get(element, input, box-shadow);
+    color: config.config-get(element, input, text-color);
+    height: config.config-get(element, textarea, height);
+    line-height: config.config-get(element, textarea, line-height);
+    padding: config.config-get(element, input, padding);
+    resize: config.config-get(element, textarea, resize);
+    @include font-smoothing.font-smoothing;
 }
 
 textarea:focus {
-    border-color: config-get(element, input, focused, border-color);
+    border-color: config.config-get(element, input, focused, border-color);
     outline: 0;
 }
 
 textarea:disabled {
-    opacity: config-get(element, input, disabled, opacity);
+    opacity: config.config-get(element, input, disabled, opacity);
 }

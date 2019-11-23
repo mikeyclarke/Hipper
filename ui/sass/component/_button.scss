@@ -1,10 +1,14 @@
+@use 'sass:color';
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 $button-padding-top-bottom: 13px;
 $button-padding-left-right: 30px;
 $button-font-size: 14px;
 $button-font-weight: 500;
 $button-text-transform: uppercase;
 
-$button-background-color-primary: config-get(global, color, primary);
+$button-background-color-primary: config.config-get(global, color, primary);
 $button-text-color-primary: #fff;
 $button-border-radius-primary: 100px;
 
@@ -18,7 +22,7 @@ $button-border-radius-primary: 100px;
     margin: 0;
     padding: $button-padding-top-bottom $button-padding-left-right;
     text-transform: $button-text-transform;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 %button:disabled,
@@ -36,7 +40,7 @@ $button-border-radius-primary: 100px;
 }
 
 .c-button--primary:focus {
-    background-color: darken($button-background-color-primary, 3%);
+    background-color: color.adjust($button-background-color-primary, $lightness: -3%);
     outline: 0;
     transform: scale(1.1);
 }

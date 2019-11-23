@@ -1,3 +1,7 @@
+@use 'sass:list';
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 $form-margin: 40px 30px;
 
 $form-header-margin-bottom: 32px;
@@ -68,11 +72,11 @@ $form-footer-text-align: right;
     font-weight: $form-label-font-weight;
     font-size: $form-label-font-size;
     margin-bottom: $form-label-margin-bottom;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-form__label-optional {
-    color: config-get(color-shades, grey, 1000);
+    color: config.config-get(color-shades, grey, 1000);
 }
 
 .c-form__input {
@@ -83,12 +87,12 @@ $form-footer-text-align: right;
 .c-form__input[aria-invalid="true"],
 .c-form__input[aria-invalid="true"] ~ .c-password-input__visibility-button {
     animation: error-input-animation .65s;
-    border-color: rgba(config-get(global, color, error), .85);
+    border-color: rgba(config.config-get(global, color, error), .85);
 }
 
 .c-form__input[aria-invalid="true"]:focus,
 .c-form__input[aria-invalid="true"]:focus ~ .c-password-input__visibility-button {
-    border-color: config-get(global, color, error);
+    border-color: config.config-get(global, color, error);
 }
 
 .c-form__input:-moz-read-only {
@@ -100,8 +104,8 @@ $form-footer-text-align: right;
 }
 
 .c-form__error {
-    background-color: config-get(global, color, error);
-    color: config-get(global, color, white);
+    background-color: config.config-get(global, color, error);
+    color: config.config-get(global, color, white);
     display: none;
     font-size: 14px;
     font-weight: 500;
@@ -109,12 +113,12 @@ $form-footer-text-align: right;
     padding: 8px;
     position: absolute;
     top: -18px;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-form__error::before {
     border: 6px solid transparent;
-    border-top-color: config-get(global, color, error);
+    border-top-color: config.config-get(global, color, error);
     bottom: -12px;
     content: '';
     left: 14px;
@@ -148,8 +152,8 @@ $keyframe-coordinates: (
 
 @keyframes error-input-animation {
     @each $co in $keyframe-coordinates {
-        #{nth($co, 1)} {
-            transform: translateX(#{nth($co, 2)});
+        #{list.nth($co, 1)} {
+            transform: translateX(#{list.nth($co, 2)});
         }
     }
 }

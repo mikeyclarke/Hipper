@@ -1,8 +1,11 @@
+@use 'sass:string';
+@use '../config/config';
+
 html {
-    background: config-get(element, page, background-color);
+    background: config.config-get(element, page, background-color);
     box-sizing: border-box;
-    color: config-get(element, page, foreground-color);
-    font-family: unquote(config-get(global, font, stack));
+    color: config.config-get(element, page, foreground-color);
+    font-family: string.unquote(config.config-get(global, font, stack));
     min-height: 100%;
     overflow-x: hidden;
 }

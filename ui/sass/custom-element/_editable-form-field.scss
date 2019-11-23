@@ -1,3 +1,7 @@
+@use 'sass:color';
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 $editable-form-field-button-padding-left-right: 12px;
 $editable-form-field-button-padding-top-bottom: 16px;
 $editable-form-field-button-top-offset: -14px;
@@ -13,7 +17,7 @@ editable-form-field .edit-button {
     background: transparent;
     border: 0;
     box-shadow: none;
-    color: config-get(global, color, primary);
+    color: config.config-get(global, color, primary);
     font-size: $editable-form-field-button-font-size;
     font-weight: 600;
     line-height: $editable-form-field-button-line-height;
@@ -24,11 +28,11 @@ editable-form-field .edit-button {
     right: $editable-form-field-button-right-offset;
     top: $editable-form-field-button-top-offset;
     text-transform: uppercase;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 editable-form-field .edit-button:focus {
-    color: darken(config-get(global, color, primary), 12%);
+    color: color.adjust(config.config-get(global, color, primary), $lightness: -12%);
     outline: 0;
     transform: scale(1.1);
 }

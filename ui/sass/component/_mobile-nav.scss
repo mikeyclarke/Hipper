@@ -1,3 +1,8 @@
+@use 'sass:color';
+@use '../config/config';
+@use '../helper/break-text';
+@use '../helper/font-smoothing';
+
 .c-mobile-nav {
     align-items: flex-start;
     background-image: radial-gradient(circle at 86% 162%, #5491f4 63%, #1568f0 100%);
@@ -9,7 +14,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    --hide-at: #{config-get(breakpoints, app, medium)};
+    --hide-at: #{config.config-get(breakpoints, app, medium)};
 }
 
 .c-mobile-nav__account-button {
@@ -57,11 +62,11 @@
     font-weight: 500;
     line-height: 16px;
     text-align: left;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-mobile-nav__account-arrow {
-    fill: config-get(global, color, white);
+    fill: config.config-get(global, color, white);
     height: 18px;
     margin: 0 12px 0 0;
     width: 18px;
@@ -88,11 +93,11 @@
 .c-mobile-nav__search-input {
     -webkit-appearance: none;
     appearance: none;
-    background-color: rgba(config-get(color-shades, dark, 100), .35);
+    background-color: rgba(config.config-get(color-shades, dark, 100), .35);
     border: 0;
     border-radius: 6px;
-    caret-color: config-get(color-shades, dark, 1000);
-    color: config-get(global, color, white);
+    caret-color: config.config-get(color-shades, dark, 1000);
+    color: config.config-get(global, color, white);
     font-size: 16px;
     height: 38px;
     line-height: 16px;
@@ -102,7 +107,7 @@
 }
 
 .c-mobile-nav__search-input:focus {
-    background-color: rgba(config-get(color-shades, dark, 100), .5);
+    background-color: rgba(config.config-get(color-shades, dark, 100), .5);
 }
 
 .c-mobile-nav__search-input::placeholder {
@@ -126,7 +131,7 @@
 }
 
 .c-mobile-nav__item-link {
-    color: config-get(global, color, white);
+    color: config.config-get(global, color, white);
     display: block;
     font-size: 18px;
     font-weight: 500;
@@ -135,7 +140,7 @@
     position: relative;
     text-decoration: none;
     z-index: 0;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-mobile-nav__item-link:focus {
@@ -160,27 +165,27 @@
 
 .c-mobile-nav__add-new-button {
     appearance: none;
-    background-color: config-get(color-shades, primary, 100);
+    background-color: config.config-get(color-shades, primary, 100);
     border-radius: 4px;
     border: 0;
     box-shadow: none;
-    color: config-get(color-shades, primary, 1000);
+    color: config.config-get(color-shades, primary, 1000);
     display: flex;
     font-size: 16px;
     font-weight: 500;
     line-height: 16px;
     padding: 15px 10px 15px 14px;
     transition: background-color .15s;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-mobile-nav__add-new-button:focus {
-    background-color: darken(config-get(color-shades, primary, 100), 6%);
+    background-color: color.adjust(config.config-get(color-shades, primary, 100), $lightness: -6%);
     outline: none;
 }
 
 .c-mobile-nav__add-new-arrow {
-    fill: config-get(color-shades, primary, 1000);
+    fill: config.config-get(color-shades, primary, 1000);
     height: 18px;
     margin: 0 0 0 1px;
     width: 18px;

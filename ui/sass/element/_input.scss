@@ -1,3 +1,8 @@
+@use 'sass:list';
+@use 'sass:string';
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 $box-input-types: (
     date,
     datetime-local,
@@ -15,44 +20,44 @@ $box-input-types: (
 
 $selector: ();
 @each $type in $box-input-types {
-    $selector: append($selector, unquote('[type="#{$type}"]'), 'comma');
+    $selector: list.append($selector, string.unquote('[type="#{$type}"]'), 'comma');
 }
 
 // [type="text|email|number|…"]
 #{$selector} {
     -webkit-appearance: none;
     appearance: none;
-    background-color: config-get(element, input, background-color);
-    border: config-get(element, input, border-width) solid config-get(element, input, border-color);
-    border-radius: config-get(element, input, border-radius);
-    box-shadow: config-get(element, input, box-shadow);
-    color: config-get(element, input, text-color);
-    height: config-get(element, input, height);
-    padding: config-get(element, input, padding);
-    @include font-smoothing;
+    background-color: config.config-get(element, input, background-color);
+    border: config.config-get(element, input, border-width) solid config.config-get(element, input, border-color);
+    border-radius: config.config-get(element, input, border-radius);
+    box-shadow: config.config-get(element, input, box-shadow);
+    color: config.config-get(element, input, text-color);
+    height: config.config-get(element, input, height);
+    padding: config.config-get(element, input, padding);
+    @include font-smoothing.font-smoothing;
 }
 
 $selector: ();
 @each $type in $box-input-types {
-    $selector: append($selector, unquote('[type="#{$type}"]:focus'), 'comma');
+    $selector: list.append($selector, string.unquote('[type="#{$type}"]:focus'), 'comma');
 }
 
 // [type="text|email|number|…"]:focus
 #{$selector} {
-    border-color: config-get(element, input, focused, border-color);
+    border-color: config.config-get(element, input, focused, border-color);
     outline: 0;
 }
 
 $selector: ();
 @each $type in $box-input-types {
-    $selector: append($selector, unquote('[type="#{$type}"]:disabled'), 'comma');
+    $selector: list.append($selector, string.unquote('[type="#{$type}"]:disabled'), 'comma');
 }
 
 // [type="text|email|number|…"]:disabled
 #{$selector} {
-    opacity: config-get(element, input, disabled, opacity);
+    opacity: config.config-get(element, input, disabled, opacity);
 }
 
 ::placeholder {
-    color: config-get(element, input, placeholder-color);
+    color: config.config-get(element, input, placeholder-color);
 }

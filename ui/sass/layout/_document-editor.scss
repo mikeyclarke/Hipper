@@ -1,5 +1,7 @@
+@use '../config/config';
+
 .l-document-editor {
-    background-color: config-get(global, color, white);
+    background-color: config.config-get(global, color, white);
 }
 
 .l-document-editor__container.is-static-layout {

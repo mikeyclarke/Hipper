@@ -1,3 +1,7 @@
+@use 'sass:color';
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 $c-sheet-full-screen-header-height: 44px;
 $c-sheet-modal-min-width-breakpoint: 650px;
 $c-sheet-modal-width: 445px;
@@ -10,20 +14,20 @@ $c-sheet-modal-left-right-padding: 24px;
 }
 
 .c-sheet {
-    background-color: config-get(global, color, white);
+    background-color: config.config-get(global, color, white);
     display: flex;
     flex-direction: column;
     height: 100vh;
 
     @include modal-dialog-layout {
         align-items: center;
-        background-color: config-get(layout, sheet, background-color);
+        background-color: config.config-get(layout, sheet, background-color);
         justify-content: center;
     }
 }
 
 .c-sheet::before {
-    background-color: config-get(global, color, white);
+    background-color: config.config-get(global, color, white);
     content: '';
     display: block;
     flex-shrink: 0;
@@ -40,7 +44,7 @@ $c-sheet-modal-left-right-padding: 24px;
     padding: 12px 16px 0;
 
     @include modal-dialog-layout {
-        background-color: config-get(global, color, white);
+        background-color: config.config-get(global, color, white);
         border-radius: 8px;
         box-shadow: 0 2px 6px 0 rgba(#000, .1);
         overflow-x: hidden;
@@ -65,7 +69,7 @@ $c-sheet-modal-left-right-padding: 24px;
     background: transparent;
     border: 0;
     box-shadow: 0;
-    color: config-get(global, color, dark);
+    color: config.config-get(global, color, dark);
     display: flex;
     height: $c-sheet-full-screen-header-height;
     font-size: 16px;
@@ -120,7 +124,7 @@ $c-sheet-modal-left-right-padding: 24px;
 }
 
 .c-sheet__back-button-icon-path {
-    fill: config-get(global, color, dark);
+    fill: config.config-get(global, color, dark);
 }
 
 .c-sheet__back-button-label {
@@ -133,7 +137,7 @@ $c-sheet-modal-left-right-padding: 24px;
 }
 
 .c-sheet__title {
-    color: config-get(global, color, dark);
+    color: config.config-get(global, color, dark);
     font-size: 24px;
     font-weight: 700;
     margin: 0 0 30px;
@@ -149,7 +153,7 @@ $c-sheet-modal-left-right-padding: 24px;
     background: transparent;
     border: 0;
     box-shadow: none;
-    color: config-get(global, color, dark);
+    color: config.config-get(global, color, dark);
     font-weight: 600;
     font-size: 14px;
     height: $c-sheet-full-screen-header-height;
@@ -159,14 +163,14 @@ $c-sheet-modal-left-right-padding: 24px;
     text-transform: uppercase;
     top: 0;
     z-index: 0;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 
     @include modal-dialog-layout {
-        background: config-get(global, color, primary);
+        background: config.config-get(global, color, primary);
         border-radius: 0 0 8px 8px;
         color: #fff;
         box-shadow: 0 1px 8px 0 rgba(
-            config-get(global, color, primary),
+            config.config-get(global, color, primary),
             .45
         );
         height: 46px;
@@ -183,13 +187,13 @@ $c-sheet-modal-left-right-padding: 24px;
     outline: 0;
 
     @include modal-dialog-layout {
-        background: darken(config-get(global, color, primary), 6%);
+        background: color.adjust(config.config-get(global, color, primary), $lightness: -6%);
     }
 }
 
 .c-sheet__submit-button:active {
     @include modal-dialog-layout {
-        background: darken(config-get(global, color, primary), 8%);
+        background: color.adjust(config.config-get(global, color, primary), $lightness: -8%);
     }
 }
 

@@ -1,3 +1,5 @@
+@use '../helper/font-smoothing';
+
 $signup-form-margin: 40px 30px;
 
 $signup-form-header-margin-bottom: 32px;
@@ -70,14 +72,14 @@ $signup-form-footer-text-align: right;
     font-size: $signup-form-field-info-font-size;
     color: $signup-form-field-info-text-color;
     margin: 3px 0 0;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-signup-form__field-error {
     font-size: $signup-form-field-info-font-size;
     color: $signup-form-field-error-color;
     margin: 3px 0 0;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-signup-form__footer {

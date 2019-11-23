@@ -1,5 +1,7 @@
+@use '../config/config';
+
 @mixin breakpoint($namespace, $size) {
-    @media only screen and (min-width: config-get(breakpoints, $namespace, $size)) {
+    @media only screen and (min-width: config.config-get(breakpoints, $namespace, $size)) {
         @content;
     }
 }

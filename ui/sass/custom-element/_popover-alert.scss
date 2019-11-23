@@ -1,4 +1,7 @@
-$popover-alert-error-container-background-color: config-get(global, color, error);
+@use '../config/config';
+@use '../helper/font-smoothing';
+
+$popover-alert-error-container-background-color: config.config-get(global, color, error);
 $popover-alert-error-text-color: #fafafc;
 $popover-alert-font-size: 14px;
 $floating-layout-min-width: 725px;
@@ -58,7 +61,7 @@ popover-alert .title {
     line-height: 16.1px;
     margin: 0;
     text-transform: uppercase;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 popover-alert .message {
@@ -66,7 +69,7 @@ popover-alert .message {
     font-size: $popover-alert-font-size;
     line-height: 16.1px;
     margin: 0;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 popover-alert .title + .message {

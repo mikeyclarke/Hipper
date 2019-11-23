@@ -1,8 +1,12 @@
+@use '../config/config';
+@use '../helper/breakpoint';
+@use '../helper/font-smoothing';
+
 $app-header-background-color: #f7f8fa;
 $app-header-border-radius: 0 0 12px 12px;
 $app-header-box-shadow: 0 2px 4px 0 rgba(200, 212, 216, .3);
 
-$app-header-compass-text-color: config-get(color-shades, dark, 700);
+$app-header-compass-text-color: config.config-get(color-shades, dark, 700);
 
 %c-app-header {
     background-color: $app-header-background-color;
@@ -16,7 +20,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
 }
 
 .c-app-header--hide-at-medium {
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         display: none;
     }
 }
@@ -25,7 +29,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
     display: grid;
     grid-template-columns: 48px 1fr 48px;
 
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         display: flex;
         justify-content: space-between;
         margin: 0 auto;
@@ -40,12 +44,12 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
     flex-direction: column;
     margin: 6px 0 0;
 
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         align-items: flex-start;
         margin-left: 16px;
     }
 
-    @include breakpoint(app, large) {
+    @include breakpoint.breakpoint(app, large) {
         margin-left: 0;
     }
 }
@@ -57,7 +61,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
     line-height: 10px;
     opacity: 0.8;
     text-transform: uppercase;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-app-header__compass-name {
@@ -65,13 +69,13 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
     font-size: 16px;
     font-weight: 500;
     margin-top: 9px;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         font-size: 18px;
         font-weight: 700;
         line-height: 18px;
-        color: config-get(color-shades, dark, 800);
+        color: config.config-get(color-shades, dark, 800);
     }
 }
 
@@ -80,7 +84,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
 }
 
 .c-app-header__top-bar-menu-toggle {
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         display: none;
     }
 }
@@ -104,7 +108,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
 }
 
 %c-app-header__top-bar-button:focus::before {
-    background-color: rgba(config-get(color-shades, grey, 1100), .1);
+    background-color: rgba(config.config-get(color-shades, grey, 1100), .1);
     border-radius: 2px;
     bottom: 6px;
     content: '';
@@ -116,7 +120,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
 }
 
 %c-app-header__top-bar-button-icon {
-    fill: config-get(color-shades, dark, 700);
+    fill: config.config-get(color-shades, dark, 700);
     height: 24px;
     width: 24px;
 }
@@ -132,7 +136,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
 }
 
 .c-app-header__tab-bar {
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         position: absolute;
         top: 0;
         left: 50%;
@@ -156,7 +160,7 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
 
 .c-app-header__tab-list-item-control {
     align-items: center;
-    color: config-get(color-shades, grey, 1100);
+    color: config.config-get(color-shades, grey, 1100);
     display: flex;
     font-size: 16px;
     font-weight: 500;
@@ -166,9 +170,9 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
     position: relative;
     text-decoration: none;
     z-index: 0;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         font-weight: 600;
         width: 125px;
     }
@@ -188,28 +192,28 @@ $app-header-compass-text-color: config-get(color-shades, dark, 700);
     top: 8px;
     z-index: -1;
 
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         border-radius: 16px;
     }
 }
 
 .c-app-header__tab-list-item-control:focus::before {
-    background-color: rgba(config-get(color-shades, grey, 1100), .1);
+    background-color: rgba(config.config-get(color-shades, grey, 1100), .1);
 }
 
 .c-app-header__tab-list-item-control[aria-selected="true"] {
-    color: config-get(global, color, white);
+    color: config.config-get(global, color, white);
 }
 
 .c-app-header__tab-list-item-control[aria-selected="true"]::before {
-    background-color: config-get(color-shades, primary, 900);
+    background-color: config.config-get(color-shades, primary, 900);
 
-    @include breakpoint(app, medium) {
+    @include breakpoint.breakpoint(app, medium) {
         box-shadow: 0 1px 9px 0 rgba(63,131,242,0.36);
         border-radius: 16px;
     }
 }
 
 .c-app-header__tab-list-item-control[aria-selected="true"]:focus::before {
-    background-color: config-get(color-shades, primary, 1100);
+    background-color: config.config-get(color-shades, primary, 1100);
 }

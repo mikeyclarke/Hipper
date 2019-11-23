@@ -1,3 +1,6 @@
+@use '../config/config';
+@use '../helper/font-smoothing';
+
 .c-avatar {
     align-items: center;
     background-image: linear-gradient(180deg, #f5515f 0%, #f44756 100%);
@@ -10,9 +13,9 @@
 }
 
 .c-avatar__initials {
-    color: config-get(global, color, white);
+    color: config.config-get(global, color, white);
     font-size: .4375em;
     font-weight: 700;
     line-height: .4375em;
-    @include font-smoothing;
+    @include font-smoothing.font-smoothing;
 }

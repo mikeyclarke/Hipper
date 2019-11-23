@@ -29,10 +29,11 @@ class BlockquoteTest extends TestCase
     public function getHtmlTags()
     {
         $attributes = null;
+        $htmlId = null;
 
         $expected = ['<blockquote>', '</blockquote>'];
 
-        $result = $this->blockquoteNode->getHtmlTags($attributes);
+        $result = $this->blockquoteNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 }

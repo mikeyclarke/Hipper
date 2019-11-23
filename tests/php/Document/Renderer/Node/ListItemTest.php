@@ -29,10 +29,11 @@ class ListItemTest extends TestCase
     public function getHtmlTags()
     {
         $attributes = null;
+        $htmlId = null;
 
         $expected = ['<li>', '</li>'];
 
-        $result = $this->listItemNode->getHtmlTags($attributes);
+        $result = $this->listItemNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 }

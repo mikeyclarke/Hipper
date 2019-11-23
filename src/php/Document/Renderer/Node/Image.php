@@ -25,7 +25,7 @@ class Image implements NodeInterface
         return true;
     }
 
-    public function getHtmlTags(?array $attributes): ?array
+    public function getHtmlTags(?array $attributes, ?string $htmlId): ?array
     {
         if (null === $attributes || !isset($attributes['src']) || null === $attributes['src']) {
             return null;

@@ -36,8 +36,9 @@ class ImageTest extends TestCase
     public function noHtmlTagsReturnedIfNoSrcAttribute()
     {
         $attributes = ['title' => 'Foo'];
+        $htmlId = null;
 
-        $result = $this->imageNode->getHtmlTags($attributes);
+        $result = $this->imageNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals(null, $result);
     }
 
@@ -47,11 +48,12 @@ class ImageTest extends TestCase
     public function noHtmlTagsReturnedIfSrcDoesNotValidateAsUrl()
     {
         $attributes = ['src' => 'unsafe-url'];
+        $htmlId = null;
 
         $this->createContextGetUrlAttributeValidatorExpectation();
         $this->createUrlAttributeValidatorExpectation([$attributes['src']], false);
 
-        $result = $this->imageNode->getHtmlTags($attributes);
+        $result = $this->imageNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals(null, $result);
     }
 
@@ -65,6 +67,7 @@ class ImageTest extends TestCase
             'src' => 'https://objects.usehipper.com/0p/4g/0pksd560-09dshq65ns-c89yd3hiu-3gbc87eu8.svg',
             'title' => 'Thingy',
         ];
+        $htmlId = null;
 
         $this->createContextGetUrlAttributeValidatorExpectation();
         $this->createUrlAttributeValidatorExpectation([$attributes['src']], true);
@@ -82,7 +85,7 @@ class ImageTest extends TestCase
             )
         ];
 
-        $result = $this->imageNode->getHtmlTags($attributes);
+        $result = $this->imageNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 

@@ -29,10 +29,11 @@ class UnorderedListTest extends TestCase
     public function getHtmlTags()
     {
         $attributes = null;
+        $htmlId = null;
 
         $expected = ['<ul>', '</ul>'];
 
-        $result = $this->unorderedListNode->getHtmlTags($attributes);
+        $result = $this->unorderedListNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 }

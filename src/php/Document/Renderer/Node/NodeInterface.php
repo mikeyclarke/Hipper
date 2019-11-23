@@ -9,5 +9,5 @@ interface NodeInterface
 
     public function isLeaf(): bool;
 
-    public function getHtmlTags(?array $attributes): ?array;
+    public function getHtmlTags(?array $attributes, ?string $htmlId): ?array;
 }

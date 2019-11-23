@@ -29,10 +29,11 @@ class HorizontalRuleTest extends TestCase
     public function getHtmlTags()
     {
         $attributes = null;
+        $htmlId = null;
 
         $expected = ['<hr>'];
 
-        $result = $this->horizontalRuleNode->getHtmlTags($attributes);
+        $result = $this->horizontalRuleNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 }

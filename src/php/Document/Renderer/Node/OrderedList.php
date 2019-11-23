@@ -25,7 +25,7 @@ class OrderedList implements NodeInterface
         return false;
     }
 
-    public function getHtmlTags(?array $attributes): ?array
+    public function getHtmlTags(?array $attributes, ?string $htmlId): ?array
     {
         $start = 0;
         if (null !== $attributes && isset($attributes['start'])) {

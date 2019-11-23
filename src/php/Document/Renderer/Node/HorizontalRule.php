@@ -25,7 +25,7 @@ class HorizontalRule implements NodeInterface
         return true;
     }
 
-    public function getHtmlTags(?array $attributes): ?array
+    public function getHtmlTags(?array $attributes, ?string $htmlId): ?array
     {
         return ['<hr>'];
     }

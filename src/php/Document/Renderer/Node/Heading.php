@@ -27,7 +27,7 @@ class Heading implements NodeInterface
         return false;
     }
 
-    public function getHtmlTags(?array $attributes): ?array
+    public function getHtmlTags(?array $attributes, ?string $htmlId): ?array
     {
         $level = self::DEFAULT_LEVEL;
         if (null !== $attributes && isset($attributes['level'])) {
@@ -38,7 +38,11 @@ class Heading implements NodeInterface
         }
 
         $tagName = sprintf('h%d', $level);
+        $openingTag = "<{$tagName}>";
+        if (null !== $htmlId) {
+            $openingTag = "<{$tagName} id=\"{$htmlId}\">";
+        }
 
-        return ["<{$tagName}>", "</{$tagName}>"];
+        return [$openingTag, "</{$tagName}>"];
     }
 }

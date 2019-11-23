@@ -29,10 +29,11 @@ class ParagraphTest extends TestCase
     public function getHtmlTags()
     {
         $attributes = null;
+        $htmlId = null;
 
         $expected = ['<p>', '</p>'];
 
-        $result = $this->paragraphNode->getHtmlTags($attributes);
+        $result = $this->paragraphNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 }

@@ -27,7 +27,7 @@ class OrderedListTest extends TestCase
     {
         $expected = ['<ol>', '</ol>'];
 
-        $result = $this->orderedListNode->getHtmlTags(null);
+        $result = $this->orderedListNode->getHtmlTags(null, null);
         $this->assertEquals($expected, $result);
     }
 
@@ -37,10 +37,11 @@ class OrderedListTest extends TestCase
     public function startAttributeOutput()
     {
         $attributes = ['start' => 9];
+        $htmlId = null;
 
         $expected = ['<ol start="9">', '</ol>'];
 
-        $result = $this->orderedListNode->getHtmlTags($attributes);
+        $result = $this->orderedListNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 
@@ -52,10 +53,11 @@ class OrderedListTest extends TestCase
         $attributes = [
             'start' => '"></ol></script>window.location.assign("http://scammy-site.example.com");</script>'
         ];
+        $htmlId = null;
 
         $expected = ['<ol>', '</ol>'];
 
-        $result = $this->orderedListNode->getHtmlTags($attributes);
+        $result = $this->orderedListNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 }

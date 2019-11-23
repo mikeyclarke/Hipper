@@ -25,7 +25,7 @@ class Text implements NodeInterface
         return false;
     }
 
-    public function getHtmlTags(?array $attributes): ?array
+    public function getHtmlTags(?array $attributes, ?string $htmlId): ?array
     {
         return null;
     }

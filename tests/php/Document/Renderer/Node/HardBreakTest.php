@@ -29,10 +29,11 @@ class HardBreakTest extends TestCase
     public function getHtmlTags()
     {
         $attributes = null;
+        $htmlId = null;
 
         $expected = ['<br>'];
 
-        $result = $this->hardBreakNode->getHtmlTags($attributes);
+        $result = $this->hardBreakNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 }

@@ -70,6 +70,37 @@ class DocumentStructureValidatorTest extends ConstraintValidatorTestCase
     /**
      * @test
      */
+    public function nodeCannotHaveHtmlIdProperty()
+    {
+        $message = 'Document content does not meet the required structure.';
+
+        $value = [
+            "type" => "doc",
+            "content" => [
+                [
+                    "type" => "heading",
+                    "attrs" => [
+                        "level" => 1,
+                    ],
+                    "content" => [
+                        [
+                            "type" => "text",
+                            "text" => "Hello",
+                        ],
+                    ],
+                    "html_id" => "INJECTION!"
+                ],
+            ],
+        ];
+        $this->validator->validate($value, new DocumentStructure(['message' => $message]));
+
+        $this->buildViolation($message)
+            ->assertRaised();
+    }
+
+    /**
+     * @test
+     */
     public function blockNodesCannotHaveMarks()
     {
         $message = 'Document content does not meet the required structure.';

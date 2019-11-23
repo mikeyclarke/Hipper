@@ -13,6 +13,25 @@
             </button>
         </header>
 
+        <div>
+            {% if document_outline is not empty %}
+                <span>Doc outline</span>
+
+                <ol>
+                    {% set level = null %}
+                    {% for entry in document_outline %}
+                        {% if level is not null and entry.level < level %}</ol>{% endif %}
+                        {% if level is not null and (entry.level == level or entry.level < level) %}</li>{% endif %}
+                        {% if level is not null and entry.level > level %}<ol>{% endif %}
+                        <li>
+                            <a href="#{{ entry.id }}">{{ entry.text }}</a>
+                        {% set level = entry.level %}
+                    {% endfor %}
+                    </li>
+                </ol>
+            {% endif %}
+        </div>
+
         <main>
             <h1 class="c-document-editor-header__title">{{ document.name }}</h1>
             <p class="c-document-editor-header__synopsis">{{ document.description }}</p>

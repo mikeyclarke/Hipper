@@ -6,9 +6,9 @@ namespace Hipper\Document\Renderer;
 use Hipper\Document\Renderer\Exception\InvalidLeafNodeHtmlTagsException;
 use Hipper\Document\Renderer\Exception\InvalidNodeHtmlTagsException;
 use Hipper\Document\Renderer\HtmlFragmentRendererContextFactory;
-use JsonException;
+use Hipper\Document\Renderer\RendererInterface;
 
-class HtmlRenderer
+class HtmlRenderer implements RendererInterface
 {
     const MARK_CLASS_MAP = [
         'code' => Mark\Code::class,
@@ -32,34 +32,19 @@ class HtmlRenderer
         'unordered_list' => Node\UnorderedList::class,
     ];
 
-    private $contextFactory;
     private $allowedMarks;
     private $allowedNodes;
 
     public function __construct(
-        HtmlFragmentRendererContextFactory $contextFactory,
         array $allowedMarks,
         array $allowedNodes
     ) {
-        $this->contextFactory = $contextFactory;
         $this->allowedMarks = $allowedMarks;
         $this->allowedNodes = $allowedNodes;
     }
 
-    public function render(?string $doc, string $organizationDomain): string
+    public function render(array $doc, HtmlFragmentRendererContext $context): string
     {
-        try {
-            $doc = json_decode($doc, true);
-        } catch (JsonException $e) {
-            return '';
-        }
-
-        if ($this->isInvalidDocFormat($doc)) {
-            return '';
-        }
-        
-        $context = $this->contextFactory->create($organizationDomain);
-
         $result = '';
         foreach ($doc['content'] as $node) {
             $result .= $this->renderNode($node, $context);
@@ -85,9 +70,10 @@ class HtmlRenderer
             return $this->renderText($node, $context);
         }
 
+        $htmlId = $node['html_id'] ?? null;
         $nodeAttrs = $node['attrs'] ?? null;
 
-        $tags = $class->getHtmlTags($nodeAttrs);
+        $tags = $class->getHtmlTags($nodeAttrs, $htmlId);
         if (null === $tags) {
             return '';
         }
@@ -156,22 +142,5 @@ class HtmlRenderer
     private function isEmptyParagraphNode(array $node): bool
     {
         return $node['type'] === 'paragraph' && (!isset($node['content']) || empty($node['content']));
-    }
-
-    private function isInvalidDocFormat($doc): bool
-    {
-        if (!is_array($doc)) {
-            return true;
-        }
-
-        if (!isset($doc['type']) || $doc['type'] !== 'doc') {
-            return true;
-        }
-
-        if (!isset($doc['content'])) {
-            return true;
-        }
-
-        return false;
     }
 }

@@ -29,10 +29,11 @@ class CodeBlockTest extends TestCase
     public function getHtmlTags()
     {
         $attributes = null;
+        $htmlId = null;
 
         $expected = ['<pre><code>', '</code></pre>'];
 
-        $result = $this->codeBlockNode->getHtmlTags($attributes);
+        $result = $this->codeBlockNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
 }

@@ -1,3 +1,4 @@
+import BreadcrumbList from 'components/BreadcrumbList';
 import ContextMenu from 'components/ContextMenu';
 import ContextMenuToggle from 'components/ContextMenuToggle';
 import PasswordInput from 'components/PasswordInput';
@@ -10,6 +11,7 @@ import MobileNavigationToggle from 'components/MobileNavigationToggle';
 
 export default function loadComponents(): void {
     const components = {
+        'breadcrumb-list': BreadcrumbList,
         'context-menu': ContextMenu,
         'context-menu-toggle': ContextMenuToggle,
         'password-input': PasswordInput,

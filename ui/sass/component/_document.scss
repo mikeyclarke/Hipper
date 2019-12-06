@@ -1,0 +1,184 @@
+@use 'sass:map';
+@use '../config/config';
+@use '../helper/breakpoint';
+@use '../helper/font-smoothing';
+
+$large-type-breakpoint: 1000px;
+
+$header-placeholder-color: config.config-get(color-shades, grey, 1100);
+
+$header-title-color: config.config-get(color-shades, dark, 1000);
+$header-title-font-size: 32px;
+$header-title-font-weight: 700;
+$header-title-line-height: 42px;
+$header-title-min-height: 56px;
+
+$header-title-large-type-font-size: 42px;
+$header-title-large-type-line-height: 55px;
+$header-title-large-type-min-height: 69px;
+
+$header-synopsis-color: config.config-get(color-shades, dark, 800);
+$header-synopsis-font-size: 20px;
+$header-synopsis-line-height: 33px;
+$header-synopsis-min-height: 59px;
+
+$header-synopsis-large-type-font-size: 22px;
+$header-synopsis-large-type-line-height: 36px;
+$header-synopsis-large-type-min-height: 62px;
+
+$content-color: config.config-get(color-shades, dark, 1000);
+$content-font-size: 18px;
+$content-margin: 22px 0 32px;
+
+$content-large-type-margin: 32px 0 48px;
+
+$content-heading-font-weight: 700;
+$content-heading-line-height-mutliplier: 1.3125;
+$content-heading-margin: 32px 0 30px;
+$content-headings-typography: (
+    h1: (
+        font-size: 28px,
+        large-type: (
+            font-size: 32px,
+        ),
+    ),
+    h2: (
+        font-size: 24px,
+        large-type: (
+            font-size: 28px,
+        ),
+    ),
+    h3: (
+        font-size: 22px,
+        large-type: (
+            font-size: 24px,
+        ),
+    ),
+    h4: (
+        font-size: 20px,
+        large-type: (
+            font-size: 22px,
+        ),
+    ),
+    h5: (
+        font-size: 18px,
+        large-type: (
+            font-size: 20px,
+        ),
+    ),
+    h6: (
+        font-size: 16px,
+        text-transform: uppercase,
+        large-type: (
+            font-size: 18px,
+        ),
+    ),
+);
+
+$content-p-line-height: 30px;
+$content-p-margin: 0 0 30px;
+
+.c-document {
+    
+}
+
+.c-document__header-title,
+.c-document__header-synopsis {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    height: auto;
+    padding: 0;
+    width: 100%;
+}
+
+.c-document__header-title::placeholder,
+.c-document__header-synopsis::placeholder {
+    color: $header-placeholder-color;
+}
+
+.c-document__header-title {
+    font-size: $header-title-font-size;
+    font-weight: $header-title-font-weight;
+    line-height: $header-title-line-height;
+    margin: 0;
+    min-height: $header-title-min-height;
+    padding: 5px 0 6px;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.free-form-breakpoint($large-type-breakpoint) {
+        font-size: $header-title-large-type-font-size;
+        line-height: $header-title-large-type-line-height;
+        min-height: $header-title-large-type-min-height;
+    }
+}
+
+.c-document__header-synopsis {
+    color: $header-synopsis-color;
+    font-size: $header-synopsis-font-size;
+    line-height: $header-synopsis-line-height;
+    min-height: $header-synopsis-min-height;
+    padding: 13px 0;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.free-form-breakpoint($large-type-breakpoint) {
+        font-size: $header-synopsis-large-type-font-size;
+        line-height: $header-synopsis-large-type-line-height;
+        min-height: $header-synopsis-large-type-min-height;
+    }
+}
+
+.c-document__content {
+    color: $content-color;
+    font-size: $content-font-size;
+    margin: $content-margin;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.free-form-breakpoint($large-type-breakpoint) {
+        margin: $content-large-type-margin;
+    }
+}
+
+.c-document__content [contenteditable] {
+    outline: 0;
+    white-space: pre-wrap;
+    white-space: break-spaces;
+}
+
+@each $heading, $props in $content-headings-typography {
+    .c-document__content #{$heading} {
+        font-weight: $content-heading-font-weight;
+        margin: $content-heading-margin;
+        @if map.has-key($props, font-size) {
+            line-height: map.get($props, font-size) * $content-heading-line-height-mutliplier;
+        }
+        @each $prop, $value in $props {
+            @if $prop != large-type {
+                #{$prop}: $value;
+            } @else {
+                @include breakpoint.free-form-breakpoint($large-type-breakpoint) {
+                    @each $ltProp, $ltValue in $value {
+                        #{$ltProp}: $ltValue;
+                    }
+                    @if map.has-key($value, font-size) {
+                        line-height: map.get($value, font-size) * $content-heading-line-height-mutliplier;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.c-document__content p {
+    line-height: $content-p-line-height;
+    margin: $content-p-margin;
+}
+
+.c-document__content .ProseMirror > p.is-empty:first-child::before {
+    color: $header-placeholder-color;
+    content: 'Start writing your doc…';
+    cursor: text;
+    float: left;
+    height: 0;
+    @include font-smoothing.font-smoothing;
+}

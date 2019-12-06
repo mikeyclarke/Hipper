@@ -1,4 +1,26 @@
+@use 'sass:math';
 @use '../config/config';
+@use '../helper/breakpoint';
+
+$toolbar-height: config.config-get(layout, document, toolbar, height);
+
+$outline-plus-article-breakpoint: 920px;
+$outline-plus-article-plus-history-breakpoint: 1193px;
+$fixed-body-breakpoint: 1270px;
+
+$body-offset-top-two-column-layout: 36px;
+$body-offset-top-three-column-layout: 48px;
+$body-margin: 0 16px 0;
+$body-margin-two-column-layout: $body-offset-top-two-column-layout + $toolbar-height 16px 0;
+$body-margin-three-column-layout: $body-offset-top-three-column-layout + $toolbar-height 16px 0;
+$body-margin-fixed-layout: $body-offset-top-three-column-layout + $toolbar-height auto 0;
+$body-max-width-fixed-layout: 1240px;
+
+$minimum-column-gap: 45px;
+$article-width: 615px;
+
+$outer-column-padding: 28px 0 0;
+$outer-column-width: 228px;
 
 .l-document-editor {
     background-color: config.config-get(global, color, white);
@@ -19,4 +41,62 @@
     flex-shrink: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+}
+
+.l-document-editor__toolbar {
+    @include breakpoint.breakpoint(app, document, two-column-layout) {
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+    }
+}
+
+.l-document-editor__body {
+    margin: $body-margin;
+
+    @include breakpoint.breakpoint(app, document, two-column-layout) {
+        column-gap: math.percentage($minimum-column-gap / $outline-plus-article-breakpoint);
+        display: grid;
+        grid-template-columns: $outer-column-width $article-width;
+        justify-content: center;
+        margin: $body-margin-two-column-layout;
+    }
+
+    @include breakpoint.breakpoint(app, document, three-column-layout) {
+        column-gap: math.percentage($minimum-column-gap / $outline-plus-article-plus-history-breakpoint);
+        grid-template-columns: $outer-column-width $article-width $outer-column-width;
+        margin: $body-margin-three-column-layout;
+    }
+
+    @include breakpoint.breakpoint(app, document, fixed-layout) {
+        grid-template-columns: $outer-column-width $article-width $outer-column-width;
+        justify-content: space-between;
+        margin: $body-margin-fixed-layout;
+        max-width: $body-max-width-fixed-layout;
+    }
+}
+
+.l-document-editor__body-column {
+    @include breakpoint.breakpoint(app, document, two-column-layout) {
+        padding: $outer-column-padding;
+    }
+}
+
+.l-document-editor__body-column--main {
+    padding: 0;
+
+    @include breakpoint.breakpoint(app, document, three-column-layout) {
+        grid-column: 2;
+    }
+}
+
+.l-document-editor__body-column--main:only-child {
+    @include breakpoint.breakpoint(app, document, two-column-layout) {
+        grid-column: 1/2 span;
+    }
+
+    @include breakpoint.breakpoint(app, document, three-column-layout) {
+        grid-column: 2;
+    }
 }

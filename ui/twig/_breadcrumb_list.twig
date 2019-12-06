@@ -1,0 +1,11 @@
+<breadcrumb-list class="c-breadcrumb-list" aria-label="Breadcrumbs">
+    <ol class="c-breadcrumb-list__list js-list">
+        {% for item in breadcrumbs %}
+            {% if loop.last %}
+                <li class="c-breadcrumb-list__item js-active-breadcrumb"><span class="c-breadcrumb-list__item-active">{{ item.name }}</span></li>
+            {% else %}
+                <li class="c-breadcrumb-list__item js-collapsable-breadcrumb"><a href="{{ item.pathname }}" class="c-breadcrumb-list__item-link">{{ item.name }}</a><svg class="c-breadcrumb-list__divider" aria-hidden="true"><use href="#icon-sprite__chevron-right"/></svg></li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+</breadcrumb-list>

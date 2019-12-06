@@ -1,0 +1,10 @@
+<span>History</span>
+
+<ol>
+    {% for entry in document_history %}
+        <li>
+            <span>{{ entry.author_name }} edited</span>
+            <span>{{ entry.created }}</span>
+        </li>
+    {% endfor %}
+</ol>

@@ -1,7 +1,9 @@
+@use 'sass:list';
 @use '../config/config';
 
-@mixin breakpoint($namespace, $size) {
-    @media only screen and (min-width: config.config-get(breakpoints, $namespace, $size)) {
+@mixin breakpoint($namespace...) {
+    $args: list.join((breakpoints), $namespace);
+    @media only screen and (min-width: config.config-get($args...)) {
         @content;
     }
 }

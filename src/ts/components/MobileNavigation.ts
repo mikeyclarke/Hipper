@@ -1,4 +1,5 @@
 import eventRace from 'Event/eventRace';
+import parseCustomPropertyValue from 'CssObjectModel/parseCustomPropertyValue';
 
 const bodyClassName = 'navigation-open';
 
@@ -19,9 +20,7 @@ export default class MobileNavigation extends HTMLElement {
 
         this._open = this.hasAttribute('open');
         this._pageContent = document.querySelector('.js-page-content');
-
-        const hideAt = window.getComputedStyle(this).getPropertyValue('--hide-at').trim();
-        this._hideAt = (hideAt !== '') ? hideAt : null;
+        this._hideAt = parseCustomPropertyValue(this, '--hide-at');
     }
 
     public set open(value: boolean) {

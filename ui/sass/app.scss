@@ -23,6 +23,7 @@
 @use 'component/mobile-nav';
 @use 'component/standard-nav';
 @use 'component/button' as button-component;
+@use 'component/breadcrumb-list';
 @use 'component/checkbox';
 @use 'component/password-input';
 @use 'component/form';
@@ -35,9 +36,10 @@
 @use 'component/page-section';
 @use 'component/banner';
 @use 'component/empty-page-notice';
-@use 'component/document-editor-header';
-@use 'component/document-editor-document';
+@use 'component/document-toolbar';
+@use 'component/document';
 @use 'component/document-editor-menu';
+@use 'component/document-outline';
 @use 'component/login-screen';
 
 @use 'layout/app-default';

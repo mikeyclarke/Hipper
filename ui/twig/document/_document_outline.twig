@@ -1,0 +1,18 @@
+<div class="c-document-outline">
+    {% if document_outline is not empty %}
+        <span class="c-document-outline__title">Doc outline</span>
+
+        <ol class="c-document-outline__list">
+            {% set level = null %}
+            {% for entry in document_outline %}
+                {% if level is not null and entry.level < level %}</ol>{% endif %}
+                {% if level is not null and (entry.level == level or entry.level < level) %}</li>{% endif %}
+                {% if level is not null and entry.level > level %}<ol class="c-document-outline__subentries-list">{% endif %}
+                <li class="c-document-outline__entry">
+                    <a class="c-document-outline__entry-link" href="#{{ entry.id }}">{{ entry.text }}</a>
+                {% set level = entry.level %}
+            {% endfor %}
+            </li>
+        </ol>
+    {% endif %}
+</div>

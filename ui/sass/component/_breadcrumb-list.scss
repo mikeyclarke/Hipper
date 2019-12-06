@@ -1,0 +1,202 @@
+@use 'sass:color';
+@use '../config/config';
+@use '../helper/font-smoothing';
+@use '../helper/unstyled-button';
+
+$overflow-button-background-color: config.config-get(color-shades, dark, 100);
+$overflow-button-background-height: 16px;
+$overflow-button-background-width: 28px;
+$overflow-button-height: 46px;
+$overflow-button-width: 37px;
+
+$overflow-button-icon-dimension: 24px;
+$overflow-button-icon-fill: config.config-get(color-shades, dark, 600);
+
+$item-color: config.config-get(color-shades, dark, 500);
+$item-font-size: 14px;
+$item-height: 46px;
+$item-line-height: 15px;
+$item-font-weight: 400;
+
+$link-width: 3.5ch;
+
+$divider-icon-dimension: 18px;
+$divider-icon-fill: config.config-get(color-shades, grey, 500);
+$divider-icon-margin-right: 2px;
+
+$active-item-color: config.config-get(color-shades, primary, 800);
+$active-item-font-weight: 600;
+
+$overflow-column-width: $overflow-button-width + $divider-icon-dimension + $divider-icon-margin-right;
+
+.c-breadcrumb-list {
+    --overflow-container-width: #{$overflow-column-width};
+    display: grid;
+    grid-auto-columns: $overflow-column-width 1fr;
+    position: relative;
+
+    @media (hover: hover) {
+        display: block;
+    }
+}
+
+.c-breadcrumb-list__overflow {
+    align-items: center;
+    display: flex;
+    font-size: 0;
+    position: relative;
+}
+
+.c-breadcrumb-list__overflow-button {
+    @extend %unstyled-button;
+    height: $overflow-button-height;
+    position: relative;
+    text-align: left;
+    width: $overflow-button-width;
+    z-index: 0;
+}
+
+.c-breadcrumb-list__overflow-button:focus {
+    outline: 0;
+}
+
+.c-breadcrumb-list__overflow-button::before {
+    background-color: $overflow-button-background-color;
+    border-radius: 2px;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: $overflow-button-background-height;
+    width: $overflow-button-background-width;
+    z-index: -1;
+}
+
+.c-breadcrumb-list__overflow-button:focus::before {
+    background-color: color.scale($overflow-button-background-color, $lightness: -12%);
+}
+
+.c-breadcrumb-list__overflow-button-icon {
+    fill: $overflow-button-icon-fill;
+    height: $overflow-button-icon-dimension;
+    margin-left: 2px;
+    width: $overflow-button-icon-dimension;
+}
+
+.c-breadcrumb-list__list {
+    display: flex;
+    grid-column: 2;
+    list-style: none;
+    margin: 0;
+    opacity: 1;
+    overflow: hidden;
+    padding: 0;
+
+    @media (hover: hover) {
+        animation: breadcrumbs .25s;
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: start;
+        overflow: visible;
+    }
+}
+
+.c-breadcrumb-list__list:only-child,
+.c-breadcrumb-list__overflow[hidden] + .c-breadcrumb-list__list {
+    grid-column: 1/2 span;
+}
+
+@media (hover: hover) {
+    .c-breadcrumb-list__list:hover,
+    .c-breadcrumb-list__list:focus-within {
+        animation: breadcrumbs-2 .25s;
+    }
+}
+
+.c-breadcrumb-list__item {
+    align-items: center;
+    color: $item-color;
+    display: flex;
+    flex-shrink: 0;
+    font-size: $item-font-size;
+    font-weight: $item-font-weight;
+    height: $item-height;
+    line-height: $item-line-height;
+    overflow: hidden;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-breadcrumb-list__item:focus-within {
+    color: color.scale($item-color, $lightness: -15%);
+}
+
+.c-breadcrumb-list__item:last-child {
+    max-width: 100%;
+
+    @media (hover: hover) {
+        max-width: none;
+    }
+}
+
+.c-breadcrumb-list__item-link {
+    color: inherit;
+    display: block;
+    padding: 12px 0;
+    text-decoration: none;
+    white-space: nowrap;
+
+    @media (hover: hover) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: $link-width;
+    }
+}
+
+.c-breadcrumb-list__item-link:focus {
+    outline: 0;
+    text-decoration: underline;
+}
+
+@media (hover: hover) {
+    .c-breadcrumb-list__list:hover .c-breadcrumb-list__item-link,
+    .c-breadcrumb-list__list:focus-within .c-breadcrumb-list__item-link {
+        font-weight: 500;
+        width: auto;
+    }
+}
+
+.c-breadcrumb-list__divider {
+    fill: $divider-icon-fill;
+    height: $divider-icon-dimension;
+    margin-right: $divider-icon-margin-right;
+    width: $divider-icon-dimension;
+}
+
+.c-breadcrumb-list__item-active {
+    color: $active-item-color;
+    font-weight: $active-item-font-weight;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@keyframes breadcrumbs {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes breadcrumbs-2 {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

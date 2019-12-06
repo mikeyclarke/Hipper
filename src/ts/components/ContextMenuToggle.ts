@@ -3,37 +3,14 @@ import ContextMenu from 'components/ContextMenu';
 const clickOptions: AddEventListenerOptions & EventListenerOptions = { passive: true };
 
 export default class ContextMenuToggle extends HTMLElement {
-    public _button: HTMLButtonElement;
+    public _button: HTMLButtonElement | null = null;
     public _buttonClickListener: any;
-    public _contextMenu: ContextMenu;
+    public _contextMenu: ContextMenu | null = null;
 
     constructor() {
         super();
 
         this._buttonClickListener = null;
-
-        const button = this.querySelector('.js-button');
-        if (null === button) {
-            throw new Error('Button element does not exist');
-        }
-
-        this._button = <HTMLButtonElement> button;
-
-        const contextMenuId = this._button.getAttribute('aria-controls');
-        if (null === contextMenuId) {
-            throw new Error('Button is not associated with a context-menu element');
-        }
-
-        const contextMenu = document.getElementById(contextMenuId);
-        if (null === contextMenu) {
-            throw new ReferenceError('Mobile-navigation element does not exist');
-        }
-
-        if (!(contextMenu instanceof ContextMenu)) {
-            throw new TypeError('Element is not a ContextMenu element');
-        }
-
-        this._contextMenu = contextMenu;
     }
 
     public connectedCallback(): void {
@@ -42,7 +19,30 @@ export default class ContextMenuToggle extends HTMLElement {
         }
 
         if (null === this._button) {
-            return;
+            const button = this.querySelector('.js-button');
+            if (null === button) {
+                throw new Error('Button element does not exist');
+            }
+
+            this._button = <HTMLButtonElement> button;
+        }
+
+        if (null === this._contextMenu) {
+            const contextMenuId = this._button.getAttribute('aria-controls');
+            if (null === contextMenuId) {
+                throw new Error('Button is not associated with a context-menu element');
+            }
+
+            const contextMenu = document.getElementById(contextMenuId);
+            if (null === contextMenu) {
+                throw new ReferenceError('context-menu element does not exist');
+            }
+
+            if (!(contextMenu instanceof ContextMenu)) {
+                throw new TypeError('Element is not a ContextMenu element');
+            }
+
+            this._contextMenu = contextMenu;
         }
 
         this._buttonClickListener = onButtonClick.bind(this);
@@ -67,6 +67,10 @@ function onButtonClick(this: ContextMenuToggle, event: MouseEvent): void {
         return;
     }
 
+    if (null === this._contextMenu || null === this._button) {
+        return;
+    }
+
     if (!this.contains(event.target)) {
         return;
     }
@@ -77,6 +81,10 @@ function onButtonClick(this: ContextMenuToggle, event: MouseEvent): void {
     }
 
     this._contextMenu.addEventListener('contextmenucontracted', () => {
+        if (null === this._button) {
+            return;
+        }
+
         this._button.setAttribute('aria-expanded', 'false');
     }, { once: true });
 

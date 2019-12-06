@@ -1,5 +1,6 @@
 import * as tabbable from 'tabbable';
 import eventRace from 'Event/eventRace';
+import parseCustomPropertyValue from 'CssObjectModel/parseCustomPropertyValue';
 
 const htmlClassName = 'context-menu-open';
 const eventOptions: AddEventListenerOptions & EventListenerOptions = { passive: true };
@@ -24,8 +25,7 @@ export default class ContextMenu extends HTMLElement {
         this._expanded = this.hasAttribute('expanded');
         this._closeButton = this.querySelector('.js-close-button');
 
-        const floatAt = Number.parseFloat(window.getComputedStyle(this).getPropertyValue('--float-at'));
-        this._floatAtPixels = (!Number.isNaN(floatAt)) ? floatAt : null;
+        this._floatAtPixels = parseCustomPropertyValue(this, '--float-at');
     }
 
     public set expanded(value: boolean) {

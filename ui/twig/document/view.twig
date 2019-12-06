@@ -1,0 +1,27 @@
+{% extends 'base_layout.twig' %}
+
+{% block page_content %}
+
+<div class="l-document-editor__container js-document-editor-container">
+    <div class="l-document-editor__content">
+        {% include 'document/_document_toolbar.twig' %}
+
+        <main class="l-document-editor__body">
+            <div class="l-document-editor__body-column">
+                {% include 'document/_document_outline.twig' %}
+            </div>
+
+            <div class="l-document-editor__body-column--main c-document">
+                {% include 'document/_document_header.twig' with { mode: 'view' } %}
+
+                <div class="c-document__content">{{ document_html|raw }}</div>
+            </div>
+
+            <div class="l-document-editor__body-column">
+                {% include 'document/_document_history.twig' %}
+            </div>
+        </main>
+    </div>
+</div>
+
+{% endblock %}

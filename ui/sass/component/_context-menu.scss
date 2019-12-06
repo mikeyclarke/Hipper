@@ -38,8 +38,16 @@ $group-margin-top-bottom-floating: 8px;
 }
 
 .c-context-menu,
-.c-context-menu--large {
+.c-context-menu--large,
+.c-context-menu--align-left {
     @extend %c-context-menu;
+}
+
+.c-context-menu--align-left {
+    @include breakpoint.breakpoint(app, medium) {
+        left: 0;
+        right: auto;
+    }
 }
 
 .c-context-menu--large {
@@ -95,6 +103,13 @@ $group-margin-top-bottom-floating: 8px;
         top: -8px;
         transition: none;
         width: 0;
+    }
+}
+
+.c-context-menu--align-left::before {
+    @include breakpoint.breakpoint(app, medium) {
+        left: $left-right-padding-floating;
+        right: auto;
     }
 }
 

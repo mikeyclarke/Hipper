@@ -69,11 +69,11 @@ class GenerateVhostsCommand extends Command
         );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputDir = $input->getArgument('path-to-vhosts');
         if (!is_string($outputDir)) {
-            return null;
+            return 0;
         }
         $repositoryRoot = realpath(__DIR__ . '/../../../');
 
@@ -100,5 +100,7 @@ class GenerateVhostsCommand extends Command
         $output->writeln('ALL DONE!');
         $output->writeln('✅ Vhosts generated and placed in ' . realpath($outputDir));
         $output->writeln('🐘 Don’t forget to reload nginx!');
+
+        return 0;
     }
 }

@@ -25,7 +25,7 @@ class DumpCombinedEnvConfigCommand extends Command
         $this->addArgument('env', InputArgument::REQUIRED, 'Name of the environment, e.g. “prod”, “stag”');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $path = dirname(__DIR__) . '/../../.env';
         $env = $input->getArgument('env');
@@ -39,6 +39,8 @@ return $vars;
 EOF;
 
         file_put_contents($path . '.local.php', $vars, LOCK_EX);
+
+        return 0;
     }
 
     private function loadEnvVars(string $path, string $env): array

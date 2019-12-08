@@ -33,7 +33,7 @@ class BulkInvitationValidator
 
     private function validateInviteCount(array $input): void
     {
-        if (!isset($input['email_invites']) || null === $input['email_invites']) {
+        if (!isset($input['email_invites'])) {
             return;
         }
 

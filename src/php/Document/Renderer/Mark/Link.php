@@ -17,7 +17,7 @@ class Link implements MarkInterface
 
     public function getHtmlTags(?array $attributes): ?array
     {
-        if (null === $attributes || !isset($attributes['href']) || null === $attributes['href']) {
+        if (null === $attributes || !isset($attributes['href'])) {
             return null;
         }
 

@@ -3,3 +3,6 @@ parameters:
     ignoreErrors:
         - '#Cannot call method fetch(All)?\(\) on Doctrine\DBAL\Driver\Statement|int#'
         - '#Cannot call method [a-zA-Z]+\(\) on Carbon\Carbon|string.#'
+        - '#Method [a-zA-Z\\]+::[a-zA-Z]+\(\) return type has no value type specified in iterable type array.#'
+        - '#Method [a-zA-Z\\]+::[_a-zA-Z]+\(\) has parameter \$[a-zA-Z]+ with no value type specified in iterable type array.#'
+        - '#Property [a-zA-Z\\]+::\$[_a-zA-Z]+ type has no value type specified in iterable type array.#'

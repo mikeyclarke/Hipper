@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use Hipper\AppKernel;
-use Symfony\Component\Debug\Debug;
+use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__).'../../../config/bootstrap.php';

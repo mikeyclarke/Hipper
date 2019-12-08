@@ -5,7 +5,7 @@ namespace Hipper\Project;
 
 use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
 
-class ProjectModel implements KnowledgebaseOwnerModelInterface
+final class ProjectModel implements KnowledgebaseOwnerModelInterface
 {
     use \Hipper\ModelTrait;
 

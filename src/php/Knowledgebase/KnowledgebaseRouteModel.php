@@ -5,7 +5,7 @@ namespace Hipper\Knowledgebase;
 
 use Hipper\ModelTrait;
 
-class KnowledgebaseRouteModel
+final class KnowledgebaseRouteModel
 {
     use ModelTrait;
 

@@ -5,7 +5,7 @@ namespace Hipper\Team;
 
 use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
 
-class TeamModel implements KnowledgebaseOwnerModelInterface
+final class TeamModel implements KnowledgebaseOwnerModelInterface
 {
     use \Hipper\ModelTrait;
 

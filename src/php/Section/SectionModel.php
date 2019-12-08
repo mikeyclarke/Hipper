@@ -6,7 +6,7 @@ namespace Hipper\Section;
 use Hipper\Knowledgebase\KnowledgebaseContentModelInterface;
 use Hipper\ModelTrait;
 
-class SectionModel implements KnowledgebaseContentModelInterface
+final class SectionModel implements KnowledgebaseContentModelInterface
 {
     use ModelTrait;
 

@@ -141,7 +141,7 @@ class Document
         ?KnowledgebaseModel $knowledgebase,
         string $organizationId
     ): ?SectionModel {
-        if (!isset($parameters['section_id']) || null === $parameters['section_id']) {
+        if (!isset($parameters['section_id'])) {
             return null;
         }
 

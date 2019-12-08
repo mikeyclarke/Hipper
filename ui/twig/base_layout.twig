@@ -1,5 +1,5 @@
 <!doctype html>
-<html{% if htmlClassList %} class="{{ htmlClassList|join(' ') }}"{% endif %} lang="en">
+<html{% if htmlClassList is defined %} class="{{ htmlClassList|join(' ') }}"{% endif %} lang="en">
     <head>
         <link rel="dns-prefetch" href="{{ asset_domain }}">
         <meta charset="utf-8">
@@ -10,7 +10,7 @@
         <meta name="user_agent_profile" class="js-user-agent-profile" content='{{ user_agent_profile|json_encode|raw }}'>
     </head>
 
-    <body{% if bodyClassList %} class="{{ bodyClassList|join(' ') }}"{% endif %}>
+    <body{% if bodyClassList is defined %} class="{{ bodyClassList|join(' ') }}"{% endif %}>
         {% include 'icon_sprite.twig' %}
 
         {% block page_content %}{% endblock %}

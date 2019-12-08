@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Person;
 
-class PersonModel
+final class PersonModel
 {
     use \Hipper\ModelTrait;
 

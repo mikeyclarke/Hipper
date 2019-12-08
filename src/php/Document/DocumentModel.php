@@ -5,7 +5,7 @@ namespace Hipper\Document;
 
 use Hipper\Knowledgebase\KnowledgebaseContentModelInterface;
 
-class DocumentModel implements KnowledgebaseContentModelInterface
+final class DocumentModel implements KnowledgebaseContentModelInterface
 {
     use \Hipper\ModelTrait;
 

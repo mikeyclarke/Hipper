@@ -119,7 +119,7 @@ class Section
         ?KnowledgebaseModel $knowledgebase,
         string $organizationId
     ): ?SectionModel {
-        if (!isset($parameters['parent_section_id']) || null === $parameters['parent_section_id']) {
+        if (!isset($parameters['parent_section_id'])) {
             return null;
         }
 

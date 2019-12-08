@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Organization;
 
-class OrganizationModel
+final class OrganizationModel
 {
     use \Hipper\ModelTrait;
 

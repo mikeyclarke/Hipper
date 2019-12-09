@@ -15,7 +15,7 @@ $header-title-min-height: 56px;
 
 $header-title-large-type-font-size: 42px;
 $header-title-large-type-line-height: 55px;
-$header-title-large-type-min-height: 69px;
+$header-title-large-type-min-height: 70px;
 
 $header-synopsis-color: config.config-get(color-shades, dark, 800);
 $header-synopsis-font-size: 20px;
@@ -78,10 +78,6 @@ $content-headings-typography: (
 $content-p-line-height: 30px;
 $content-p-margin: 0 0 30px;
 
-.c-document {
-    
-}
-
 .c-document__header-title,
 .c-document__header-synopsis {
     background: transparent;
@@ -95,6 +91,7 @@ $content-p-margin: 0 0 30px;
 .c-document__header-title::placeholder,
 .c-document__header-synopsis::placeholder {
     color: $header-placeholder-color;
+    opacity: 1;
 }
 
 .c-document__header-title {

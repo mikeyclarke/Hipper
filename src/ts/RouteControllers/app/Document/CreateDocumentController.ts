@@ -1,7 +1,10 @@
+import BreadcrumbList from 'components/BreadcrumbList';
 import Controller from 'RouteControllers/Controller';
 import TextEditor from 'text-editor/TextEditor';
 import HttpClient from 'Http/HttpClient';
 import { HTTPError } from 'ky';
+
+const keyupDelayMilliseconds = 1000;
 
 export default class CreateDocumentController implements Controller {
     private readonly httpClient: HttpClient;
@@ -16,6 +19,9 @@ export default class CreateDocumentController implements Controller {
     private doneButton!: HTMLButtonElement;
     private textEditorElement!: HTMLDivElement;
     private textEditor!: TextEditor;
+    private toolbar!: HTMLDivElement;
+    private breadcrumbList!: BreadcrumbList;
+    private nameKeyupTimer: number | null = null;
 
     constructor(
         httpClient: HttpClient,
@@ -27,10 +33,12 @@ export default class CreateDocumentController implements Controller {
 
     public start(): void {
         this.cacheElements();
+        this.attachEvents();
         this.setUpTextEditor();
     }
 
     private cacheElements(): void {
+        this.toolbar = <HTMLDivElement> document.querySelector('.js-document-toolbar');
         this.formElement = <HTMLFormElement> document.querySelector('.js-document-form');
 
         this.nameInput = <HTMLTextAreaElement> this.formElement.querySelector('[name="document_name"]');
@@ -59,10 +67,40 @@ export default class CreateDocumentController implements Controller {
             throw new Error('Allowed nodes element not found');
         }
 
+        const breadcrumbList = this.toolbar.querySelector('.js-breadcrumb-list');
+        if (!(breadcrumbList instanceof BreadcrumbList)) {
+            throw new Error('Breadcrumb list element not found');
+        }
+
         this.knowledgebaseId = knowledgebaseIdInput.value;
         this.sectionId = (sectionIdInput.value !== '') ? sectionIdInput.value : null;
         this.allowedMarks = JSON.parse(allowedMarksInput.value);
         this.allowedNodes = JSON.parse(allowedNodesInput.value);
+        this.breadcrumbList = breadcrumbList;
+    }
+
+    private attachEvents(): void {
+        this.nameInput.addEventListener('keyup', this.onNameKeyup.bind(this));
+        this.nameInput.addEventListener('change', this.onNameChange.bind(this));
+    }
+
+    private onNameKeyup(): void {
+        this.clearKeyupTimeout();
+        this.nameKeyupTimer = window.setTimeout(this.updateDocName.bind(this), keyupDelayMilliseconds);
+    }
+
+    private onNameChange(): void {
+        this.clearKeyupTimeout();
+        this.updateDocName();
+    }
+
+    private updateDocName(): void {
+        if (this.nameInput.value.length === 0) {
+            this.breadcrumbList.revertActiveBreadcrumbText();
+            return;
+        }
+
+        this.breadcrumbList.setActiveBreadcrumbText(this.nameInput.value);
     }
 
     private setUpTextEditor(): void {
@@ -101,5 +139,11 @@ export default class CreateDocumentController implements Controller {
         });
         const json = await response.json();
         return json.doc_url;
+    }
+
+    private clearKeyupTimeout(): void {
+        if (null !== this.nameKeyupTimer) {
+            window.clearTimeout(this.nameKeyupTimer);
+        }
     }
 }

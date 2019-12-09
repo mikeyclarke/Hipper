@@ -4,7 +4,7 @@
 
 <div class="l-document-editor__container js-document-editor-container">
     <div class="l-document-editor__content">
-        {% include 'document/_document_toolbar.twig' %}
+        {% include 'document/_document_toolbar.twig' with { mode: 'view' } %}
 
         <main class="l-document-editor__body">
             <div class="l-document-editor__body-column">

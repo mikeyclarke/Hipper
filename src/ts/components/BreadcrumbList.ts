@@ -23,6 +23,8 @@ export default class BreadcrumbList extends HTMLElement {
     public _resizeEventListener: any | null = null;
     public _mediaQueryList: MediaQueryList | null = null;
     private _hoverFeatureChangeListener: any | null = null;
+    private readonly _activeBreadcrumbTextElement: HTMLElement | null = null;
+    private readonly _initialActiveBreadcrumbText: string | null = null;
 
     constructor() {
         super();
@@ -42,6 +44,11 @@ export default class BreadcrumbList extends HTMLElement {
         }
 
         this._activeBreadcrumb = activeBreadcrumb;
+
+        this._activeBreadcrumbTextElement = this._activeBreadcrumb.querySelector('.js-text');
+        if (null !== this._activeBreadcrumbTextElement) {
+            this._initialActiveBreadcrumbText = this._activeBreadcrumbTextElement.textContent;
+        }
     }
 
     public connectedCallback(): void {
@@ -67,6 +74,20 @@ export default class BreadcrumbList extends HTMLElement {
 
         if (null !== this._resizeEventListener) {
             window.removeEventListener('resize', this._resizeEventListener);
+        }
+    }
+
+    public setActiveBreadcrumbText(text: string): void {
+        if (null !== this._activeBreadcrumbTextElement) {
+            this._activeBreadcrumbTextElement.textContent = text;
+            collapseOverflowingBreadcrumbs.bind(this)();
+        }
+    }
+
+    public revertActiveBreadcrumbText(): void {
+        if (null !== this._activeBreadcrumbTextElement && null !== this._initialActiveBreadcrumbText) {
+            this._activeBreadcrumbTextElement.textContent = this._initialActiveBreadcrumbText;
+            collapseOverflowingBreadcrumbs.bind(this)();
         }
     }
 }

@@ -171,7 +171,9 @@ function collapseOverflowingBreadcrumbs(this: BreadcrumbList): void {
     if (spaceRemaining > 0) {
         uncollapseAll.bind(this)();
         this._overflowContainer.hidden = true;
-        this._overflowContextMenu.expanded = false;
+        if (this._overflowContextMenu.expanded) {
+            this._overflowContextMenu.expanded = false;
+        }
         return;
     }
 

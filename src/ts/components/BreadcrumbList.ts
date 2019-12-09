@@ -156,7 +156,10 @@ function collapseOverflowingBreadcrumbs(this: BreadcrumbList): void {
         return;
     }
 
-    const listWidth = this._list.getBoundingClientRect().width;
+    let listWidth = this._list.getBoundingClientRect().width;
+    if (!this._overflowContainer.hidden) {
+        listWidth = listWidth + this._overflowContainerWidth;
+    }
     const activeBreadcrumbWidth = this._activeBreadcrumb.getBoundingClientRect().width;
     const spaceAvailable = (listWidth - activeBreadcrumbWidth);
 

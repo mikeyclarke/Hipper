@@ -119,7 +119,7 @@ class Document
 
         $knowledgebaseOwnerModel = $this->knowledgebaseOwner->get($knowledgebase);
 
-        return [$model, $route, $knowledgebaseOwnerModel];
+        return [$route, $knowledgebaseOwnerModel];
     }
 
     private function getKnowledgebase(array $parameters, string $organizationId): ?KnowledgebaseModel

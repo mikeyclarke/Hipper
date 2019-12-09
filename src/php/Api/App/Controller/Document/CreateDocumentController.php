@@ -27,7 +27,7 @@ class CreateDocumentController
         $person = $request->attributes->get('person');
 
         try {
-            list($model, $route, $knowledgebaseOwner) = $this->document->create($person, $request->request->all());
+            list($route, $knowledgebaseOwner) = $this->document->create($person, $request->request->all());
         } catch (ValidationException $e) {
             return new JsonResponse(
                 [

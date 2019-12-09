@@ -141,11 +141,8 @@ class DocumentTest extends TestCase
 
         $result = $this->document->create($person, $parameters);
         $this->assertIsArray($result);
-        $this->assertInstanceOf(DocumentModel::class, $result[0]);
-        $this->assertEquals($urlSlug, $result[0]->getUrlSlug());
-        $this->assertEquals($urlId, $result[0]->getUrlId());
-        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[1]);
-        $this->assertEquals($knowledgebaseOwnerModel, $result[2]);
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
+        $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
     }
 
     /**
@@ -224,11 +221,8 @@ class DocumentTest extends TestCase
 
         $result = $this->document->create($person, $parameters);
         $this->assertIsArray($result);
-        $this->assertInstanceOf(DocumentModel::class, $result[0]);
-        $this->assertEquals($urlSlug, $result[0]->getUrlSlug());
-        $this->assertEquals($urlId, $result[0]->getUrlId());
-        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[1]);
-        $this->assertEquals($knowledgebaseOwnerModel, $result[2]);
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
+        $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
     }
 
     private function createKnowledgebaseOwnerExpectation($args, $result)

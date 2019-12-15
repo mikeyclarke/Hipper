@@ -42,7 +42,7 @@ class DocumentController
     public function getAction(Request $request): Response
     {
         $organization = $request->attributes->get('organization');
-        $documentId = $request->attributes->get('documentId');
+        $documentId = $request->attributes->get('document_id');
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
         $knowledgebaseOwner = $request->attributes->get($knowledgebaseType);
 

@@ -69,15 +69,15 @@ class KnowledgebaseRoutingMiddleware
             return new RedirectResponse($canonicalUrl);
         }
 
-        $request->attributes->set('knowledgebaseId', $knowledgebaseId);
-        $request->attributes->set('entityType', $result['entity']);
+        $request->attributes->set('knowledgebase_id', $knowledgebaseId);
+        $request->attributes->set('entity_type', $result['entity']);
 
         if ($result['entity'] === 'document') {
-            $request->attributes->set('documentId', $result['document_id']);
+            $request->attributes->set('document_id', $result['document_id']);
         }
 
         if ($result['entity'] === 'section') {
-            $request->attributes->set('sectionId', $result['section_id']);
+            $request->attributes->set('section_id', $result['section_id']);
         }
     }
 

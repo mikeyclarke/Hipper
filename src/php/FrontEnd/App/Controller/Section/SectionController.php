@@ -41,9 +41,9 @@ class SectionController
     public function getAction(Request $request): Response
     {
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
-        $knowledgebaseId = $request->attributes->get('knowledgebaseId');
+        $knowledgebaseId = $request->attributes->get('knowledgebase_id');
         $organization = $request->attributes->get('organization');
-        $sectionId = $request->attributes->get('sectionId');
+        $sectionId = $request->attributes->get('section_id');
         $timeZone = $this->timeZoneFromRequest->get($request);
 
         $result = $this->sectionRepository->findById($sectionId, $knowledgebaseId, $organization->getId());

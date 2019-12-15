@@ -23,7 +23,7 @@ class DocumentOrSectionControllerRouter
 
     public function route(Request $request)
     {
-        $entityType = $request->attributes->get('entityType');
+        $entityType = $request->attributes->get('entity_type');
         $action = $request->attributes->get('action');
 
         switch ($entityType) {

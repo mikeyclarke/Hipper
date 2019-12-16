@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class JoinController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $personCreation;
     private $login;
 
@@ -29,14 +31,7 @@ class JoinController
         try {
             list($person, $encodedPassword) = $this->personCreation->create($organization, $request->request->all());
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         $session = $request->getSession();

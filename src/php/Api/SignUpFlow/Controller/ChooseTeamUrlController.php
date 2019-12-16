@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ChooseTeamUrlController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $organization;
 
     public function __construct(
@@ -30,14 +32,7 @@ class ChooseTeamUrlController
                 ]
             );
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         return new JsonResponse(null, 200);

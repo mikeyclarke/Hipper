@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateProjectController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     const PROJECT_ROUTE_NAME = 'front_end.app.project.show';
 
     private $project;
@@ -31,14 +33,7 @@ class CreateProjectController
         try {
             $projectModel = $this->project->create($person, $request->request->all());
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         return new JsonResponse([

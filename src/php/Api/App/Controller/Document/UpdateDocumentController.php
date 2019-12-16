@@ -14,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UpdateDocumentController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $document;
     private $documentRepository;
     private $knowledgebaseRouteUrlGenerator;
@@ -43,14 +45,7 @@ class UpdateDocumentController
         try {
             list($route, $knowledgebaseOwner) = $this->document->update($person, $document, $request->request->all());
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         $url = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route);

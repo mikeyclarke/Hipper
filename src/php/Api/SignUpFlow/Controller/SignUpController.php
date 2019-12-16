@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SignUpController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $personCreation;
 
     public function __construct(
@@ -23,14 +25,7 @@ class SignUpController
         try {
             list($person, $encodedPassword) = $this->personCreation->create($request->request->all());
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         $session = $request->getSession();

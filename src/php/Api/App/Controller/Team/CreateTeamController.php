@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateTeamController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     const TEAM_ROUTE_NAME = 'front_end.app.team.show';
 
     private $team;
@@ -31,14 +33,7 @@ class CreateTeamController
         try {
             $teamModel = $this->team->create($person, $request->request->all());
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         return new JsonResponse([

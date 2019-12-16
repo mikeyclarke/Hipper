@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NameTeamController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $organization;
 
     public function __construct(
@@ -25,14 +27,7 @@ class NameTeamController
         try {
             $this->organization->update($person->getOrganizationId(), ['name' => $request->request->get('name', '')]);
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         return new JsonResponse(null, 200);

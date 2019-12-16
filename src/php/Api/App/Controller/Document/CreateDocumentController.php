@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateDocumentController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $document;
     private $knowledgebaseRouteUrlGenerator;
 
@@ -29,14 +31,7 @@ class CreateDocumentController
         try {
             list($route, $knowledgebaseOwner) = $this->document->create($person, $request->request->all());
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         $url = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route);

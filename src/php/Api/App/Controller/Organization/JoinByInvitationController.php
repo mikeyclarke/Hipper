@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class JoinByInvitationController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $personCreation;
     private $login;
 
@@ -31,14 +33,7 @@ class JoinByInvitationController
         try {
             list($person, $encodedPassword) = $this->personCreation->create($organization, $input);
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         } catch (InviteNotFoundException $e) {
             return new JsonResponse(
                 [

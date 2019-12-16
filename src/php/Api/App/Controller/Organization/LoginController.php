@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class LoginController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $login;
 
     public function __construct(
@@ -27,14 +29,7 @@ class LoginController
         try {
             $this->login->login($organization, $request->request->all(), $session);
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         } catch (InvalidCredentialsException $e) {
             return new JsonResponse(
                 [

@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class InviteController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $bulkInvitationCreator;
     private $organization;
 
@@ -29,14 +31,7 @@ class InviteController
         try {
             $this->organization->update($person->getOrganizationId(), $request->request->all());
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         return new JsonResponse(null, 200);
@@ -49,14 +44,7 @@ class InviteController
         try {
             $this->bulkInvitationCreator->create($person, $request->getHost(), $request->request->all());
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         return new JsonResponse(null, 200);

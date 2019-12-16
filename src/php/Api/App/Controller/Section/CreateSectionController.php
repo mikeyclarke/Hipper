@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateSectionController
 {
+    use \Hipper\Api\ApiControllerTrait;
+
     private $knowledgebaseRouteUrlGenerator;
     private $section;
 
@@ -29,14 +31,7 @@ class CreateSectionController
         try {
             list($model, $route, $knowledgebaseOwner) = $this->section->create($person, $request->request->all());
         } catch (ValidationException $e) {
-            return new JsonResponse(
-                [
-                    'name' => $e->getName(),
-                    'message' => $e->getMessage(),
-                    'violations' => $e->getViolations(),
-                ],
-                400
-            );
+            return $this->createValidationExceptionResponse($e);
         }
 
         $url = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route);

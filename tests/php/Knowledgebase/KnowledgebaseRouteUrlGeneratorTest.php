@@ -43,7 +43,7 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
 
         $this->createRouterExpectation(
             [
-                KnowledgebaseRouteUrlGenerator::GET_TEAM_DOC_ROUTE_NAME,
+                KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME,
                 ['path' => $this->route->toUrlSegment(), 'team_url_id' => $knowledgebaseOwner->getUrlId()]
             ],
             $url
@@ -65,7 +65,7 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
 
         $this->createRouterExpectation(
             [
-                KnowledgebaseRouteUrlGenerator::GET_PROJECT_DOC_ROUTE_NAME,
+                KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME,
                 ['path' => $this->route->toUrlSegment(), 'project_url_id' => $knowledgebaseOwner->getUrlId()]
             ],
             $url

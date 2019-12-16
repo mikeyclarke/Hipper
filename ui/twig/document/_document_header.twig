@@ -8,17 +8,33 @@
     </div>
 {% elseif mode in ['create', 'edit'] %}
     <form class="c-document__header js-document-form">
-        <input type="hidden" name="knowledgebase_id" value="{{ knowledgebase_id }}">
-        <input type="hidden" name="section_id" value="{{ section_id }}">
+        {% if mode is same as('create') %}
+            <input type="hidden" name="knowledgebase_id" value="{{ knowledgebase_id }}">
+            <input type="hidden" name="section_id" value="{{ section_id }}">
+        {% else %}
+            <input type="hidden" name="document_id" value="{{ document.id }}">
+        {% endif %}
         <input type="hidden" name="allowed_marks" value='{{ allowed_marks|json_encode|raw }}'>
         <input type="hidden" name="allowed_nodes" value='{{ allowed_nodes|json_encode|raw }}'>
 
-        <elastic-text-input>
-            <textarea name="document_name" class="c-document__header-title" placeholder="Add a title" rows="1" maxlength="150"{% if mode is same as('edit') %} value="{{ document.name }}"{% endif %}></textarea>
-        </elastic-text-input>
+        {% if mode is same as('create') %}
+            <elastic-text-input>
+                <textarea name="document_name" class="c-document__header-title" placeholder="Add a title" rows="1" maxlength="150">{% if mode is same as('edit') %}{{ document.name }}{% endif %}</textarea>
+            </elastic-text-input>
 
-        <elastic-text-input>
-            <textarea name="document_description" class="c-document__header-synopsis" placeholder="Optionally add a synopsis" rows="1" maxlength="300"{% if mode is same as('edit') %} value="{{ document.description }}"{% endif %}></textarea>
-        </elastic-text-input>
+            <elastic-text-input>
+                <textarea name="document_description" class="c-document__header-synopsis" placeholder="Optionally add a synopsis" rows="1" maxlength="300">{% if mode is same as('edit') %}{{ document.description }}{% endif %}</textarea>
+            </elastic-text-input>
+        {% else %}
+            <elastic-text-input lazy>
+                <h1 class="c-document__header-title c-elastic-text-input js-initial-content">{{ document.name }}</h1>
+                <textarea name="document_name" class="c-document__header-title" placeholder="Add a title" rows="1" maxlength="150">{% if mode is same as('edit') %}{{ document.name }}{% endif %}</textarea>
+            </elastic-text-input>
+
+            <elastic-text-input lazy>
+                <p class="c-document__header-synopsis js-initial-content">{{ document.description }}</p>
+                <textarea name="document_description" class="c-document__header-synopsis" placeholder="Optionally add a synopsis" rows="1" maxlength="300">{% if mode is same as('edit') %}{{ document.description }}{% endif %}</textarea>
+            </elastic-text-input>
+        {% endif %}
     </form>
 {% endif %}

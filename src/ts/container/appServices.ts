@@ -4,6 +4,7 @@ import CreateTeamController from 'RouteControllers/app/Team/CreateTeamController
 import CreateDocumentController from 'RouteControllers/app/Document/CreateDocumentController';
 import CreateProjectController from 'RouteControllers/app/Project/CreateProjectController';
 import CreateSectionController from 'RouteControllers/app/Section/CreateSectionController';
+import EditDocumentController from 'RouteControllers/app/Document/EditDocumentController';
 
 export default function (bottle: Bottle): void {
     bottle.factory('loginController', (container) => {
@@ -34,6 +35,13 @@ export default function (bottle: Bottle): void {
     bottle.factory('createSectionController', (container) => {
         return new CreateSectionController(
             container.httpClient,
+        );
+    });
+
+    bottle.factory('editDocumentController', (container) => {
+        return new EditDocumentController(
+            container.httpClient,
+            container.config.user_agent_profile,
         );
     });
 }

@@ -76,6 +76,11 @@ services:
             $documentAllowedMarks: '%document_allowed_marks%'
             $documentAllowedNodes: '%document_allowed_nodes%'
 
+    Hipper\FrontEnd\App\Controller\Document\EditDocumentController:
+        arguments:
+            $documentAllowedMarks: '%document_allowed_marks%'
+            $documentAllowedNodes: '%document_allowed_nodes%'
+
     Hipper\Asset\AssetIntegrity:
         arguments:
             $manifestPath: '%asset_integrity_manifest_path%'

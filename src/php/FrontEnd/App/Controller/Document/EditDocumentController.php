@@ -4,51 +4,53 @@ declare(strict_types=1);
 namespace Hipper\FrontEnd\App\Controller\Document;
 
 use Hipper\Document\DocumentModel;
-use Hipper\Document\DocumentRepository;
-use Hipper\Document\DocumentRevisionRepository;
 use Hipper\Document\DocumentRenderer;
+use Hipper\Document\DocumentRepository;
 use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Section\SectionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment as Twig;
 
-class DocumentController
+class EditDocumentController
 {
     private $documentRenderer;
     private $documentRepository;
-    private $documentRevisionRepository;
     private $knowledgebaseBreadcrumbsFormatter;
     private $knowledgebaseRouteUrlGenerator;
     private $sectionRepository;
     private $twig;
-    private $urlGenerator;
+    private $documentAllowedMarks;
+    private $documentAllowedNodes;
 
     public function __construct(
         DocumentRenderer $documentRenderer,
         DocumentRepository $documentRepository,
-        DocumentRevisionRepository $documentRevisionRepository,
         KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
         SectionRepository $sectionRepository,
         Twig $twig,
-        UrlGeneratorInterface $urlGenerator
+        array $documentAllowedMarks,
+        array $documentAllowedNodes
     ) {
         $this->documentRenderer = $documentRenderer;
         $this->documentRepository = $documentRepository;
-        $this->documentRevisionRepository = $documentRevisionRepository;
         $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
         $this->sectionRepository = $sectionRepository;
         $this->twig = $twig;
-        $this->urlGenerator = $urlGenerator;
+        $this->documentAllowedMarks = $documentAllowedMarks;
+        $this->documentAllowedNodes = $documentAllowedNodes;
     }
 
     public function getAction(Request $request): Response
     {
+        if (!$request->attributes->has('document_id')) {
+            throw new NotFoundHttpException;
+        }
+
         $organization = $request->attributes->get('organization');
         $documentId = $request->attributes->get('document_id');
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
@@ -79,27 +81,21 @@ class DocumentController
 
         $backLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];
 
-        $history = $this->documentRevisionRepository->getHistoryForDocument(
-            $document->getId(),
-            $document->getKnowledgebaseId(),
-            $document->getOrganizationId()
-        );
-
-        $rendererResult = $this->documentRenderer->render($document->getContent(), 'html', $request->getHost(), true);
-        $editUrl = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route, 'edit');
+        $rendererResult = $this->documentRenderer->render($document->getContent(), 'html', $request->getHost());
+        $viewUrl = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route);
 
         $context = [
+            'allowed_marks' => $this->documentAllowedMarks,
+            'allowed_nodes' => $this->documentAllowedNodes,
             'back_link' => $backLink,
             'breadcrumbs' => $breadcrumbs,
             'document' => $document,
             'document_html' => $rendererResult->getContent(),
-            'document_outline' => $rendererResult->getOutline(),
-            'document_history' => $history,
-            'edit_url' => $editUrl,
-            'html_title' => sprintf('%s – %s', $document->getName(), $knowledgebaseOwner->getName()),
+            'html_title' => sprintf('Edit %s – %s', $document->getName(), $knowledgebaseOwner->getName()),
             'htmlClassList' => ['l-document-editor'],
+            'view_url' => $viewUrl,
         ];
 
-        return new Response($this->twig->render('document/view.twig', $context));
+        return new Response($this->twig->render('document/edit.twig', $context));
     }
 }

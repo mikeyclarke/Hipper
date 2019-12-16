@@ -47,7 +47,7 @@ class ProjectDocsController
             $docs,
             $sections,
             $timeZone,
-            KnowledgebaseRouteUrlGenerator::GET_PROJECT_DOC_ROUTE_NAME,
+            KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME,
             ['project_url_id' => $project->getUrlId()]
         );
 

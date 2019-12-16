@@ -114,6 +114,7 @@ $content-p-margin: 0 0 30px;
     color: $header-synopsis-color;
     font-size: $header-synopsis-font-size;
     line-height: $header-synopsis-line-height;
+    margin: 0;
     min-height: $header-synopsis-min-height;
     padding: 13px 0;
     @include font-smoothing.font-smoothing;

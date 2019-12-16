@@ -15,11 +15,20 @@
                 Save
                 <svg class="c-document-toolbar__primary-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
             </button>
+        {% elseif mode is same as('edit') %}
+            <a href="{{ view_url }}" class="c-document-toolbar__outline-button js-discard-changes">
+                Discard changes
+                <svg class="c-document-toolbar__outline-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__discard"/></svg>
+            </a>
+            <button class="c-document-toolbar__primary-button js-update-document" type="button">
+                Save
+                <svg class="c-document-toolbar__primary-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
+            </button>
         {% elseif mode is same as('view') %}
             <button class="c-document-toolbar__outline-button--icon-only" type="button" aria-label="Copy a link to this doc to your clipboard">
                 <svg class="c-document-toolbar__outline-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__link"/></svg>
             </button>
-            <a href="" class="c-document-toolbar__primary-button">
+            <a href="{{ edit_url }}" class="c-document-toolbar__primary-button">
                 Edit this doc
                 <svg class="c-document-toolbar__primary-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
             </a>

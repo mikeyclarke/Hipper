@@ -35,5 +35,7 @@ class KnowledgebaseRouteUpdater
             'organization_id' => $organizationId,
             'new_route_id' => $newRouteId,
         ]);
+
+        $qb->execute();
     }
 }

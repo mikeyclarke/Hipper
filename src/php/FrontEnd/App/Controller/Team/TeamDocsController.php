@@ -47,7 +47,7 @@ class TeamDocsController
             $docs,
             $sections,
             $timeZone,
-            KnowledgebaseRouteUrlGenerator::GET_TEAM_DOC_ROUTE_NAME,
+            KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME,
             ['team_url_id' => $team->getUrlId()]
         );
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\FrontEnd\App\Middleware\Knowledgebase;
 
 use Hipper\Knowledgebase\Exception\NoCanonicalRouteExistsForKnowledgebaseRouteException;
+use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,6 +71,7 @@ class KnowledgebaseRoutingMiddleware
         }
 
         $request->attributes->set('knowledgebase_id', $knowledgebaseId);
+        $request->attributes->set('knowledgebase_route', KnowledgebaseRouteModel::createFromArray($result));
         $request->attributes->set('entity_type', $result['entity']);
 
         if ($result['entity'] === 'document') {

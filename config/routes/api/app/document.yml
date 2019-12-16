@@ -5,3 +5,11 @@ document.create:
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
+
+document.update:
+    path: /_/update-doc/{document_id}
+    methods: [POST]
+    controller: Hipper\Api\App\Controller\Document\UpdateDocumentController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before

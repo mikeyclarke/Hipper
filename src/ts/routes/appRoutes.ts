@@ -37,5 +37,15 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
             path: '/teams/:team_url_id/docs/new-section',
             controller: () => [bottle.container.createSectionController, 'start'],
         },
+
+        edit_project_doc: {
+            path: '/projects/:project_url_id/docs/edit/:doc_route(.+)',
+            controller: () => [bottle.container.editDocumentController, 'start'],
+        },
+
+        edit_team_doc: {
+            path: '/teams/:team_url_id/docs/edit/:doc_route(.+)',
+            controller: () => [bottle.container.editDocumentController, 'start'],
+        },
     };
 }

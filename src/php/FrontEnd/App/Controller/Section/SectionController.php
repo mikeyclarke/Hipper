@@ -110,7 +110,7 @@ class SectionController
             $docs,
             $sections,
             $timeZone,
-            KnowledgebaseRouteUrlGenerator::GET_TEAM_DOC_ROUTE_NAME,
+            KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME,
             ['team_url_id' => $team->getUrlId()]
         );
 
@@ -142,7 +142,7 @@ class SectionController
             $docs,
             $sections,
             $timeZone,
-            KnowledgebaseRouteUrlGenerator::GET_PROJECT_DOC_ROUTE_NAME,
+            KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME,
             ['project_url_id' => $project->getUrlId()]
         );
 

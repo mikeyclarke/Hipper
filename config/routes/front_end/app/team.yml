@@ -42,6 +42,18 @@ team.doc.create:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
 
+team.doc.edit:
+    path: /teams/{team_url_id}/docs/edit/{path}
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Document\EditDocumentController::getAction
+    defaults:
+        knowledgebase_type: 'team'
+        _before_middlewares:
+            - team_model_from_url_id_middleware:before
+            - knowledgebase_routing_middleware:before
+    requirements:
+        path: '.+'
+
 team.doc.show:
     path: /teams/{team_url_id}/docs/{path}
     methods: [GET]

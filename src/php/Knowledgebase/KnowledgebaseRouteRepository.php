@@ -31,6 +31,8 @@ class KnowledgebaseRouteRepository
         $qb->setParameter('route', $route);
         $qb->setParameter('url_id', $urlId);
 
+        $qb->orderBy('is_canonical', 'DESC');
+
         $stmt = $qb->execute();
         $result = $stmt->fetch();
         if (false === $result) {
@@ -68,6 +70,28 @@ class KnowledgebaseRouteRepository
         $qb->andWhere('is_canonical IS TRUE');
 
         $qb->setParameter('url_id', $urlId);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetch();
+        if (false === $result) {
+            return null;
+        }
+
+        return $result;
+    }
+
+    public function findCanonicalRouteForDocument(
+        string $organizationId,
+        string $knowledgebaseId,
+        string $documentId
+    ): ?array {
+        $qb = $this->connection->createQueryBuilder();
+        $this->createQuery($qb, $organizationId, $knowledgebaseId);
+
+        $qb->andWhere('document_id = :document_id');
+        $qb->andWhere('is_canonical IS TRUE');
+
+        $qb->setParameter('document_id', $documentId);
 
         $stmt = $qb->execute();
         $result = $stmt->fetch();

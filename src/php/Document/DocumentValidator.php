@@ -66,20 +66,23 @@ class DocumentValidator
                     'message' => 'Content invalid',
                 ]),
             ],
-            'knowledgebase_id' => [
-                new NotBlank([
-                    'message' => 'Knowledgebase ID can’t be blank',
-                ]),
-                new KnowledgebaseExists([
-                    'knowledgebase' => $knowledgebase,
-                ]),
-            ],
             'section_id' => [
                 new SectionExists([
                     'section' => $section,
                 ]),
             ],
         ];
+
+        if ($isNew) {
+            $constraints['knowledgebase_id'] = [
+                new NotBlank([
+                    'message' => 'Knowledgebase ID can’t be blank',
+                ]),
+                new KnowledgebaseExists([
+                    'knowledgebase' => $knowledgebase,
+                ]),
+            ];
+        }
 
         foreach ($constraints as $key => &$value) {
             if (in_array($key, $requiredOnCreate) && $isNew) {

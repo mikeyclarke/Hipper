@@ -25,7 +25,6 @@ class DocumentController
     private $knowledgebaseRouteUrlGenerator;
     private $sectionRepository;
     private $twig;
-    private $urlGenerator;
 
     public function __construct(
         DocumentRenderer $documentRenderer,
@@ -34,8 +33,7 @@ class DocumentController
         KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
         SectionRepository $sectionRepository,
-        Twig $twig,
-        UrlGeneratorInterface $urlGenerator
+        Twig $twig
     ) {
         $this->documentRenderer = $documentRenderer;
         $this->documentRepository = $documentRepository;
@@ -44,7 +42,6 @@ class DocumentController
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
         $this->sectionRepository = $sectionRepository;
         $this->twig = $twig;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function getAction(Request $request): Response
@@ -87,6 +84,12 @@ class DocumentController
 
         $rendererResult = $this->documentRenderer->render($document->getContent(), 'html', $request->getHost(), true);
         $editUrl = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route, 'edit');
+        $viewUrl = $this->knowledgebaseRouteUrlGenerator->generate(
+            $knowledgebaseOwner,
+            $route,
+            'show',
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         $context = [
             'back_link' => $backLink,
@@ -98,6 +101,7 @@ class DocumentController
             'edit_url' => $editUrl,
             'html_title' => sprintf('%s – %s', $document->getName(), $knowledgebaseOwner->getName()),
             'htmlClassList' => ['l-document-editor'],
+            'view_url' => $viewUrl,
         ];
 
         return new Response($this->twig->render('document/view.twig', $context));

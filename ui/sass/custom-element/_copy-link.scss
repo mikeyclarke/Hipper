@@ -1,0 +1,55 @@
+@use '../config/config';
+@use '../helper/font-smoothing';
+
+$transition-duration: .35s;
+
+$confirm-background-color: config.config-get(global, color, primary);
+$confirm-border-radius: 4px;
+$confirm-padding: 4px 8px;
+
+$confirm-label-color: config.config-get(global, color, white);
+$confirm-label-font-size: 14px;
+$confirm-label-font-weight: 500;
+$confirm-label-line-height: 14px;
+
+copy-link {
+    display: block;
+    position: relative;
+}
+
+.c-copy-link__confirm {
+    background-color: $confirm-background-color;
+    border-radius: $confirm-border-radius;
+    left: 50%;
+    opacity: 0;
+    padding: $confirm-padding;
+    position: absolute;
+    text-align: center;
+    transform: translate(-50%, -10px);
+    transition: transform $transition-duration, opacity $transition-duration;
+}
+
+.c-copy-link__confirm::before {
+    border-bottom: 4px solid $confirm-background-color;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -4px;
+    transform: translateX(-50%);
+}
+
+.c-copy-link__confirm.show {
+    opacity: .95;
+    transform: translate(-50%, 0);
+}
+
+.c-copy-link__confirm-label {
+    color: $confirm-label-color;
+    font-size: $confirm-label-font-size;
+    font-weight: $confirm-label-font-weight;
+    line-height: $confirm-label-line-height;
+    white-space: nowrap;
+    @include font-smoothing.font-smoothing;
+}

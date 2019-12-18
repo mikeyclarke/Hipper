@@ -28,7 +28,8 @@ class KnowledgebaseRouteUrlGenerator
     public function generate(
         KnowledgebaseOwnerModelInterface $knowledgebaseOwner,
         KnowledgebaseRouteModel $route,
-        string $method = 'show'
+        string $method = 'show',
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     ): string {
         if (!in_array($method, ['show', 'edit'])) {
             throw new \Exception('Unsupported route method');
@@ -59,6 +60,6 @@ class KnowledgebaseRouteUrlGenerator
             throw new UnsupportedKnowledgebaseEntityException;
         }
 
-        return $this->router->generate($routeName, $routeParams);
+        return $this->router->generate($routeName, $routeParams, $referenceType);
     }
 }

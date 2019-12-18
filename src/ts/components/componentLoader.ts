@@ -1,6 +1,7 @@
 import BreadcrumbList from 'components/BreadcrumbList';
 import ContextMenu from 'components/ContextMenu';
 import ContextMenuToggle from 'components/ContextMenuToggle';
+import CopyLink from 'components/CopyLink';
 import PasswordInput from 'components/PasswordInput';
 import EditableFormField from 'components/EditableFormField';
 import PopoverAlert from 'components/PopoverAlert';
@@ -14,6 +15,7 @@ export default function loadComponents(): void {
         'breadcrumb-list': BreadcrumbList,
         'context-menu': ContextMenu,
         'context-menu-toggle': ContextMenuToggle,
+        'copy-link': CopyLink,
         'password-input': PasswordInput,
         'editable-form-field': EditableFormField,
         'popover-alert': PopoverAlert,

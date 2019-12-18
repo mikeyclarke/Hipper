@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../config/config';
 @use '../helper/font-smoothing';
 
@@ -5,6 +6,7 @@ $transition-duration: .35s;
 
 $confirm-background-color: config.config-get(global, color, primary);
 $confirm-border-radius: 4px;
+$confirm-box-shadow: 0 2px 4px rgba(color.mix(#000, $confirm-background-color), .2);
 $confirm-padding: 4px 8px;
 
 $confirm-label-color: config.config-get(global, color, white);
@@ -20,6 +22,7 @@ copy-link {
 .c-copy-link__confirm {
     background-color: $confirm-background-color;
     border-radius: $confirm-border-radius;
+    box-shadow: $confirm-box-shadow;
     left: 50%;
     opacity: 0;
     padding: $confirm-padding;

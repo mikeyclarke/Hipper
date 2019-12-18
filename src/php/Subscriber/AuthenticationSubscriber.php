@@ -82,13 +82,26 @@ class AuthenticationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $url = '/login';
-        if ($request->attributes->get('isOrganizationContext') === false) {
-            $url = '/';
-        }
+        $url = $this->getUnauthorizedResponseRedirectUrl($request);
 
         $response = new RedirectResponse($url);
         $event->setResponse($response);
+    }
+
+    private function getUnauthorizedResponseRedirectUrl(Request $request): string
+    {
+        if ($request->attributes->get('isOrganizationContext') === false) {
+            return '/';
+        }
+
+        $requestUri = $request->getRequestUri();
+        $url = '/login';
+
+        if ($request->isMethod('GET') && $requestUri !== '/') {
+            $url = $url . '?r=' . rawurlencode($requestUri);
+        }
+
+        return $url;
     }
 
     private function hasValidSession(SessionInterface $session): bool

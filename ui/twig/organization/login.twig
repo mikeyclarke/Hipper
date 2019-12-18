@@ -12,6 +12,8 @@
         </header>
 
         <form class="js-login-form" novalidate>
+            <input type="hidden" name="redirect" value="{{ redirect }}">
+
             <fieldset class="c-form__field">
                 <label for="input-email-address" class="c-form__label">Your email address</label>
                 <input class="c-form__input js-email-input" type="email" name="email_address" id="input-email-address" required autocomplete="email">

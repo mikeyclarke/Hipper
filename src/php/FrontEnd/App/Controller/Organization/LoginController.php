@@ -20,9 +20,11 @@ class LoginController
     public function getAction(Request $request): Response
     {
         $organization = $request->attributes->get('organization');
+        $redirect = $request->query->get('r');
 
         $context = [
             'html_title' => sprintf('Sign in to %s', $organization->getName()),
+            'redirect' => $redirect,
         ];
 
         return new Response(

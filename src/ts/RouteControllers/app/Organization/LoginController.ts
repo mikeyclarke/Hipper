@@ -9,6 +9,7 @@ export default class LoginController {
     private submitButton!: HTMLButtonElement;
     private emailInput!: HTMLInputElement;
     private passwordInput!: HTMLInputElement;
+    private redirect: string | null = null;
 
     constructor(
         httpClient: HttpClient
@@ -18,6 +19,12 @@ export default class LoginController {
 
     public start(): void {
         this.cacheElements();
+
+        const redirectInput = this.formElement.querySelector('[name="redirect"]');
+        if (redirectInput instanceof HTMLInputElement) {
+            this.redirect = redirectInput.value || null;
+        }
+
         this.attachEvents();
     }
 
@@ -89,6 +96,7 @@ export default class LoginController {
         return {
             email_address: this.emailInput.value,
             password: this.passwordInput.value,
+            redirect: this.redirect,
         };
     }
 

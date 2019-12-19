@@ -2,10 +2,14 @@
 @use '../helper/breakpoint';
 @use '../helper/font-smoothing';
 
+$stick-at-pixels-from-top: 68px;
+
 $title-color: config.config-get(color-shades, dark, 700);
 $title-font-size: 14px;
 $title-font-weight: 500;
 $title-margin: 0 0 14px;
+
+$list-margin: 0 0 28px;
 
 $subentries-list-padding: 0 0 0 10px;
 
@@ -20,6 +24,10 @@ $link-padding: 8px 0;
 
     @include breakpoint.breakpoint(app, document, two-column-layout) {
         display: block;
+        max-height: calc(100vh - #{$stick-at-pixels-from-top});
+        overflow-y: auto;
+        position: sticky;
+        top: $stick-at-pixels-from-top;
     }
 }
 
@@ -34,7 +42,7 @@ $link-padding: 8px 0;
 
 .c-document-outline__list {
     list-style: none;
-    margin: 0;
+    margin: $list-margin;
     padding: 0;
 }
 

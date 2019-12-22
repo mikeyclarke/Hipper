@@ -6,6 +6,7 @@ namespace Hipper\Knowledgebase;
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
 use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
+use Hipper\Organization\OrganizationModel;
 use Hipper\Project\ProjectModel;
 use Hipper\Team\TeamModel;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,6 +27,7 @@ class KnowledgebaseRouteUrlGenerator
     }
 
     public function generate(
+        OrganizationModel $organization,
         KnowledgebaseOwnerModelInterface $knowledgebaseOwner,
         KnowledgebaseRouteModel $route,
         string $method = 'show',
@@ -38,6 +40,7 @@ class KnowledgebaseRouteUrlGenerator
         $routeName = null;
         $routeParams = [
             'path' => $route->toUrlSegment(),
+            'subdomain' => $organization->getSubdomain(),
         ];
 
         if ($knowledgebaseOwner instanceof TeamModel) {

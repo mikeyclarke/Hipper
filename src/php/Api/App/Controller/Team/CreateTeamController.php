@@ -29,6 +29,7 @@ class CreateTeamController
     public function postAction(Request $request): JsonResponse
     {
         $person = $request->attributes->get('person');
+        $organization = $request->attributes->get('organization');
 
         try {
             $teamModel = $this->team->create($person, $request->request->all());
@@ -39,7 +40,10 @@ class CreateTeamController
         return new JsonResponse([
             'team_url' => $this->router->generate(
                 self::TEAM_ROUTE_NAME,
-                ['team_url_id' => $teamModel->getUrlId()]
+                [
+                    'subdomain' => $organization->getSubdomain(),
+                    'team_url_id' => $teamModel->getUrlId(),
+                ]
             ),
         ], 201);
     }

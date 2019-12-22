@@ -27,6 +27,7 @@ class CreateSectionController
     public function postAction(Request $request): JsonResponse
     {
         $person = $request->attributes->get('person');
+        $organization = $request->attributes->get('organization');
 
         try {
             list($model, $route, $knowledgebaseOwner) = $this->section->create($person, $request->request->all());
@@ -34,7 +35,7 @@ class CreateSectionController
             return $this->createValidationExceptionResponse($e);
         }
 
-        $url = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route);
+        $url = $this->knowledgebaseRouteUrlGenerator->generate($organization, $knowledgebaseOwner, $route);
         return new JsonResponse(['section_url' => $url], 201);
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Knowledgebase;
 
+use Hipper\Organization\OrganizationModel;
 use Carbon\Carbon;
 use RuntimeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -18,6 +19,7 @@ class KnowledgebaseEntriesListFormatter
     }
 
     public function format(
+        OrganizationModel $organization,
         array $documents,
         array $sections,
         string $displayTimeZone,
@@ -27,11 +29,25 @@ class KnowledgebaseEntriesListFormatter
         $entries = [];
 
         foreach ($documents as $document) {
-            $entries[] = $this->formatEntry($document, $displayTimeZone, $routeName, $routeParams, 'document');
+            $entries[] = $this->formatEntry(
+                $organization,
+                $document,
+                $displayTimeZone,
+                $routeName,
+                $routeParams,
+                'document'
+            );
         }
 
         foreach ($sections as $section) {
-            $entries[] = $this->formatEntry($section, $displayTimeZone, $routeName, $routeParams, 'section');
+            $entries[] = $this->formatEntry(
+                $organization,
+                $section,
+                $displayTimeZone,
+                $routeName,
+                $routeParams,
+                'section'
+            );
         }
 
         usort($entries, function ($a, $b) {
@@ -41,8 +57,14 @@ class KnowledgebaseEntriesListFormatter
         return $entries;
     }
 
-    private function formatEntry(array $entry, string $displayTimeZone, $routeName, $routeParams, $type): array
-    {
+    private function formatEntry(
+        OrganizationModel $organization,
+        array $entry,
+        string $displayTimeZone,
+        $routeName,
+        $routeParams,
+        $type
+    ): array {
         $dateTime = Carbon::createFromFormat('Y-m-d H:i:s.u', $entry['updated']);
         if (false === $dateTime) {
             throw new RuntimeException('DateTime could not be created from format');
@@ -57,7 +79,10 @@ class KnowledgebaseEntriesListFormatter
                 $routeName,
                 array_merge(
                     $routeParams,
-                    ['path' => sprintf('%s~%s', $entry['route'], $entry['url_id'])]
+                    [
+                        'path' => sprintf('%s~%s', $entry['route'], $entry['url_id']),
+                        'subdomain' => $organization->getSubdomain(),
+                    ]
                 )
             ),
             'type' => $type,

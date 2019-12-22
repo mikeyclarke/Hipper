@@ -29,6 +29,7 @@ class CreateProjectController
     public function postAction(Request $request): JsonResponse
     {
         $person = $request->attributes->get('person');
+        $organization = $request->attributes->get('organization');
 
         try {
             $projectModel = $this->project->create($person, $request->request->all());
@@ -39,7 +40,10 @@ class CreateProjectController
         return new JsonResponse([
             'project_url' => $this->router->generate(
                 self::PROJECT_ROUTE_NAME,
-                ['project_url_id' => $projectModel->getUrlId()]
+                [
+                    'project_url_id' => $projectModel->getUrlId(),
+                    'subdomain' => $organization->getSubdomain(),
+                ]
             ),
         ], 201);
     }

@@ -74,6 +74,7 @@ class EditDocumentController
         }
 
         $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+            $organization,
             $knowledgebaseOwner,
             array_reverse($ancestorSections),
             $document->getName()
@@ -82,7 +83,7 @@ class EditDocumentController
         $backLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];
 
         $rendererResult = $this->documentRenderer->render($document->getContent(), 'html', $request->getHost());
-        $viewUrl = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route);
+        $viewUrl = $this->knowledgebaseRouteUrlGenerator->generate($organization, $knowledgebaseOwner, $route);
 
         $context = [
             'allowed_marks' => $this->documentAllowedMarks,

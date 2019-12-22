@@ -33,6 +33,7 @@ class UpdateDocumentController
     public function postAction(Request $request): JsonResponse
     {
         $person = $request->attributes->get('person');
+        $organization = $request->attributes->get('organization');
         $documentId = $request->attributes->get('document_id', null);
 
         $result = $this->documentRepository->findById($documentId, $person->getOrganizationId());
@@ -48,7 +49,7 @@ class UpdateDocumentController
             return $this->createValidationExceptionResponse($e);
         }
 
-        $url = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route);
+        $url = $this->knowledgebaseRouteUrlGenerator->generate($organization, $knowledgebaseOwner, $route);
         return new JsonResponse(['doc_url' => $url]);
     }
 }

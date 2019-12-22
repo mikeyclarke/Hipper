@@ -44,6 +44,7 @@ class TeamDocsController
 
         $timeZone = $this->timeZoneFromRequest->get($request);
         $knowledgebaseEntries = $this->knowledgebaseEntriesListFormatter->format(
+            $organization,
             $docs,
             $sections,
             $timeZone,

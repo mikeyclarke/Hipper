@@ -9,6 +9,7 @@ use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRepository;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
+use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonModel;
 use Hipper\Team\TeamModel;
 use Mockery as m;
@@ -26,6 +27,7 @@ class UpdateDocumentControllerTest extends TestCase
     private $knowledgebaseRouteUrlGenerator;
     private $controller;
     private $person;
+    private $organization;
 
     public function setUp(): void
     {
@@ -41,6 +43,8 @@ class UpdateDocumentControllerTest extends TestCase
 
         $this->person = new PersonModel;
         $this->person->setOrganizationId('org-uuid');
+
+        $this->organization = new OrganizationModel;
     }
 
     /**
@@ -54,6 +58,7 @@ class UpdateDocumentControllerTest extends TestCase
             [
                 'document_id' => 'doc-uuid',
                 'person' => $this->person,
+                'organization' => $this->organization,
             ]
         );
 
@@ -70,7 +75,10 @@ class UpdateDocumentControllerTest extends TestCase
             [$this->person, m::type(DocumentModel::class), $request->request->all()],
             [$route, $knowledgebaseOwner]
         );
-        $this->createKnowledgebaseRouteUrlGeneratorExpectation([$knowledgebaseOwner, $route], $url);
+        $this->createKnowledgebaseRouteUrlGeneratorExpectation(
+            [$this->organization, $knowledgebaseOwner, $route],
+            $url
+        );
 
         $result = $this->controller->postAction($request);
         $this->assertInstanceOf(JsonResponse::class, $result);
@@ -88,6 +96,7 @@ class UpdateDocumentControllerTest extends TestCase
             [
                 'document_id' => 'doc-uuid',
                 'person' => $this->person,
+                'organization' => $this->organization,
             ]
         );
 

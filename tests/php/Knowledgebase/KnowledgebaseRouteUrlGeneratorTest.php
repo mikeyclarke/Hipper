@@ -5,6 +5,7 @@ namespace Hipper\Tests\Knowledgebase;
 
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
+use Hipper\Organization\OrganizationModel;
 use Hipper\Project\ProjectModel;
 use Hipper\Team\TeamModel;
 use Mockery as m;
@@ -18,6 +19,7 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
     private $router;
     private $knowledgebaseRouteUrlGenerator;
     private $route;
+    private $organization;
 
     public function setUp(): void
     {
@@ -29,6 +31,9 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
         $this->route = new KnowledgebaseRouteModel;
         $this->route->setRoute('knowledgebase-route');
         $this->route->setUrlId('abcd1234');
+
+        $this->organization = new OrganizationModel;
+        $this->organization->setSubdomain('acme');
     }
 
     /**
@@ -44,13 +49,21 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
         $this->createRouterExpectation(
             [
                 KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME,
-                ['path' => $this->route->toUrlSegment(), 'team_url_id' => $knowledgebaseOwner->getUrlId()],
+                [
+                    'path' => $this->route->toUrlSegment(),
+                    'subdomain' => $this->organization->getSubdomain(),
+                    'team_url_id' => $knowledgebaseOwner->getUrlId()
+                ],
                 UrlGeneratorInterface::ABSOLUTE_PATH,
             ],
             $url
         );
 
-        $result = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $this->route);
+        $result = $this->knowledgebaseRouteUrlGenerator->generate(
+            $this->organization,
+            $knowledgebaseOwner,
+            $this->route
+        );
         $this->assertEquals($url, $result);
     }
 
@@ -67,13 +80,21 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
         $this->createRouterExpectation(
             [
                 KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME,
-                ['path' => $this->route->toUrlSegment(), 'project_url_id' => $knowledgebaseOwner->getUrlId()],
+                [
+                    'path' => $this->route->toUrlSegment(),
+                    'subdomain' => $this->organization->getSubdomain(),
+                    'project_url_id' => $knowledgebaseOwner->getUrlId()
+                ],
                 UrlGeneratorInterface::ABSOLUTE_PATH,
             ],
             $url
         );
 
-        $result = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $this->route);
+        $result = $this->knowledgebaseRouteUrlGenerator->generate(
+            $this->organization,
+            $knowledgebaseOwner,
+            $this->route
+        );
         $this->assertEquals($url, $result);
     }
 

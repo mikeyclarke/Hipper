@@ -35,7 +35,7 @@ class ProjectsController
         $displayTimeZone = $this->timeZoneFromRequest->get($request);
         $projects = $this->projectRepository->getAll($organization->getId(), 'name', 'ASC');
 
-        $projectsList = $this->projectsListFormatter->format($projects, $displayTimeZone);
+        $projectsList = $this->projectsListFormatter->format($organization, $projects, $displayTimeZone);
 
         $context = [
             'html_title' => 'Projects',

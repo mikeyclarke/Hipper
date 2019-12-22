@@ -107,6 +107,7 @@ class SectionController
 
         $timeZone = $this->timeZoneFromRequest->get($request);
         $knowledgebaseEntries = $this->knowledgebaseEntriesListFormatter->format(
+            $organization,
             $docs,
             $sections,
             $timeZone,
@@ -139,6 +140,7 @@ class SectionController
 
         $timeZone = $this->timeZoneFromRequest->get($request);
         $knowledgebaseEntries = $this->knowledgebaseEntriesListFormatter->format(
+            $organization,
             $docs,
             $sections,
             $timeZone,

@@ -69,6 +69,7 @@ class DocumentController
         }
 
         $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+            $organization,
             $knowledgebaseOwner,
             array_reverse($ancestorSections),
             $document->getName()
@@ -83,8 +84,9 @@ class DocumentController
         );
 
         $rendererResult = $this->documentRenderer->render($document->getContent(), 'html', $request->getHost(), true);
-        $editUrl = $this->knowledgebaseRouteUrlGenerator->generate($knowledgebaseOwner, $route, 'edit');
+        $editUrl = $this->knowledgebaseRouteUrlGenerator->generate($organization, $knowledgebaseOwner, $route, 'edit');
         $viewUrl = $this->knowledgebaseRouteUrlGenerator->generate(
+            $organization,
             $knowledgebaseOwner,
             $route,
             'show',

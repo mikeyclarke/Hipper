@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Project;
 
+use Hipper\Organization\OrganizationModel;
 use Carbon\Carbon;
 use RuntimeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -19,10 +20,10 @@ class ProjectsListFormatter
         $this->router = $router;
     }
 
-    public function format(array $projects, string $displayTimeZone): array
+    public function format(OrganizationModel $organization, array $projects, string $displayTimeZone): array
     {
         $result = array_map(
-            function ($project) use ($displayTimeZone) {
+            function ($project) use ($displayTimeZone, $organization) {
                 $dateTime = Carbon::createFromFormat('Y-m-d H:i:s.u', $project['created']);
                 if (false === $dateTime) {
                     throw new RuntimeException('DateTime could not be created from format');
@@ -40,7 +41,10 @@ class ProjectsListFormatter
                     'name' => $project['name'],
                     'route' => $this->router->generate(
                         self::PROJECT_ROUTE_NAME,
-                        ['project_url_id' => $project['url_id']]
+                        [
+                            'project_url_id' => $project['url_id'],
+                            'subdomain' => $organization->getSubdomain(),
+                        ]
                     ),
                 ];
             },

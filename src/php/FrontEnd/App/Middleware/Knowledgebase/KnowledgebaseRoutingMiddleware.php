@@ -6,6 +6,7 @@ namespace Hipper\FrontEnd\App\Middleware\Knowledgebase;
 use Hipper\Knowledgebase\Exception\NoCanonicalRouteExistsForKnowledgebaseRouteException;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
+use Hipper\Organization\OrganizationModel;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +44,7 @@ class KnowledgebaseRoutingMiddleware
             if (null === $result) {
                 throw new NotFoundHttpException;
             }
-            $canonicalUrl = $this->generateRouteRedirectUrl($request, $result);
+            $canonicalUrl = $this->generateRouteRedirectUrl($request, $organization, $result);
             return new RedirectResponse($canonicalUrl);
         }
 
@@ -66,7 +67,7 @@ class KnowledgebaseRoutingMiddleware
             if (null === $canonicalRoute) {
                 throw new NoCanonicalRouteExistsForKnowledgebaseRouteException;
             }
-            $canonicalUrl = $this->generateRouteRedirectUrl($request, $canonicalRoute);
+            $canonicalUrl = $this->generateRouteRedirectUrl($request, $organization, $canonicalRoute);
             return new RedirectResponse($canonicalUrl);
         }
 
@@ -107,12 +108,13 @@ class KnowledgebaseRoutingMiddleware
         }
     }
 
-    private function generateRouteRedirectUrl(Request $request, array $route): string
+    private function generateRouteRedirectUrl(Request $request, OrganizationModel $organization, array $route): string
     {
         $routeName = $request->attributes->get('_route');
         $routeParameters = $request->attributes->get('_route_params');
 
         $routeParameters['path'] = sprintf('%s~%s', $route['route'], $route['url_id']);
+        $routeParameters['subdomain'] = $organization->getSubdomain();
 
         return $this->router->generate($routeName, $routeParameters);
     }

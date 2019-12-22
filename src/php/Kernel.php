@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
-final class SignUpFlowKernel extends BaseKernel
+final class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
@@ -38,17 +38,19 @@ final class SignUpFlowKernel extends BaseKernel
     {
         $configDir = $this->getProjectDir() . '/config';
 
-        $routes->import($configDir . '/routes/api/sign_up_flow/routes.yml');
-        $routes->import($configDir . '/routes/front_end/sign_up_flow/routes.yml');
+        $routes->import($configDir . '/routes/api/sign_up_flow/routes.yml')->setHost('%domain%');
+        $routes->import($configDir . '/routes/api/app/routes.yml')->setHost('{subdomain}.%domain%');
+        $routes->import($configDir . '/routes/front_end/sign_up_flow/routes.yml')->setHost('%domain%');
+        $routes->import($configDir . '/routes/front_end/app/routes.yml')->setHost('{subdomain}.%domain%');
     }
 
     public function getCacheDir(): string
     {
-        return $this->getProjectDir() . '/var/cache/sign-up-flow/' . $this->environment;
+        return $this->getProjectDir() . '/var/cache/' . $this->environment;
     }
 
     public function getLogDir(): string
     {
-        return $this->getProjectDir() . '/var/log/sign-up-flow';
+        return $this->getProjectDir() . '/var/log';
     }
 }

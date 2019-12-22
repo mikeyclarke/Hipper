@@ -35,6 +35,7 @@ class KnowledgebaseRoutingMiddlewareTest extends TestCase
 
         $this->organization = new OrganizationModel;
         $this->organization->setId('org-uuid');
+        $this->organization->setSubdomain('acme');
 
         $this->team = new TeamModel;
         $this->team->setKnowledgebaseId('kb-uuid');
@@ -86,7 +87,13 @@ class KnowledgebaseRoutingMiddlewareTest extends TestCase
             $kbRouteResult
         );
         $this->createRouterExpectation(
-            [$this->request->attributes->get('_route'), ['path' => sprintf('%s~%s', $route, 'url-id')]],
+            [
+                $this->request->attributes->get('_route'),
+                [
+                    'path' => sprintf('%s~%s', $route, 'url-id'),
+                    'subdomain' => $this->organization->getSubdomain(),
+                ]
+            ],
             $canonicalRedirectUrl
         );
 
@@ -150,7 +157,10 @@ class KnowledgebaseRoutingMiddlewareTest extends TestCase
         $this->createRouterExpectation(
             [
                 $this->request->attributes->get('_route'),
-                ['path' => sprintf('%s~%s', $canonicalKbRouteResult['route'], $urlId)]
+                [
+                    'path' => sprintf('%s~%s', $canonicalKbRouteResult['route'], $urlId),
+                    'subdomain' => $this->organization->getSubdomain(),
+                ]
             ],
             $canonicalRedirectUrl
         );

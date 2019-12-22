@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Team;
 
+use Hipper\Organization\OrganizationModel;
 use Carbon\Carbon;
 use RuntimeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -19,10 +20,10 @@ class TeamsListFormatter
         $this->router = $router;
     }
 
-    public function format(array $teams, string $displayTimeZone): array
+    public function format(OrganizationModel $organization, array $teams, string $displayTimeZone): array
     {
         $result = array_map(
-            function ($team) use ($displayTimeZone) {
+            function ($team) use ($displayTimeZone, $organization) {
                 $dateTime = Carbon::createFromFormat('Y-m-d H:i:s.u', $team['created']);
                 if (false === $dateTime) {
                     throw new RuntimeException('DateTime could not be created from format');
@@ -40,7 +41,10 @@ class TeamsListFormatter
                     'name' => $team['name'],
                     'route' => $this->router->generate(
                         self::TEAM_ROUTE_NAME,
-                        ['team_url_id' => $team['url_id']]
+                        [
+                            'subdomain' => $organization->getSubdomain(),
+                            'team_url_id' => $team['url_id'],
+                        ]
                     ),
                 ];
             },

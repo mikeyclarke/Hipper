@@ -69,6 +69,7 @@ class CreateDocumentController
         }
 
         $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+            $organization,
             $knowledgebaseOwner,
             array_reverse($ancestorSections),
             self::DEFAULT_DOC_TITLE

@@ -35,7 +35,7 @@ class TeamsController
         $teams = $this->teamRepository->getAll($organization->getId(), 'name', 'ASC');
         $displayTimeZone = $this->timeZoneFromRequest->get($request);
 
-        $teamsList = $this->teamsListFormatter->format($teams, $displayTimeZone);
+        $teamsList = $this->teamsListFormatter->format($organization, $teams, $displayTimeZone);
 
         $context = [
             'html_title' => 'Teams',

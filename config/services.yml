@@ -31,6 +31,7 @@ parameters:
         - 'code'
         - 'strike'
     asset_integrity_manifest_path: '%kernel.project_dir%/public-roots/assets/public/build/integrity.json'
+    domain: '%env(DOMAIN)%'
 
 services:
     # default configuration for services in *this* file
@@ -60,7 +61,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     Hipper\:
         resource: '../src/php/*'
-        exclude: '../src/php/{data,DependencyInjection,Session,Tests,AppKernel.php,ConsoleKernel.php,SignUpFlowKernel.php}'
+        exclude: '../src/php/{data,DependencyInjection,Session,Tests,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

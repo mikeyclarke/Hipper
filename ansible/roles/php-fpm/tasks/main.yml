@@ -9,23 +9,23 @@
       name: "{{ packages }}"
   vars:
       packages:
-          - php7.3
-          - php7.3-fpm
-          - php7.3-redis
-          - php7.3-bcmath
-          - php7.3-pgsql
-          - php7.3-intl
-          - php7.3-mbstring
-          - php7.3-xml
-          - php7.3-apcu
+          - php7.4
+          - php7.4-fpm
+          - php7.4-redis
+          - php7.4-bcmath
+          - php7.4-pgsql
+          - php7.4-intl
+          - php7.4-mbstring
+          - php7.4-xml
+          - php7.4-apcu
 
 - name: Configure php
-  lineinfile: dest=/etc/php/7.3/fpm/php.ini regexp="^{{ item.param }} =" line="{{ item.param }} = {{ item.value }}"
+  lineinfile: dest=/etc/php/7.4/fpm/php.ini regexp="^{{ item.param }} =" line="{{ item.param }} = {{ item.value }}"
   with_items:
       - { param: 'cgi.fix_pathinfo', value: '0' }
       - { param: 'session.gc_maxlifetime', value: "{{ php_session_maxlifetime }}" }
   notify: restart php-fpm
 
 - name: Set php timezone
-  lineinfile: dest=/etc/php/7.3/fpm/php.ini regexp="^[#|;]?date.timezone =" insertafter="^[#|;]?date.timezone =" line="date.timezone = {{ php_timezone }}"
+  lineinfile: dest=/etc/php/7.4/fpm/php.ini regexp="^[#|;]?date.timezone =" insertafter="^[#|;]?date.timezone =" line="date.timezone = {{ php_timezone }}"
   notify: restart php-fpm

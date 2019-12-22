@@ -4,7 +4,7 @@
 
 ### Installation
 
-- PHP 7.3 – `brew install php`
+- PHP 7.4 – `brew install php`
 - nginx with more headers and http2 modules
     - `brew tap denji/nginx`
     - `brew install --with-headers-more-module --with-http2 nginx-full`
@@ -26,7 +26,7 @@
 ### Configuration
 
 - PHP
-    - `/usr/local/etc/php/7.3/php.ini`
+    - `/usr/local/etc/php/7.4/php.ini`
         - Set timezone to UTC: add `date.timezone = UTC`
         - Improve PHP security: add `cgi.fix_pathinfo=0`
         - Set a more appropriate session lifetime (4 days): replace `session.gc_maxlifetime = 1440` with `session.gc_maxlifetime = 345600`

@@ -1,0 +1,108 @@
+@use 'component/base-list';
+@use 'config/config';
+@use 'helper/breakpoint';
+
+$_x-offset-large-bp: 102px;
+
+$_result-body-mark-color: config.config-get(color-shades, dark, 1000);
+$_result-body-mark-gradient-color: #efdb23;
+$_result-body-mark-gradient: linear-gradient(
+    -100deg,
+    rgba($_result-body-mark-gradient-color, .3),
+    rgba($_result-body-mark-gradient-color, .7) 95%,
+    rgba($_result-body-mark-gradient-color, .1)
+);
+
+.c-search-results {
+    @extend %c-base-list;
+
+    @include breakpoint.breakpoint(app, medium) {
+        background: transparent;
+        box-shadow: none;
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        margin-left: $_x-offset-large-bp;
+    }
+}
+
+.c-search-results__result {
+    @extend %c-base-list__item;
+    @extend %c-base-list__item--with-avatar;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-bottom: 24px;
+        margin-left: -16px;
+        width: calc(100% + 32px);
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        margin-left: -48px + -16px;
+        width: 530px + 48px + 32px;
+    }
+}
+
+.c-search-results__result:not(:last-child)::after {
+    @include breakpoint.breakpoint(app, medium) {
+        display: none;
+    }
+}
+
+.c-search-results__result:first-child {
+    @include breakpoint.breakpoint(app, medium) {
+        margin-top: -16px;
+    }
+}
+
+.c-search-results__result-link {
+    @extend %c-base-list__item-link;
+}
+
+.c-search-results__result-avatar {
+    @extend %c-base-list__item-avatar;
+
+    @include breakpoint.breakpoint(app, medium) {
+        top: 16px;
+    }
+}
+
+.c-search-results__result-owner {
+    @extend %c-base-list__item-context;
+    @extend %c-base-list__item-context--responsive;
+}
+
+.c-search-results__result-title {
+    @extend %c-base-list__item-title;
+    @extend %c-base-list__item-title--responsive;
+}
+
+.c-search-results__result-body {
+    @extend %c-base-list__item-description;
+    @extend %c-base-list__item-description--responsive;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-bottom: 18px;
+    }
+}
+
+.c-search-results__result-body mark {
+    background-color: transparent;
+    color: $_result-body-mark-color;
+    background-image: $_result-body-mark-gradient;
+    border-radius: 12px 0;
+    padding: 0 2px;
+}
+
+.c-search-results__result-meta {
+    @extend %c-base-list__item-meta;
+    @extend %c-base-list__item-meta--responsive;
+}
+
+.c-search-results__result-title,
+.c-search-results__result-owner,
+.c-search-results__result-body,
+.c-search-results__result-meta {
+    @include breakpoint.breakpoint(app, medium) {
+        margin-left: 48px !important;
+    }
+}

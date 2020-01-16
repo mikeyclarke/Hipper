@@ -1,0 +1,93 @@
+@use '../config/config';
+@use '../helper/breakpoint';
+@use '../helper/font-smoothing';
+@use '../helper/unstyled-button';
+
+$margin: 0 0 9px;
+
+$margin-top-large-bp: 32px;
+$x-offset-large-bp: 102px;
+
+$item-gap: 12px;
+$item-gap-larger: 20px;
+
+$control-focused-background-color: rgba(config.config-get(color-shades, grey, 1100), .1);
+$control-color: config.config-get(color-shades, dark, 500);
+$control-font-size: 14px;
+$control-font-weight: 500;
+$control-padding-top-bottom: 16px;
+$control-padding-left-right: 14px;
+
+$control-selected-color: config.config-get(color-shades, dark, 900);
+$control-selected-underline-color: config.config-get(color-shades, primary, 900);
+$control-selected-underline-height: 4px;
+$control-selected-underline-offset-bottom: 6px;
+
+.c-search-filters {
+    display: flex;
+    list-style: none;
+    margin: $margin;
+    padding: 0;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-left: -#{$control-padding-left-right};
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        margin-top: $margin-top-large-bp;
+        transform: translateX($x-offset-large-bp);
+    }
+}
+
+.c-search-filters__item {
+    margin-right: $item-gap;
+
+    @include breakpoint.free-form-breakpoint(340px) {
+        margin-right: $item-gap-larger;
+    }
+}
+
+.c-search-filters__item:first-child {
+    margin-left: auto;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-left: 0;
+    }
+}
+
+.c-search-filters__item:last-child {
+    margin-right: auto;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-right: 0;
+    }
+}
+
+.c-search-filters__control {
+    @extend %unstyled-button;
+    color: $control-color;
+    font-size: $control-font-size;
+    font-weight: $control-font-weight;
+    padding: $control-padding-top-bottom $control-padding-left-right;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-search-filters__control:focus {
+    background-color: $control-focused-background-color;
+    outline: 0;
+}
+
+.c-search-filters__control[aria-selected="true"] {
+    color: $control-selected-color;
+    position: relative;
+}
+
+.c-search-filters__control[aria-selected="true"]::before {
+    background-color: $control-selected-underline-color;
+    content: '';
+    height: $control-selected-underline-height;
+    position: absolute;
+    bottom: $control-selected-underline-offset-bottom;
+    left: $control-padding-left-right;
+    right: $control-padding-left-right;
+}

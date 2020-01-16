@@ -1,0 +1,213 @@
+@use '../config/config';
+@use '../helper/breakpoint';
+@use '../helper/font-smoothing';
+
+$list-padding: 16px;
+$list-padding-medium-bp: 20px;
+$content-left-offset-with-avatar: 44px;
+$content-left-offset-with-avatar-medium-bp: 66px;
+$avatar-size: 32px;
+$avatar-size-medium-bp: 48px;
+
+$item-max-width: 530px;
+
+$item-title-font-size: 18px;
+$item-title-font-size-medium-bp: 20px;
+
+$item-description-font-size: 15px;
+$item-description-line-height: 22px;
+$item-description-font-size-medium-bp: 16px;
+$item-description-line-height-medium-bp: 24px;
+
+%c-base-list {
+    background-color: config.config-get(global, color, white);
+    border-radius: 8px;
+    box-shadow: 0 0 4px rgba(196, 194, 197, .4);
+    list-style: none;
+    margin: 0 0 86px;
+    padding: 0;
+}
+
+%c-base-list--responsive {
+    @include breakpoint.breakpoint(app, medium) {
+        display: grid;
+        background-color: transparent;
+        box-shadow: none;
+        grid-auto-rows: 1fr;
+        grid-column-gap: 24px;
+        grid-row-gap: 24px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @include breakpoint.free-form-breakpoint(1092px) {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+.l-app-default__main-content-inner-container > %c-base-list:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    margin-top: -6px;
+}
+
+%c-base-list__item {
+    display: block;
+}
+
+%c-base-list__item--responsive {
+    @include breakpoint.breakpoint(app, medium) {
+        background-color: config.config-get(global, color, white);
+        border-radius: 2px;
+        box-shadow: 0 1px 4px rgba(196, 194, 197, .4);
+    }
+}
+
+%c-base-list__item:not(:last-child)::after {
+    background-color: config.config-get(color-shades, grey, 500);
+    content: '';
+    display: block;
+    height: 1px;
+    margin-left: $list-padding;
+    opacity: .15;
+}
+
+%c-base-list__item--responsive:not(:last-child)::after {
+    @include breakpoint.breakpoint(app, medium) {
+        display: none;
+    }
+}
+
+%c-base-list__item-link {
+    display: block;
+    padding: $list-padding;
+    position: relative;
+}
+
+%c-base-list__item-link--responsive {
+    @include breakpoint.breakpoint(app, medium) {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: $list-padding-medium-bp;
+    }
+}
+
+%c-base-list__item-link,
+%c-base-list__item-link:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+%c-base-list__item-link:focus {
+    background-color: rgba(config.config-get(color-shades, grey, 100), .5);
+    outline: 0;
+}
+
+%c-base-list:focus-within .c-base-list__item-link:not(:focus) {
+    opacity: .85;
+}
+
+%c-base-list__item-avatar {
+    font-size: $avatar-size;
+    height: $avatar-size;
+    position: absolute;
+    top: $list-padding + 4px;
+    width: $avatar-size;
+}
+
+%c-base-list__item-avatar--responsive {
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $avatar-size-medium-bp;
+        height: $avatar-size-medium-bp;
+        width: $avatar-size-medium-bp;
+    }
+}
+
+%c-base-list__item-title {
+    color: config.config-get(color-shades, dark, 1000);
+    font-size: $item-title-font-size;
+    font-weight: 600;
+    line-height: 24px;
+    margin: 0 0 10px;
+    max-width: $item-max-width;
+    @include font-smoothing.font-smoothing;
+}
+
+%c-base-list__item-title--responsive {
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $item-title-font-size-medium-bp;
+        margin-bottom: 16px;
+    }
+}
+
+%c-base-list__item-context {
+    color: config.config-get(color-shades, dark, 700);
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    margin: 0 0 2px;
+    max-width: $item-max-width;
+    @include font-smoothing.font-smoothing;
+}
+
+%c-base-list__item-context--responsive {
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: 15px;
+        margin: 0 0 8px;
+    }
+}
+
+%c-base-list__item-description {
+    font-size: $item-description-font-size;
+    color: config.config-get(color-shades, dark, 900);
+    line-height: $item-description-line-height;
+    margin: 0 0 8px;
+    max-width: $item-max-width;
+    @include font-smoothing.font-smoothing;
+}
+
+%c-base-list__item-description--responsive {
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $item-description-font-size-medium-bp;
+        line-height: $item-description-line-height-medium-bp;
+        margin-bottom: 24px;
+    }
+}
+
+%c-base-list__item-meta {
+    color: #b0aeb1;
+    font-size: 12px;
+    line-height: 12px;
+    margin: 0;
+    max-width: $item-max-width;
+    @include font-smoothing.font-smoothing;
+}
+
+%c-base-list__item-meta--responsive {
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: 14px;
+        line-height: 14px;
+        margin-top: auto;
+    }
+}
+
+%c-base-list__item--with-avatar {
+    %c-base-list__item-title,
+    %c-base-list__item-context,
+    %c-base-list__item-description,
+    %c-base-list__item-meta {
+        margin-left: $content-left-offset-with-avatar;
+    }
+}
+
+%c-base-list__item--with-avatar--responsive {
+    %c-base-list__item-title,
+    %c-base-list__item-context,
+    %c-base-list__item-description,
+    %c-base-list__item-meta {
+        @include breakpoint.breakpoint(app, medium) {
+            margin-left: $content-left-offset-with-avatar-medium-bp;
+        }
+    }
+}

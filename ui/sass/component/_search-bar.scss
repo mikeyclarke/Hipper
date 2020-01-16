@@ -1,0 +1,232 @@
+@use '../config/config';
+@use '../helper/breakpoint';
+@use '../helper/font-smoothing';
+@use '../helper/unstyled-button';
+
+$margin-left-medium-bp: -33px;
+$margin-top-medium-bp: 20px;
+$x-offset-large-bp: 102px;
+
+$search-box-background-color: config.config-get(global, color, white);
+$search-box-border: 1px solid config.config-get(color-shades, dark, 100);
+$search-box-focused-border-color: config.config-get(element, input, focused, border-color);
+$search-box-border-radius: 6px;
+$search-box-offset-bottom: 8px;
+$search-box-offset-left: 16px;
+$search-box-offset-right: 8px;
+$search-box-offset-top: 8px;
+$search-box-width-medium-bp: 420px;
+$search-box-width-large-bp: 735px;
+
+$search-box-input-height-large-bp: 47px;
+$search-box-input-padding-left: 24px;
+$search-box-input-padding-left-medium-bp: 12px;
+$search-box-input-padding-left-large-bp: 32px;
+
+$search-box-button-height: 100%;
+$search-box-button-padding: 12px 4px;
+$search-box-button-width: 28px;
+$search-box-button-width-medium-bp: 38px;
+
+$search-box-button-icon-dimension: 20px;
+
+$submit-button-icon-dimension-medium-bp: 22px;
+
+$clear-button-icon-fill: config.config-get(color-shades, dark, 300);
+
+$submit-button-icon-fill: config.config-get(color-shades, primary, 900);
+
+$back-link-color: config.config-get(color-shades, primary, 900);
+$back-link-font-size: 14px;
+$back-link-font-weight: 600;
+$back-link-padding: 16px;
+$back-link-focused-border-radius: 4px;
+$back-link-focused-border-offset: 12px;
+$back-link-focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+
+.c-search-bar {
+    align-items: center;
+    display: flex;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-top: $margin-top-medium-bp;
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        margin-left: $margin-left-medium-bp;
+        transform: translateX($x-offset-large-bp);
+    }
+}
+
+.c-search-bar__search-box {
+    flex-grow: 1;
+    position: relative;
+    z-index: 0;
+
+    @include breakpoint.breakpoint(app, medium) {
+        flex-grow: 0;
+        width: $search-box-width-medium-bp;
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        width: $search-box-width-large-bp;
+    }
+}
+
+.c-search-bar__search-box::before {
+    background-color: $search-box-background-color;
+    border: $search-box-border;
+    border-radius: $search-box-border-radius;
+    content: '';
+    left: $search-box-offset-left;
+    bottom: $search-box-offset-bottom;
+    top: $search-box-offset-top;
+    right: $search-box-offset-right;
+    position: absolute;
+    z-index: -1;
+
+    @include breakpoint.breakpoint(app, medium) {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        border-radius: $search-box-input-height-large-bp;
+    }
+}
+
+.c-search-bar__search-box:focus-within::before {
+    border-color: $search-box-focused-border-color;
+}
+
+.c-search-bar__input {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding-left: $search-box-input-padding-left;
+    padding-right: ($search-box-button-width * 2) + $search-box-offset-right;
+    width: 100%;
+
+    @include breakpoint.breakpoint(app, medium) {
+        padding-left: $search-box-input-padding-left-medium-bp;
+        padding-right: ($search-box-button-width * 2);
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        height: $search-box-input-height-large-bp;
+        padding-left: $search-box-input-padding-left-large-bp;
+        padding-right: ($search-box-button-width * 2) + 32px;
+    }
+}
+
+.c-search-bar__input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.c-search-bar__input::-ms-clear {
+    display: none;
+}
+
+%c-search-bar__search-box-button {
+    @extend %unstyled-button;
+    height: $search-box-button-height;
+    padding: $search-box-button-padding;
+    position: absolute;
+    top: 0;
+    width: $search-box-button-width;
+
+    @include breakpoint.breakpoint(app, medium) {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        width: $search-box-button-width-medium-bp;
+    }
+}
+
+%c-search-bar__search-box-button:focus {
+    outline: 0;
+}
+
+%c-search-bar__search-box-button:focus::before {
+    border-radius: $back-link-focused-border-radius;
+    bottom: $back-link-focused-border-offset;
+    box-shadow: $back-link-focused-box-shadow;
+    content: '';
+    left: 50%;
+    position: absolute;
+    top: $back-link-focused-border-offset;
+    transform: translateX(-50%);
+    width: 26px;
+    z-index: -1;
+}
+
+%c-search-bar__search-box-button-icon {
+    height: $search-box-button-icon-dimension;
+    width: $search-box-button-icon-dimension;
+}
+
+.c-search-bar__clear-button {
+    @extend %c-search-bar__search-box-button;
+    right: $search-box-offset-right + $search-box-button-width;
+
+    @include breakpoint.breakpoint(app, medium) {
+        right: $search-box-button-width-medium-bp + 14px;
+    }
+}
+
+.c-search-bar__clear-button-icon {
+    @extend %c-search-bar__search-box-button-icon;
+    fill: $clear-button-icon-fill;
+}
+
+.c-search-bar__submit-button {
+    @extend %c-search-bar__search-box-button;
+    right: $search-box-offset-right;
+
+    @include breakpoint.breakpoint(app, medium) {
+        right: 14px;
+    }
+}
+
+.c-search-bar__submit-button-icon {
+    @extend %c-search-bar__search-box-button-icon;
+    fill: $submit-button-icon-fill;
+
+    @include breakpoint.breakpoint(app, medium) {
+        height: $submit-button-icon-dimension-medium-bp;
+        width: $submit-button-icon-dimension-medium-bp;
+    }
+}
+
+.c-search-bar__back-link {
+    color: $back-link-color;
+    font-size: $back-link-font-size;
+    font-weight: $back-link-font-weight;
+    padding: $back-link-padding;
+    position: relative;
+    text-decoration: none;
+    z-index: 0;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        display: none;
+    }
+}
+
+.c-search-bar__back-link:focus {
+    outline: 0;
+}
+
+.c-search-bar__back-link:focus::before {
+    border-radius: $back-link-focused-border-radius;
+    bottom: $back-link-focused-border-offset;
+    box-shadow: $back-link-focused-box-shadow;
+    content: '';
+    left: $back-link-focused-border-offset;
+    position: absolute;
+    right: $back-link-focused-border-offset;
+    top: $back-link-focused-border-offset;
+    z-index: -1;
+}

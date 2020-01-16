@@ -16,10 +16,7 @@
         {% include '_account_contextmenu.twig' with { html_id: m_account_context_menu_id } %}
     </div>
 
-    <form class="c-mobile-nav__search" action="/search" method="GET">
-        <svg class="c-mobile-nav__search-icon" aria-hidden="true"><use xlink:href="#icon-sprite__search"/></svg>
-        <input class="c-mobile-nav__search-input" type="search" placeholder="Search {{ organization.name }}…" name="q">
-    </form>
+    {% include '_search_form.twig' with { className: 'c-mobile-nav__search' } %}
 
     <ol class="c-mobile-nav__items">
         <li class="c-mobile-nav__item">

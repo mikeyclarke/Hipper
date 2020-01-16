@@ -28,7 +28,10 @@ $app-header-compass-text-color: config.config-get(color-shades, dark, 700);
 .c-app-header__top-bar {
     display: grid;
     grid-template-columns: 48px 1fr 48px;
+}
 
+.c-app-header__top-bar,
+.c-app-header__top-bar--full {
     @include breakpoint.breakpoint(app, medium) {
         display: flex;
         justify-content: space-between;

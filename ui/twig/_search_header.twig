@@ -1,0 +1,55 @@
+{% set filters = [
+    {
+        name: 'Docs',
+        action: 
+            (search_context_type is not defined) ?
+                path('front_end.app.organization.search', {subdomain: organization.subdomain}) :
+                path('front_end.app.' ~ search_context_type ~ '.search', {
+                    subdomain: organization.subdomain,
+                    project_url_id: (project is defined) ? project.urlId : null,
+                    team_url_id: (team is defined) ? team.urlId : null,
+                }),
+        show: true,
+        is_active: (active_filter is not defined or active_filter is same as('docs')),
+    },
+] %}
+
+<header class="c-app-header">
+    <div class="c-app-header__top-bar--full">
+        <form action="{{ search_action }}" method="GET">
+            <div class="c-search-bar">
+                <div class="c-search-bar__search-box">
+                    <clearable-input>
+                        <input class="c-search-bar__input" type="search" name="q" value="{{ search_query }}" id="search-box-input" autocomplete="off">
+                        <button class="js-clear-button c-search-bar__clear-button" type="button" aria-label="Clear" aria-controls="search-box-input" hidden>
+                            <svg class="c-search-bar__clear-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__clear-input"/></svg>
+                        </button>
+
+                        <input type="hidden" name="return_to" value="{{ back_link }}">
+                    </clearable-input>
+                    <button class="c-search-bar__submit-button" type="submit" aria-label="Search">
+                        <svg class="c-search-bar__submit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__search"/></svg>
+                    </button>
+                </div>
+
+                <a class="c-search-bar__back-link" href="{{ back_link }}">Cancel</a>
+            </div>
+
+            {% if relative_search is defined and relative_search is same as(true) %}
+                <div class="c-search-context">
+                    <p class="c-search-context__copy">Searching within {{ search_context_name }} {{ search_context_type }}. <a class="c-search-context__link" href="/search?{{ { 'q': search_query, 'return_to': back_link }|url_encode }}">Search everywhere →</a></p>
+                </div>
+            {% endif %}
+
+            <ul class="c-search-filters">
+                {% for filter in filters %}
+                    {% if filter.show %}
+                        <li class="c-search-filters__item">
+                            <button class="c-search-filters__control" type="submit" formaction="{{ filter.action }}?{{ search_query|url_encode }}"{% if filter.is_active %} aria-selected="true"{% endif %}>{{ filter.name }}</button>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </form>
+    </div>
+</header>

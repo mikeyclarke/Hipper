@@ -1,4 +1,5 @@
 import BreadcrumbList from 'components/BreadcrumbList';
+import ClearableInput from 'components/ClearableInput';
 import ContextMenu from 'components/ContextMenu';
 import ContextMenuToggle from 'components/ContextMenuToggle';
 import CopyLink from 'components/CopyLink';
@@ -13,6 +14,7 @@ import MobileNavigationToggle from 'components/MobileNavigationToggle';
 export default function loadComponents(): void {
     const components = {
         'breadcrumb-list': BreadcrumbList,
+        'clearable-input': ClearableInput,
         'context-menu': ContextMenu,
         'context-menu-toggle': ContextMenuToggle,
         'copy-link': CopyLink,

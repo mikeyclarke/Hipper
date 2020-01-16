@@ -1,0 +1,63 @@
+@use '../config/config';
+@use '../helper/breakpoint';
+@use '../helper/font-smoothing';
+
+$padding: 0 16px;
+
+$padding-medium-bp: 0;
+
+$x-offset-large-bp: 102px;
+
+$copy-color: config.config-get(color-shades, dark, 800);
+$copy-font-size: 14px;
+$copy-line-height: 22px;;
+$copy-margin: 0 0 10px;
+
+$copy-font-size-medium-bp: 15px;
+$copy-margin-medium-bp: 18px 0 0;
+
+$link-color: config.config-get(color-shades, primary, 900);
+$link-focused-border-radius: 4px;
+$link-focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+
+.c-search-context {
+    padding: $padding;
+    text-align: center;
+
+    @include breakpoint.breakpoint(app, medium) {
+        padding: $padding-medium-bp;
+        text-align: left;
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        transform: translateX($x-offset-large-bp);
+    }
+}
+
+.c-search-context__copy {
+    color: $copy-color;
+    font-size: $copy-font-size;
+    line-height: $copy-line-height;
+    margin: $copy-margin;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $copy-font-size-medium-bp;
+        margin: $copy-margin-medium-bp;
+    }
+}
+
+.c-search-context__link {
+    display: inline-block;
+}
+
+.c-search-context__link,
+.c-search-context__link:visited {
+    color: $link-color;
+}
+
+.c-search-context__link:focus {
+    border-radius: $link-focused-border-radius;
+    box-shadow: $link-focused-box-shadow;
+    outline: 0;
+}

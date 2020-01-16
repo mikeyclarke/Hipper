@@ -7,18 +7,24 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment as Twig;
 
 class TwigGlobalsSubscriber implements EventSubscriberInterface
 {
+    const SEARCH_ROUTE = 'front_end.app.organization.search';
+
     private $twig;
+    private $urlGeneratorInterface;
     private $assetDomain;
 
     public function __construct(
         Twig $twig,
+        UrlGeneratorInterface $urlGeneratorInterface,
         string $assetDomain
     ) {
         $this->twig = $twig;
+        $this->urlGeneratorInterface = $urlGeneratorInterface;
         $this->assetDomain = $assetDomain;
     }
 
@@ -44,6 +50,13 @@ class TwigGlobalsSubscriber implements EventSubscriberInterface
         if ($request->attributes->get('isOrganizationContext') === true) {
             $organization = $request->attributes->get('organization');
             $this->twig->addGlobal('organization', $organization);
+            $this->twig->addGlobal(
+                'search_action',
+                $this->urlGeneratorInterface->generate(
+                    self::SEARCH_ROUTE,
+                    ['subdomain' => $organization->getSubdomain()]
+                )
+            );
         }
 
         if ($request->attributes->has('person')) {

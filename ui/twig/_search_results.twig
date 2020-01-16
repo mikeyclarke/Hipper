@@ -1,0 +1,34 @@
+{% if search_results is not empty %}
+    <ol class="c-search-results">
+        {% for result in search_results %}
+            <li class="c-search-results__result">
+                <a class="c-search-results__result-link" href="{{ result.route }}">
+                    <div class="c-avatar{% if result.type in ['document', 'section'] %}--{{ result.type }}{% endif %} c-search-results__result-avatar">
+                        {% if result.type in ['document', 'section'] %}
+                            <svg class="c-avatar__icon c-search-results__result-avatar-icon" aria-hidden="true"><use xlink:href="#icon-sprite__{{ result.type }}"/></svg>
+                        {% else %}
+                            <span class="c-avatar__initials">{{ result.initials }}</span>
+                        {% endif %}
+                    </div>
+                    {% if show_owners is defined and show_owners is same as(true) %}
+                        <span class="c-search-results__result-owner">{{ result.owner.name ~ ' ' ~ result.owner.type }}</span>
+                    {% endif %}
+                    <h2 class="c-search-results__result-title">{{ result.name }}</h2>
+                    <p class="c-search-results__result-body">{{ result.displayBody|raw }}</p>
+                    <span class="c-search-results__result-meta">Updated <time datetime="{{ result.updated.utc_datetime }}" title="{{ result.updated.verbose }}">{{ result.updated.time_ago }}</time></span>
+                </a>
+            </li>
+        {% endfor %}
+    </ol>
+{% else %}
+    <div class="c-empty-search">
+        <p class="c-empty-search__notice">No results found for “{{ search_query }}”.</p>
+
+        <p class="c-empty-search__tip">You might want to try:</p>
+        <ul class="c-empty-search__tips-list">
+            <li class="c-empty-search__tips-list-item">Searching for one thing or another using the word “or”, e.g. this or that</li>
+            <li class="c-empty-search__tips-list-item">Searching for an exact phrase using quotes, e.g. "search for this phrase"</li>
+            <li class="c-empty-search__tips-list-item">Searching for results that include one thing but not another using a minus symbol, e.g. this -that</li>
+        </ul>
+    </div>
+{% endif %}

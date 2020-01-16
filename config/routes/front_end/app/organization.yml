@@ -16,3 +16,8 @@ organization.sign_out:
     path: /sign-out
     methods: [POST]
     controller: Hipper\FrontEnd\App\Controller\Organization\SignOutController::signOut
+
+organization.search:
+    path: /search
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Organization\OrganizationSearchController::getAction

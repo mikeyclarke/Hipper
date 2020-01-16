@@ -22,10 +22,7 @@
             </li>
         </ol>
 
-        <form class="c-standard-nav__search" action="/search" method="GET">
-            <svg class="c-standard-nav__search-icon" aria-hidden="true"><use xlink:href="#icon-sprite__search"/></svg>
-            <input class="c-standard-nav__search-input" type="search" placeholder="Search {{ organization.name }}…" name="q" autocomplete="off">
-        </form>
+        {% include '_search_form.twig' with { className: 'c-standard-nav__search' } %}
 
         <div class="c-standard-nav__actions">
             <div class="c-standard-nav__dropdown">

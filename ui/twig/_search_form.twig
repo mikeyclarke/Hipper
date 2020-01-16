@@ -1,0 +1,5 @@
+<form class="{{ className }}" action="{{ search_action }}" method="GET">
+    <svg class="{{ className }}-icon" aria-hidden="true"><use xlink:href="#icon-sprite__search"/></svg>
+    <input class="{{ className }}-input" type="search" placeholder="Search {{ organization.name }}…" name="q" autocomplete="off">
+    <input type="hidden" name="return_to" value="{{ app.request.getRequestUri() }}">
+</form>

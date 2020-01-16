@@ -1,0 +1,60 @@
+@use 'config/config';
+@use 'helper/breakpoint';
+@use 'helper/font-smoothing';
+
+$_color: config.config-get(color-shades, dark, 700);
+$_font-size-medium-bp: 18px;
+$_line-height: 20px;
+$_line-height-medium-bp: 24px;
+$_padding: 24px 16px;
+$_padding-medium-bp: 0;
+$_x-offset-large-bp: 102px;
+
+$_notice-font-weight: 500;
+$_notice-margin: 0 0 32px;
+
+$_tip_margin: 0 0 16px;
+
+$_tips-list-margin: 0 0 42px;
+$_tips-list-padding: 0 0 0 18px;
+
+$_tips-list-item-margin: 0 0 12px;
+$_tips-list-item-padding: 0 0 0 4px;
+
+.c-empty-search {
+    color: $_color;
+    line-height: $_line-height;
+    padding: $_padding;
+
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $_font-size-medium-bp;
+        line-height: $_line-height-medium-bp;
+        padding: $_padding-medium-bp;
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        margin-left: $_x-offset-large-bp;
+    }
+}
+
+.c-empty-search__notice {
+    font-weight: $_notice-font-weight;
+    margin: $_notice-margin;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-empty-search__tip {
+    margin: $_tip-margin;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-empty-search__tips-list {
+    margin: $_tips-list-margin;
+    padding: $_tips-list-padding;
+}
+
+.c-empty-search__tips-list-item {
+    margin: $_tips-list-item-margin;
+    padding: $_tips-list-item-padding;
+    @include font-smoothing.font-smoothing;
+}

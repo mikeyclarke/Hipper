@@ -43,6 +43,11 @@
 @use 'component/document-editor-menu';
 @use 'component/document-outline';
 @use 'component/login-screen';
+@use 'component/search-bar';
+@use 'component/search-context';
+@use 'component/search-filters';
+@use 'component/search-results';
+@use 'component/empty-search';
 
 @use 'layout/app-default';
 @use 'layout/sheet' as sheet-layout;

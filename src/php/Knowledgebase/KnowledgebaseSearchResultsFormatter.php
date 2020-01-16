@@ -75,11 +75,11 @@ class KnowledgebaseSearchResultsFormatter
 
     private function getDisplayBody(array $result): string
     {
-        if (!empty($result['content_snippet'])) {
+        if (!empty(trim($result['content_snippet']))) {
             return $this->escapeText($result['content_snippet']);
         }
 
-        if (!empty($result['description_snippet'])) {
+        if (!empty(trim($result['description_snippet']))) {
             return $this->escapeText($result['description_snippet']);
         }
 

@@ -13,6 +13,6 @@ class SignOutController
         $session = $request->getSession();
         $session->invalidate();
 
-        return new RedirectResponse('/sign-in');
+        return new RedirectResponse('/login');
     }
 }

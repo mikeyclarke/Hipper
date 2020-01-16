@@ -1,6 +1,6 @@
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 
-include .env
+include .env.local
 
 ## ---------
 ##	Testing

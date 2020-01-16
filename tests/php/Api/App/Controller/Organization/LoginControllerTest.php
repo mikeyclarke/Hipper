@@ -5,7 +5,7 @@ namespace Hipper\Tests\Api\App\Controller\Organization;
 
 use Hipper\Api\App\Controller\Organization\LoginController;
 use Hipper\Login\Login;
-use Hipper\Login\LoginSuccessRedirector;
+use Hipper\Security\UntrustedInternalUriRedirector;
 use Hipper\Organization\OrganizationModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -18,17 +18,17 @@ class LoginControllerTest extends TestCase
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $login;
-    private $loginSuccessRedirector;
+    private $untrustedInternalUriRedirector;
     private $controller;
 
     public function setUp(): void
     {
         $this->login = m::Mock(Login::class);
-        $this->loginSuccessRedirector = m::mock(LoginSuccessRedirector::class);
+        $this->untrustedInternalUriRedirector = m::mock(UntrustedInternalUriRedirector::class);
 
         $this->controller = new LoginController(
             $this->login,
-            $this->loginSuccessRedirector
+            $this->untrustedInternalUriRedirector
         );
     }
 
@@ -57,16 +57,16 @@ class LoginControllerTest extends TestCase
         $successUrl = '/';
 
         $this->createLoginExpectation([$organization, $requestBodyOmittingRedirect, $session]);
-        $this->createLoginSuccessRedirectorExpectation([$request], $successUrl);
+        $this->createUntrustedInternalUriRedirectorExpectation([$request->request->get('redirect'), '/'], $successUrl);
 
         $result = $this->controller->postAction($request);
         $this->assertInstanceOf(JsonResponse::class, $result);
         $this->assertEquals($successUrl, json_decode($result->getContent(), true)['url']);
     }
 
-    private function createLoginSuccessRedirectorExpectation($args, $result)
+    private function createUntrustedInternalUriRedirectorExpectation($args, $result)
     {
-        $this->loginSuccessRedirector
+        $this->untrustedInternalUriRedirector
             ->shouldReceive('generateUri')
             ->once()
             ->with(...$args)

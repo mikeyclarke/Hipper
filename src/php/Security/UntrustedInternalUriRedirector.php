@@ -1,37 +1,33 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Login;
+namespace Hipper\Security;
 
-use Symfony\Component\HttpFoundation\Request;
-
-class LoginSuccessRedirector
+class UntrustedInternalUriRedirector
 {
-    const DEFAULT_PATH = '/';
     const OPTIONAL_URI_COMPONENTS = ['query', 'fragment'];
     const REQUIRED_URI_COMPONENTS = ['path'];
 
-    public function generateUri(Request $request): string
+    public function generateUri(?string $untrustedUri, string $defaultUri): string
     {
-        $redirect = $request->request->get('redirect');
-        if (null === $redirect) {
-            return self::DEFAULT_PATH;
+        if (null === $untrustedUri) {
+            return $defaultUri;
         }
 
-        if (!$this->isValidUri($redirect)) {
-            return self::DEFAULT_PATH;
+        if (!$this->isValidUri($untrustedUri)) {
+            return $defaultUri;
         }
 
-        if (!$this->isSafeUri($redirect)) {
-            return self::DEFAULT_PATH;
+        if (!$this->isSafeUri($untrustedUri)) {
+            return $defaultUri;
         }
 
-        return $redirect;
+        return $untrustedUri;
     }
 
-    private function isSafeUri(string $redirect): bool
+    private function isSafeUri(string $untrustedUri): bool
     {
-        $parsedUri = parse_url($redirect);
+        $parsedUri = parse_url($untrustedUri);
         if (false === $parsedUri) {
             return false;
         }
@@ -47,10 +43,10 @@ class LoginSuccessRedirector
         return true;
     }
 
-    private function isValidUri(string $redirect): bool
+    private function isValidUri(string $untrustedUri): bool
     {
         return (bool) filter_var(
-            'https://example.com' . $redirect,
+            'https://example.com' . $untrustedUri,
             FILTER_VALIDATE_URL,
             FILTER_FLAG_PATH_REQUIRED
         );

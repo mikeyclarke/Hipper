@@ -5,7 +5,7 @@ namespace Hipper\Api\App\Controller\Organization;
 
 use Hipper\Login\Exception\InvalidCredentialsException;
 use Hipper\Login\Login;
-use Hipper\Login\LoginSuccessRedirector;
+use Hipper\Security\UntrustedInternalUriRedirector;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +15,14 @@ class LoginController
     use \Hipper\Api\ApiControllerTrait;
 
     private $login;
-    private $loginSuccessRedirector;
+    private $untrustedInternalUriRedirector;
 
     public function __construct(
         Login $login,
-        LoginSuccessRedirector $loginSuccessRedirector
+        UntrustedInternalUriRedirector $untrustedInternalUriRedirector
     ) {
         $this->login = $login;
-        $this->loginSuccessRedirector = $loginSuccessRedirector;
+        $this->untrustedInternalUriRedirector = $untrustedInternalUriRedirector;
     }
 
     public function postAction(Request $request): JsonResponse
@@ -46,7 +46,7 @@ class LoginController
             );
         }
 
-        $url = $this->loginSuccessRedirector->generateUri($request);
+        $url = $this->untrustedInternalUriRedirector->generateUri($request->request->get('redirect'), '/');
 
         return new JsonResponse(['url' => $url], 200);
     }

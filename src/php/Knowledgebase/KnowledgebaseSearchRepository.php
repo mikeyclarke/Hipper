@@ -56,12 +56,12 @@ SELECT
     updated,
     ts_headline(
         description,
-        websearch_to_tsquery(:search_query),
+        websearch_to_tsquery('english', :search_query),
         'StartSel = <mark>, StopSel = </mark>, MaxFragments=2, FragmentDelimiter=" … "'
     ) AS description_snippet,
     ts_headline(
         content_plain,
-        websearch_to_tsquery(:search_query),
+        websearch_to_tsquery('english', :search_query),
         'StartSel = <mark>, StopSel = </mark>, MaxFragments=2, FragmentDelimiter=" … "'
     ) AS content_snippet,
     entry_type,
@@ -102,9 +102,9 @@ FROM (
     FROM section section
     INNER JOIN knowledgebase_route kb_route ON kb_route.section_id = section.id AND kb_route.is_canonical IS TRUE
 ) doc_search
-WHERE doc_search.tokens @@ websearch_to_tsquery(:search_query)
+WHERE doc_search.tokens @@ websearch_to_tsquery('english', :search_query)
 $andWhereConditions
-ORDER BY ts_rank(doc_search.tokens, websearch_to_tsquery(:search_query), 1)
+ORDER BY ts_rank(doc_search.tokens, websearch_to_tsquery('english', :search_query), 1)
 SQL;
         return $sql;
     }

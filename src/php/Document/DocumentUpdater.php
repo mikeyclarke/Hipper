@@ -13,6 +13,7 @@ class DocumentUpdater
         'description',
         'deduced_description',
         'content',
+        'content_plain',
         'url_slug',
         'section_id',
         'last_updated_by',

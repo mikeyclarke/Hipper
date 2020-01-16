@@ -6,30 +6,26 @@ namespace Hipper\Tests\Document\Renderer;
 use Hipper\Document\Renderer\HtmlEscaper;
 use Hipper\Document\Renderer\HtmlFragmentRendererContext;
 use Hipper\Document\Renderer\HtmlFragmentRendererContextFactory;
-use Hipper\Document\Renderer\HtmlRenderer;
-use Hipper\Document\Renderer\Mark\Emphasis;
-use Hipper\Document\Renderer\Mark\MarkFactory;
-use Hipper\Document\Renderer\Node\HardBreak;
-use Hipper\Document\Renderer\Node\HorizontalRule;
-use Hipper\Document\Renderer\Node\Image;
+use Hipper\Document\Renderer\Node\Heading;
+use Hipper\Document\Renderer\Node\ListItem;
 use Hipper\Document\Renderer\Node\NodeFactory;
+use Hipper\Document\Renderer\Node\OrderedList;
 use Hipper\Document\Renderer\Node\Paragraph;
 use Hipper\Document\Renderer\Node\Text;
+use Hipper\Document\Renderer\PlainTextRenderer;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
-class HtmlRendererTest extends TestCase
+class PlainTextRendererTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    private $markFactory;
     private $nodeFactory;
     private $context;
     private $htmlEscaper;
 
     public function setUp(): void
     {
-        $this->markFactory = m::mock(MarkFactory::class);
         $this->nodeFactory = m::mock(NodeFactory::class);
         $this->context = m::mock(HtmlFragmentRendererContext::class);
         $this->htmlEscaper = m::mock(HtmlEscaper::class);
@@ -54,16 +50,14 @@ class HtmlRendererTest extends TestCase
             ],
         ];
 
-        $htmlRenderer = new HtmlRenderer(
-            $this->markFactory,
+        $renderer = new PlainTextRenderer(
             $this->nodeFactory,
-            [],
             ['horizontal_rule']
         );
 
         $expected = '';
 
-        $result = $htmlRenderer->render($doc, $this->context);
+        $result = $renderer->render($doc, $this->context);
         $this->assertEquals($expected, $result);
     }
 
@@ -81,16 +75,14 @@ class HtmlRendererTest extends TestCase
             ],
         ];
 
-        $htmlRenderer = new HtmlRenderer(
-            $this->markFactory,
+        $renderer = new PlainTextRenderer(
             $this->nodeFactory,
-            [],
             ['paragraph']
         );
 
         $expected = '';
 
-        $result = $htmlRenderer->render($doc, $this->context);
+        $result = $renderer->render($doc, $this->context);
         $this->assertEquals($expected, $result);
     }
 
@@ -114,10 +106,8 @@ class HtmlRendererTest extends TestCase
             ],
         ];
 
-        $htmlRenderer = new HtmlRenderer(
-            $this->markFactory,
+        $renderer = new PlainTextRenderer(
             $this->nodeFactory,
-            [],
             ['paragraph', 'text']
         );
 
@@ -126,150 +116,139 @@ class HtmlRendererTest extends TestCase
         $this->createContextGetHtmlEscaperExpectation();
         $this->createHtmlEscaperExpectation(['Hi!!!'], 'Hi I’m escaped!!!');
 
-        $expected = '<p>Hi I’m escaped!!!</p>';
+        $expected = "Hi I’m escaped!!!\r\n\r\n";
 
-        $result = $htmlRenderer->render($doc, $this->context);
+        $result = $renderer->render($doc, $this->context);
         $this->assertEquals($expected, $result);
     }
 
     /**
      * @test
      */
-    public function nodesThatReturnNullHtmlTagsAreSkipped()
-    {
-        // Image node returns null for HTML tags if no attributes with a valid `src`
-        $doc = [
-            'type' => 'doc',
-            'content' => [
-                [
-                    'type' => 'image',
-                ],
-                [
-                    'type' => 'horizontal_rule',
-                ],
-            ],
-        ];
-
-        $htmlRenderer = new HtmlRenderer(
-            $this->markFactory,
-            $this->nodeFactory,
-            [],
-            ['image', 'horizontal_rule']
-        );
-
-        $this->createNodeFactoryExpectation(['image', $this->context], new Image($this->context));
-        $this->createNodeFactoryExpectation(['horizontal_rule', $this->context], new HorizontalRule($this->context));
-
-        $expected = '<hr>';
-
-        $result = $htmlRenderer->render($doc, $this->context);
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * @test
-     */
-    public function emptyParagraphsDynamicallyAddAHardBreakChildNode()
+    public function nodesAreCorrectlyConcatenated()
     {
         $doc = [
             'type' => 'doc',
             'content' => [
                 [
-                    'type' => 'paragraph',
+                    'type' => 'heading',
+                    'content' => [
+                        [
+                            'type' => 'text',
+                            'text' => 'A heading',
+                        ],
+                    ],
                 ],
-            ],
-        ];
-
-        $htmlRenderer = new HtmlRenderer(
-            $this->markFactory,
-            $this->nodeFactory,
-            [],
-            ['paragraph', 'hard_break']
-        );
-
-        $this->createNodeFactoryExpectation(['paragraph', $this->context], new Paragraph($this->context));
-        $this->createNodeFactoryExpectation(['hard_break', $this->context], new HardBreak($this->context));
-
-        $expected = '<p><br></p>';
-
-        $result = $htmlRenderer->render($doc, $this->context);
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * @test
-     */
-    public function disallowedMarksAreSkipped()
-    {
-        $doc = [
-            'type' => 'doc',
-            'content' => [
                 [
                     'type' => 'paragraph',
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'We are ',
+                            'text' => 'Some paragraph text.',
                         ],
+                    ],
+                ],
+                [
+                    'type' => 'paragraph',
+                    'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'bold',
-                            'marks' => [
+                            'text' => 'Some more paragraph text.',
+                        ],
+                    ],
+                ],
+                [
+                    'type' => 'ordered_list',
+                    'content' => [
+                        [
+                            'type' => 'list_item',
+                            'content' => [
                                 [
-                                    'type' => 'strong',
-                                ]
+                                    'type' => 'paragraph',
+                                    'content' => [
+                                        [
+                                            'type' => 'text',
+                                            'text' => 'First list item.',
+                                        ],
+                                    ],
+                                ],
                             ],
                         ],
                         [
-                            'type' => 'text',
-                            'text' => ' and ',
-                        ],
-                        [
-                            'type' => 'text',
-                            'text' => 'italic',
-                            'marks' => [
+                            'type' => 'list_item',
+                            'content' => [
                                 [
-                                    'type' => 'emphasis',
-                                ]
+                                    'type' => 'paragraph',
+                                    'content' => [
+                                        [
+                                            'type' => 'text',
+                                            'text' => 'Second list item.',
+                                        ],
+                                    ],
+                                ],
                             ],
                         ],
+                    ],
+                ],
+                [
+                    'type' => 'paragraph',
+                    'content' => [
                         [
                             'type' => 'text',
-                            'text' => '.',
+                            'text' => 'Final paragraph text.',
                         ],
                     ],
                 ],
             ],
         ];
 
-        $htmlRenderer = new HtmlRenderer(
-            $this->markFactory,
+        $renderer = new PlainTextRenderer(
             $this->nodeFactory,
-            ['emphasis'],
-            ['paragraph', 'text']
+            ['heading', 'paragraph', 'text', 'ordered_list', 'list_item']
         );
+
+        $this->createNodeFactoryExpectation(['heading', $this->context], new Heading($this->context));
+        $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
+        $this->createContextGetHtmlEscaperExpectation();
+        $this->createHtmlEscaperExpectation(['A heading'], 'A heading');
 
         $this->createNodeFactoryExpectation(['paragraph', $this->context], new Paragraph($this->context));
         $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
         $this->createContextGetHtmlEscaperExpectation();
-        $this->createHtmlEscaperExpectation(['We are '], 'We are ');
-        $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
-        $this->createContextGetHtmlEscaperExpectation();
-        $this->createHtmlEscaperExpectation(['bold'], 'bold');
-        $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
-        $this->createContextGetHtmlEscaperExpectation();
-        $this->createHtmlEscaperExpectation([' and '], ' and ');
-        $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
-        $this->createContextGetHtmlEscaperExpectation();
-        $this->createHtmlEscaperExpectation(['italic'], 'italic');
-        $this->createMarkFactoryExpectation(['emphasis', $this->context], new Emphasis($this->context));
-        $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
-        $this->createContextGetHtmlEscaperExpectation();
-        $this->createHtmlEscaperExpectation(['.'], '.');
+        $this->createHtmlEscaperExpectation(['Some paragraph text.'], 'Some paragraph text.');
 
-        $expected = '<p>We are bold and <em>italic</em>.</p>';
+        $this->createNodeFactoryExpectation(['paragraph', $this->context], new Paragraph($this->context));
+        $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
+        $this->createContextGetHtmlEscaperExpectation();
+        $this->createHtmlEscaperExpectation(['Some more paragraph text.'], 'Some more paragraph text.');
 
-        $result = $htmlRenderer->render($doc, $this->context);
+        $this->createNodeFactoryExpectation(['ordered_list', $this->context], new OrderedList($this->context));
+
+        $this->createNodeFactoryExpectation(['list_item', $this->context], new ListItem($this->context));
+        $this->createNodeFactoryExpectation(['paragraph', $this->context], new Paragraph($this->context));
+        $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
+        $this->createContextGetHtmlEscaperExpectation();
+        $this->createHtmlEscaperExpectation(['First list item.'], 'First list item.');
+
+        $this->createNodeFactoryExpectation(['list_item', $this->context], new ListItem($this->context));
+        $this->createNodeFactoryExpectation(['paragraph', $this->context], new Paragraph($this->context));
+        $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
+        $this->createContextGetHtmlEscaperExpectation();
+        $this->createHtmlEscaperExpectation(['Second list item.'], 'Second list item.');
+
+        $this->createNodeFactoryExpectation(['paragraph', $this->context], new Paragraph($this->context));
+        $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
+        $this->createContextGetHtmlEscaperExpectation();
+        $this->createHtmlEscaperExpectation(['Final paragraph text.'], 'Final paragraph text.');
+
+        $expected = "A heading\r\n\r\n" .
+            "Some paragraph text.\r\n\r\n" .
+            "Some more paragraph text.\r\n\r\n" .
+            "• First list item.\r\n\r\n\r\n\r\n" .
+            "• Second list item.\r\n\r\n\r\n\r\n\r\n\r\n" .
+            "Final paragraph text.\r\n\r\n";
+
+        $result = $renderer->render($doc, $this->context);
         $this->assertEquals($expected, $result);
     }
 
@@ -288,15 +267,6 @@ class HtmlRendererTest extends TestCase
             ->shouldReceive('getHtmlEscaper')
             ->once()
             ->andReturn($this->htmlEscaper);
-    }
-
-    private function createMarkFactoryExpectation($args, $result)
-    {
-        $this->markFactory
-            ->shouldReceive('create')
-            ->once()
-            ->with(...$args)
-            ->andReturn($result);
     }
 
     private function createNodeFactoryExpectation($args, $result)

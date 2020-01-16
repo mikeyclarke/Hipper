@@ -15,6 +15,7 @@ final class DocumentModel implements KnowledgebaseContentModelInterface
         'description' => 'description',
         'deduced_description' => 'deducedDescription',
         'content' => 'content',
+        'content_plain' => 'contentPlain',
         'url_slug' => 'urlSlug',
         'url_id' => 'urlId',
         'knowledgebase_id' => 'knowledgebaseId',
@@ -31,6 +32,7 @@ final class DocumentModel implements KnowledgebaseContentModelInterface
     private $description;
     private $deducedDescription;
     private $content;
+    private $contentPlain;
     private $urlSlug;
     private $urlId;
     private $knowledgebaseId;
@@ -101,6 +103,16 @@ final class DocumentModel implements KnowledgebaseContentModelInterface
     public function getContent(): ?string
     {
         return $this->content;
+    }
+
+    public function setContentPlain(?string $contentPlain): void
+    {
+        $this->contentPlain = $contentPlain;
+    }
+
+    public function getContentPlain(): ?string
+    {
+        return $this->contentPlain;
     }
 
     public function setUrlSlug(string $urlSlug): void

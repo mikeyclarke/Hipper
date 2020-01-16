@@ -10,6 +10,7 @@ use Hipper\Document\Renderer\Exception\ContentDecodeException;
 use Hipper\Document\Renderer\Exception\UnsupportedRenderingFormatException;
 use Hipper\Document\Renderer\HtmlFragmentRendererContextFactory;
 use Hipper\Document\Renderer\HtmlRenderer;
+use Hipper\Document\Renderer\PlainTextRenderer;
 use Hipper\Document\Renderer\RendererResult;
 
 class DocumentRenderer
@@ -19,25 +20,28 @@ class DocumentRenderer
     private $documentOutlineGenerator;
     private $documentOutlineHtmlIdsInjector;
     private $htmlRenderer;
+    private $plainTextRenderer;
 
     public function __construct(
         HtmlFragmentRendererContextFactory $contextFactory,
         Decoder $decoder,
         DocumentOutlineGenerator $documentOutlineGenerator,
         DocumentOutlineHtmlIdsInjector $documentOutlineHtmlIdsInjector,
-        HtmlRenderer $htmlRenderer
+        HtmlRenderer $htmlRenderer,
+        PlainTextRenderer $plainTextRenderer
     ) {
         $this->contextFactory = $contextFactory;
         $this->decoder = $decoder;
         $this->documentOutlineGenerator = $documentOutlineGenerator;
         $this->documentOutlineHtmlIdsInjector = $documentOutlineHtmlIdsInjector;
         $this->htmlRenderer = $htmlRenderer;
+        $this->plainTextRenderer = $plainTextRenderer;
     }
 
     public function render(
         $doc,
         string $format,
-        string $organizationDomain,
+        string $organizationDomain = '',
         bool $generateOutline = false
     ): RendererResult {
         $result = new RendererResult;
@@ -45,6 +49,9 @@ class DocumentRenderer
         switch ($format) {
             case 'html':
                 $renderer = $this->htmlRenderer;
+                break;
+            case 'text':
+                $renderer = $this->plainTextRenderer;
                 break;
             default:
                 throw new UnsupportedRenderingFormatException;

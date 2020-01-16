@@ -94,6 +94,10 @@ services:
             $allowedMarks: '%document_allowed_marks%'
             $allowedNodes: '%document_allowed_nodes%'
 
+    Hipper\Document\Renderer\PlainTextRenderer:
+        arguments:
+            $allowedNodes: '%document_allowed_nodes%'
+
     Hipper\TransactionalEmail\PostmarkApiClientFactory:
         arguments:
             $apiBaseUrl: '%postmark_base_url%'

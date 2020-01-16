@@ -25,6 +25,7 @@ class Document
     private $connection;
     private $documentDescriptionDeducer;
     private $documentInserter;
+    private $documentRenderer;
     private $documentRevision;
     private $documentUpdater;
     private $documentValidator;
@@ -41,6 +42,7 @@ class Document
         Connection $connection,
         DocumentDescriptionDeducer $documentDescriptionDeducer,
         DocumentInserter $documentInserter,
+        DocumentRenderer $documentRenderer,
         DocumentRevision $documentRevision,
         DocumentUpdater $documentUpdater,
         DocumentValidator $documentValidator,
@@ -56,6 +58,7 @@ class Document
         $this->connection = $connection;
         $this->documentDescriptionDeducer = $documentDescriptionDeducer;
         $this->documentInserter = $documentInserter;
+        $this->documentRenderer = $documentRenderer;
         $this->documentRevision = $documentRevision;
         $this->documentUpdater = $documentUpdater;
         $this->documentValidator = $documentValidator;
@@ -90,6 +93,12 @@ class Document
             $content = json_encode($parameters['content'], JSON_THROW_ON_ERROR);
         }
 
+        $contentPlain = null;
+        if (null !== $content) {
+            $rendererResult = $this->documentRenderer->render($content, 'text');
+            $contentPlain = $rendererResult->getContent();
+        }
+
         $this->connection->beginTransaction();
         try {
             $result = $this->documentInserter->insert(
@@ -103,6 +112,7 @@ class Document
                 $parameters['description'] ?? null,
                 $deducedDescription,
                 $content,
+                $contentPlain,
                 $parameters['section_id'] ?? null
             );
             $model = DocumentModel::createFromArray($result);
@@ -177,6 +187,9 @@ class Document
             $propertiesToUpdate['deduced_description'] = $this->documentDescriptionDeducer->deduce(
                 $parameters['content']
             );
+
+            $rendererResult = $this->documentRenderer->render($content, 'text');
+            $propertiesToUpdate['content_plain'] = $rendererResult->getContent();
         }
 
         $routeHasChanged = isset($propertiesToUpdate['url_slug']) ||

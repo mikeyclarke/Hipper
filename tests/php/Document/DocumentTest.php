@@ -8,9 +8,11 @@ use Hipper\Document\Document;
 use Hipper\Document\DocumentDescriptionDeducer;
 use Hipper\Document\DocumentInserter;
 use Hipper\Document\DocumentModel;
+use Hipper\Document\DocumentRenderer;
 use Hipper\Document\DocumentRevision;
 use Hipper\Document\DocumentUpdater;
 use Hipper\Document\DocumentValidator;
+use Hipper\Document\Renderer\RendererResult;
 use Hipper\Document\Exception\KnowledgebaseNotFoundException;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseModel;
@@ -35,6 +37,7 @@ class DocumentTest extends TestCase
     private $connection;
     private $documentDescriptionDeducer;
     private $documentInserter;
+    private $documentRenderer;
     private $documentRevision;
     private $documentUpdater;
     private $documentValidator;
@@ -53,6 +56,7 @@ class DocumentTest extends TestCase
         $this->connection = m::mock(Connection::class);
         $this->documentDescriptionDeducer = m::mock(DocumentDescriptionDeducer::class);
         $this->documentInserter = m::mock(DocumentInserter::class);
+        $this->documentRenderer = m::mock(DocumentRenderer::class);
         $this->documentRevision = m::mock(DocumentRevision::class);
         $this->documentUpdater = m::mock(DocumentUpdater::class);
         $this->documentValidator = m::mock(DocumentValidator::class);
@@ -69,6 +73,7 @@ class DocumentTest extends TestCase
             $this->connection,
             $this->documentDescriptionDeducer,
             $this->documentInserter,
+            $this->documentRenderer,
             $this->documentRevision,
             $this->documentUpdater,
             $this->documentValidator,
@@ -108,6 +113,9 @@ class DocumentTest extends TestCase
         $urlSlug = 'welcome-to-engineering';
         $urlId = 'url-id';
         $deducedDescription = '👋 Congrats on joining Hipper!';
+        $contentPlain = '👋 Congrats on joining Hipper!';
+        $rendererResult = new RendererResult;
+        $rendererResult->setContent($contentPlain);
 
         $documentRow = [
             'url_slug' => $urlSlug,
@@ -122,6 +130,7 @@ class DocumentTest extends TestCase
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
         $this->createUrlIdGeneratorExpectation($urlId);
         $this->createDocumentDescriptionDeducerExpectation([$parameters['content']], $deducedDescription);
+        $this->createDocumentRendererExpectation([json_encode($parameters['content']), 'text'], $rendererResult);
         $this->createConnectionBeginTransactionExpectation();
         $this->createDocumentInserterExpectation(
             [
@@ -135,6 +144,7 @@ class DocumentTest extends TestCase
                 $parameters['description'],
                 $deducedDescription,
                 json_encode($parameters['content']),
+                $contentPlain,
                 null
             ],
             $documentRow
@@ -178,6 +188,9 @@ class DocumentTest extends TestCase
         $urlSlug = 'welcome-to-engineering';
         $urlId = 'url-id';
         $deducedDescription = '👋 Congrats on joining Hipper!';
+        $contentPlain = '👋 Congrats on joining Hipper!';
+        $rendererResult = new RendererResult;
+        $rendererResult->setContent($contentPlain);
         $sectionRoute = 'my/nested/section';
 
         $documentRow = [
@@ -198,6 +211,7 @@ class DocumentTest extends TestCase
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
         $this->createUrlIdGeneratorExpectation($urlId);
         $this->createDocumentDescriptionDeducerExpectation([$parameters['content']], $deducedDescription);
+        $this->createDocumentRendererExpectation([json_encode($parameters['content']), 'text'], $rendererResult);
         $this->createConnectionBeginTransactionExpectation();
         $this->createDocumentInserterExpectation(
             [
@@ -211,6 +225,7 @@ class DocumentTest extends TestCase
                 $parameters['description'],
                 $deducedDescription,
                 json_encode($parameters['content']),
+                $contentPlain,
                 $sectionId
             ],
             $documentRow
@@ -530,9 +545,13 @@ class DocumentTest extends TestCase
         $contentEncoded = json_encode($parameters['content']);
         $kbResult = ['id' => $knowledgebaseId];
         $deducedDescription = 'An introduction to our stack and the systems that we’re responsible for.';
+        $contentPlain = 'An introduction to our stack and the systems that we’re responsible for.';
+        $rendererResult = new RendererResult;
+        $rendererResult->setContent($contentPlain);
         $propertiesToUpdate = [
             'last_updated_by' => $personId,
             'content' => $contentEncoded,
+            'content_plain' => $contentPlain,
             'deduced_description' => $deducedDescription,
         ];
         $docUpdateResult = [
@@ -547,6 +566,7 @@ class DocumentTest extends TestCase
         $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
         $this->createDocumentValidatorExpectation([$parameters, null, null]);
         $this->createDocumentDescriptionDeducerExpectation([$parameters['content']], $deducedDescription);
+        $this->createDocumentRendererExpectation([json_encode($parameters['content']), 'text'], $rendererResult);
         $this->createKnowledgebaseRouteRepositoryDocumentExpectation(
             [$organizationId, $knowledgebaseId, $documentId],
             $docRouteResult
@@ -772,6 +792,15 @@ class DocumentTest extends TestCase
         $this->connection
             ->shouldReceive('beginTransaction')
             ->once();
+    }
+
+    private function createDocumentRendererExpectation($args, $result)
+    {
+        $this->documentRenderer
+            ->shouldReceive('render')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
     }
 
     private function createDocumentDescriptionDeducerExpectation($args, $result)

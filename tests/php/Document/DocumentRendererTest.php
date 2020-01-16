@@ -11,6 +11,7 @@ use Hipper\Document\Renderer\Exception\UnsupportedRenderingFormatException;
 use Hipper\Document\Renderer\HtmlFragmentRendererContext;
 use Hipper\Document\Renderer\HtmlFragmentRendererContextFactory;
 use Hipper\Document\Renderer\HtmlRenderer;
+use Hipper\Document\Renderer\PlainTextRenderer;
 use Hipper\Document\Renderer\RendererResult;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,7 @@ class DocumentRendererTest extends TestCase
     private $documentOutlineGenerator;
     private $documentOutlineHtmlIdsInjector;
     private $htmlRenderer;
+    private $plainTextRenderer;
     private $documentRenderer;
     private $organizationDomain;
     private $context;
@@ -35,13 +37,15 @@ class DocumentRendererTest extends TestCase
         $this->documentOutlineGenerator = m::mock(DocumentOutlineGenerator::class);
         $this->documentOutlineHtmlIdsInjector = m::mock(DocumentOutlineHtmlIdsInjector::class);
         $this->htmlRenderer = m::mock(HtmlRenderer::class);
+        $this->plainTextRenderer = m::mock(PlainTextRenderer::class);
 
         $this->documentRenderer = new DocumentRenderer(
             $this->contextFactory,
             $this->decoder,
             $this->documentOutlineGenerator,
             $this->documentOutlineHtmlIdsInjector,
-            $this->htmlRenderer
+            $this->htmlRenderer,
+            $this->plainTextRenderer
         );
 
         $this->organizationDomain = 'acme.usehipper.com';
@@ -140,6 +144,38 @@ class DocumentRendererTest extends TestCase
     /**
      * @test
      */
+    public function renderAsPlainText()
+    {
+        $doc = '{"type": "doc", "content": [{"type": "heading", "content": [{"type": "text", "text": "Hello"}]}]}';
+
+        $decoded = [
+            'type' => 'doc',
+            'content' => [
+                [
+                    'type' => 'heading',
+                    'content' => [
+                        [
+                            'type' => 'text',
+                            'text' => 'Hello',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $renderedContent = 'Hello';
+
+        $this->createDecoderExpectation([$doc], $decoded);
+        $this->createContextFactoryExpectation();
+        $this->createPlainTextRendererExpectation([$decoded, $this->context], $renderedContent);
+
+        $result = $this->documentRenderer->render($doc, 'text', $this->organizationDomain);
+        $this->assertInstanceOf(RendererResult::class, $result);
+        $this->assertEquals($renderedContent, $result->getContent());
+    }
+
+    /**
+     * @test
+     */
     public function unsupportedFormat()
     {
         $doc = '{"type": "doc", "content": [{"type": "heading", "content": [{"type": "text", "text": "Hello"}]}]}';
@@ -147,6 +183,15 @@ class DocumentRendererTest extends TestCase
         $this->expectException(UnsupportedRenderingFormatException::class);
 
         $this->documentRenderer->render($doc, 'poop', $this->organizationDomain);
+    }
+
+    private function createPlainTextRendererExpectation($args, $result)
+    {
+        $this->plainTextRenderer
+            ->shouldReceive('render')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
     }
 
     private function createHtmlRendererExpectation($args, $result)

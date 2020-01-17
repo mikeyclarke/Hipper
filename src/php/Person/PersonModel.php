@@ -13,6 +13,7 @@ final class PersonModel
         'abbreviated_name' => 'abbreviatedName',
         'email_address' => 'emailAddress',
         'email_address_verified' => 'emailAddressVerified',
+        'job_role_or_title' => 'jobRoleOrTitle',
         'onboarding_completed' => 'onboardingCompleted',
         'organization_id' => 'organizationId',
         'created' => 'created',
@@ -24,6 +25,7 @@ final class PersonModel
     private $abbreviatedName;
     private $emailAddress;
     private $emailAddressVerified;
+    private $jobRoleOrTitle;
     private $onboardingCompleted;
     private $organizationId;
     private $created;
@@ -84,6 +86,16 @@ final class PersonModel
     public function getEmailAddressVerified(): bool
     {
         return $this->emailAddressVerified;
+    }
+
+    public function setJobRoleOrTitle(?string $jobRoleOrTitle): void
+    {
+        $this->jobRoleOrTitle = $jobRoleOrTitle;
+    }
+
+    public function getJobRoleOrTitle(): ?string
+    {
+        return $this->jobRoleOrTitle;
     }
 
     public function setOnboardingCompleted(bool $onboardingCompleted): void

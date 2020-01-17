@@ -12,7 +12,7 @@ class ProjectsListFormatter
 {
     const PROJECT_ROUTE_NAME = 'front_end.app.project.show';
 
-    private $router;
+    private UrlGeneratorInterface $router;
 
     public function __construct(
         UrlGeneratorInterface $router

@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KnowledgebaseSearchResultsFormatter
 {
-    private $router;
+    private UrlGeneratorInterface $router;
 
     public function __construct(
         UrlGeneratorInterface $router

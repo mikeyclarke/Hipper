@@ -12,7 +12,7 @@ class TeamsListFormatter
 {
     const TEAM_ROUTE_NAME = 'front_end.app.team.show';
 
-    private $router;
+    private UrlGeneratorInterface $router;
 
     public function __construct(
         UrlGeneratorInterface $router

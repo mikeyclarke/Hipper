@@ -14,8 +14,10 @@
                         <span class="c-search-results__result-owner">{{ result.owner.name ~ ' ' ~ result.owner.type }}</span>
                     {% endif %}
                     <h2 class="c-search-results__result-title">{{ result.name }}</h2>
-                    <p class="c-search-results__result-body">{{ result.displayBody|raw }}</p>
-                    <span class="c-search-results__result-meta">Updated <time datetime="{{ result.updated.utc_datetime }}" title="{{ result.updated.verbose }}">{{ result.updated.time_ago }}</time></span>
+                    {% if result.displayBody is not empty %}
+                        <p class="c-search-results__result-body">{{ result.displayBody|raw }}</p>
+                    {% endif %}
+                    <span class="c-search-results__result-meta">{{ result.timestamp_label|default('Updated') }} <time datetime="{{ result.timestamp.utc_datetime }}" title="{{ result.timestamp.verbose }}">{{ result.timestamp.time_ago }}</time></span>
                 </a>
             </li>
         {% endfor %}

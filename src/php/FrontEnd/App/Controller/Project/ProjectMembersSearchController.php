@@ -3,27 +3,27 @@ declare(strict_types=1);
 
 namespace Hipper\FrontEnd\App\Controller\Project;
 
-use Hipper\Knowledgebase\KnowledgebaseSearch;
+use Hipper\Person\PersonSearch;
 use Hipper\Security\UntrustedInternalUriRedirector;
 use Hipper\TimeZone\TimeZoneFromRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment as Twig;
 
-class ProjectSearchController
+class ProjectMembersSearchController
 {
-    private $knowledgebaseSearch;
-    private $timeZoneFromRequest;
-    private $twig;
-    private $untrustedInternalUriRedirector;
+    private PersonSearch $personSearch;
+    private TimeZoneFromRequest $timeZoneFromRequest;
+    private Twig $twig;
+    private UntrustedInternalUriRedirector $untrustedInternalUriRedirector;
 
     public function __construct(
-        KnowledgebaseSearch $knowledgebaseSearch,
+        PersonSearch $personSearch,
         TimeZoneFromRequest $timeZoneFromRequest,
         Twig $twig,
         UntrustedInternalUriRedirector $untrustedInternalUriRedirector
     ) {
-        $this->knowledgebaseSearch = $knowledgebaseSearch;
+        $this->personSearch = $personSearch;
         $this->timeZoneFromRequest = $timeZoneFromRequest;
         $this->twig = $twig;
         $this->untrustedInternalUriRedirector = $untrustedInternalUriRedirector;
@@ -39,7 +39,7 @@ class ProjectSearchController
         $searchResults = [];
 
         if (!empty($searchQuery)) {
-            $searchResults = $this->knowledgebaseSearch->searchWithinKnowledgebase(
+            $searchResults = $this->personSearch->searchProjectMembers(
                 $searchQuery,
                 $timeZone,
                 $organization,
@@ -48,8 +48,9 @@ class ProjectSearchController
         }
 
         $context = [
+            'active_filter' => 'people',
             'back_link' => $this->untrustedInternalUriRedirector->generateUri($returnTo, '/'),
-            'html_title' => sprintf('Search “%s” – %s project', $searchQuery, $project->getName()),
+            'html_title' => sprintf('Search “%s” – %s project members', $searchQuery, $project->getName()),
             'search_query' => $searchQuery,
             'search_results' => $searchResults,
         ];

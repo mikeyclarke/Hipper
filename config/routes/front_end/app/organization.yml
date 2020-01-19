@@ -21,3 +21,8 @@ organization.search:
     path: /search
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Organization\OrganizationSearchController::getAction
+
+organization.people.search:
+    path: /search/people
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Organization\OrganizationPeopleSearchController::getAction

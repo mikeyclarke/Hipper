@@ -3,18 +3,20 @@ declare(strict_types=1);
 
 namespace Hipper\Knowledgebase;
 
+use Hipper\DateTime\TimestampFormatter;
 use Hipper\Organization\OrganizationModel;
-use Carbon\Carbon;
-use RuntimeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KnowledgebaseEntriesListFormatter
 {
+    private TimestampFormatter $timestampFormatter;
     private UrlGeneratorInterface $router;
 
     public function __construct(
+        TimestampFormatter $timestampFormatter,
         UrlGeneratorInterface $router
     ) {
+        $this->timestampFormatter = $timestampFormatter;
         $this->router = $router;
     }
 
@@ -51,7 +53,7 @@ class KnowledgebaseEntriesListFormatter
         }
 
         usort($entries, function ($a, $b) {
-            return $b['sortDateTime'] - $a['sortDateTime'];
+            return $b['updated']['unix'] - $a['updated']['unix'];
         });
 
         return $entries;
@@ -65,11 +67,6 @@ class KnowledgebaseEntriesListFormatter
         $routeParams,
         $type
     ): array {
-        $dateTime = Carbon::createFromFormat('Y-m-d H:i:s.u', $entry['updated']);
-        if (false === $dateTime) {
-            throw new RuntimeException('DateTime could not be created from format');
-        }
-        $dateTime = $dateTime->tz($displayTimeZone);
         return [
             'description' =>
                 ($type === 'section') ? $this->getSectionDescription($entry) : $this->getDocDescription($entry),
@@ -86,12 +83,7 @@ class KnowledgebaseEntriesListFormatter
                 )
             ),
             'type' => $type,
-            'updated' => [
-                'utc_datetime' => $dateTime->toISOString(),
-                'time_ago' => $dateTime->diffForHumans(),
-                'verbose' => $dateTime->toDayDateTimeString(),
-            ],
-            'sortDateTime' => $dateTime->unix(),
+            'updated' => $this->timestampFormatter->format($entry['updated'], $displayTimeZone),
         ];
     }
 

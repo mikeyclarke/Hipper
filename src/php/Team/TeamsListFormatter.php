@@ -3,20 +3,22 @@ declare(strict_types=1);
 
 namespace Hipper\Team;
 
+use Hipper\DateTime\TimestampFormatter;
 use Hipper\Organization\OrganizationModel;
-use Carbon\Carbon;
-use RuntimeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TeamsListFormatter
 {
     const TEAM_ROUTE_NAME = 'front_end.app.team.show';
 
+    private TimestampFormatter $timestampFormatter;
     private UrlGeneratorInterface $router;
 
     public function __construct(
+        TimestampFormatter $timestampFormatter,
         UrlGeneratorInterface $router
     ) {
+        $this->timestampFormatter = $timestampFormatter;
         $this->router = $router;
     }
 
@@ -24,18 +26,8 @@ class TeamsListFormatter
     {
         $result = array_map(
             function ($team) use ($displayTimeZone, $organization) {
-                $dateTime = Carbon::createFromFormat('Y-m-d H:i:s.u', $team['created']);
-                if (false === $dateTime) {
-                    throw new RuntimeException('DateTime could not be created from format');
-                }
-                $dateTime = $dateTime->tz($displayTimeZone);
-
                 return [
-                    'created' => [
-                        'utc_datetime' => $dateTime->toISOString(),
-                        'time_ago' => $dateTime->diffForHumans(),
-                        'verbose' => $dateTime->toDayDateTimeString(),
-                    ],
+                    'created' => $this->timestampFormatter->format($team['created'], $displayTimeZone),
                     'description' => $this->getTeamDescription($team),
                     'id' => $team['id'],
                     'name' => $team['name'],

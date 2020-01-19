@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Knowledgebase;
 
-use Carbon\Carbon;
+use Hipper\DateTime\TimestampFormatter;
 use Hipper\Document\Renderer\HtmlEscaper;
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
 use Hipper\Organization\OrganizationModel;
@@ -14,11 +14,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KnowledgebaseSearchResultsFormatter
 {
+    private TimestampFormatter $timestampFormatter;
     private UrlGeneratorInterface $router;
 
     public function __construct(
+        TimestampFormatter $timestampFormatter,
         UrlGeneratorInterface $router
     ) {
+        $this->timestampFormatter = $timestampFormatter;
         $this->router = $router;
     }
 
@@ -30,12 +33,6 @@ class KnowledgebaseSearchResultsFormatter
     ): array {
         return array_map(
             function ($result) use ($knowledgebaseOwners, $organization, $displayTimeZone) {
-                $dateTime = Carbon::createFromFormat('Y-m-d H:i:s.u', $result['updated']);
-                if (false === $dateTime) {
-                    throw new RuntimeException('DateTime could not be created from format');
-                }
-                $dateTime = $dateTime->tz($displayTimeZone);
-
                 $knowledgebaseOwner = $knowledgebaseOwners[$result['knowledgebase_id']] ?? null;
                 if (null === $knowledgebaseOwner) {
                     throw new RuntimeException('Knowledgebase not found');
@@ -58,11 +55,7 @@ class KnowledgebaseSearchResultsFormatter
                         )
                     ),
                     'type' => $result['entry_type'],
-                    'updated' => [
-                        'utc_datetime' => $dateTime->toISOString(),
-                        'time_ago' => $dateTime->diffForHumans(),
-                        'verbose' => $dateTime->toDayDateTimeString(),
-                    ],
+                    'timestamp' => $this->timestampFormatter->format($result['updated'], $displayTimeZone),
                     'owner' => [
                         'name' => $knowledgebaseOwner->getName(),
                         'type' => $knowledgebaseOwnerType,

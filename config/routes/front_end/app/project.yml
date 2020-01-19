@@ -74,3 +74,11 @@ project.search:
     defaults:
         _before_middlewares:
             - project_model_from_url_id_middleware:before
+
+project.members.search:
+    path: /projects/{project_url_id}/search/members
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Project\ProjectMembersSearchController::getAction
+    defaults:
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before

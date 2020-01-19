@@ -6,6 +6,6 @@
 
 {% block content %}
 
-{% include '_search_results.twig' with { show_owners: true } %}
+{% include '_search_results.twig' with { show_owners: (active_filter is defined and active_filter is same as('docs')) } %}
 
 {% endblock %}

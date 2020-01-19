@@ -57,12 +57,12 @@ SELECT
     ts_headline(
         description,
         websearch_to_tsquery('english', :search_query),
-        'StartSel = <mark>, StopSel = </mark>, MaxFragments=2, FragmentDelimiter=" … "'
+        'StartSel = %ts-mark%, StopSel = %/ts-mark%, HighlightAll=TRUE'
     ) AS description_snippet,
     ts_headline(
         content_plain,
         websearch_to_tsquery('english', :search_query),
-        'StartSel = <mark>, StopSel = </mark>, MaxFragments=2, FragmentDelimiter=" … "'
+        'StartSel = %ts-mark%, StopSel = %/ts-mark%, MaxFragments=2, FragmentDelimiter=" … "'
     ) AS content_snippet,
     entry_type,
     route,

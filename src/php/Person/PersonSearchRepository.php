@@ -106,7 +106,7 @@ SELECT
         'simple',
         job_role_or_title,
         websearch_to_tsquery('simple', :search_query),
-        'StartSel = <mark>, StopSel = </mark>, HighlightAll=TRUE'
+        'StartSel = %ts-mark%, StopSel = %/ts-mark%, HighlightAll=TRUE'
     ) AS job_role_or_title_snippet
 FROM (
 $innerQuery

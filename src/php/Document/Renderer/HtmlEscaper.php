@@ -5,9 +5,9 @@ namespace Hipper\Document\Renderer;
 
 class HtmlEscaper
 {
-    public static function escapeInnerText(string $text): string
+    public static function escapeInnerText(string $text, bool $doubleEncode = true): string
     {
-        return htmlspecialchars($text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return htmlspecialchars($text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', $doubleEncode);
     }
 
     public static function escapeAttributeValue($value): string

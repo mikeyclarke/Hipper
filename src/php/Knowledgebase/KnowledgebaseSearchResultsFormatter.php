@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Hipper\Knowledgebase;
 
 use Hipper\DateTime\TimestampFormatter;
-use Hipper\Document\Renderer\HtmlEscaper;
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Project\ProjectModel;
@@ -14,6 +13,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KnowledgebaseSearchResultsFormatter
 {
+    use \Hipper\Search\SearchResultsFormatterTrait;
+
     private TimestampFormatter $timestampFormatter;
     private UrlGeneratorInterface $router;
 
@@ -43,7 +44,8 @@ class KnowledgebaseSearchResultsFormatter
 
                 return [
                     'name' => $result['name'],
-                    'displayBody' => $this->getDisplayBody($result),
+                    'raw_snippet' => $this->getSnippet($result, ['content_snippet', 'description_snippet']),
+                    'description' => $this->getDescription($result),
                     'route' => $this->router->generate(
                         $routeName,
                         array_merge(
@@ -66,22 +68,14 @@ class KnowledgebaseSearchResultsFormatter
         );
     }
 
-    private function getDisplayBody(array $result): string
+    private function getDescription(array $result): string
     {
-        if (!empty(trim($result['content_snippet']))) {
-            return $this->escapeText($result['content_snippet']);
-        }
-
-        if (!empty(trim($result['description_snippet']))) {
-            return $this->escapeText($result['description_snippet']);
-        }
-
         if (!empty($result['description'])) {
-            return $this->escapeText($result['description']);
+            return $result['description'];
         }
 
         if (!empty($result['deduced_description'])) {
-            return $this->escapeText($result['deduced_description']);
+            return $result['deduced_description'];
         }
 
         if ($result['entry_type'] === 'section') {
@@ -89,14 +83,6 @@ class KnowledgebaseSearchResultsFormatter
         }
 
         return 'This doc doesn’t have a description yet.';
-    }
-
-    private function escapeText(string $text): string
-    {
-        $result = HtmlEscaper::escapeInnerText($text);
-        $result = str_replace('&lt;mark&gt;', '<mark>', $text);
-        $result = str_replace('&lt;/mark&gt;', '</mark>', $text);
-        return $result;
     }
 
     private function getRouteDetails(KnowledgebaseOwnerModelInterface $knowledgebaseOwner): array

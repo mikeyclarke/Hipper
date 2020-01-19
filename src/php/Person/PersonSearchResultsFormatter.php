@@ -36,7 +36,7 @@ class PersonSearchResultsFormatter
 
     private function getDisplayBody(array $result): string
     {
-        if (!empty(trim($result['job_role_or_title_snippet']))) {
+        if (null !== $result['job_role_or_title_snippet'] && !empty(trim($result['job_role_or_title_snippet']))) {
             return $result['job_role_or_title_snippet'];
         }
 

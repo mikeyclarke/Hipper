@@ -69,42 +69,55 @@ SELECT
     url_id
 FROM (
     SELECT
-        doc.id AS id,
-        doc.name AS name,
-        doc.description AS description,
-        doc.deduced_description AS deduced_description,
-        doc.updated AS updated,
-        doc.knowledgebase_id AS knowledgebase_id,
-        doc.organization_id AS organization_id,
-        doc.content_plain AS content_plain,
-        doc.search_tokens AS tokens,
-        kb_route.route AS route,
-        kb_route.url_id AS url_id,
-        'document' AS entry_type
-    FROM document doc
-    INNER JOIN knowledgebase_route kb_route ON kb_route.document_id = doc.id AND kb_route.is_canonical IS TRUE
+        id,
+        name,
+        description,
+        deduced_description,
+        content_plain,
+        knowledgebase_id,
+        updated,
+        entry_type,
+        route,
+        url_id
+    FROM (
+        SELECT
+            doc.id AS id,
+            doc.name AS name,
+            doc.description AS description,
+            doc.deduced_description AS deduced_description,
+            doc.updated AS updated,
+            doc.knowledgebase_id AS knowledgebase_id,
+            doc.organization_id AS organization_id,
+            doc.content_plain AS content_plain,
+            doc.search_tokens AS tokens,
+            kb_route.route AS route,
+            kb_route.url_id AS url_id,
+            'document' AS entry_type
+        FROM document doc
+        INNER JOIN knowledgebase_route kb_route ON kb_route.document_id = doc.id AND kb_route.is_canonical IS TRUE
 
-    UNION ALL
+        UNION ALL
 
-    SELECT
-        section.id AS id,
-        section.name AS name,
-        section.description AS description,
-        '' AS deduced_description,
-        section.updated AS updated,
-        section.knowledgebase_id AS knowledgebase_id,
-        section.organization_id AS organization_id,
-        '' AS content_plain,
-        section.search_tokens AS tokens,
-        kb_route.route AS route,
-        kb_route.url_id AS url_id,
-        'section' AS entry_type
-    FROM section section
-    INNER JOIN knowledgebase_route kb_route ON kb_route.section_id = section.id AND kb_route.is_canonical IS TRUE
-) doc_search
-WHERE doc_search.tokens @@ websearch_to_tsquery('english', :search_query)
-$andWhereConditions
-ORDER BY ts_rank(doc_search.tokens, websearch_to_tsquery('english', :search_query), 1)
+        SELECT
+            section.id AS id,
+            section.name AS name,
+            section.description AS description,
+            '' AS deduced_description,
+            section.updated AS updated,
+            section.knowledgebase_id AS knowledgebase_id,
+            section.organization_id AS organization_id,
+            '' AS content_plain,
+            section.search_tokens AS tokens,
+            kb_route.route AS route,
+            kb_route.url_id AS url_id,
+            'section' AS entry_type
+        FROM section section
+        INNER JOIN knowledgebase_route kb_route ON kb_route.section_id = section.id AND kb_route.is_canonical IS TRUE
+    ) doc_search
+    WHERE doc_search.tokens @@ websearch_to_tsquery('english', :search_query)
+    $andWhereConditions
+    ORDER BY ts_rank(doc_search.tokens, websearch_to_tsquery('english', :search_query), 1)
+) AS foo
 SQL;
         return $sql;
     }

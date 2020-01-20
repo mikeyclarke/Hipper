@@ -42,6 +42,7 @@ class OrganizationSearchController
         }
 
         $context = [
+            'active_filter' => 'docs',
             'back_link' => $this->untrustedInternalUriRedirector->generateUri($returnTo, '/'),
             'html_title' => sprintf('Search “%s”', $searchQuery),
             'search_query' => $searchQuery,

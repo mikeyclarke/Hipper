@@ -54,17 +54,26 @@ class KnowledgebaseRepository
     public function getKnowledgebaseOwnersForIds(array $knowledgebaseIds, string $organizationId): array
     {
         $sql = <<<SQL
-SELECT
-    t.name AS "t.name",
-    t.url_id AS "t.url_id",
-    p.name AS "p.name",
-    p.url_id AS "p.url_id",
-    kb.id AS knowledgebase_id,
-    kb.entity
-FROM knowledgebase kb
-    LEFT OUTER JOIN team t ON t.knowledgebase_id IN (?) AND t.organization_id = ? AND kb.entity = 'team'
-    LEFT OUTER JOIN project p ON p.knowledgebase_id IN (?) AND p.organization_id = ? AND kb.entity = 'project'
-WHERE kb.id IN (?) AND kb.organization_id = ?
+SELECT *
+FROM (
+    SELECT
+		name,
+		url_id,
+		knowledgebase_id,
+		'team' AS entity
+    FROM team
+    WHERE knowledgebase_id IN (?) AND organization_id = ?
+
+    UNION ALL
+
+    SELECT
+		name,
+		url_id,
+		knowledgebase_id,
+		'project' AS entity
+    FROM project
+    WHERE knowledgebase_id IN (?) AND organization_id = ?
+) AS foo;
 SQL;
 
         $stmt = $this->connection->executeQuery(
@@ -74,41 +83,14 @@ SQL;
                 $organizationId,
                 $knowledgebaseIds,
                 $organizationId,
-                $knowledgebaseIds,
-                $organizationId
             ],
             [
                 Connection::PARAM_STR_ARRAY,
                 ParameterType::STRING,
                 Connection::PARAM_STR_ARRAY,
                 ParameterType::STRING,
-                Connection::PARAM_STR_ARRAY,
-                ParameterType::STRING
             ]
         );
-        $result = $stmt->fetchAll();
-
-        $final = [];
-        foreach ($result as $row) {
-            if ($row['entity'] === 'team') {
-                $final[] = [
-                    'entity' => $row['entity'],
-                    'knowledgebase_id' => $row['knowledgebase_id'],
-                    'name' => $row['t.name'],
-                    'url_id' => $row['t.url_id'],
-                ];
-            }
-
-            if ($row['entity'] === 'project') {
-                $final[] = [
-                    'entity' => $row['entity'],
-                    'knowledgebase_id' => $row['knowledgebase_id'],
-                    'name' => $row['p.name'],
-                    'url_id' => $row['p.url_id'],
-                ];
-            }
-        }
-
-        return $final;
+        return $stmt->fetchAll();
     }
 }

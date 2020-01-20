@@ -28,7 +28,7 @@ class PersonSearchRepository
     FROM person
     WHERE person.search_tokens @@ websearch_to_tsquery('simple', :search_query)
     AND person.organization_id = :organization_id
-    ORDER BY rank DESC
+    ORDER BY rank DESC, created DESC
 SQL;
         $sql = $this->addOuterQuery($innerQuery);
 
@@ -54,7 +54,7 @@ SQL;
     WHERE map.team_id = :team_id
     AND person.search_tokens @@ websearch_to_tsquery('simple', :search_query)
     AND person.organization_id = :organization_id
-    ORDER BY rank DESC
+    ORDER BY rank DESC, created DESC
 SQL;
         $sql = $this->addOuterQuery($innerQuery);
 
@@ -81,7 +81,7 @@ SQL;
     WHERE map.project_id = :project_id
     AND person.search_tokens @@ websearch_to_tsquery('simple', :search_query)
     AND person.organization_id = :organization_id
-    ORDER BY rank DESC
+    ORDER BY rank DESC, created DESC
 SQL;
         $sql = $this->addOuterQuery($innerQuery);
 

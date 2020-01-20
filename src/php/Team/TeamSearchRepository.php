@@ -38,6 +38,7 @@ FROM (
     FROM team
     WHERE search_tokens @@ websearch_to_tsquery('english', :search_query)
     AND organization_id = :organization_id
+    ORDER BY ts_rank(search_tokens, websearch_to_tsquery('english', :search_query), 1) DESC, created DESC
 ) AS foo;
 SQL;
 

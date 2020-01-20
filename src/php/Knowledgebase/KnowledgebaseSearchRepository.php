@@ -116,7 +116,7 @@ FROM (
     ) doc_search
     WHERE doc_search.tokens @@ websearch_to_tsquery('english', :search_query)
     $andWhereConditions
-    ORDER BY ts_rank(doc_search.tokens, websearch_to_tsquery('english', :search_query), 1)
+    ORDER BY ts_rank(doc_search.tokens, websearch_to_tsquery('english', :search_query), 1) DESC, doc_search.updated DESC
 ) AS foo
 SQL;
         return $sql;

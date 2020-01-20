@@ -31,6 +31,12 @@
         show: (relative_search is not defined or relative_search is same as(false)),
         is_active: (active_filter is defined and active_filter is same as('teams')),
     },
+    {
+        name: 'Projects',
+        action: path('front_end.app.organization.projects.search', {subdomain: organization.subdomain}),
+        show: (relative_search is not defined or relative_search is same as(false)),
+        is_active: (active_filter is defined and active_filter is same as('projects')),
+    },
 ] %}
 
 <header class="c-app-header">

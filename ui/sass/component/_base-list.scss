@@ -193,6 +193,10 @@ $item-description-line-height-medium-bp: 24px;
 }
 
 %c-base-list__item--with-avatar {
+    &:not(:last-child)::after {
+        margin-left: $list-padding + $content-left-offset-with-avatar;
+    }
+
     %c-base-list__item-title,
     %c-base-list__item-context,
     %c-base-list__item-description,

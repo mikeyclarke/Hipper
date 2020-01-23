@@ -9,6 +9,8 @@ use Hipper\Team\TeamModel;
 
 class KnowledgebaseSearch
 {
+    private const RESULTS_PER_PAGE = 10;
+
     private $knowledgebaseRepository;
     private $knowledgebaseSearchRepository;
     private $knowledgebaseSearchResultsFormatter;
@@ -26,9 +28,24 @@ class KnowledgebaseSearch
     public function search(
         string $searchQuery,
         string $displayTimeZone,
-        OrganizationModel $organization
+        OrganizationModel $organization,
+        int $numberOfPages = 1,
+        int $startFromPage = 1
     ): array {
-        $results = $this->knowledgebaseSearchRepository->getResults($searchQuery, $organization->getId());
+        $moreResults = false;
+        $limit = (self::RESULTS_PER_PAGE * $numberOfPages) + 1;
+        $offset = self::RESULTS_PER_PAGE * ($startFromPage - 1);
+
+        $results = $this->knowledgebaseSearchRepository->getResults(
+            $searchQuery,
+            $organization->getId(),
+            $limit,
+            $offset
+        );
+        if (count($results) === $limit) {
+            array_pop($results);
+            $moreResults = true;
+        }
 
         $knowledgebaseIds = $this->getKnowledgebaseIdsFromResults($results);
         $knowledgebasesResult = $this->knowledgebaseRepository->getKnowledgebaseOwnersForIds(
@@ -47,12 +64,14 @@ class KnowledgebaseSearch
             }
         }
 
-        return $this->knowledgebaseSearchResultsFormatter->format(
+        $formatted = $this->knowledgebaseSearchResultsFormatter->format(
             $organization,
             $knowledgebaseOwners,
             $displayTimeZone,
             $results
         );
+
+        return [$formatted, $moreResults];
     }
 
     public function searchWithinKnowledgebase(

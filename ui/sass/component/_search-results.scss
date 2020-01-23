@@ -1,6 +1,7 @@
 @use 'component/base-list';
 @use 'config/config';
 @use 'helper/breakpoint';
+@use 'helper/unstyled-button';
 
 $_x-offset-large-bp: 102px;
 
@@ -105,4 +106,8 @@ $_result-body-mark-gradient: linear-gradient(
     @include breakpoint.breakpoint(app, medium) {
         margin-left: 48px !important;
     }
+}
+
+.c-search-results__more-button {
+    @extend %unstyled-button;
 }

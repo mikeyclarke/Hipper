@@ -73,7 +73,7 @@ class KnowledgebaseSearchTest extends TestCase
         ];
 
         $this->createKnowledgebaseSearchRepositoryGetResultsExpectation(
-            [$searchQuery, $organization->getId()],
+            [$searchQuery, $organization->getId(), 11, 0],
             $searchResults
         );
         $this->createKnowledgebaseRepositoryExpectation(
@@ -94,7 +94,9 @@ class KnowledgebaseSearchTest extends TestCase
         );
 
         $result = $this->knowledgebaseSearch->search($searchQuery, $displayTimeZone, $organization);
-        $this->assertEquals($formattedResults, $result);
+        $this->assertIsArray($result);
+        $this->assertEquals($formattedResults, $result[0]);
+        $this->assertFalse($result[1]);
     }
 
     /**

@@ -24,3 +24,8 @@ organization.login:
         unsecured: true
         _before_middlewares:
             - require_json_content_type_middleware:before
+
+organization.search:
+    path: /_/search
+    methods: [GET]
+    controller: Hipper\Api\App\Controller\Organization\OrganizationSearchController::getAction

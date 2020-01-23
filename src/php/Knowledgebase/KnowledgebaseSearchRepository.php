@@ -15,7 +15,7 @@ class KnowledgebaseSearchRepository
         $this->connection = $connection;
     }
 
-    public function getResults(string $searchQuery, string $organizationId): array
+    public function getResults(string $searchQuery, string $organizationId, int $limit, int $offset): array
     {
         $andWhereConditions = 'AND doc_search.organization_id = :organization_id';
         $sql = $this->buildQuery($andWhereConditions);
@@ -23,6 +23,8 @@ class KnowledgebaseSearchRepository
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('search_query', $searchQuery);
         $stmt->bindValue('organization_id', $organizationId);
+        $stmt->bindValue('limit', $limit);
+        $stmt->bindValue('offset', $offset);
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -32,6 +34,9 @@ class KnowledgebaseSearchRepository
         string $organizationId,
         string $knowledgebaseId
     ): array {
+        $limit = 10;
+        $offset = 0;
+
         $andWhereConditions =
             'AND doc_search.organization_id = :organization_id AND doc_search.knowledgebase_id = :knowledgebase_id';
         $sql = $this->buildQuery($andWhereConditions);
@@ -40,6 +45,8 @@ class KnowledgebaseSearchRepository
         $stmt->bindValue('search_query', $searchQuery);
         $stmt->bindValue('knowledgebase_id', $knowledgebaseId);
         $stmt->bindValue('organization_id', $organizationId);
+        $stmt->bindValue('limit', $limit);
+        $stmt->bindValue('offset', $offset);
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -117,6 +124,8 @@ FROM (
     WHERE doc_search.tokens @@ websearch_to_tsquery('english', :search_query)
     $andWhereConditions
     ORDER BY ts_rank(doc_search.tokens, websearch_to_tsquery('english', :search_query), 1) DESC, doc_search.updated DESC
+    LIMIT :limit
+    OFFSET :offset
 ) AS foo
 SQL;
         return $sql;

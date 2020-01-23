@@ -8,6 +8,11 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
             controller: () => [bottle.container.loginController, 'start'],
         },
 
+        organization_search: {
+            path: '/search',
+            controller: () => [bottle.container.organizationSearchController, 'start'],
+        },
+
         create_team: {
             path: '/teams/new',
             controller: () => [bottle.container.createTeamController, 'start'],

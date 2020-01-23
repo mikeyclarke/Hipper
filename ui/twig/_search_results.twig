@@ -1,28 +1,6 @@
 {% if search_results is not empty %}
-    <ol class="c-search-results">
-        {% for result in search_results %}
-            <li class="c-search-results__result">
-                <a class="c-search-results__result-link" href="{{ result.route }}">
-                    <div class="c-avatar{% if result.type in ['document', 'section'] %}--{{ result.type }}{% endif %} c-search-results__result-avatar">
-                        {% if result.type in ['document', 'section'] %}
-                            <svg class="c-avatar__icon c-search-results__result-avatar-icon" aria-hidden="true"><use xlink:href="#icon-sprite__{{ result.type }}"/></svg>
-                        {% else %}
-                            <span class="c-avatar__initials">{{ result.initials }}</span>
-                        {% endif %}
-                    </div>
-                    {% if show_owners is defined and show_owners is same as(true) %}
-                        <span class="c-search-results__result-owner">{{ result.owner.name ~ ' ' ~ result.owner.type }}</span>
-                    {% endif %}
-                    <h2 class="c-search-results__result-title">{{ result.name }}</h2>
-                    {% if result.raw_snippet %}
-                        <p class="c-search-results__result-body">{{ result.raw_snippet|raw }}</p>
-                    {% elseif result.description %}
-                        <p class="c-search-results__result-body">{{ result.description }}</p>
-                    {% endif %}
-                    <span class="c-search-results__result-meta">{{ result.timestamp_label|default('Updated') }} <time datetime="{{ result.timestamp.utc_datetime }}" title="{{ result.timestamp.verbose }}">{{ result.timestamp.time_ago }}</time></span>
-                </a>
-            </li>
-        {% endfor %}
+    <ol class="c-search-results js-search-results-list">
+        {% include '_search_results_list_items.twig' %}
     </ol>
 {% else %}
     <div class="c-empty-search">

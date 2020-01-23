@@ -11,9 +11,9 @@ class KnowledgebaseSearch
 {
     private const RESULTS_PER_PAGE = 10;
 
-    private $knowledgebaseRepository;
-    private $knowledgebaseSearchRepository;
-    private $knowledgebaseSearchResultsFormatter;
+    private KnowledgebaseRepository $knowledgebaseRepository;
+    private KnowledgebaseSearchRepository $knowledgebaseSearchRepository;
+    private KnowledgebaseSearchResultsFormatter $knowledgebaseSearchResultsFormatter;
 
     public function __construct(
         KnowledgebaseRepository $knowledgebaseRepository,

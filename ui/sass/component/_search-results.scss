@@ -1,6 +1,7 @@
 @use 'component/base-list';
 @use 'config/config';
 @use 'helper/breakpoint';
+@use 'helper/font-smoothing';
 @use 'helper/unstyled-button';
 
 $_x-offset-large-bp: 102px;
@@ -13,6 +14,15 @@ $_result-body-mark-gradient: linear-gradient(
     rgba($_result-body-mark-gradient-color, .7) 95%,
     rgba($_result-body-mark-gradient-color, .1)
 );
+
+$_more-button-background-color: #fafafc;
+$_more-button-border-top-color: rgba(config.config-get(color-shades, grey, 400), .34);
+$_more-button-focused-box-shadow: inset 0 0 0 3px config.config-get(color-shades, primary, 600);
+$_more-button-color: config.config-get(color-shades, primary, 1000);
+$_more-button-disabled-color: config.config-get(color-shades, primary, 400);
+$_more-button-font-size: 16px;
+$_more-button-font-weight: 600;
+$_more-button-height: 46px;
 
 .c-search-results {
     @extend %c-base-list;
@@ -110,4 +120,50 @@ $_result-body-mark-gradient: linear-gradient(
 
 .c-search-results__more-button {
     @extend %unstyled-button;
+    background-color: $_more-button-background-color;
+    border-radius: 0 0 8px 8px;
+    color: $_more-button-color;
+    font-size: $_more-button-font-size;
+    font-weight: $_more-button-font-weight;
+    height: $_more-button-height;
+    position: relative;
+    transition: color .15s;
+    width: 100%;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        border: 1px solid $_more-button-border-top-color;
+        border-radius: 4px;
+        margin-left: 48px;
+        margin-top: 24px;
+        width: 530px + 16px;
+    }
+
+    @include breakpoint.breakpoint(app, large) {
+        margin-left: auto;
+        width: 530px + 48px + 32px;
+    }
+}
+
+.c-search-results__more-button:disabled {
+    color: $_more-button-disabled-color;
+}
+
+.c-search-results__more-button:focus {
+    box-shadow: $_more-button-focused-box-shadow;
+    outline: 0;
+}
+
+.c-search-results__more-button::before {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 100%;
+    background-color: $_more-button-border-top-color;
+    top: -1px;
+    position: absolute;
+
+    @include breakpoint.breakpoint(app, medium) {
+        display: none;
+    }
 }

@@ -5,24 +5,26 @@ namespace Hipper\Knowledgebase;
 
 use Hipper\Organization\OrganizationModel;
 use Hipper\Project\ProjectModel;
+use Hipper\Search\SearchResultsPaginatorFactory;
 use Hipper\Team\TeamModel;
 
 class KnowledgebaseSearch
 {
-    private const RESULTS_PER_PAGE = 10;
-
     private KnowledgebaseRepository $knowledgebaseRepository;
     private KnowledgebaseSearchRepository $knowledgebaseSearchRepository;
     private KnowledgebaseSearchResultsFormatter $knowledgebaseSearchResultsFormatter;
+    private SearchResultsPaginatorFactory $searchResultsPaginatorFactory;
 
     public function __construct(
         KnowledgebaseRepository $knowledgebaseRepository,
         KnowledgebaseSearchRepository $knowledgebaseSearchRepository,
-        KnowledgebaseSearchResultsFormatter $knowledgebaseSearchResultsFormatter
+        KnowledgebaseSearchResultsFormatter $knowledgebaseSearchResultsFormatter,
+        SearchResultsPaginatorFactory $searchResultsPaginatorFactory
     ) {
         $this->knowledgebaseRepository = $knowledgebaseRepository;
         $this->knowledgebaseSearchRepository = $knowledgebaseSearchRepository;
         $this->knowledgebaseSearchResultsFormatter = $knowledgebaseSearchResultsFormatter;
+        $this->searchResultsPaginatorFactory = $searchResultsPaginatorFactory;
     }
 
     public function search(
@@ -32,9 +34,9 @@ class KnowledgebaseSearch
         int $numberOfPages = 1,
         int $startFromPage = 1
     ): array {
-        $moreResults = false;
-        $limit = (self::RESULTS_PER_PAGE * $numberOfPages) + 1;
-        $offset = self::RESULTS_PER_PAGE * ($startFromPage - 1);
+        $searchResultsPaginator = $this->searchResultsPaginatorFactory->create($numberOfPages, $startFromPage);
+        $limit = $searchResultsPaginator->getLimit();
+        $offset = $searchResultsPaginator->getOffset();
 
         $results = $this->knowledgebaseSearchRepository->getResults(
             $searchQuery,
@@ -42,12 +44,10 @@ class KnowledgebaseSearch
             $limit,
             $offset
         );
-        if (count($results) === $limit) {
-            array_pop($results);
-            $moreResults = true;
-        }
+        $moreResults = $searchResultsPaginator->hasMoreResults($results);
+        $filteredResults = $searchResultsPaginator->filterResults($results);
 
-        $knowledgebaseIds = $this->getKnowledgebaseIdsFromResults($results);
+        $knowledgebaseIds = $this->getKnowledgebaseIdsFromResults($filteredResults);
         $knowledgebasesResult = $this->knowledgebaseRepository->getKnowledgebaseOwnersForIds(
             $knowledgebaseIds,
             $organization->getId()
@@ -68,7 +68,7 @@ class KnowledgebaseSearch
             $organization,
             $knowledgebaseOwners,
             $displayTimeZone,
-            $results
+            $filteredResults
         );
 
         return [$formatted, $moreResults];
@@ -78,23 +78,34 @@ class KnowledgebaseSearch
         string $searchQuery,
         string $displayTimeZone,
         OrganizationModel $organization,
-        KnowledgebaseOwnerModelInterface $knowledgebaseOwner
+        KnowledgebaseOwnerModelInterface $knowledgebaseOwner,
+        int $numberOfPages = 1,
+        int $startFromPage = 1
     ): array {
+        $searchResultsPaginator = $this->searchResultsPaginatorFactory->create($numberOfPages, $startFromPage);
+        $limit = $searchResultsPaginator->getLimit();
+        $offset = $searchResultsPaginator->getOffset();
+
         $results = $this->knowledgebaseSearchRepository->getResultsInKnowledgebase(
             $searchQuery,
             $organization->getId(),
-            $knowledgebaseOwner->getKnowledgebaseId()
+            $knowledgebaseOwner->getKnowledgebaseId(),
+            $limit,
+            $offset
         );
+        $moreResults = $searchResultsPaginator->hasMoreResults($results);
+        $filteredResults = $searchResultsPaginator->filterResults($results);
 
         $knowledgebaseOwners = [];
         $knowledgebaseOwners[$knowledgebaseOwner->getKnowledgebaseId()] = $knowledgebaseOwner;
 
-        return $this->knowledgebaseSearchResultsFormatter->format(
+        $formatted = $this->knowledgebaseSearchResultsFormatter->format(
             $organization,
             $knowledgebaseOwners,
             $displayTimeZone,
-            $results
+            $filteredResults
         );
+        return [$formatted, $moreResults];
     }
 
     private function getKnowledgebaseIdsFromResults(array $results): array

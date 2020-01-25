@@ -32,11 +32,10 @@ class KnowledgebaseSearchRepository
     public function getResultsInKnowledgebase(
         string $searchQuery,
         string $organizationId,
-        string $knowledgebaseId
+        string $knowledgebaseId,
+        int $limit,
+        int $offset
     ): array {
-        $limit = 10;
-        $offset = 0;
-
         $andWhereConditions =
             'AND doc_search.organization_id = :organization_id AND doc_search.knowledgebase_id = :knowledgebase_id';
         $sql = $this->buildQuery($andWhereConditions);

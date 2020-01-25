@@ -5,3 +5,11 @@ project.create:
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
+
+project.search:
+    path: /_/projects/{project_url_id}/search
+    methods: [GET]
+    controller: Hipper\Api\App\Controller\Project\ProjectSearchController::getAction
+    defaults:
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before

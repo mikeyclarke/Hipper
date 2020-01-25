@@ -9,6 +9,8 @@ use Hipper\Knowledgebase\KnowledgebaseSearchRepository;
 use Hipper\Knowledgebase\KnowledgebaseSearchResultsFormatter;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Project\ProjectModel;
+use Hipper\Search\SearchResultsPaginator;
+use Hipper\Search\SearchResultsPaginatorFactory;
 use Hipper\Team\TeamModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -20,19 +22,25 @@ class KnowledgebaseSearchTest extends TestCase
     private $knowledgebaseRepository;
     private $knowledgebaseSearchRepository;
     private $knowledgebaseSearchResultsFormatter;
+    private $searchResultsPaginatorFactory;
     private $knowledgebaseSearch;
+    private $searchResultsPaginator;
 
     public function setUp(): void
     {
         $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
         $this->knowledgebaseSearchRepository = m::mock(KnowledgebaseSearchRepository::class);
         $this->knowledgebaseSearchResultsFormatter = m::mock(KnowledgebaseSearchResultsFormatter::class);
+        $this->searchResultsPaginatorFactory = m::mock(SearchResultsPaginatorFactory::class);
 
         $this->knowledgebaseSearch = new KnowledgebaseSearch(
             $this->knowledgebaseRepository,
             $this->knowledgebaseSearchRepository,
-            $this->knowledgebaseSearchResultsFormatter
+            $this->knowledgebaseSearchResultsFormatter,
+            $this->searchResultsPaginatorFactory
         );
+
+        $this->searchResultsPaginator = m::mock(SearchResultsPaginator::class);
     }
 
     /**
@@ -72,10 +80,15 @@ class KnowledgebaseSearchTest extends TestCase
             ['formatted-result'],
         ];
 
+        $this->createSearchResultsPaginatorFactoryExpectation([1, 1]);
+        $this->createSearchResultsPaginatorGetLimitExpectation(11);
+        $this->createSearchResultsPaginatorGetOffsetExpectation(0);
         $this->createKnowledgebaseSearchRepositoryGetResultsExpectation(
             [$searchQuery, $organization->getId(), 11, 0],
             $searchResults
         );
+        $this->createSearchResultsPaginatorHasMoreResultsExpectation([$searchResults], false);
+        $this->createSearchResultsPaginatorFilterResultsExpectation([$searchResults], $searchResults);
         $this->createKnowledgebaseRepositoryExpectation(
             [['kb1-uuid', 'kb2-uuid'], $organization->getId()],
             $knowledgebasesResult
@@ -122,10 +135,15 @@ class KnowledgebaseSearchTest extends TestCase
             ['formatted-result'],
         ];
 
+        $this->createSearchResultsPaginatorFactoryExpectation([1, 1]);
+        $this->createSearchResultsPaginatorGetLimitExpectation(11);
+        $this->createSearchResultsPaginatorGetOffsetExpectation(0);
         $this->createKnowledgebaseSearchRepositoryGetResultsInKnowledgebaseExpectation(
-            [$searchQuery, $organization->getId(), $knowledgebaseOwner->getKnowledgebaseId()],
+            [$searchQuery, $organization->getId(), $knowledgebaseOwner->getKnowledgebaseId(), 11, 0],
             $searchResults
         );
+        $this->createSearchResultsPaginatorHasMoreResultsExpectation([$searchResults], false);
+        $this->createSearchResultsPaginatorFilterResultsExpectation([$searchResults], $searchResults);
         $this->createKnowledgebaseSearchResultsFormatterExpectation(
             [
                 $organization,
@@ -142,7 +160,9 @@ class KnowledgebaseSearchTest extends TestCase
             $organization,
             $knowledgebaseOwner
         );
-        $this->assertEquals($formattedResults, $result);
+        $this->assertIsArray($result);
+        $this->assertEquals($formattedResults, $result[0]);
+        $this->assertFalse($result[1]);
     }
 
     private function createKnowledgebaseSearchResultsFormatterExpectation($args, $result)
@@ -158,6 +178,24 @@ class KnowledgebaseSearchTest extends TestCase
     {
         $this->knowledgebaseRepository
             ->shouldReceive('getKnowledgebaseOwnersForIds')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorFilterResultsExpectation($args, $result)
+    {
+        $this->searchResultsPaginator
+            ->shouldReceive('filterResults')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorHasMoreResultsExpectation($args, $result)
+    {
+        $this->searchResultsPaginator
+            ->shouldReceive('hasMoreResults')
             ->once()
             ->with(...$args)
             ->andReturn($result);
@@ -179,5 +217,30 @@ class KnowledgebaseSearchTest extends TestCase
             ->once()
             ->with(...$args)
             ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorGetOffsetExpectation($result)
+    {
+        $this->searchResultsPaginator
+            ->shouldReceive('getOffset')
+            ->once()
+            ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorGetLimitExpectation($result)
+    {
+        $this->searchResultsPaginator
+            ->shouldReceive('getLimit')
+            ->once()
+            ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorFactoryExpectation($args)
+    {
+        $this->searchResultsPaginatorFactory
+            ->shouldReceive('create')
+            ->once()
+            ->with(...$args)
+            ->andReturn($this->searchResultsPaginator);
     }
 }

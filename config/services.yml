@@ -124,6 +124,9 @@ services:
         arguments:
             $assetDomain: 'https://%env(string:ASSET_DOMAIN)%'
 
+    Hipper\Search\SearchResultsPaginator:
+        autowire: false
+
     Hipper\Security\ContentSecurityPolicyBuilder:
         arguments:
             $assetDomain: '%env(string:ASSET_DOMAIN)%'

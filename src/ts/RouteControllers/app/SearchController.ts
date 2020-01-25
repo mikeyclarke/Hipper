@@ -1,6 +1,6 @@
 import SearchResultsPaginator from 'Search/SearchResultsPaginator';
 
-export default class OrganizationSearchController {
+export default class SearchController {
     private readonly searchResultsPaginator: SearchResultsPaginator;
 
     constructor(

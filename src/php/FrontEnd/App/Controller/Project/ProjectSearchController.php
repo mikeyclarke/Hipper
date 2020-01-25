@@ -12,10 +12,10 @@ use Twig\Environment as Twig;
 
 class ProjectSearchController
 {
-    private $knowledgebaseSearch;
-    private $timeZoneFromRequest;
-    private $twig;
-    private $untrustedInternalUriRedirector;
+    private KnowledgebaseSearch $knowledgebaseSearch;
+    private TimeZoneFromRequest $timeZoneFromRequest;
+    private Twig $twig;
+    private UntrustedInternalUriRedirector $untrustedInternalUriRedirector;
 
     public function __construct(
         KnowledgebaseSearch $knowledgebaseSearch,

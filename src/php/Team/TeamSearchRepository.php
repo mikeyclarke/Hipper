@@ -15,7 +15,7 @@ class TeamSearchRepository
         $this->connection = $connection;
     }
 
-    public function getResults(string $searchQuery, string $organizationId): array
+    public function getResults(string $searchQuery, string $organizationId, int $limit, int $offset): array
     {
         $sql = <<<SQL
 SELECT
@@ -39,12 +39,16 @@ FROM (
     WHERE search_tokens @@ websearch_to_tsquery('english', :search_query)
     AND organization_id = :organization_id
     ORDER BY ts_rank(search_tokens, websearch_to_tsquery('english', :search_query), 1) DESC, created DESC
+    LIMIT :limit
+    OFFSET :offset
 ) AS foo;
 SQL;
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('search_query', $searchQuery);
         $stmt->bindValue('organization_id', $organizationId);
+        $stmt->bindValue('limit', $limit);
+        $stmt->bindValue('offset', $offset);
         $stmt->execute();
         return $stmt->fetchAll();
     }

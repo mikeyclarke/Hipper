@@ -39,7 +39,7 @@ class ProjectSearchController
     {
         $searchQuery = $request->query->get('q', '');
         $returnTo = $request->query->get('return_to');
-        $numberOfResults = $request->query->get('p', 1);
+        $numberOfPages = $request->query->getInt('p', 1);
         $organization = $request->attributes->get('organization');
         $project = $request->attributes->get('project');
         $timeZone = $this->timeZoneFromRequest->get($request);
@@ -59,7 +59,7 @@ class ProjectSearchController
                 $timeZone,
                 $organization,
                 $project,
-                $numberOfResults
+                $numberOfPages
             );
         }
 

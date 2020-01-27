@@ -1,9 +1,9 @@
 import { wrapIn } from 'prosemirror-commands';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Blockquote as BlockquoteNode } from 'text-editor/Node/Blockquote';
-import { KeymapBindingInterface } from 'text-editor/KeymapBinding/KeymapBindingInterface';
+import BlockquoteNode from 'text-editor/Node/Blockquote';
+import KeymapBindingInterface from 'text-editor/KeymapBinding/KeymapBindingInterface';
 
-export class Blockquote implements KeymapBindingInterface {
+export default class Blockquote implements KeymapBindingInterface {
     get requirementType(): string | null {
         return 'node';
     }

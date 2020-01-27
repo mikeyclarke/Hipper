@@ -1,7 +1,6 @@
 import BreadcrumbList from 'components/BreadcrumbList';
 import TextEditor from 'text-editor/TextEditor';
 import HttpClient from 'Http/HttpClient';
-import { HTTPError } from 'ky';
 
 const keyupDelayMilliseconds = 1000;
 
@@ -98,9 +97,10 @@ export default class EditDocumentController {
     private setUpTextEditor(): void {
         const content = this.textEditorElement.innerHTML;
 
-        import (/* webpackChunkName: "editor" */ 'text-editor/TextEditor').then(module => {
+        // eslint-disable-next-line @typescript-eslint/func-call-spacing
+        import(/* webpackChunkName: "editor" */ 'text-editor/TextEditor').then(module => {
             this.textEditorElement.innerHTML = '';
-            this.textEditor = new module.default(
+            this.textEditor = new module.default( // eslint-disable-line new-cap
                 this.textEditorElement,
                 content,
                 this.allowedMarks,

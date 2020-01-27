@@ -1,5 +1,4 @@
 import * as Bottle from 'bottlejs';
-import Controller from 'RouteControllers/Controller';
 import SignupController from 'RouteControllers/onboarding/SignupController';
 import VerifyIdentityController from 'RouteControllers/onboarding/VerifyIdentityController';
 import TeamSubdomainController from 'RouteControllers/onboarding/TeamSubdomainController';

@@ -1,35 +1,8 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Link as LinkMark } from 'text-editor/Mark/Link';
-import { InputRuleCollectionInterface } from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
-
-export class Link implements InputRuleCollectionInterface {
-    get requirementType(): string | null {
-        return 'mark';
-    }
-
-    get requirement(): Function | null {
-        return LinkMark;
-    }
-
-    public getRules(type?: MarkType | NodeType): InputRule[] {
-        if (!(type instanceof MarkType)) {
-            return [];
-        }
-
-        return [
-            new InputRule(
-                /\[(.+)\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+~#?&//=]*))\)(.)?$/,
-                markdownLinkHandler.bind(null, type)
-            ),
-            new InputRule(
-                /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+~#?&//=]*)).?\s$/,
-                autoDetectLinkHandler.bind(null, type)
-            ),
-        ];
-    }
-}
+import LinkMark from 'text-editor/Mark/Link';
+import InputRuleCollectionInterface from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
 
 function markdownLinkHandler(
     markType: MarkType,
@@ -38,6 +11,7 @@ function markdownLinkHandler(
     start: number,
     end: number
 ): Transaction | null {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [fullString, text, link, linkWww, linkPath, trailingCharacter] = match;
 
     if (state.doc.rangeHasMark(start, end, markType)) {
@@ -45,7 +19,7 @@ function markdownLinkHandler(
     }
 
     let markDisallowed = false;
-    state.doc.nodesBetween(start, end, (node) => {
+    state.doc.nodesBetween(start, end, (node) => { // eslint-disable-line consistent-return
         if (markDisallowed) {
             return false;
         }
@@ -81,7 +55,7 @@ function autoDetectLinkHandler(
     }
 
     let markDisallowed = false;
-    state.doc.nodesBetween(start, end, (node) => {
+    state.doc.nodesBetween(start, end, (node) => { // eslint-disable-line consistent-return
         if (markDisallowed) {
             return false;
         }
@@ -97,4 +71,31 @@ function autoDetectLinkHandler(
     transaction.addMark(start, start + match[1].length, markType.create({ href: match[1], spellcheck: 'false' }));
     transaction.removeStoredMark(markType);
     return transaction;
+}
+
+export default class Link implements InputRuleCollectionInterface {
+    get requirementType(): string | null {
+        return 'mark';
+    }
+
+    get requirement(): Function | null {
+        return LinkMark;
+    }
+
+    public getRules(type?: MarkType | NodeType): InputRule[] {
+        if (!(type instanceof MarkType)) {
+            return [];
+        }
+
+        return [
+            new InputRule(
+                /\[(.+)\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+~#?&//=]*))\)(.)?$/,
+                markdownLinkHandler.bind(null, type)
+            ),
+            new InputRule(
+                /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+~#?&//=]*)).?\s$/,
+                autoDetectLinkHandler.bind(null, type)
+            ),
+        ];
+    }
 }

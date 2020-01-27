@@ -1,9 +1,9 @@
 import { InputRule, wrappingInputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { OrderedList as OrderedListNode } from 'text-editor/Node/OrderedList';
-import { InputRuleCollectionInterface } from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
+import OrderedListNode from 'text-editor/Node/OrderedList';
+import InputRuleCollectionInterface from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
 
-export class OrderedList implements InputRuleCollectionInterface {
+export default class OrderedList implements InputRuleCollectionInterface {
     get requirementType(): string | null {
         return 'node';
     }

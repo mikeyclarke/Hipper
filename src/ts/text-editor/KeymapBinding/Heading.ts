@@ -1,9 +1,9 @@
 import { setBlockType } from 'prosemirror-commands';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Heading as HeadingNode } from 'text-editor/Node/Heading';
-import { KeymapBindingInterface } from 'text-editor/KeymapBinding/KeymapBindingInterface';
+import HeadingNode from 'text-editor/Node/Heading';
+import KeymapBindingInterface from 'text-editor/KeymapBinding/KeymapBindingInterface';
 
-export class Heading implements KeymapBindingInterface {
+export default class Heading implements KeymapBindingInterface {
     get requirementType(): string | null {
         return 'node';
     }

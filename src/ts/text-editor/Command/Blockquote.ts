@@ -2,9 +2,9 @@ import { EditorView } from 'prosemirror-view';
 import { MarkType, NodeType } from 'prosemirror-model';
 import { wrapIn } from 'prosemirror-commands';
 import { CommandInterface, CommandRequirementType, GetCommandResult } from 'text-editor/Command/CommandInterface';
-import { Blockquote as BlockquoteNode } from 'text-editor/Node/Blockquote';
+import BlockquoteNode from 'text-editor/Node/Blockquote';
 
-export class Blockquote implements CommandInterface {
+export default class Blockquote implements CommandInterface {
     get name(): string {
         return 'blockquote';
     }

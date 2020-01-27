@@ -2,9 +2,9 @@ import { EditorView } from 'prosemirror-view';
 import { Mark, MarkType, NodeType } from 'prosemirror-model';
 import { toggleMark } from 'prosemirror-commands';
 import { CommandInterface, CommandRequirementType, GetCommandResult } from 'text-editor/Command/CommandInterface';
-import { Emphasis as EmphasisMark } from 'text-editor/Mark/Emphasis';
+import EmphasisMark from 'text-editor/Mark/Emphasis';
 
-export class Emphasis implements CommandInterface {
+export default class Emphasis implements CommandInterface {
     get name(): string {
         return 'emphasis';
     }

@@ -1,10 +1,10 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Emphasis as EmphasisMark } from 'text-editor/Mark/Emphasis';
-import { InputRuleCollectionInterface } from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
-import { InlineMarkdownInputRuleFactory } from 'text-editor/InputRule/InlineMarkdownInputRuleFactory';
+import EmphasisMark from 'text-editor/Mark/Emphasis';
+import InputRuleCollectionInterface from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
+import InlineMarkdownInputRuleFactory from 'text-editor/InputRule/InlineMarkdownInputRuleFactory';
 
-export class Emphasis implements InputRuleCollectionInterface {
+export default class Emphasis implements InputRuleCollectionInterface {
     get requirementType(): string | null {
         return 'mark';
     }

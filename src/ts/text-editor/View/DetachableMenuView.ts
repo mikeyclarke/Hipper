@@ -18,7 +18,7 @@ interface MenuOptions {
 
 const eventDelegationMap = new Map();
 
-export class DetachableMenuView {
+export default class DetachableMenuView {
     private readonly commandsWhiteList: string[] = [
         'strong',
         'emphasis',
@@ -26,7 +26,7 @@ export class DetachableMenuView {
         'ordered_list',
         'unordered_list',
         'link',
-        'blockquote'
+        'blockquote',
     ];
     private readonly layoutContainerElement: HTMLElement;
     private readonly editorView: EditorView;
@@ -260,10 +260,7 @@ export class DetachableMenuView {
         }
 
         if (this.patchMobileSafari && !('visualViewport' in window)) {
-            const win = <Window> window; // TypeScript bug 🤷
-            const initialHeight = win.innerHeight;
-
-            const onFocus = async () => {
+            const onFocus = async (): Promise<void> => {
                 window.scrollTo(0, window.innerHeight);
 
                 await timeout(200);
@@ -276,7 +273,7 @@ export class DetachableMenuView {
                 window.addEventListener('scroll', preventWindowScroll);
             };
 
-            const onBlur = async () => {
+            const onBlur = async (): Promise<void> => {
                 await timeout(50);
 
                 if (document.body !== document.activeElement) {

@@ -1,10 +1,10 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Strong as StrongMark } from 'text-editor/Mark/Strong';
-import { InputRuleCollectionInterface } from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
-import { InlineMarkdownInputRuleFactory } from 'text-editor/InputRule/InlineMarkdownInputRuleFactory';
+import StrongMark from 'text-editor/Mark/Strong';
+import InputRuleCollectionInterface from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
+import InlineMarkdownInputRuleFactory from 'text-editor/InputRule/InlineMarkdownInputRuleFactory';
 
-export class Strong implements InputRuleCollectionInterface {
+export default class Strong implements InputRuleCollectionInterface {
     get requirementType(): string | null {
         return 'mark';
     }

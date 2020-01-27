@@ -1,6 +1,6 @@
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class Doc implements NodeInterface {
+export default class Doc implements NodeInterface {
     get name(): string {
         return 'doc';
     }

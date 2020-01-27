@@ -1,7 +1,7 @@
 import { Node as ProseMirrorNode } from 'prosemirror-model';
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class Image implements NodeInterface {
+export default class Image implements NodeInterface {
     get name(): string {
         return 'image';
     }
@@ -12,11 +12,11 @@ export class Image implements NodeInterface {
             attrs: {
                 src: {},
                 alt: {
-                    default: null
+                    default: null,
                 },
                 title: {
-                    default: null
-                }
+                    default: null,
+                },
             },
             group: 'inline',
             draggable: true,
@@ -27,15 +27,15 @@ export class Image implements NodeInterface {
                         return {
                             src: dom.getAttribute('src'),
                             title: dom.getAttribute('title'),
-                            alt: dom.getAttribute('alt')
+                            alt: dom.getAttribute('alt'),
                         };
-                    }
-                }
+                    },
+                },
             ],
             toDOM(node: ProseMirrorNode): (string | object)[] {
                 const { src, alt, title } = node.attrs;
                 return ['img', { src, alt, title }];
-            }
+            },
         };
     }
 }

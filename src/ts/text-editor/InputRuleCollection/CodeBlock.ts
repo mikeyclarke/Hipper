@@ -1,9 +1,9 @@
 import { InputRule, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { CodeBlock as CodeBlockNode } from 'text-editor/Node/CodeBlock';
-import { InputRuleCollectionInterface } from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
+import CodeBlockNode from 'text-editor/Node/CodeBlock';
+import InputRuleCollectionInterface from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
 
-export class CodeBlock implements InputRuleCollectionInterface {
+export default class CodeBlock implements InputRuleCollectionInterface {
     get requirementType(): string | null {
         return 'node';
     }
@@ -18,7 +18,7 @@ export class CodeBlock implements InputRuleCollectionInterface {
         }
 
         return [
-            textblockTypeInputRule(/^```$/, type)
+            textblockTypeInputRule(/^```$/, type),
         ];
     }
 }

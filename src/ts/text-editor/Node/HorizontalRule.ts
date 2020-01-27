@@ -1,6 +1,6 @@
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class HorizontalRule implements NodeInterface {
+export default class HorizontalRule implements NodeInterface {
     get name(): string {
         return 'horizontal_rule';
     }
@@ -10,12 +10,12 @@ export class HorizontalRule implements NodeInterface {
             group: 'block',
             parseDOM: [
                 {
-                    tag: 'hr'
-                }
+                    tag: 'hr',
+                },
             ],
             toDOM(): string[] {
                 return ['hr'];
-            }
+            },
         };
     }
 }

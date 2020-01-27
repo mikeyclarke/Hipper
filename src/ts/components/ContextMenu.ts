@@ -125,7 +125,7 @@ function detachEvents(this: ContextMenu): void {
 }
 
 function removeAnimateClass(this: ContextMenu): void {
-    const removeAnimateClassName = () => {
+    const removeAnimateClassName = (): void => {
         this.classList.remove('animate-out');
     };
     const endEvent: [EventTarget, string, EventListener] = [this, 'transitionend', removeAnimateClassName];

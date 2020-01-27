@@ -2,18 +2,26 @@ import { Plugin } from 'prosemirror-state';
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
 import { Schema } from 'prosemirror-model';
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
-import { MarkInterface } from 'text-editor/Mark/MarkInterface';
-import { History } from 'text-editor/KeymapBinding/History';
-import { Strong } from 'text-editor/KeymapBinding/Strong';
-import { Emphasis } from 'text-editor/KeymapBinding/Emphasis';
-import { Blockquote } from 'text-editor/KeymapBinding/Blockquote';
-import { HardBreak } from 'text-editor/KeymapBinding/HardBreak';
-import { ListItem } from 'text-editor/KeymapBinding/ListItem';
-import { Paragraph } from 'text-editor/KeymapBinding/Paragraph';
-import { Heading } from 'text-editor/KeymapBinding/Heading';
+import NodeInterface from 'text-editor/Node/NodeInterface';
+import MarkInterface from 'text-editor/Mark/MarkInterface';
+import History from 'text-editor/KeymapBinding/History';
+import Strong from 'text-editor/KeymapBinding/Strong';
+import Emphasis from 'text-editor/KeymapBinding/Emphasis';
+import Blockquote from 'text-editor/KeymapBinding/Blockquote';
+import HardBreak from 'text-editor/KeymapBinding/HardBreak';
+import ListItem from 'text-editor/KeymapBinding/ListItem';
+import Paragraph from 'text-editor/KeymapBinding/Paragraph';
+import Heading from 'text-editor/KeymapBinding/Heading';
 
-export class KeymapFactory {
+function isMacOsUserAgent(): boolean {
+    if (navigator !== undefined) {
+        return /Mac/.test(navigator.platform);
+    }
+
+    return false;
+}
+
+export default class KeymapFactory {
     public create(schema: Schema, marks: MarkInterface[], nodes: NodeInterface[]): Plugin[] {
         const availableKeymapBindings = [
             new History(),
@@ -29,7 +37,7 @@ export class KeymapFactory {
 
         const bindings = {};
         const iterations = availableKeymapBindings.length;
-        for (let i = 0; i < iterations; i++) {
+        for (let i = 0; i < iterations; i += 1) {
             const keymapBinding = availableKeymapBindings[i];
 
             if (keymapBinding.requirementType === null) {
@@ -38,7 +46,7 @@ export class KeymapFactory {
             }
 
             if (keymapBinding.requirementType === 'mark') {
-                const requiredMark = marks.find((mark) => {
+                const requiredMark = marks.find(mark => {
                     return null !== keymapBinding.requirement && mark instanceof keymapBinding.requirement;
                 });
                 if (requiredMark) {
@@ -48,7 +56,7 @@ export class KeymapFactory {
             }
 
             if (keymapBinding.requirementType === 'node') {
-                const requiredNode = nodes.find((node) => {
+                const requiredNode = nodes.find(node => {
                     return null !== keymapBinding.requirement && node instanceof keymapBinding.requirement;
                 });
                 if (requiredNode) {
@@ -59,12 +67,4 @@ export class KeymapFactory {
 
         return [keymap(bindings), keymap(baseKeymap)];
     }
-}
-
-function isMacOsUserAgent(): boolean {
-    if (navigator !== undefined) {
-        return /Mac/.test(navigator.platform);
-    }
-
-    return false;
 }

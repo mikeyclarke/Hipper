@@ -2,9 +2,9 @@ import { EditorView } from 'prosemirror-view';
 import { MarkType, NodeType } from 'prosemirror-model';
 import { setBlockType } from 'prosemirror-commands';
 import { CommandInterface, CommandRequirementType, GetCommandResult } from 'text-editor/Command/CommandInterface';
-import { Heading as HeadingNode } from 'text-editor/Node/Heading';
+import HeadingNode from 'text-editor/Node/Heading';
 
-export class Heading implements CommandInterface {
+export default class Heading implements CommandInterface {
     get name(): string {
         return 'heading';
     }

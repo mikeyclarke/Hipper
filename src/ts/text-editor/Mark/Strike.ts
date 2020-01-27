@@ -1,6 +1,6 @@
-import { MarkInterface } from 'text-editor/Mark/MarkInterface';
+import MarkInterface from 'text-editor/Mark/MarkInterface';
 
-export class Strike implements MarkInterface {
+export default class Strike implements MarkInterface {
     get name(): string {
         return 'strike';
     }
@@ -9,18 +9,18 @@ export class Strike implements MarkInterface {
         return {
             parseDOM: [
                 {
-                    tag: 's'
+                    tag: 's',
                 },
                 {
-                    tag: 'strike'
+                    tag: 'strike',
                 },
                 {
-                    tag: 'del'
-                }
+                    tag: 'del',
+                },
             ],
             toDOM(): (string | number)[] {
                 return ['s', 0];
-            }
+            },
         };
     }
 }

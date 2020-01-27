@@ -6,7 +6,7 @@ include .env.local
 ##	Testing
 ## ---------
 
-test_ts: tslint jest ## Run all TypeScript tests (TSLint, and Jest)
+test_ts: eslint jest ## Run all TypeScript tests (TSLint, and Jest)
 
 test_php: phpunit phpcs phpstan ## Run all PHP tests (PHPCS, PHPUnit, and PHPStan)
 
@@ -27,8 +27,8 @@ phpunit: ## Check that PHP unit tests pass
 phpcs: ## Check that PHP complies with stylistic rules
 	./vendor/bin/phpcs -p --encoding=utf-8 --standard=PSR2 --error-severity=1 src/php tests/php
 
-tslint: ## Lint Typescript files
-	./node_modules/.bin/tslint -p tsconfig.json -c tslint.json
+eslint: ## Lint Typescript files
+	./node_modules/.bin/eslint "src/ts/**"
 
 ## ---------
 ##	Static analysis

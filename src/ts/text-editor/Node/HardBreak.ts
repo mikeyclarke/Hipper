@@ -1,6 +1,6 @@
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class HardBreak implements NodeInterface {
+export default class HardBreak implements NodeInterface {
     get name(): string {
         return 'hard_break';
     }
@@ -12,12 +12,12 @@ export class HardBreak implements NodeInterface {
             selectable: false,
             parseDOM: [
                 {
-                    tag: 'br'
-                }
+                    tag: 'br',
+                },
             ],
             toDOM(): string[] {
                 return ['br'];
-            }
+            },
         };
     }
 }

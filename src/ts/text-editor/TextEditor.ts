@@ -4,17 +4,21 @@ import { gapCursor } from 'prosemirror-gapcursor';
 import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { DOMParser, Node as ProseMirrorNode, Schema } from 'prosemirror-model';
-import { MarkInterface } from 'text-editor/Mark/MarkInterface';
-import { MarkLoader } from 'text-editor/Mark/MarkLoader';
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
-import { NodeLoader } from 'text-editor/Node/NodeLoader';
-import { InputRulesFactory } from 'text-editor/InputRule/InputRulesFactory';
-import { KeymapFactory } from 'text-editor/Keymap/KeymapFactory';
-import { CommandsFactory } from 'text-editor/Command/CommandsFactory';
-import { emptyDocument } from 'text-editor/Plugin/emptyDocument';
-import { detachableMenu } from 'text-editor/Plugin/detachableMenu';
+import MarkInterface from 'text-editor/Mark/MarkInterface';
+import MarkLoader from 'text-editor/Mark/MarkLoader';
+import NodeInterface from 'text-editor/Node/NodeInterface';
+import NodeLoader from 'text-editor/Node/NodeLoader';
+import InputRulesFactory from 'text-editor/InputRule/InputRulesFactory';
+import KeymapFactory from 'text-editor/Keymap/KeymapFactory';
+import CommandsFactory from 'text-editor/Command/CommandsFactory';
+import emptyDocument from 'text-editor/Plugin/emptyDocument';
+import detachableMenu from 'text-editor/Plugin/detachableMenu';
 
 type InitialContent = string | object | HTMLElement;
+
+function looksLikeiPadSafari(userAgentProfile: Record<string, any>): boolean {
+    return userAgentProfile.is_ipad_or_macos_safari === true && 'TouchEvent' in window;
+}
 
 export default class TextEditor {
     private readonly defaultNodes: string[] = ['doc', 'text', 'paragraph'];
@@ -156,8 +160,4 @@ export default class TextEditor {
             state: this.state,
         });
     }
-}
-
-function looksLikeiPadSafari(userAgentProfile: Record<string, any>): boolean {
-    return userAgentProfile.is_ipad_or_macos_safari === true && 'TouchEvent' in window;
 }

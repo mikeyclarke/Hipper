@@ -1,6 +1,6 @@
-import { MarkInterface } from 'text-editor/Mark/MarkInterface';
+import MarkInterface from 'text-editor/Mark/MarkInterface';
 
-export class Code implements MarkInterface {
+export default class Code implements MarkInterface {
     get name(): string {
         return 'code';
     }
@@ -10,12 +10,12 @@ export class Code implements MarkInterface {
             excludes: '_',
             parseDOM: [
                 {
-                    tag: 'code'
-                }
+                    tag: 'code',
+                },
             ],
             toDOM(): (string | object | number)[] {
                 return ['code', { spellcheck: 'false' }, 0];
-            }
+            },
         };
     }
 }

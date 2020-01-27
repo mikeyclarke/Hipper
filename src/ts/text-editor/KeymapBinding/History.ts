@@ -1,9 +1,9 @@
 import { undo, redo } from 'prosemirror-history';
 import { undoInputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { KeymapBindingInterface } from 'text-editor/KeymapBinding/KeymapBindingInterface';
+import KeymapBindingInterface from 'text-editor/KeymapBinding/KeymapBindingInterface';
 
-export class History implements KeymapBindingInterface {
+export default class History implements KeymapBindingInterface {
     get requirementType(): string | null {
         return null;
     }
@@ -16,7 +16,7 @@ export class History implements KeymapBindingInterface {
         const result: object[] = [
             { 'Mod-z': undo },
             { 'Shift-Mod-z': redo },
-            { Backspace: undoInputRule }
+            { Backspace: undoInputRule },
         ];
 
         if (isMacOs) {

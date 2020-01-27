@@ -1,9 +1,9 @@
 import { chainCommands, exitCode } from 'prosemirror-commands';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { HardBreak as HardBreakNode } from 'text-editor/Node/HardBreak';
-import { KeymapBindingInterface } from 'text-editor/KeymapBinding/KeymapBindingInterface';
+import HardBreakNode from 'text-editor/Node/HardBreak';
+import KeymapBindingInterface from 'text-editor/KeymapBinding/KeymapBindingInterface';
 
-export class HardBreak implements KeymapBindingInterface {
+export default class HardBreak implements KeymapBindingInterface {
     get requirementType(): string | null {
         return 'node';
     }

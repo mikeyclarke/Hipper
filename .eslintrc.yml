@@ -1,0 +1,64 @@
+parser: "@typescript-eslint/parser"
+
+parserOptions:
+    ecmaVersion: 6
+
+env:
+    browser: true
+
+extends:
+    - airbnb-typescript/base
+    - plugin:@typescript-eslint/recommended
+
+ignorePatterns: ['src/ts/onboarding/', 'src/ts/hleo/', 'src/ts/RouteControllers/onboarding']
+
+rules:
+    array-bracket-spacing: off
+    arrow-body-style: off
+    arrow-parens: off
+    class-methods-use-this: off
+    comma-dangle: [error, always-multiline]
+    func-names: off
+    indent: off
+    lines-between-class-members: off
+    max-len:
+        - error
+        - code: 120
+          ignoreRegExpLiterals: true
+    no-continue: off
+    no-empty:
+        - error
+        - allowEmptyCatch: true
+    no-mixed-operators: off
+    no-param-reassign: off
+    no-restricted-globals: off
+    no-restricted-syntax: off
+    no-underscore-dangle: off
+    object-curly-newline: off
+    object-shorthand: off
+    operator-assignment: off
+    operator-linebreak: off
+    prefer-destructuring: off
+    prefer-object-spread: off
+    prefer-template: off
+    yoda: off
+    "@typescript-eslint/no-use-before-define":
+        - error
+        - functions: false
+    "@typescript-eslint/consistent-type-assertions": off
+    "@typescript-eslint/indent": [error, 4]
+    "@typescript-eslint/member-delimiter-style": off
+    "@typescript-eslint/no-inferrable-types":
+        - error
+        - ignoreParameters: true
+          ignoreProperties: true
+    "@typescript-eslint/no-explicit-any": off
+    "@typescript-eslint/no-unused-vars":
+        - error
+        - args: none
+
+settings:
+    import/resolver:
+        node:
+            extensions: ['.ts']
+            moduleDirectory: ['node_modules', 'src/ts/']

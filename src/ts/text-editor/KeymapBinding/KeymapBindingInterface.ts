@@ -1,6 +1,6 @@
 import { MarkType, NodeType } from 'prosemirror-model';
 
-export interface KeymapBindingInterface {
+export default interface KeymapBindingInterface {
     readonly requirementType: string | null;
 
     readonly requirement: Function | null;

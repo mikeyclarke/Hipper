@@ -75,7 +75,7 @@ export default class SearchResultsPaginator {
             searchParams: {
                 q: searchQuery,
                 page: this.nextPage,
-            }
+            },
         });
         const json = await response.json();
         return json.html;

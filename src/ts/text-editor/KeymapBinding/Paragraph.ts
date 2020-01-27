@@ -1,9 +1,9 @@
 import { setBlockType } from 'prosemirror-commands';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Paragraph as ParagraphNode } from 'text-editor/Node/Paragraph';
-import { KeymapBindingInterface } from 'text-editor/KeymapBinding/KeymapBindingInterface';
+import ParagraphNode from 'text-editor/Node/Paragraph';
+import KeymapBindingInterface from 'text-editor/KeymapBinding/KeymapBindingInterface';
 
-export class Paragraph implements KeymapBindingInterface {
+export default class Paragraph implements KeymapBindingInterface {
     get requirementType(): string | null {
         return 'node';
     }

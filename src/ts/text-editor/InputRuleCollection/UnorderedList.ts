@@ -1,9 +1,9 @@
 import { InputRule, wrappingInputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { UnorderedList as UnorderedListNode } from 'text-editor/Node/UnorderedList';
-import { InputRuleCollectionInterface } from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
+import UnorderedListNode from 'text-editor/Node/UnorderedList';
+import InputRuleCollectionInterface from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
 
-export class UnorderedList implements InputRuleCollectionInterface {
+export default class UnorderedList implements InputRuleCollectionInterface {
     get requirementType(): string | null {
         return 'node';
     }
@@ -18,7 +18,7 @@ export class UnorderedList implements InputRuleCollectionInterface {
         }
 
         return [
-            wrappingInputRule(/^\s*([-+*])\s$/, type)
+            wrappingInputRule(/^\s*([-+*])\s$/, type),
         ];
     }
 }

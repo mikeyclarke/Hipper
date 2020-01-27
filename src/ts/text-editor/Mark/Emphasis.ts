@@ -1,6 +1,6 @@
-import { MarkInterface } from 'text-editor/Mark/MarkInterface';
+import MarkInterface from 'text-editor/Mark/MarkInterface';
 
-export class Emphasis implements MarkInterface {
+export default class Emphasis implements MarkInterface {
     get name(): string {
         return 'emphasis';
     }
@@ -9,18 +9,18 @@ export class Emphasis implements MarkInterface {
         return {
             parseDOM: [
                 {
-                    tag: 'i'
+                    tag: 'i',
                 },
                 {
-                    tag: 'em'
+                    tag: 'em',
                 },
                 {
-                    style: 'font-style=italic'
-                }
+                    style: 'font-style=italic',
+                },
             ],
             toDOM(): (string | number)[] {
                 return ['em', 0];
-            }
+            },
         };
     }
 }

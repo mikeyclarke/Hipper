@@ -1,9 +1,9 @@
 import { toggleMark } from 'prosemirror-commands';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Emphasis as EmphasisMark } from 'text-editor/Mark/Emphasis';
-import { KeymapBindingInterface } from 'text-editor/KeymapBinding/KeymapBindingInterface';
+import EmphasisMark from 'text-editor/Mark/Emphasis';
+import KeymapBindingInterface from 'text-editor/KeymapBinding/KeymapBindingInterface';
 
-export class Emphasis implements KeymapBindingInterface {
+export default class Emphasis implements KeymapBindingInterface {
     get requirementType(): string | null {
         return 'mark';
     }

@@ -2,9 +2,9 @@ import { EditorView } from 'prosemirror-view';
 import { MarkType, NodeType } from 'prosemirror-model';
 import { wrapInList } from 'prosemirror-schema-list';
 import { CommandInterface, CommandRequirementType, GetCommandResult } from 'text-editor/Command/CommandInterface';
-import { OrderedList as OrderedListNode } from 'text-editor/Node/OrderedList';
+import OrderedListNode from 'text-editor/Node/OrderedList';
 
-export class OrderedList implements CommandInterface {
+export default class OrderedList implements CommandInterface {
     get name(): string {
         return 'ordered_list';
     }

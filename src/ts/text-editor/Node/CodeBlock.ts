@@ -1,6 +1,6 @@
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class CodeBlock implements NodeInterface {
+export default class CodeBlock implements NodeInterface {
     get name(): string {
         return 'code_block';
     }
@@ -15,12 +15,12 @@ export class CodeBlock implements NodeInterface {
             parseDOM: [
                 {
                     tag: 'pre',
-                    preserveWhitespace: 'full'
-                }
+                    preserveWhitespace: 'full',
+                },
             ],
             toDOM(): (string | object)[] {
                 return ['pre', { spellcheck: 'false' }, ['code', 0]];
-            }
+            },
         };
     }
 }

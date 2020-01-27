@@ -1,9 +1,9 @@
 import { InputRule, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Heading as HeadingNode } from 'text-editor/Node/Heading';
-import { InputRuleCollectionInterface } from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
+import HeadingNode from 'text-editor/Node/Heading';
+import InputRuleCollectionInterface from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
 
-export class Heading implements InputRuleCollectionInterface {
+export default class Heading implements InputRuleCollectionInterface {
     get requirementType(): string | null {
         return 'node';
     }

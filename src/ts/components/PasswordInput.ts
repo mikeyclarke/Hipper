@@ -4,10 +4,6 @@ export default class PasswordInput extends HTMLElement {
     private button!: HTMLElement;
     private input!: HTMLFormElement;
 
-    constructor() {
-        super();
-    }
-
     public connectedCallback(): void {
         this.button = querySelectorNotNull(this, 'button');
         this.input = <HTMLFormElement> querySelectorNotNull(this, 'input');

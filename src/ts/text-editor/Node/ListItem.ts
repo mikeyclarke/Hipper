@@ -1,6 +1,6 @@
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class ListItem implements NodeInterface {
+export default class ListItem implements NodeInterface {
     get name(): string {
         return 'list_item';
     }
@@ -11,12 +11,12 @@ export class ListItem implements NodeInterface {
             defining: true,
             parseDOM: [
                 {
-                    tag: 'li'
-                }
+                    tag: 'li',
+                },
             ],
             toDOM(): (string | number)[] {
                 return ['li', 0];
-            }
+            },
         };
     }
 }

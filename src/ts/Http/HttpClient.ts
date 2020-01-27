@@ -1,5 +1,5 @@
 import PopoverAlert from 'components/PopoverAlert';
-import ky, { Input, Options, ResponsePromise } from 'ky';
+import ky, { Options, ResponsePromise } from 'ky';
 
 interface NormalizedOptions extends RequestInit {
     method: RequestInit['method'];
@@ -89,7 +89,7 @@ export default class HttpClient {
                 afterResponse: [
                     this.checkResponse.bind(this),
                 ],
-            }
+            },
         };
 
         if (this.requestRequiresCsrfToken(method)) {
@@ -115,7 +115,7 @@ export default class HttpClient {
         if (response.status === 419 && null !== this.lastRequest && this.shouldRetryCsrfFailure(response)) {
             this.csrfToken = <string> response.headers.get('X-CSRF-Reset');
             this.retryCount += 1;
-            return this.makeRequest(...this.lastRequest);
+            return this.makeRequest(...this.lastRequest); // eslint-disable-line consistent-return
         }
 
         createAlert();

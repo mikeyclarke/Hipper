@@ -2,9 +2,9 @@ import { EditorView } from 'prosemirror-view';
 import { MarkType, NodeType } from 'prosemirror-model';
 import { wrapIn } from 'prosemirror-commands';
 import { CommandInterface, CommandRequirementType, GetCommandResult } from 'text-editor/Command/CommandInterface';
-import { CodeBlock as CodeBlockNode } from 'text-editor/Node/CodeBlock';
+import CodeBlockNode from 'text-editor/Node/CodeBlock';
 
-export class CodeBlock implements CommandInterface {
+export default class CodeBlock implements CommandInterface {
     get name(): string {
         return 'code_block';
     }

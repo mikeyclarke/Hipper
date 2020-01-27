@@ -2,9 +2,9 @@ import { EditorView } from 'prosemirror-view';
 import { Mark, MarkType, NodeType } from 'prosemirror-model';
 import { toggleMark } from 'prosemirror-commands';
 import { CommandInterface, CommandRequirementType, GetCommandResult } from 'text-editor/Command/CommandInterface';
-import { Strike as StrikeMark } from 'text-editor/Mark/Strike';
+import StrikeMark from 'text-editor/Mark/Strike';
 
-export class Strike implements CommandInterface {
+export default class Strike implements CommandInterface {
     get name(): string {
         return 'strike';
     }

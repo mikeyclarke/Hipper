@@ -20,7 +20,7 @@ export default function showFieldError(
         inputEvent = 'keyup';
     }
 
-    const onInput = () => {
+    const onInput = (): void => {
         errorElement.remove();
         fieldInputElement.setAttribute('aria-invalid', 'false');
         fieldInputElement.removeEventListener(inputEvent, onInput);

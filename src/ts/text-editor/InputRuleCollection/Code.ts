@@ -1,10 +1,10 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Code as CodeMark } from 'text-editor/Mark/Code';
-import { InputRuleCollectionInterface } from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
-import { InlineMarkdownInputRuleFactory } from 'text-editor/InputRule/InlineMarkdownInputRuleFactory';
+import CodeMark from 'text-editor/Mark/Code';
+import InputRuleCollectionInterface from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
+import InlineMarkdownInputRuleFactory from 'text-editor/InputRule/InlineMarkdownInputRuleFactory';
 
-export class Code implements InputRuleCollectionInterface {
+export default class Code implements InputRuleCollectionInterface {
     get requirementType(): string | null {
         return 'mark';
     }

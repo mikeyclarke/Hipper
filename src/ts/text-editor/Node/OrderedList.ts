@@ -1,7 +1,7 @@
 import { Node as ProseMirrorNode } from 'prosemirror-model';
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class OrderedList implements NodeInterface {
+export default class OrderedList implements NodeInterface {
     get name(): string {
         return 'ordered_list';
     }
@@ -10,8 +10,8 @@ export class OrderedList implements NodeInterface {
         return {
             attrs: {
                 start: {
-                    default: 1
-                }
+                    default: 1,
+                },
             },
             content: 'list_item+',
             group: 'block',
@@ -20,7 +20,7 @@ export class OrderedList implements NodeInterface {
                     tag: 'ol',
                     getAttrs(dom: HTMLElement): object {
                         const attrs = {
-                            start: 1
+                            start: 1,
                         };
 
                         if (!dom.hasAttribute('start')) {
@@ -33,12 +33,12 @@ export class OrderedList implements NodeInterface {
                         }
 
                         return attrs;
-                    }
-                }
+                    },
+                },
             ],
             toDOM(node: ProseMirrorNode): (string | number | object)[] {
                 return (node.attrs.start === 1) ? ['ol', 0] : ['ol', { start: node.attrs.start }, 0];
-            }
+            },
         };
     }
 }

@@ -1,4 +1,4 @@
-export interface NodeInterface {
+export default interface NodeInterface {
     readonly name: string;
 
     readonly spec: object;

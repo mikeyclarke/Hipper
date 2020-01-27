@@ -2,9 +2,9 @@ import { EditorView } from 'prosemirror-view';
 import { MarkType, NodeType } from 'prosemirror-model';
 import { wrapInList } from 'prosemirror-schema-list';
 import { CommandInterface, CommandRequirementType, GetCommandResult } from 'text-editor/Command/CommandInterface';
-import { UnorderedList as UnorderedListNode } from 'text-editor/Node/UnorderedList';
+import UnorderedListNode from 'text-editor/Node/UnorderedList';
 
-export class UnorderedList implements CommandInterface {
+export default class UnorderedList implements CommandInterface {
     get name(): string {
         return 'unordered_list';
     }

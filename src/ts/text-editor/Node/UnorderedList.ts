@@ -1,6 +1,6 @@
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class UnorderedList implements NodeInterface {
+export default class UnorderedList implements NodeInterface {
     get name(): string {
         return 'unordered_list';
     }
@@ -11,12 +11,12 @@ export class UnorderedList implements NodeInterface {
             group: 'block',
             parseDOM: [
                 {
-                    tag: 'ul'
-                }
+                    tag: 'ul',
+                },
             ],
             toDOM(): (string | number)[] {
                 return ['ul', 0];
-            }
+            },
         };
     }
 }

@@ -12,7 +12,7 @@ export default async function eventRace(
 
     eventDefinitions.forEach((eventDefinition) => {
         const [ eventTarget, name, listener ] = eventDefinition;
-        const handler = (event: Event) => {
+        const handler = (event: Event): void => {
             eventTarget.removeEventListener(name, handler);
             if (null !== winner) {
                 return;

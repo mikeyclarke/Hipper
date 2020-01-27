@@ -1,10 +1,10 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { Strike as StrikeMark } from 'text-editor/Mark/Strike';
-import { InputRuleCollectionInterface } from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
-import { InlineMarkdownInputRuleFactory } from 'text-editor/InputRule/InlineMarkdownInputRuleFactory';
+import StrikeMark from 'text-editor/Mark/Strike';
+import InputRuleCollectionInterface from 'text-editor/InputRuleCollection/InputRuleCollectionInterface';
+import InlineMarkdownInputRuleFactory from 'text-editor/InputRule/InlineMarkdownInputRuleFactory';
 
-export class Strike implements InputRuleCollectionInterface {
+export default class Strike implements InputRuleCollectionInterface {
     get requirementType(): string | null {
         return 'mark';
     }

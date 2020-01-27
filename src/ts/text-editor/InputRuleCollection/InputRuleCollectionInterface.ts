@@ -1,7 +1,7 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { MarkType, NodeType } from 'prosemirror-model';
 
-export interface InputRuleCollectionInterface {
+export default interface InputRuleCollectionInterface {
     readonly requirementType: string | null;
 
     readonly requirement: Function | null;

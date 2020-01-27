@@ -48,7 +48,7 @@ export default class MobileNavigation extends HTMLElement {
         if (null === this._pageContent) {
             this.hidden = true;
         } else {
-            const hide = (event: Event) => {
+            const hide = (event: Event): void => {
                 if (!this._open && event.target === this._pageContent) {
                     this.hidden = true;
                 }
@@ -102,7 +102,7 @@ function removeHtmlClassName(): void {
 
 function addCloseEvents(this: MobileNavigation): void {
     if (null === this._escapeKeyHandler) {
-        this._escapeKeyHandler = (event: KeyboardEvent) => {
+        this._escapeKeyHandler = (event: KeyboardEvent): void => {
             if (['Escape', 'Esc'].includes(event.key) &&
                 null === this.querySelector('[aria-haspopup][aria-expanded="true"]')
             ) {
@@ -112,7 +112,7 @@ function addCloseEvents(this: MobileNavigation): void {
     }
 
     if (null === this._mousedownOutsideHandler) {
-        this._mousedownOutsideHandler = (event) => {
+        this._mousedownOutsideHandler = (event): void => {
             if (null === event.target || !(event.target instanceof Node)) {
                 return;
             }
@@ -124,10 +124,12 @@ function addCloseEvents(this: MobileNavigation): void {
     }
 
     if (null === this._viewportResizeListener && null !== this._hideAt) {
-        this._viewportResizeListener = (event: UIEvent) => {
+        this._viewportResizeListener = (event: UIEvent): void => {
             if (window.matchMedia(`(min-width: ${this._hideAt})`).matches) {
                 // Don’t even fucking ask. TypeScript bugs galore.
-                const expandedDescendants: any[] = Array.from(this.querySelectorAll('[aria-haspopup][aria-expanded="true"]'));
+                const expandedDescendants: any[] = Array.from(
+                    this.querySelectorAll('[aria-haspopup][aria-expanded="true"]')
+                );
                 for (const element of expandedDescendants) {
                     element.click();
                 }

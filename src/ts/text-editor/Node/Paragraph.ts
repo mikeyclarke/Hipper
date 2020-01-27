@@ -1,6 +1,6 @@
-import { NodeInterface } from 'text-editor/Node/NodeInterface';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class Paragraph implements NodeInterface {
+export default class Paragraph implements NodeInterface {
     get name(): string {
         return 'paragraph';
     }
@@ -11,12 +11,12 @@ export class Paragraph implements NodeInterface {
             group: 'block',
             parseDOM: [
                 {
-                    tag: 'p'
-                }
+                    tag: 'p',
+                },
             ],
             toDOM(): (string | number)[] {
                 return ['p', 0];
-            }
+            },
         };
     }
 }

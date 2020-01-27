@@ -1,6 +1,6 @@
-import { NodeInterface } from 'text-editor/Node/NodeInterface.ts';
+import NodeInterface from 'text-editor/Node/NodeInterface';
 
-export class Blockquote implements NodeInterface {
+export default class Blockquote implements NodeInterface {
     get name(): string {
         return 'blockquote';
     }
@@ -12,12 +12,12 @@ export class Blockquote implements NodeInterface {
             defining: true,
             parseDOM: [
                 {
-                    tag: 'blockquote'
-                }
+                    tag: 'blockquote',
+                },
             ],
             toDOM(): (string | number)[] {
                 return ['blockquote', 0];
-            }
+            },
         };
     }
 }

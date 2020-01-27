@@ -1,4 +1,3 @@
-import * as Bottle from 'bottlejs';
 import appRoutes from 'routes/appRoutes';
 import appServices from 'container/appServices';
 import sharedServices from 'container/sharedServices';
@@ -12,10 +11,6 @@ const htmlHeadConfigVars = [
 ];
 
 export default class AppKernel extends Kernel {
-    constructor() {
-        super();
-    }
-
     protected onBeforeRouting(): void {
         loadComponents();
         this.bottle.container.timeZoneCookie.createOrUpdate();

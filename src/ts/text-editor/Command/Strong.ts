@@ -2,9 +2,9 @@ import { EditorView } from 'prosemirror-view';
 import { Mark, MarkType, NodeType } from 'prosemirror-model';
 import { toggleMark } from 'prosemirror-commands';
 import { CommandInterface, CommandRequirementType, GetCommandResult } from 'text-editor/Command/CommandInterface';
-import { Strong as StrongMark } from 'text-editor/Mark/Strong';
+import StrongMark from 'text-editor/Mark/Strong';
 
-export class Strong implements CommandInterface {
+export default class Strong implements CommandInterface {
     get name(): string {
         return 'strong';
     }

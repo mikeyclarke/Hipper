@@ -1,8 +1,8 @@
 import { Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { DetachableMenuView } from 'text-editor/View/DetachableMenuView';
+import DetachableMenuView from 'text-editor/View/DetachableMenuView';
 
-export function detachableMenu(commands: Record<string, object>, options: {}): Plugin {
+export default function detachableMenu(commands: Record<string, object>, options: {}): Plugin {
     return new Plugin({
         view(editorView: EditorView): DetachableMenuView {
             const menuView = new DetachableMenuView(commands, editorView, options);
@@ -12,6 +12,6 @@ export function detachableMenu(commands: Record<string, object>, options: {}): P
             }
             layoutContainerElement.appendChild(menuView.element);
             return menuView;
-        }
+        },
     });
 }

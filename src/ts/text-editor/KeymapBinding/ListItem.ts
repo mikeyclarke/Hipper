@@ -1,9 +1,9 @@
 import { splitListItem, liftListItem, sinkListItem } from 'prosemirror-schema-list';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { ListItem as ListItemNode } from 'text-editor/Node/ListItem';
-import { KeymapBindingInterface } from 'text-editor/KeymapBinding/KeymapBindingInterface';
+import ListItemNode from 'text-editor/Node/ListItem';
+import KeymapBindingInterface from 'text-editor/KeymapBinding/KeymapBindingInterface';
 
-export class ListItem implements KeymapBindingInterface {
+export default class ListItem implements KeymapBindingInterface {
     get requirementType(): string | null {
         return 'node';
     }

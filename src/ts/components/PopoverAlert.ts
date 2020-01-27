@@ -6,10 +6,6 @@ export default class PopoverAlert extends HTMLElement {
     public _closeTimeoutId!: number;
     public _documentVisibilityListener!: EventListener;
 
-    constructor() {
-        super();
-    }
-
     public connectedCallback(): void {
         if (!this.isConnected || this._containerElement) {
             return;

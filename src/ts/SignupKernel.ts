@@ -10,10 +10,6 @@ const htmlHeadConfigVars = [
 ];
 
 export default class SignupKernel extends Kernel {
-    constructor() {
-        super();
-    }
-
     protected onBeforeRouting(): void {
         loadComponents();
     }

@@ -2,5 +2,7 @@ parameters:
     checkMissingIterableValueType: false
     inferPrivatePropertyTypeFromConstructor: true
     ignoreErrors:
-        - '#Cannot call method fetch(All)?\(\) on Doctrine\DBAL\Driver\Statement|int#'
-        - '#Cannot call method [a-zA-Z]+\(\) on Carbon\Carbon|string.#'
+        - '#Property [a-zA-Z\\\]+::$[a-zA-Z]+ has no typehint specified.#'
+        - '#Method [a-zA-Z\\\]+::[a-zA-Z]+\(\) has no return typehint specified.#'
+        - '#Method [a-zA-Z\\\]+::[a-zA-Z]+\(\) has parameter \$[a-zA-Z]+ with no typehint specified.#'
+        - '#Parameter \#5 $default of method Symfony\Component\Console\Command\Command::addOption() expects int|string|null, string|false given#'

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\FrontEnd\App\Middleware\Knowledgebase;
 
 use Hipper\Knowledgebase\Exception\NoCanonicalRouteExistsForKnowledgebaseRouteException;
+use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Organization\OrganizationModel;
@@ -106,6 +107,8 @@ class KnowledgebaseRoutingMiddleware
             $project = $request->attributes->get('project');
             return $project->getKnowledgebaseId();
         }
+
+        throw new UnsupportedKnowledgebaseEntityException;
     }
 
     private function generateRouteRedirectUrl(Request $request, OrganizationModel $organization, array $route): string

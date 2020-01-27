@@ -44,6 +44,30 @@ class TeamRepository
         return $result;
     }
 
+    public function findById(string $organizationId, string $id): ?array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('*')
+            ->from('team')
+            ->andWhere('organization_id = :organization_id')
+            ->andWhere('id = :id');
+
+        $qb->setParameters([
+            'organization_id' => $organizationId,
+            'id' => $id,
+        ]);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetch();
+
+        if (false === $result) {
+            return null;
+        }
+
+        return $result;
+    }
+
     public function findByUrlId(string $organizationId, string $urlId): ?array
     {
         $qb = $this->connection->createQueryBuilder();

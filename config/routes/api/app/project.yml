@@ -7,17 +7,17 @@ project.create:
             - require_json_content_type_middleware:before
 
 project.search:
-    path: /_/projects/{project_url_id}/search
+    path: /_/projects/{project_id}/search
     methods: [GET]
     controller: Hipper\Api\App\Controller\Project\ProjectSearchController::getAction
     defaults:
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_id_middleware:before
 
 project.members.search:
-    path: /_/projects/{project_url_id}/search/members
+    path: /_/projects/{project_id}/search/members
     methods: [GET]
     controller: Hipper\Api\App\Controller\Project\ProjectMembersSearchController::getAction
     defaults:
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_id_middleware:before

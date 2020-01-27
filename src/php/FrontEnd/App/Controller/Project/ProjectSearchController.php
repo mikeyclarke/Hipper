@@ -46,7 +46,7 @@ class ProjectSearchController
         $moreResultsEndpoint = $this->router->generate(
             self::MORE_RESULTS_ROUTE_NAME,
             [
-                'project_url_id' => $project->getUrlId(),
+                'project_id' => $project->getId(),
                 'subdomain' => $organization->getSubdomain(),
             ]
         );

@@ -155,8 +155,14 @@ services:
     team_model_from_url_id_middleware:
         class: Hipper\FrontEnd\App\Middleware\Team\TeamModelFromUrlIdMiddleware
 
+    team_model_from_id_middleware:
+        class: Hipper\Api\App\Middleware\Team\TeamModelFromIdMiddleware
+
     knowledgebase_routing_middleware:
         class: Hipper\FrontEnd\App\Middleware\Knowledgebase\KnowledgebaseRoutingMiddleware
 
     project_model_from_url_id_middleware:
         class: Hipper\FrontEnd\App\Middleware\Project\ProjectModelFromUrlIdMiddleware
+
+    project_model_from_id_middleware:
+        class: Hipper\Api\App\Middleware\Project\ProjectModelFromIdMiddleware

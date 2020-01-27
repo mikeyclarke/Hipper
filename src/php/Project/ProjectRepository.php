@@ -44,6 +44,30 @@ class ProjectRepository
         return $result;
     }
 
+    public function findById(string $id, string $organizationId): ?array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('*')
+            ->from('project')
+            ->andWhere('organization_id = :organization_id')
+            ->andWhere('id = :id');
+
+        $qb->setParameters([
+            'organization_id' => $organizationId,
+            'id' => $id,
+        ]);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetch();
+
+        if (false === $result) {
+            return null;
+        }
+
+        return $result;
+    }
+
     public function findByUrlId(string $urlId, string $organizationId): ?array
     {
         $qb = $this->connection->createQueryBuilder();

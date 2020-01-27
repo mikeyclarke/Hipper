@@ -46,7 +46,7 @@ class TeamSearchController
         $moreResultsEndpoint = $this->router->generate(
             self::MORE_RESULTS_ROUTE_NAME,
             [
-                'team_url_id' => $team->getUrlId(),
+                'team_id' => $team->getId(),
                 'subdomain' => $organization->getSubdomain(),
             ]
         );

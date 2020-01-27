@@ -47,7 +47,7 @@ class TeamMembersSearchController
             self::MORE_RESULTS_ROUTE_NAME,
             [
                 'subdomain' => $organization->getSubdomain(),
-                'team_url_id' => $team->getUrlId(),
+                'team_id' => $team->getId(),
             ]
         );
         $searchResults = [];

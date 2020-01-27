@@ -66,9 +66,11 @@ $control-selected-underline-offset-bottom: 6px;
 .c-search-filters__control {
     @extend %unstyled-button;
     color: $control-color;
+    display: block;
     font-size: $control-font-size;
     font-weight: $control-font-weight;
     padding: $control-padding-top-bottom $control-padding-left-right;
+    text-decoration: none;
     @include font-smoothing.font-smoothing;
 }
 

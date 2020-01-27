@@ -1,39 +1,59 @@
 {% set filters = [
     {
         name: 'Docs',
-        action: 
+        path: 
             (search_context_type is not defined) ?
-                path('front_end.app.organization.search', {subdomain: organization.subdomain}) :
+                path('front_end.app.organization.search', {
+                    subdomain: organization.subdomain,
+                    q: search_query,
+                    return_to: back_link,
+                }) :
                 path('front_end.app.' ~ search_context_type ~ '.search', {
                     subdomain: organization.subdomain,
                     project_url_id: (project is defined) ? project.urlId : null,
                     team_url_id: (team is defined) ? team.urlId : null,
+                    q: search_query,
+                    return_to: back_link,
                 }),
         show: true,
         is_active: (active_filter is not defined or active_filter is same as('docs')),
     },
     {
         name: 'People',
-        action: 
+        path: 
             (search_context_type is not defined) ?
-                path('front_end.app.organization.people.search', {subdomain: organization.subdomain}) :
+                path('front_end.app.organization.people.search', {
+                    subdomain: organization.subdomain,
+                    q: search_query,
+                    return_to: back_link,
+                }) :
                 path('front_end.app.' ~ search_context_type ~ '.members.search', {
                     subdomain: organization.subdomain,
                     project_url_id: (project is defined) ? project.urlId : null,
                     team_url_id: (team is defined) ? team.urlId : null,
+                    q: search_query,
+                    return_to: back_link,
                 }),
         show: true,
         is_active: (active_filter is defined and active_filter is same as('people')),
     },
     {
         name: 'Teams',
-        action: path('front_end.app.organization.teams.search', {subdomain: organization.subdomain}),
+        path: path('front_end.app.organization.teams.search', {
+            subdomain: organization.subdomain,
+            q: search_query,
+            return_to: back_link,
+        }),
         show: (relative_search is not defined or relative_search is same as(false)),
         is_active: (active_filter is defined and active_filter is same as('teams')),
     },
     {
         name: 'Projects',
-        action: path('front_end.app.organization.projects.search', {subdomain: organization.subdomain}),
+        path: path('front_end.app.organization.projects.search', {
+            subdomain: organization.subdomain,
+            q: search_query,
+            return_to: back_link,
+        }),
         show: (relative_search is not defined or relative_search is same as(false)),
         is_active: (active_filter is defined and active_filter is same as('projects')),
     },
@@ -79,7 +99,7 @@
                 {% for filter in filters %}
                     {% if filter.show %}
                         <li class="c-search-filters__item">
-                            <button class="c-search-filters__control" type="submit" formaction="{{ filter.action }}?{{ search_query|url_encode }}"{% if filter.is_active %} aria-selected="true"{% endif %}>{{ filter.name }}</button>
+                            <a class="c-search-filters__control" href="{{ filter.path }}"{% if filter.is_active %} aria-selected="true"{% endif %}>{{ filter.name }}</a>
                         </li>
                     {% endif %}
                 {% endfor %}

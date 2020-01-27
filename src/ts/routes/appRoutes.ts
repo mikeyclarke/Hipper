@@ -13,6 +13,11 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
             controller: () => [bottle.container.searchController, 'start'],
         },
 
+        organization_people_search: {
+            path: '/search/people',
+            controller: () => [bottle.container.searchController, 'start'],
+        },
+
         organization_projects_search: {
             path: '/search/projects',
             controller: () => [bottle.container.searchController, 'start'],
@@ -28,8 +33,18 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
             controller: () => [bottle.container.searchController, 'start'],
         },
 
+        team_members_search: {
+            path: '/teams/:team_url_id/search/members',
+            controller: () => [bottle.container.searchController, 'start'],
+        },
+
         project_search: {
             path: '/projects/:project_url_id/search',
+            controller: () => [bottle.container.searchController, 'start'],
+        },
+
+        project_members_search: {
+            path: '/projects/:project_url_id/search/members',
             controller: () => [bottle.container.searchController, 'start'],
         },
 

@@ -30,6 +30,11 @@ organization.search:
     methods: [GET]
     controller: Hipper\Api\App\Controller\Organization\OrganizationSearchController::getAction
 
+organization.people.search:
+    path: /_/search/people
+    methods: [GET]
+    controller: Hipper\Api\App\Controller\Organization\OrganizationPeopleSearchController::getAction
+
 organization.projects.search:
     path: /_/search/projects
     methods: [GET]

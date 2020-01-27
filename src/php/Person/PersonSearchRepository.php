@@ -15,7 +15,7 @@ class PersonSearchRepository
         $this->connection = $connection;
     }
 
-    public function getResults(string $searchQuery, string $organizationId): array
+    public function getResults(string $searchQuery, string $organizationId, int $limit, int $offset): array
     {
         $innerQuery = <<<SQL
     SELECT
@@ -29,18 +29,27 @@ class PersonSearchRepository
     WHERE person.search_tokens @@ websearch_to_tsquery('simple', :search_query)
     AND person.organization_id = :organization_id
     ORDER BY rank DESC, created DESC
+    LIMIT :limit
+    OFFSET :offset
 SQL;
         $sql = $this->addOuterQuery($innerQuery);
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('search_query', $searchQuery);
         $stmt->bindValue('organization_id', $organizationId);
+        $stmt->bindValue('limit', $limit);
+        $stmt->bindValue('offset', $offset);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function getResultsInTeam(string $searchQuery, string $organizationId, string $teamId): array
-    {
+    public function getResultsInTeam(
+        string $searchQuery,
+        string $organizationId,
+        string $teamId,
+        int $limit,
+        int $offset
+    ): array {
         $innerQuery = <<<SQL
     SELECT
         ts_rank(person.search_tokens, websearch_to_tsquery('simple', :search_query)) AS rank,
@@ -55,6 +64,8 @@ SQL;
     AND person.search_tokens @@ websearch_to_tsquery('simple', :search_query)
     AND person.organization_id = :organization_id
     ORDER BY rank DESC, created DESC
+    LIMIT :limit
+    OFFSET :offset
 SQL;
         $sql = $this->addOuterQuery($innerQuery);
 
@@ -62,12 +73,19 @@ SQL;
         $stmt->bindValue('search_query', $searchQuery);
         $stmt->bindValue('team_id', $teamId);
         $stmt->bindValue('organization_id', $organizationId);
+        $stmt->bindValue('limit', $limit);
+        $stmt->bindValue('offset', $offset);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function getResultsInProject(string $searchQuery, string $organizationId, string $projectId): array
-    {
+    public function getResultsInProject(
+        string $searchQuery,
+        string $organizationId,
+        string $projectId,
+        int $limit,
+        int $offset
+    ): array {
         $innerQuery = <<<SQL
     SELECT
         ts_rank(person.search_tokens, websearch_to_tsquery('simple', :search_query)) AS rank,
@@ -82,6 +100,8 @@ SQL;
     AND person.search_tokens @@ websearch_to_tsquery('simple', :search_query)
     AND person.organization_id = :organization_id
     ORDER BY rank DESC, created DESC
+    LIMIT :limit
+    OFFSET :offset
 SQL;
         $sql = $this->addOuterQuery($innerQuery);
 
@@ -89,6 +109,8 @@ SQL;
         $stmt->bindValue('search_query', $searchQuery);
         $stmt->bindValue('project_id', $projectId);
         $stmt->bindValue('organization_id', $organizationId);
+        $stmt->bindValue('limit', $limit);
+        $stmt->bindValue('offset', $offset);
         $stmt->execute();
         return $stmt->fetchAll();
     }

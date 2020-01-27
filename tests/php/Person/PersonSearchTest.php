@@ -8,6 +8,8 @@ use Hipper\Person\PersonSearch;
 use Hipper\Person\PersonSearchRepository;
 use Hipper\Person\PersonSearchResultsFormatter;
 use Hipper\Project\ProjectModel;
+use Hipper\Search\SearchResultsPaginator;
+use Hipper\Search\SearchResultsPaginatorFactory;
 use Hipper\Team\TeamModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -18,17 +20,23 @@ class PersonSearchTest extends TestCase
 
     private $personSearchRepository;
     private $personSearchResultsFormatter;
+    private $searchResultsPaginatorFactory;
     private $personSearch;
+    private $searchResultsPaginator;
 
     public function setUp(): void
     {
         $this->personSearchRepository = m::mock(PersonSearchRepository::class);
         $this->personSearchResultsFormatter = m::mock(PersonSearchResultsFormatter::class);
+        $this->searchResultsPaginatorFactory = m::mock(SearchResultsPaginatorFactory::class);
 
         $this->personSearch = new PersonSearch(
             $this->personSearchRepository,
-            $this->personSearchResultsFormatter
+            $this->personSearchResultsFormatter,
+            $this->searchResultsPaginatorFactory
         );
+
+        $this->searchResultsPaginator = m::mock(SearchResultsPaginator::class);
     }
 
     /**
@@ -45,14 +53,24 @@ class PersonSearchTest extends TestCase
         $searchResults = ['search-results'];
         $formatted = ['formatted-search-results'];
 
-        $this->createPersonSearchRepositoryGetResultsExpectation([$searchQuery, $organizationId], $searchResults);
+        $this->createSearchResultsPaginatorFactoryExpectation([1, 1]);
+        $this->createSearchResultsPaginatorGetLimit(11);
+        $this->createSearchResultsPaginatorGetOffset(0);
+        $this->createPersonSearchRepositoryGetResultsExpectation(
+            [$searchQuery, $organizationId, 11, 0],
+            $searchResults
+        );
+        $this->createSearchResultsPaginatorHasMoreResultsExpectation([$searchResults], false);
+        $this->createSearchResultsPaginatorFilterResultsExpectation([$searchResults], $searchResults);
         $this->createPersonSearchResultsFormatterExpectation(
             [$organization, $displayTimeZone, $searchResults],
             $formatted
         );
 
         $result = $this->personSearch->search($searchQuery, $displayTimeZone, $organization);
-        $this->assertEquals($formatted, $result);
+        $this->assertIsArray($result);
+        $this->assertEquals($formatted, $result[0]);
+        $this->assertFalse($result[1]);
     }
 
     /**
@@ -72,17 +90,24 @@ class PersonSearchTest extends TestCase
         $searchResults = ['search-results'];
         $formatted = ['formatted-search-results'];
 
+        $this->createSearchResultsPaginatorFactoryExpectation([1, 1]);
+        $this->createSearchResultsPaginatorGetLimit(11);
+        $this->createSearchResultsPaginatorGetOffset(0);
         $this->createPersonSearchRepositoryGetResultsInTeamExpectation(
-            [$searchQuery, $organizationId, $teamId],
+            [$searchQuery, $organizationId, $teamId, 11, 0],
             $searchResults
         );
+        $this->createSearchResultsPaginatorHasMoreResultsExpectation([$searchResults], false);
+        $this->createSearchResultsPaginatorFilterResultsExpectation([$searchResults], $searchResults);
         $this->createPersonSearchResultsFormatterExpectation(
             [$organization, $displayTimeZone, $searchResults],
             $formatted
         );
 
         $result = $this->personSearch->searchTeamMembers($searchQuery, $displayTimeZone, $organization, $team);
-        $this->assertEquals($formatted, $result);
+        $this->assertIsArray($result);
+        $this->assertEquals($formatted, $result[0]);
+        $this->assertFalse($result[1]);
     }
 
     /**
@@ -102,23 +127,48 @@ class PersonSearchTest extends TestCase
         $searchResults = ['search-results'];
         $formatted = ['formatted-search-results'];
 
+        $this->createSearchResultsPaginatorFactoryExpectation([1, 1]);
+        $this->createSearchResultsPaginatorGetLimit(11);
+        $this->createSearchResultsPaginatorGetOffset(0);
         $this->createPersonSearchRepositoryGetResultsInProjectExpectation(
-            [$searchQuery, $organizationId, $projectId],
+            [$searchQuery, $organizationId, $projectId, 11, 0],
             $searchResults
         );
+        $this->createSearchResultsPaginatorHasMoreResultsExpectation([$searchResults], false);
+        $this->createSearchResultsPaginatorFilterResultsExpectation([$searchResults], $searchResults);
         $this->createPersonSearchResultsFormatterExpectation(
             [$organization, $displayTimeZone, $searchResults],
             $formatted
         );
 
         $result = $this->personSearch->searchProjectMembers($searchQuery, $displayTimeZone, $organization, $project);
-        $this->assertEquals($formatted, $result);
+        $this->assertIsArray($result);
+        $this->assertEquals($formatted, $result[0]);
+        $this->assertFalse($result[1]);
     }
 
     private function createPersonSearchResultsFormatterExpectation($args, $result)
     {
         $this->personSearchResultsFormatter
             ->shouldReceive('format')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorFilterResultsExpectation($args, $result)
+    {
+        $this->searchResultsPaginator
+            ->shouldReceive('filterResults')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorHasMoreResultsExpectation($args, $result)
+    {
+        $this->searchResultsPaginator
+            ->shouldReceive('hasMoreResults')
             ->once()
             ->with(...$args)
             ->andReturn($result);
@@ -149,5 +199,30 @@ class PersonSearchTest extends TestCase
             ->once()
             ->with(...$args)
             ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorGetOffset($result)
+    {
+        $this->searchResultsPaginator
+            ->shouldReceive('getOffset')
+            ->once()
+            ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorGetLimit($result)
+    {
+        $this->searchResultsPaginator
+            ->shouldReceive('getLimit')
+            ->once()
+            ->andReturn($result);
+    }
+
+    private function createSearchResultsPaginatorFactoryExpectation($args)
+    {
+        $this->searchResultsPaginatorFactory
+            ->shouldReceive('create')
+            ->once()
+            ->with(...$args)
+            ->andReturn($this->searchResultsPaginator);
     }
 }

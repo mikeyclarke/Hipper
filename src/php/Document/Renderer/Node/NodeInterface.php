@@ -10,4 +10,6 @@ interface NodeInterface
     public function isLeaf(): bool;
 
     public function getHtmlTags(?array $attributes, ?string $htmlId): ?array;
+
+    public function formatContentAsPlainText(string $textContent): ?string;
 }

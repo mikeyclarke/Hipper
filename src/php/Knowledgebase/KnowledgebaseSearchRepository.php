@@ -68,7 +68,7 @@ SELECT
     ts_headline(
         content_plain,
         websearch_to_tsquery('english', :search_query),
-        'StartSel = %ts-mark%, StopSel = %/ts-mark%, MaxFragments=2, FragmentDelimiter=" … "'
+        'StartSel = %ts-mark%, StopSel = %/ts-mark%, MinWords=5, MaxWords=50, MaxFragments=1'
     ) AS content_snippet,
     entry_type,
     route,

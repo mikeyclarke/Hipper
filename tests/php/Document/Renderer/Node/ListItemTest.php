@@ -36,4 +36,17 @@ class ListItemTest extends TestCase
         $result = $this->listItemNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function formatContentAsPlainText()
+    {
+        $textContent = 'Some list item text';
+
+        $expected = $textContent;
+
+        $result = $this->listItemNode->formatContentAsPlainText($textContent);
+        $this->assertEquals($expected, $result);
+    }
 }

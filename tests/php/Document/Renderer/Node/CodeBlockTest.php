@@ -36,4 +36,17 @@ class CodeBlockTest extends TestCase
         $result = $this->codeBlockNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function formatContentAsPlainText()
+    {
+        $textContent = '<some><code></code></some>';
+
+        $expected = $textContent . "\r\n";
+
+        $result = $this->codeBlockNode->formatContentAsPlainText($textContent);
+        $this->assertEquals($expected, $result);
+    }
 }

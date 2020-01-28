@@ -29,4 +29,9 @@ class HorizontalRule implements NodeInterface
     {
         return ['<hr>'];
     }
+
+    public function formatContentAsPlainText(string $textContent): ?string
+    {
+        return null;
+    }
 }

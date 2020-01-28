@@ -6,13 +6,16 @@ namespace Hipper\Document\Renderer;
 class HtmlFragmentRendererContextFactory
 {
     private HtmlEscaper $htmlEscaper;
+    private StringTerminator $stringTerminator;
     private UrlAttributeValidator $urlAttributeValidator;
 
     public function __construct(
         HtmlEscaper $htmlEscaper,
+        StringTerminator $stringTerminator,
         UrlAttributeValidator $urlAttributeValidator
     ) {
         $this->htmlEscaper = $htmlEscaper;
+        $this->stringTerminator = $stringTerminator;
         $this->urlAttributeValidator = $urlAttributeValidator;
     }
 
@@ -20,6 +23,7 @@ class HtmlFragmentRendererContextFactory
     {
         return new HtmlFragmentRendererContext(
             $this->htmlEscaper,
+            $this->stringTerminator,
             $this->urlAttributeValidator,
             $organizationDomain
         );

@@ -29,4 +29,9 @@ class HardBreak implements NodeInterface
     {
         return ['<br>'];
     }
+
+    public function formatContentAsPlainText(string $textContent): ?string
+    {
+        return null;
+    }
 }

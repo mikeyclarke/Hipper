@@ -39,4 +39,9 @@ class OrderedList implements NodeInterface
 
         return [$openingTag, '</ol>'];
     }
+
+    public function formatContentAsPlainText(string $textContent): ?string
+    {
+        return $textContent;
+    }
 }

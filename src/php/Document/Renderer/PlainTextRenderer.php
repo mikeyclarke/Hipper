@@ -3,17 +3,13 @@ declare(strict_types=1);
 
 namespace Hipper\Document\Renderer;
 
-use Hipper\Document\Renderer\HtmlFragmentRendererContextFactory;
-use Hipper\Document\Renderer\Mark\MarkFactory;
-use Hipper\Document\Renderer\Node\ListItem;
 use Hipper\Document\Renderer\Node\NodeFactory;
 use Hipper\Document\Renderer\RendererInterface;
 
 class PlainTextRenderer implements RendererInterface
 {
-    private $nodeFactory;
-    private $allowedMarks;
-    private $allowedNodes;
+    private NodeFactory $nodeFactory;
+    private array $allowedNodes;
 
     public function __construct(
         NodeFactory $nodeFactory,
@@ -51,17 +47,21 @@ class PlainTextRenderer implements RendererInterface
 
         $text = '';
 
-        if ($class instanceof ListItem) {
-            $text = '• ';
-        }
-
         if (isset($node['content'])) {
             foreach ($node['content'] as $childNode) {
                 $text .= self::renderNode($childNode, $context);
             }
         }
 
-        return $text . "\r\n\r\n";
+        if (empty(trim($text))) {
+            return '';
+        }
+
+        if ($class->isLeaf()) {
+            return $text;
+        }
+
+        return $class->formatContentAsPlainText($text);
     }
 
     private function renderText(array $node, HtmlFragmentRendererContext $context): string

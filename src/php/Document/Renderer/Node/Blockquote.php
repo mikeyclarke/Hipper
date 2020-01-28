@@ -29,4 +29,9 @@ class Blockquote implements NodeInterface
     {
         return ['<blockquote>', '</blockquote>'];
     }
+
+    public function formatContentAsPlainText(string $textContent): ?string
+    {
+        return $textContent . "\r\n";
+    }
 }

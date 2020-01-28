@@ -53,4 +53,9 @@ class Image implements NodeInterface
         $tag = sprintf('<img %s>', implode(' ', $htmlAttributes));
         return [$tag];
     }
+
+    public function formatContentAsPlainText(string $textContent): ?string
+    {
+        return null;
+    }
 }

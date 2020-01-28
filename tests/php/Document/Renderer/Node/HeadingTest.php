@@ -5,6 +5,7 @@ namespace Hipper\Tests\Document\Renderer\Node;
 
 use Hipper\Document\Renderer\HtmlFragmentRendererContext;
 use Hipper\Document\Renderer\Node\Heading;
+use Hipper\Document\Renderer\StringTerminator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
@@ -12,12 +13,16 @@ class HeadingTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
+    private $context;
     private $headingNode;
+    private $stringTerminator;
 
     public function setUp(): void
     {
-        $context = m::mock(HtmlFragmentRendererContext::class);
-        $this->headingNode = new Heading($context);
+        $this->context = m::mock(HtmlFragmentRendererContext::class);
+        $this->headingNode = new Heading($this->context);
+
+        $this->stringTerminator = m::mock(StringTerminator::class);
     }
 
     /**
@@ -71,5 +76,40 @@ class HeadingTest extends TestCase
 
         $result = $this->headingNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function formatContentAsPlainText()
+    {
+        $textContent = 'Speaking English is exhausting';
+
+        $terminated = 'Speaking English is exhausting.';
+
+        $this->createHtmlFragmentRendererContextExpectation();
+        $this->createStringTerminatorExpectation([$textContent], $terminated);
+
+        $expected = $terminated . "\r\n";
+
+        $result = $this->headingNode->formatContentAsPlainText($textContent);
+        $this->assertEquals($expected, $result);
+    }
+
+    private function createStringTerminatorExpectation($args, $result)
+    {
+        $this->stringTerminator
+            ->shouldReceive('terminateStringWithPunctuationCharacter')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createHtmlFragmentRendererContextExpectation()
+    {
+        $this->context
+            ->shouldReceive('getStringTerminator')
+            ->once()
+            ->andReturn($this->stringTerminator);
     }
 }

@@ -36,4 +36,17 @@ class UnorderedListTest extends TestCase
         $result = $this->unorderedListNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function formatContentAsPlainText()
+    {
+        $textContent = "List item one.\r\nList item two.\r\nList item three.\r\nList item four.\r\n";
+
+        $expected = $textContent;
+
+        $result = $this->unorderedListNode->formatContentAsPlainText($textContent);
+        $this->assertEquals($expected, $result);
+    }
 }

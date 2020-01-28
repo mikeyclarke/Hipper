@@ -29,4 +29,9 @@ class ListItem implements NodeInterface
     {
         return ['<li>', '</li>'];
     }
+
+    public function formatContentAsPlainText(string $textContent): ?string
+    {
+        return $textContent;
+    }
 }

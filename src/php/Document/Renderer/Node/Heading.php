@@ -9,7 +9,7 @@ class Heading implements NodeInterface
 {
     const DEFAULT_LEVEL = 1;
 
-    private $context;
+    private HtmlFragmentRendererContext $context;
 
     public function __construct(
         HtmlFragmentRendererContext $context

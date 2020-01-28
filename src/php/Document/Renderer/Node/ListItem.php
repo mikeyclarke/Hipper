@@ -7,7 +7,7 @@ use Hipper\Document\Renderer\HtmlFragmentRendererContext;
 
 class ListItem implements NodeInterface
 {
-    private $context;
+    private HtmlFragmentRendererContext $context;
 
     public function __construct(
         HtmlFragmentRendererContext $context

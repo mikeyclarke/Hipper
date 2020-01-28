@@ -8,9 +8,9 @@ use Hipper\Document\Renderer\UrlAttributeValidator;
 
 class HtmlFragmentRendererContext
 {
-    private $htmlEscaper;
-    private $urlAttributeValidator;
-    private $organizationDomain;
+    private HtmlEscaper $htmlEscaper;
+    private UrlAttributeValidator $urlAttributeValidator;
+    private string $organizationDomain;
 
     public function __construct(
         HtmlEscaper $htmlEscaper,

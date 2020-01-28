@@ -5,8 +5,8 @@ namespace Hipper\Document\Renderer;
 
 class HtmlFragmentRendererContextFactory
 {
-    private $htmlEscaper;
-    private $urlAttributeValidator;
+    private HtmlEscaper $htmlEscaper;
+    private UrlAttributeValidator $urlAttributeValidator;
 
     public function __construct(
         HtmlEscaper $htmlEscaper,

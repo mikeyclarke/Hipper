@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Section;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use PDO;
 
 class SectionRepository
@@ -83,6 +84,47 @@ class SectionRepository
         ]);
 
         $stmt = $qb->execute();
+        $result = $stmt->fetchAll();
+        return $result;
+    }
+
+    public function getNameAndAncestorNamesWithIds(array $ids, string $organizationId): ?array
+    {
+        $sql = <<<SQL
+WITH RECURSIVE family AS (
+    SELECT
+        s1.id,
+        s1.name,
+        s1.parent_section_id,
+        s1.knowledgebase_id
+    FROM section s1
+    WHERE s1.id IN (?) AND s1.organization_id = ?
+    UNION ALL
+    SELECT
+        s2.id,
+        s2.name,
+        s2.parent_section_id,
+        s2.knowledgebase_id
+    FROM section s2
+    JOIN family
+    ON s2.id = family.parent_section_id AND s2.organization_id = ?
+)
+SELECT * FROM family
+SQL;
+
+        $stmt = $this->connection->executeQuery(
+            $sql,
+            [
+                $ids,
+                $organizationId,
+                $organizationId,
+            ],
+            [
+                Connection::PARAM_STR_ARRAY,
+                ParameterType::STRING,
+                ParameterType::STRING,
+            ]
+        );
         $result = $stmt->fetchAll();
         return $result;
     }

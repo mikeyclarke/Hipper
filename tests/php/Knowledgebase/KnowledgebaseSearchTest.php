@@ -11,6 +11,7 @@ use Hipper\Organization\OrganizationModel;
 use Hipper\Project\ProjectModel;
 use Hipper\Search\SearchResultsPaginator;
 use Hipper\Search\SearchResultsPaginatorFactory;
+use Hipper\Section\SectionAncestory;
 use Hipper\Team\TeamModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +24,7 @@ class KnowledgebaseSearchTest extends TestCase
     private $knowledgebaseSearchRepository;
     private $knowledgebaseSearchResultsFormatter;
     private $searchResultsPaginatorFactory;
+    private $sectionAncestory;
     private $knowledgebaseSearch;
     private $searchResultsPaginator;
 
@@ -32,12 +34,14 @@ class KnowledgebaseSearchTest extends TestCase
         $this->knowledgebaseSearchRepository = m::mock(KnowledgebaseSearchRepository::class);
         $this->knowledgebaseSearchResultsFormatter = m::mock(KnowledgebaseSearchResultsFormatter::class);
         $this->searchResultsPaginatorFactory = m::mock(SearchResultsPaginatorFactory::class);
+        $this->sectionAncestory = m::mock(SectionAncestory::class);
 
         $this->knowledgebaseSearch = new KnowledgebaseSearch(
             $this->knowledgebaseRepository,
             $this->knowledgebaseSearchRepository,
             $this->knowledgebaseSearchResultsFormatter,
-            $this->searchResultsPaginatorFactory
+            $this->searchResultsPaginatorFactory,
+            $this->sectionAncestory
         );
 
         $this->searchResultsPaginator = m::mock(SearchResultsPaginator::class);
@@ -56,14 +60,19 @@ class KnowledgebaseSearchTest extends TestCase
         $searchResults = [
             [
                 'knowledgebase_id' => 'kb1-uuid',
+                'parent_section_id' => 'section1-uuid',
             ],
             [
                 'knowledgebase_id' => 'kb2-uuid',
+                'parent_section_id' => null,
             ],
             [
                 'knowledgebase_id' => 'kb1-uuid',
+                'parent_section_id' => 'section2-uuid',
             ],
         ];
+        $parentSectionIds = ['section1-uuid', 'section2-uuid'];
+        $ancestory = ['ancestory'];
         $knowledgebasesResult = [
             [
                 'entity' => 'team',
@@ -89,6 +98,7 @@ class KnowledgebaseSearchTest extends TestCase
         );
         $this->createSearchResultsPaginatorHasMoreResultsExpectation([$searchResults], false);
         $this->createSearchResultsPaginatorFilterResultsExpectation([$searchResults], $searchResults);
+        $this->createSectionAncestoryExpectation([$parentSectionIds, $organization], $ancestory);
         $this->createKnowledgebaseRepositoryExpectation(
             [['kb1-uuid', 'kb2-uuid'], $organization->getId()],
             $knowledgebasesResult
@@ -100,6 +110,7 @@ class KnowledgebaseSearchTest extends TestCase
                     'kb1-uuid' => TeamModel::createFromArray($knowledgebasesResult[0]),
                     'kb2-uuid' => ProjectModel::createFromArray($knowledgebasesResult[1]),
                 ],
+                $ancestory,
                 $displayTimeZone,
                 $searchResults
             ],
@@ -125,10 +136,21 @@ class KnowledgebaseSearchTest extends TestCase
         $knowledgebaseOwner->setKnowledgebaseId('team-kb-uuid');
 
         $searchResults = [
-            ['result'],
-            ['result'],
-            ['result'],
+            [
+                'knowledgebase_id' => 'kb1-uuid',
+                'parent_section_id' => 'section1-uuid',
+            ],
+            [
+                'knowledgebase_id' => 'kb2-uuid',
+                'parent_section_id' => null,
+            ],
+            [
+                'knowledgebase_id' => 'kb1-uuid',
+                'parent_section_id' => 'section2-uuid',
+            ],
         ];
+        $parentSectionIds = ['section1-uuid', 'section2-uuid'];
+        $ancestory = ['ancestory'];
         $formattedResults = [
             ['formatted-result'],
             ['formatted-result'],
@@ -144,10 +166,12 @@ class KnowledgebaseSearchTest extends TestCase
         );
         $this->createSearchResultsPaginatorHasMoreResultsExpectation([$searchResults], false);
         $this->createSearchResultsPaginatorFilterResultsExpectation([$searchResults], $searchResults);
+        $this->createSectionAncestoryExpectation([$parentSectionIds, $organization], $ancestory);
         $this->createKnowledgebaseSearchResultsFormatterExpectation(
             [
                 $organization,
                 [$knowledgebaseOwner->getKnowledgebaseId() => $knowledgebaseOwner],
+                $ancestory,
                 $displayTimeZone,
                 $searchResults
             ],
@@ -178,6 +202,15 @@ class KnowledgebaseSearchTest extends TestCase
     {
         $this->knowledgebaseRepository
             ->shouldReceive('getKnowledgebaseOwnersForIds')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createSectionAncestoryExpectation($args, $result)
+    {
+        $this->sectionAncestory
+            ->shouldReceive('getAncestorNamesForSectionIds')
             ->once()
             ->with(...$args)
             ->andReturn($result);

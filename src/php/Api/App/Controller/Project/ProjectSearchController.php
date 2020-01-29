@@ -51,7 +51,6 @@ class ProjectSearchController
             'search_query' => $searchQuery,
             'search_results' => $searchResults,
             'more_results_route' => $request->getPathInfo(),
-            'show_owners' => true,
         ];
 
         return new JsonResponse(

@@ -66,7 +66,6 @@ class OrganizationSearchController
             'more_results_route' => $moreResultsEndpoint,
             'search_query' => $searchQuery,
             'search_results' => $searchResults,
-            'show_owners' => true,
         ];
 
         return new Response(

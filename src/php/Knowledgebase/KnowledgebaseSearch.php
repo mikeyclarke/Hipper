@@ -6,6 +6,7 @@ namespace Hipper\Knowledgebase;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Project\ProjectModel;
 use Hipper\Search\SearchResultsPaginatorFactory;
+use Hipper\Section\SectionAncestory;
 use Hipper\Team\TeamModel;
 
 class KnowledgebaseSearch
@@ -14,17 +15,20 @@ class KnowledgebaseSearch
     private KnowledgebaseSearchRepository $knowledgebaseSearchRepository;
     private KnowledgebaseSearchResultsFormatter $knowledgebaseSearchResultsFormatter;
     private SearchResultsPaginatorFactory $searchResultsPaginatorFactory;
+    private SectionAncestory $sectionAncestory;
 
     public function __construct(
         KnowledgebaseRepository $knowledgebaseRepository,
         KnowledgebaseSearchRepository $knowledgebaseSearchRepository,
         KnowledgebaseSearchResultsFormatter $knowledgebaseSearchResultsFormatter,
-        SearchResultsPaginatorFactory $searchResultsPaginatorFactory
+        SearchResultsPaginatorFactory $searchResultsPaginatorFactory,
+        SectionAncestory $sectionAncestory
     ) {
         $this->knowledgebaseRepository = $knowledgebaseRepository;
         $this->knowledgebaseSearchRepository = $knowledgebaseSearchRepository;
         $this->knowledgebaseSearchResultsFormatter = $knowledgebaseSearchResultsFormatter;
         $this->searchResultsPaginatorFactory = $searchResultsPaginatorFactory;
+        $this->sectionAncestory = $sectionAncestory;
     }
 
     public function search(
@@ -47,6 +51,12 @@ class KnowledgebaseSearch
         $moreResults = $searchResultsPaginator->hasMoreResults($results);
         $filteredResults = $searchResultsPaginator->filterResults($results);
 
+        $parentSectionIds = $this->getParentSectionIdsFromResults($filteredResults);
+        $ancestory = $this->sectionAncestory->getAncestorNamesForSectionIds(
+            $parentSectionIds,
+            $organization
+        );
+
         $knowledgebaseIds = $this->getKnowledgebaseIdsFromResults($filteredResults);
         $knowledgebasesResult = $this->knowledgebaseRepository->getKnowledgebaseOwnersForIds(
             $knowledgebaseIds,
@@ -67,6 +77,7 @@ class KnowledgebaseSearch
         $formatted = $this->knowledgebaseSearchResultsFormatter->format(
             $organization,
             $knowledgebaseOwners,
+            $ancestory,
             $displayTimeZone,
             $filteredResults
         );
@@ -96,12 +107,19 @@ class KnowledgebaseSearch
         $moreResults = $searchResultsPaginator->hasMoreResults($results);
         $filteredResults = $searchResultsPaginator->filterResults($results);
 
+        $parentSectionIds = $this->getParentSectionIdsFromResults($filteredResults);
+        $ancestory = $this->sectionAncestory->getAncestorNamesForSectionIds(
+            $parentSectionIds,
+            $organization
+        );
+
         $knowledgebaseOwners = [];
         $knowledgebaseOwners[$knowledgebaseOwner->getKnowledgebaseId()] = $knowledgebaseOwner;
 
         $formatted = $this->knowledgebaseSearchResultsFormatter->format(
             $organization,
             $knowledgebaseOwners,
+            $ancestory,
             $displayTimeZone,
             $filteredResults
         );
@@ -117,5 +135,16 @@ class KnowledgebaseSearch
             $results
         );
         return array_unique($knowledgebaseIds);
+    }
+
+    private function getParentSectionIdsFromResults(array $results): array
+    {
+        $sectionIds = [];
+        foreach ($results as $result) {
+            if (null !== $result['parent_section_id'] && !in_array($result['parent_section_id'], $sectionIds)) {
+                $sectionIds[] = $result['parent_section_id'];
+            }
+        }
+        return $sectionIds;
     }
 }

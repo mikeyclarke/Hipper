@@ -29,11 +29,12 @@ class KnowledgebaseSearchResultsFormatter
     public function format(
         OrganizationModel $organization,
         array $knowledgebaseOwners,
+        array $ancestorTree,
         string $displayTimeZone,
         array $results
     ): array {
         return array_map(
-            function ($result) use ($knowledgebaseOwners, $organization, $displayTimeZone) {
+            function ($result) use ($knowledgebaseOwners, $ancestorTree, $organization, $displayTimeZone) {
                 $knowledgebaseOwner = $knowledgebaseOwners[$result['knowledgebase_id']] ?? null;
                 if (null === $knowledgebaseOwner) {
                     throw new RuntimeException('Knowledgebase not found');
@@ -41,6 +42,15 @@ class KnowledgebaseSearchResultsFormatter
 
                 $knowledgebaseOwnerType = $this->getKnowledgebaseOwnerType($knowledgebaseOwner);
                 list($routeName, $routeParams) = $this->getRouteDetails($knowledgebaseOwner);
+
+                $owners = ["{$knowledgebaseOwner->getName()} {$knowledgebaseOwnerType} docs"];
+                $parentSectionId = $result['parent_section_id'];
+                if (null !== $parentSectionId) {
+                    if (!isset($ancestorTree[$parentSectionId])) {
+                        throw new RuntimeException(sprintf('Section “%s” not found', $parentSectionId));
+                    }
+                    $owners = [...$owners, ...$ancestorTree[$parentSectionId]];
+                }
 
                 return [
                     'name' => $result['name'],
@@ -58,10 +68,7 @@ class KnowledgebaseSearchResultsFormatter
                     ),
                     'type' => $result['entry_type'],
                     'timestamp' => $this->timestampFormatter->format($result['updated'], $displayTimeZone),
-                    'owner' => [
-                        'name' => $knowledgebaseOwner->getName(),
-                        'type' => $knowledgebaseOwnerType,
-                    ],
+                    'owners' => $owners,
                 ];
             },
             $results

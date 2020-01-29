@@ -8,10 +8,18 @@
                     <span class="c-avatar__initials">{{ result.initials }}</span>
                 {% endif %}
             </div>
-            {% if show_owners is defined and show_owners is same as(true) %}
-                <span class="c-search-results__result-owner">{{ result.owner.name ~ ' ' ~ result.owner.type }}</span>
-            {% endif %}
             <h2 class="c-search-results__result-title">{{ result.name }}</h2>
+            {% if result.owners is defined %}
+                <div class="c-search-results__result-owners" aria-label="Found in: ">
+                    {% for owner in result.owners %}
+                        {% if loop.last %}
+                            <span class="c-search-results__result-owner">{{ owner }}</span>
+                        {% else %}
+                            <span class="c-search-results__result-owner">{{ owner }}<svg class="c-search-results__result-owners-divider" aria-hidden="true"><use href="#icon-sprite__chevron-right"/></svg></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% if result.raw_snippet %}
                 <p class="c-search-results__result-body">{{ result.raw_snippet|raw }}</p>
             {% elseif result.description %}

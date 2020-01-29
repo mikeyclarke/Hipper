@@ -14,6 +14,9 @@ $item-max-width: 530px;
 $item-title-font-size: 18px;
 $item-title-font-size-medium-bp: 20px;
 
+$item-owner-color: config.config-get(color-shades, dark, 600);
+$item-owners-divider-fill: config.config-get(color-shades, grey, 500);
+
 $item-description-font-size: 15px;
 $item-description-line-height: 22px;
 $item-description-font-size-medium-bp: 16px;
@@ -140,22 +143,39 @@ $item-description-line-height-medium-bp: 24px;
     }
 }
 
-%c-base-list__item-context {
-    color: config.config-get(color-shades, dark, 700);
-    display: block;
+%c-base-list__item-owners {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin: -1px 0 9px;
+    max-width: $item-max-width;
+}
+
+%c-base-list__item-owner {
+    color: $item-owner-color;
+    display: flex;
     font-size: 14px;
     font-weight: 400;
     line-height: 18px;
-    margin: 0 0 2px;
+    margin: 0 2px 4px 0;
     max-width: $item-max-width;
     @include font-smoothing.font-smoothing;
 }
 
-%c-base-list__item-context--responsive {
+%c-base-list__item-owner:last-child {
+    margin-right: 0;
+}
+
+%c-base-list__item-owner--responsive {
     @include breakpoint.breakpoint(app, medium) {
         font-size: 15px;
-        margin: 0 0 8px;
     }
+}
+
+%c-base-list__item-owners-divider {
+    fill: $item-owners-divider-fill;
+    height: 18px;
+    width: 18px;
 }
 
 %c-base-list__item-description {
@@ -198,7 +218,7 @@ $item-description-line-height-medium-bp: 24px;
     }
 
     %c-base-list__item-title,
-    %c-base-list__item-context,
+    %c-base-list__item-owners,
     %c-base-list__item-description,
     %c-base-list__item-meta {
         margin-left: $content-left-offset-with-avatar;
@@ -207,7 +227,7 @@ $item-description-line-height-medium-bp: 24px;
 
 %c-base-list__item--with-avatar--responsive {
     %c-base-list__item-title,
-    %c-base-list__item-context,
+    %c-base-list__item-owners,
     %c-base-list__item-description,
     %c-base-list__item-meta {
         @include breakpoint.breakpoint(app, medium) {

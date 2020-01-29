@@ -24,7 +24,7 @@ class CreateTeamController
         'Sales',
     ];
 
-    private $twig;
+    private Twig $twig;
 
     public function __construct(
         Twig $twig

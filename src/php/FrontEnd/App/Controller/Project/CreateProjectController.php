@@ -15,7 +15,7 @@ class CreateProjectController
         'Marketing website'
     ];
 
-    private $twig;
+    private Twig $twig;
 
     public function __construct(
         Twig $twig

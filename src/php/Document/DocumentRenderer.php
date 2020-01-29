@@ -15,12 +15,12 @@ use Hipper\Document\Renderer\RendererResult;
 
 class DocumentRenderer
 {
-    private $contextFactory;
-    private $decoder;
-    private $documentOutlineGenerator;
-    private $documentOutlineHtmlIdsInjector;
-    private $htmlRenderer;
-    private $plainTextRenderer;
+    private HtmlFragmentRendererContextFactory $contextFactory;
+    private Decoder $decoder;
+    private DocumentOutlineGenerator $documentOutlineGenerator;
+    private DocumentOutlineHtmlIdsInjector $documentOutlineHtmlIdsInjector;
+    private HtmlRenderer $htmlRenderer;
+    private PlainTextRenderer $plainTextRenderer;
 
     public function __construct(
         HtmlFragmentRendererContextFactory $contextFactory,

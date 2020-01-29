@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\FrontEnd\App\Controller\Team;
 
+use Hipper\Security\UntrustedInternalUriRedirector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment as Twig;
@@ -25,17 +26,22 @@ class CreateTeamController
     ];
 
     private Twig $twig;
+    private UntrustedInternalUriRedirector $untrustedInternalUriRedirector;
 
     public function __construct(
-        Twig $twig
+        Twig $twig,
+        UntrustedInternalUriRedirector $untrustedInternalUriRedirector
     ) {
         $this->twig = $twig;
+        $this->untrustedInternalUriRedirector = $untrustedInternalUriRedirector;
     }
 
     public function getAction(Request $request): Response
     {
+        $returnTo = $request->query->get('return_to');
+
         $context = [
-            'backLink' => $this->getBackLink($request),
+            'backLink' => $this->untrustedInternalUriRedirector->generateUri($returnTo, '/'),
             'bodyClassList' => [
                 'l-sheet',
             ],
@@ -55,25 +61,5 @@ class CreateTeamController
     {
         $names = self::PLACEHOLDER_TEAM_NAMES;
         return $names[array_rand($names)];
-    }
-
-    private function getBackLink(Request $request): string
-    {
-        if (!$request->server->has('HTTP_REFERER')) {
-            return '/';
-        }
-
-        $referrer = $request->server->get('HTTP_REFERER');
-        $origin = $request->getSchemeAndHttpHost();
-        if (substr($referrer, 0, strlen($origin)) !== $origin) {
-            return '/';
-        }
-
-        $path = substr($referrer, strlen($origin));
-        if ($path === 'teams/new') {
-            return '/';
-        }
-
-        return $path;
     }
 }

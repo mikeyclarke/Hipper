@@ -1,10 +1,10 @@
 <context-menu class="c-context-menu" role="menu" tabindex="-1" aria-hidden="true" id="{{ html_id }}">
     <div class="c-context-menu__content">
         <div class="c-context-menu__group">
-            <a href="/teams/new" role="menuitem" class="c-context-menu__item">
+            <a href="/teams/new?{{ { return_to: app.request.getRequestUri() }|url_encode }}" role="menuitem" class="c-context-menu__item">
                 New team
             </a>
-            <a href="/projects/new" role="menuitem" class="c-context-menu__item">
+            <a href="/projects/new?{{ { return_to: app.request.getRequestUri() }|url_encode }}" role="menuitem" class="c-context-menu__item">
                 New project
             </a>
         </div>

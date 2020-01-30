@@ -40,13 +40,13 @@ class ListItemTest extends TestCase
     /**
      * @test
      */
-    public function formatContentAsPlainText()
+    public function toPlainTextString()
     {
         $textContent = 'Some list item text';
 
         $expected = $textContent;
 
-        $result = $this->listItemNode->formatContentAsPlainText($textContent);
+        $result = $this->listItemNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
 }

@@ -61,7 +61,7 @@ class PlainTextRenderer implements RendererInterface
             return $text;
         }
 
-        return $class->formatContentAsPlainText($text);
+        return $class->toPlainTextString($text);
     }
 
     private function renderText(array $node, HtmlFragmentRendererContext $context): string

@@ -11,5 +11,5 @@ interface NodeInterface
 
     public function getHtmlTags(?array $attributes, ?string $htmlId): ?array;
 
-    public function formatContentAsPlainText(string $textContent): ?string;
+    public function toPlainTextString(string $textContent): string;
 }

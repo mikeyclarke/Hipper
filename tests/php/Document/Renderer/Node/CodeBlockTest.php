@@ -40,13 +40,13 @@ class CodeBlockTest extends TestCase
     /**
      * @test
      */
-    public function formatContentAsPlainText()
+    public function toPlainTextString()
     {
         $textContent = '<some><code></code></some>';
 
         $expected = $textContent . "\r\n";
 
-        $result = $this->codeBlockNode->formatContentAsPlainText($textContent);
+        $result = $this->codeBlockNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
 }

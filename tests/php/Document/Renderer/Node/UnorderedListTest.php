@@ -40,13 +40,13 @@ class UnorderedListTest extends TestCase
     /**
      * @test
      */
-    public function formatContentAsPlainText()
+    public function toPlainTextString()
     {
         $textContent = "List item one.\r\nList item two.\r\nList item three.\r\nList item four.\r\n";
 
         $expected = $textContent;
 
-        $result = $this->unorderedListNode->formatContentAsPlainText($textContent);
+        $result = $this->unorderedListNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
 }

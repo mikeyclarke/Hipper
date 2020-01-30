@@ -81,7 +81,7 @@ class HeadingTest extends TestCase
     /**
      * @test
      */
-    public function formatContentAsPlainText()
+    public function toPlainTextString()
     {
         $textContent = 'Speaking English is exhausting';
 
@@ -92,7 +92,7 @@ class HeadingTest extends TestCase
 
         $expected = $terminated . "\r\n";
 
-        $result = $this->headingNode->formatContentAsPlainText($textContent);
+        $result = $this->headingNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
 

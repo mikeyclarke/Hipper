@@ -46,7 +46,7 @@ class Heading implements NodeInterface
         return [$openingTag, "</{$tagName}>"];
     }
 
-    public function formatContentAsPlainText(string $textContent): ?string
+    public function toPlainTextString(string $textContent): string
     {
         $stringTerminator = $this->context->getStringTerminator();
         $str = $stringTerminator->terminateStringWithPunctuationCharacter($textContent);

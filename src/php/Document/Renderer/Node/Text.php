@@ -30,7 +30,7 @@ class Text implements NodeInterface
         return null;
     }
 
-    public function formatContentAsPlainText(string $textContent): ?string
+    public function toPlainTextString(string $textContent): string
     {
         return null;
     }

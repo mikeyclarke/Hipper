@@ -44,7 +44,7 @@ class ParagraphTest extends TestCase
     /**
      * @test
      */
-    public function formatContentAsPlainText()
+    public function toPlainTextString()
     {
         $textContent = 'Speaking English is exhausting';
 
@@ -55,7 +55,7 @@ class ParagraphTest extends TestCase
 
         $expected = $terminated . "\r\n";
 
-        $result = $this->paragraphNode->formatContentAsPlainText($textContent);
+        $result = $this->paragraphNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
 

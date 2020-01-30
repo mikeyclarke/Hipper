@@ -30,7 +30,7 @@ class CodeBlock implements NodeInterface
         return ['<pre><code>', '</code></pre>'];
     }
 
-    public function formatContentAsPlainText(string $textContent): ?string
+    public function toPlainTextString(string $textContent): string
     {
         return $textContent . "\r\n";
     }

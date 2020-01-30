@@ -40,7 +40,7 @@ class BlockquoteTest extends TestCase
     /**
      * @test
      */
-    public function formatContentAsPlainText()
+    public function toPlainTextString()
     {
         $textContent = <<<TEXT
 You expect of me a speech? I have only one to give, and it is the same one I’d give were we not standing on the brim of
@@ -55,7 +55,7 @@ TEXT;
 
         $expected = $textContent . "\r\n";
 
-        $result = $this->blockquoteNode->formatContentAsPlainText($textContent);
+        $result = $this->blockquoteNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
 }

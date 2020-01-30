@@ -30,7 +30,7 @@ class Paragraph implements NodeInterface
         return ['<p>', '</p>'];
     }
 
-    public function formatContentAsPlainText(string $textContent): ?string
+    public function toPlainTextString(string $textContent): string
     {
         $stringTerminator = $this->context->getStringTerminator();
         $str = $stringTerminator->terminateStringWithPunctuationCharacter($textContent);

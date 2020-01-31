@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Document\Renderer\Node;
 
+use Hipper\Document\Renderer\Exception\InvalidFragmentStructureException;
 use Hipper\Document\Renderer\HtmlFragmentRendererContext;
 
 class ListItem implements NodeInterface
@@ -33,5 +34,28 @@ class ListItem implements NodeInterface
     public function toPlainTextString(string $textContent): string
     {
         return $textContent;
+    }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        $class = get_class($parentNode);
+        switch ($class) {
+            case OrderedList::class:
+                $prefix = ($index + 1) . '.';
+                break;
+            case UnorderedList::class:
+                $prefix = '-';
+                break;
+            default:
+                throw new InvalidFragmentStructureException;
+        }
+
+        $result = "{$prefix} {$content}";
+
+        return $result;
     }
 }

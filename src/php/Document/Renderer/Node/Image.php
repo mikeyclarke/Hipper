@@ -27,12 +27,7 @@ class Image implements NodeInterface
 
     public function getHtmlTags(?array $attributes, ?string $htmlId): ?array
     {
-        if (null === $attributes || !isset($attributes['src'])) {
-            return null;
-        }
-
-        $urlAttributeValidator = $this->context->getUrlAttributeValidator();
-        if (!$urlAttributeValidator->isValid($attributes['src'])) {
+        if (!$this->hasValidSrc($attributes)) {
             return null;
         }
 
@@ -56,6 +51,41 @@ class Image implements NodeInterface
 
     public function toPlainTextString(string $textContent): string
     {
-        return null;
+        return '';
+    }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        if (!$this->hasValidSrc($attributes)) {
+            return '';
+        }
+
+        $src = $attributes['src'];
+        $alt = $attributes['alt'] ?? '';
+
+        if (isset($attributes['title']) && !empty($attributes['title'])) {
+            $title = $attributes['title'];
+            return '![' . $alt . '](' . $src . ' "' . $title . '")' . "\n";
+        }
+
+        return "![{$alt}]({$src})\n";
+    }
+
+    private function hasValidSrc(?array $attributes): bool
+    {
+        if (null === $attributes || !isset($attributes['src'])) {
+            return false;
+        }
+
+        $urlAttributeValidator = $this->context->getUrlAttributeValidator();
+        if (!$urlAttributeValidator->isValid($attributes['src'])) {
+            return false;
+        }
+
+        return true;
     }
 }

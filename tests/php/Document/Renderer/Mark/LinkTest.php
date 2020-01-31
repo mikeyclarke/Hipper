@@ -147,6 +147,50 @@ class LinkTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    /**
+     * @test
+     */
+    public function originalTextReturnedAsMarkdownIfNoHrefAttribute()
+    {
+        $text = 'Some text';
+        $attributes = [];
+
+        $result = $this->linkMark->toMarkdownString($text, $attributes);
+        $this->assertEquals($text, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function originalTextReturnedAsMarkdownIfHrefIsNotValidUrl()
+    {
+        $text = 'Some text';
+        $attributes = ['href' => 'unsafe-url'];
+
+        $this->createContextGetUrlAttributeValidatorExpectation();
+        $this->createUrlAttributeValidatorExpectation([$attributes['href']], false);
+
+        $result = $this->linkMark->toMarkdownString($text, $attributes);
+        $this->assertEquals($text, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $text = 'Some text';
+        $attributes = ['href' => 'https://duckduckgo.com'];
+
+        $this->createContextGetUrlAttributeValidatorExpectation();
+        $this->createUrlAttributeValidatorExpectation([$attributes['href']], true);
+
+        $expected = "[Some text](https://duckduckgo.com)";
+
+        $result = $this->linkMark->toMarkdownString($text, $attributes);
+        $this->assertEquals($expected, $result);
+    }
+
     private function createHtmlEscaperExpectation($args, $result)
     {
         $this->htmlEscaper

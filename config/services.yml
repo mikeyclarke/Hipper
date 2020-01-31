@@ -94,6 +94,11 @@ services:
             $allowedMarks: '%document_allowed_marks%'
             $allowedNodes: '%document_allowed_nodes%'
 
+    Hipper\Document\Renderer\MarkdownRenderer:
+        arguments:
+            $allowedMarks: '%document_allowed_marks%'
+            $allowedNodes: '%document_allowed_nodes%'
+
     Hipper\Document\Renderer\PlainTextRenderer:
         arguments:
             $allowedNodes: '%document_allowed_nodes%'

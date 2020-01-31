@@ -96,6 +96,34 @@ class HeadingTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $content = 'Speaking English is exhausting';
+        $attributes = ['level' => 4];
+
+        $expected = "#### Speaking English is exhausting\n";
+
+        $result = $this->headingNode->toMarkdownString($content, 0, null, $attributes);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownStringWithDefault()
+    {
+        $content = 'Speaking English is exhausting';
+        $attributes = null;
+
+        $expected = "# Speaking English is exhausting\n";
+
+        $result = $this->headingNode->toMarkdownString($content, 0, null, $attributes);
+        $this->assertEquals($expected, $result);
+    }
+
     private function createStringTerminatorExpectation($args, $result)
     {
         $this->stringTerminator

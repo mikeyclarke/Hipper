@@ -34,4 +34,13 @@ class Text implements NodeInterface
     {
         return null;
     }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        return '';
+    }
 }

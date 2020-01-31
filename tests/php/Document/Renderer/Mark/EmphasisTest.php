@@ -35,4 +35,18 @@ class EmphasisTest extends TestCase
         $result = $this->emphasisMark->getHtmlTags($attributes);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $text = 'Some text';
+        $attributes = null;
+
+        $expected = '*Some text*';
+
+        $result = $this->emphasisMark->toMarkdownString($text, $attributes);
+        $this->assertEquals($expected, $result);
+    }
 }

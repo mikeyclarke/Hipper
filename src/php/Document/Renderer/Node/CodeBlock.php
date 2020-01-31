@@ -34,4 +34,15 @@ class CodeBlock implements NodeInterface
     {
         return $textContent . "\r\n";
     }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        $result = "```\n{$content}\n```\n";
+
+        return $result;
+    }
 }

@@ -34,4 +34,13 @@ class UnorderedList implements NodeInterface
     {
         return $textContent;
     }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        return "{$content}\n";
+    }
 }

@@ -1,4 +1,4 @@
-<?Php
+<?php
 declare(strict_types=1);
 
 namespace Hipper\Document\Renderer\Node;
@@ -33,5 +33,14 @@ class HorizontalRule implements NodeInterface
     public function toPlainTextString(string $textContent): string
     {
         return '';
+    }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        return "- - - - - -\n\n";
     }
 }

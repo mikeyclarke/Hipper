@@ -73,4 +73,17 @@ class OrderedListTest extends TestCase
         $result = $this->orderedListNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $content = "1. List item one.\n2. List item two.\n3. List item three.\n4. List item four.\n";
+
+        $expected = "1. List item one.\n2. List item two.\n3. List item three.\n4. List item four.\n\n";
+
+        $result = $this->orderedListNode->toMarkdownString($content, 0, null, null);
+        $this->assertEquals($expected, $result);
+    }
 }

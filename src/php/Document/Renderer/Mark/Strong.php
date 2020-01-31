@@ -19,4 +19,9 @@ class Strong implements MarkInterface
     {
         return ['<strong>', '</strong>'];
     }
+
+    public function toMarkdownString(string $text, ?array $attributes): string
+    {
+        return "**{$text}**";
+    }
 }

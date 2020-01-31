@@ -81,6 +81,7 @@ $single-line-toolbar-breakpoint: 840px;
 .c-document-toolbar__controls-group:last-child {
     display: flex;
     justify-content: flex-end;
+    position: relative;
 }
 
 .c-document-toolbar__back-button {

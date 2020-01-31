@@ -29,13 +29,7 @@ class Heading implements NodeInterface
 
     public function getHtmlTags(?array $attributes, ?string $htmlId): ?array
     {
-        $level = self::DEFAULT_LEVEL;
-        if (null !== $attributes && isset($attributes['level'])) {
-            $attrLevel = (int) $attributes['level'];
-            if ($attrLevel >= 1 && $attrLevel <= 6) {
-                $level = $attrLevel;
-            }
-        }
+        $level = $this->getLevel($attributes);
 
         $tagName = sprintf('h%d', $level);
         $openingTag = "<{$tagName}>";
@@ -51,5 +45,32 @@ class Heading implements NodeInterface
         $stringTerminator = $this->context->getStringTerminator();
         $str = $stringTerminator->terminateStringWithPunctuationCharacter($textContent);
         return $str . "\r\n";
+    }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        $level = $this->getLevel($attributes);
+        $prefix = str_repeat('#', $level);
+
+        $result = "{$prefix} {$content}\n";
+
+        return $result;
+    }
+
+    private function getLevel(?array $attributes): int
+    {
+        $level = self::DEFAULT_LEVEL;
+        if (null !== $attributes && isset($attributes['level'])) {
+            $attrLevel = (int) $attributes['level'];
+            if ($attrLevel >= 1 && $attrLevel <= 6) {
+                $level = $attrLevel;
+            }
+        }
+
+        return $level;
     }
 }

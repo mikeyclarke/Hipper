@@ -58,4 +58,18 @@ TEXT;
         $result = $this->blockquoteNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        // phpcs:disable Generic.Files.LineLength
+        $content = "Please! Please, speak English. I enjoy to speak English. It is simple and ugly.\n\n– The Dauphin of France";
+        $expected = "> Please! Please, speak English. I enjoy to speak English. It is simple and ugly.\n> \n> – The Dauphin of France\n\n";
+        // phpcs:enable Generic.Files.LineLength
+
+        $result = $this->blockquoteNode->toMarkdownString($content, 0, null, null);
+        $this->assertEquals($expected, $result);
+    }
 }

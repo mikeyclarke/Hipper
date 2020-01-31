@@ -44,4 +44,14 @@ class OrderedList implements NodeInterface
     {
         return $textContent;
     }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        $result = "{$content}\n";
+        return $result;
+    }
 }

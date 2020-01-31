@@ -34,4 +34,13 @@ class HardBreak implements NodeInterface
     {
         return '';
     }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        return "";
+    }
 }

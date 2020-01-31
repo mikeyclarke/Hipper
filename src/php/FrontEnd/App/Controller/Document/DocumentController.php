@@ -85,6 +85,12 @@ class DocumentController
 
         $rendererResult = $this->documentRenderer->render($document->getContent(), 'html', $request->getHost(), true);
         $editUrl = $this->knowledgebaseRouteUrlGenerator->generate($organization, $knowledgebaseOwner, $route, 'edit');
+        $exportUrl = $this->knowledgebaseRouteUrlGenerator->generate(
+            $organization,
+            $knowledgebaseOwner,
+            $route,
+            'export'
+        );
         $viewUrl = $this->knowledgebaseRouteUrlGenerator->generate(
             $organization,
             $knowledgebaseOwner,
@@ -101,6 +107,7 @@ class DocumentController
             'document_outline' => $rendererResult->getOutline(),
             'document_history' => $history,
             'edit_url' => $editUrl,
+            'export_url' => $exportUrl,
             'html_title' => sprintf('%s – %s', $document->getName(), $knowledgebaseOwner->getName()),
             'htmlClassList' => ['l-document-editor'],
             'view_url' => $viewUrl,

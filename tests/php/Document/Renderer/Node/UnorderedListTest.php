@@ -49,4 +49,17 @@ class UnorderedListTest extends TestCase
         $result = $this->unorderedListNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $content = "- List item one.\n- List item two.\n- List item three.\n- List item four.\n";
+
+        $expected = "- List item one.\n- List item two.\n- List item three.\n- List item four.\n\n";
+
+        $result = $this->unorderedListNode->toMarkdownString($content, 0, null, null);
+        $this->assertEquals($expected, $result);
+    }
 }

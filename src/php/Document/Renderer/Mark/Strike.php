@@ -19,4 +19,9 @@ class Strike implements MarkInterface
     {
         return ['<s>', '</s>'];
     }
+
+    public function toMarkdownString(string $text, ?array $attributes): string
+    {
+        return "~~{$text}~~";
+    }
 }

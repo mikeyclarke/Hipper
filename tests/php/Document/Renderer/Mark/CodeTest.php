@@ -35,4 +35,18 @@ class CodeTest extends TestCase
         $result = $this->codeMark->getHtmlTags($attributes);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $text = 'Some text';
+        $attributes = null;
+
+        $expected = '`Some text`';
+
+        $result = $this->codeMark->toMarkdownString($text, $attributes);
+        $this->assertEquals($expected, $result);
+    }
 }

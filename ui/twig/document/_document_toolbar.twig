@@ -34,10 +34,20 @@
                 Edit this doc
                 <svg class="c-document-toolbar__primary-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
             </a>
-            <button class="c-document-toolbar__outline-button" type="button">
-                More
-                <svg class="c-document-toolbar__outline-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__more"/></svg>
-            </button>
+            <context-menu-toggle>
+                <button class="c-document-toolbar__outline-button js-button" type="button" aria-controls="doc-more-options">
+                    More
+                    <svg class="c-document-toolbar__outline-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__more"/></svg>
+                </button>
+            </context-menu-toggle>
+            <context-menu id="doc-more-options" class="c-context-menu" role="menu" tabindex="-1" aria-hidden="true">
+                <div class="c-context-menu__content">
+                    <div class="c-context-menu__group">
+                        <a href="{{ export_url }}" class="c-context-menu__item" role="menuitem" download>Export this doc</a>
+                    </div>
+                    <button type="button" role="menuitem" class="c-context-menu__close-button js-close-button">Close</button>
+                </div>
+            </context-menu>
         {% endif %}
     </div>
 </nav>

@@ -54,6 +54,18 @@ project.doc.edit:
     requirements:
         path: '.+'
 
+project.doc.export:
+    path: /projects/{project_url_id}/docs/export/{path}
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Document\ExportDocumentController::getAction
+    defaults:
+        knowledgebase_type: 'project'
+        _before_middlewares:
+            - project_model_from_url_id_middleware:before
+            - knowledgebase_routing_middleware:before
+    requirements:
+        path: '.+'
+
 project.doc.show:
     path: /projects/{project_url_id}/docs/{path}
     methods: [GET]

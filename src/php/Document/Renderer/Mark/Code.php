@@ -19,4 +19,9 @@ class Code implements MarkInterface
     {
         return ['<code>', '</code>'];
     }
+
+    public function toMarkdownString(string $text, ?array $attributes): string
+    {
+        return "`{$text}`";
+    }
 }

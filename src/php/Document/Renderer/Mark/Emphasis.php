@@ -19,4 +19,9 @@ class Emphasis implements MarkInterface
     {
         return ['<em>', '</em>'];
     }
+
+    public function toMarkdownString(string $text, ?array $attributes): string
+    {
+        return "*{$text}*";
+    }
 }

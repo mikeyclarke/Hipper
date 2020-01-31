@@ -12,4 +12,11 @@ interface NodeInterface
     public function getHtmlTags(?array $attributes, ?string $htmlId): ?array;
 
     public function toPlainTextString(string $textContent): string;
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string;
 }

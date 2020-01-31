@@ -59,6 +59,19 @@ class ParagraphTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $content = 'Speaking English is exhausting';
+
+        $expected = "Speaking English is exhausting\n";
+
+        $result = $this->paragraphNode->toMarkdownString($content, 0, null, null);
+        $this->assertEquals($expected, $result);
+    }
+
     private function createStringTerminatorExpectation($args, $result)
     {
         $this->stringTerminator

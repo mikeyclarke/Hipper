@@ -35,4 +35,18 @@ class StrikeTest extends TestCase
         $result = $this->strikeMark->getHtmlTags($attributes);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $text = 'Some text';
+        $attributes = null;
+
+        $expected = '~~Some text~~';
+
+        $result = $this->strikeMark->toMarkdownString($text, $attributes);
+        $this->assertEquals($expected, $result);
+    }
 }

@@ -89,6 +89,91 @@ class ImageTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    /**
+     * @test
+     */
+    public function emptyMarkdownStringReturnedIfNoSrcAttribute()
+    {
+        $content = '';
+        $attributes = ['title' => 'Foo'];
+
+        $result = $this->imageNode->toMarkdownString($content, 0, null, $attributes);
+        $this->assertEquals('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function emptyMarkdownStringReturnedIfSrcDoesNotValidateAsUrl()
+    {
+        $content = '';
+        $attributes = ['src' => 'unsafe-url'];
+
+        $this->createContextGetUrlAttributeValidatorExpectation();
+        $this->createUrlAttributeValidatorExpectation([$attributes['src']], false);
+
+        $result = $this->imageNode->toMarkdownString($content, 0, null, $attributes);
+        $this->assertEquals('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $content = '';
+        $attributes = ['src' => 'https://duckduckgo.com'];
+
+        $this->createContextGetUrlAttributeValidatorExpectation();
+        $this->createUrlAttributeValidatorExpectation([$attributes['src']], true);
+
+        $expected = "![](https://duckduckgo.com)\n";
+
+        $result = $this->imageNode->toMarkdownString($content, 0, null, $attributes);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownStringWithAlt()
+    {
+        $content = '';
+        $attributes = [
+            'alt' => 'Some text',
+            'src' => 'https://duckduckgo.com',
+        ];
+
+        $this->createContextGetUrlAttributeValidatorExpectation();
+        $this->createUrlAttributeValidatorExpectation([$attributes['src']], true);
+
+        $expected = "![Some text](https://duckduckgo.com)\n";
+
+        $result = $this->imageNode->toMarkdownString($content, 0, null, $attributes);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownStringWithAltAndTitle()
+    {
+        $content = '';
+        $attributes = [
+            'alt' => 'Some text',
+            'src' => 'https://duckduckgo.com',
+            'title' => 'A title',
+        ];
+
+        $this->createContextGetUrlAttributeValidatorExpectation();
+        $this->createUrlAttributeValidatorExpectation([$attributes['src']], true);
+
+        $expected = "![Some text](https://duckduckgo.com \"A title\")\n";
+
+        $result = $this->imageNode->toMarkdownString($content, 0, null, $attributes);
+        $this->assertEquals($expected, $result);
+    }
+
     private function createHtmlEscaperExpectation($args, $result)
     {
         $this->htmlEscaper

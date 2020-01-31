@@ -36,4 +36,14 @@ class Paragraph implements NodeInterface
         $str = $stringTerminator->terminateStringWithPunctuationCharacter($textContent);
         return $str . "\r\n";
     }
+
+    public function toMarkdownString(
+        string $content,
+        int $index,
+        ?NodeInterface $parentNode,
+        ?array $attributes
+    ): string {
+        $result = "{$content}\n";
+        return $result;
+    }
 }

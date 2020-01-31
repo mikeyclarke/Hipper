@@ -36,4 +36,18 @@ class HorizontalRuleTest extends TestCase
         $result = $this->horizontalRuleNode->getHtmlTags($attributes, $htmlId);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $content = '';
+        $attributes = null;
+
+        $expected = "- - - - - -\n\n";
+
+        $result = $this->horizontalRuleNode->toMarkdownString($content, 0, null, $attributes);
+        $this->assertEquals($expected, $result);
+    }
 }

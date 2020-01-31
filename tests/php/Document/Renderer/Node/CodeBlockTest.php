@@ -49,4 +49,17 @@ class CodeBlockTest extends TestCase
         $result = $this->codeBlockNode->toPlainTextString($textContent);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function toMarkdownString()
+    {
+        $content = "<some><code>\n</code></some>";
+
+        $expected = "```\n<some><code>\n</code></some>\n```\n";
+
+        $result = $this->codeBlockNode->toMarkdownString($content, 0, null, null);
+        $this->assertEquals($expected, $result);
+    }
 }

@@ -17,12 +17,7 @@ class Link implements MarkInterface
 
     public function getHtmlTags(?array $attributes): ?array
     {
-        if (null === $attributes || !isset($attributes['href'])) {
-            return null;
-        }
-
-        $urlAttributeValidator = $this->context->getUrlAttributeValidator();
-        if (!$urlAttributeValidator->isValid($attributes['href'])) {
+        if (!$this->hasValidHref($attributes)) {
             return null;
         }
 
@@ -53,5 +48,30 @@ class Link implements MarkInterface
         $openingTag = sprintf('<a %s>', implode(' ', $htmlAttributes));
 
         return [$openingTag, '</a>'];
+    }
+
+    public function toMarkdownString(string $text, ?array $attributes): string
+    {
+        if (!$this->hasValidHref($attributes)) {
+            return $text;
+        }
+
+        $href = $attributes['href'];
+
+        return "[{$text}]({$href})";
+    }
+
+    private function hasValidHref(?array $attributes): bool
+    {
+        if (null === $attributes || !isset($attributes['href'])) {
+            return false;
+        }
+
+        $urlAttributeValidator = $this->context->getUrlAttributeValidator();
+        if (!$urlAttributeValidator->isValid($attributes['href'])) {
+            return false;
+        }
+
+        return true;
     }
 }

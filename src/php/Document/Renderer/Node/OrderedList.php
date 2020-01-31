@@ -52,6 +52,18 @@ class OrderedList implements NodeInterface
         ?array $attributes
     ): string {
         $result = "{$content}\n";
+
+        if ($parentNode instanceof ListItem) {
+            $lines = preg_split('/\r\n|\r|\n/', $content);
+            $lineCount = count($lines);
+
+            $result = "\n";
+            foreach ($lines as $line) {
+                $result .= "    {$line}\n";
+            }
+            $result .= "\n";
+        }
+
         return $result;
     }
 }

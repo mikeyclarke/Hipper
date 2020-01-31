@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Tests\Document\Renderer\Node;
 
 use Hipper\Document\Renderer\HtmlFragmentRendererContext;
+use Hipper\Document\Renderer\Node\ListItem;
 use Hipper\Document\Renderer\Node\UnorderedList;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -60,6 +61,21 @@ class UnorderedListTest extends TestCase
         $expected = "- List item one.\n- List item two.\n- List item three.\n- List item four.\n\n";
 
         $result = $this->unorderedListNode->toMarkdownString($content, 0, null, null);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownStringWithListItemParent()
+    {
+        $content = "- List item one.\n- List item two.\n- List item three.\n- List item four.\n";
+        $parentNode = new ListItem($this->context);
+
+        $expected =
+            "\n    - List item one.\n    - List item two.\n    - List item three.\n    - List item four.\n    \n\n";
+
+        $result = $this->unorderedListNode->toMarkdownString($content, 0, $parentNode, null);
         $this->assertEquals($expected, $result);
     }
 }

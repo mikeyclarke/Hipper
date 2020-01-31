@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Tests\Document\Renderer\Node;
 
 use Hipper\Document\Renderer\HtmlFragmentRendererContext;
+use Hipper\Document\Renderer\Node\ListItem;
 use Hipper\Document\Renderer\Node\OrderedList;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -12,12 +13,13 @@ class OrderedListTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
+    private $context;
     private $orderedListNode;
 
     public function setUp(): void
     {
-        $context = m::mock(HtmlFragmentRendererContext::class);
-        $this->orderedListNode = new OrderedList($context);
+        $this->context = m::mock(HtmlFragmentRendererContext::class);
+        $this->orderedListNode = new OrderedList($this->context);
     }
 
     /**
@@ -84,6 +86,21 @@ class OrderedListTest extends TestCase
         $expected = "1. List item one.\n2. List item two.\n3. List item three.\n4. List item four.\n\n";
 
         $result = $this->orderedListNode->toMarkdownString($content, 0, null, null);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownStringWithListItemParent()
+    {
+        $content = "1. List item one.\n2. List item two.\n3. List item three.\n4. List item four.\n";
+        $parentNode = new ListItem($this->context);
+
+        $expected =
+            "\n    1. List item one.\n    2. List item two.\n    3. List item three.\n    4. List item four.\n    \n\n";
+
+        $result = $this->orderedListNode->toMarkdownString($content, 0, $parentNode, null);
         $this->assertEquals($expected, $result);
     }
 }

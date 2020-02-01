@@ -7,6 +7,7 @@ const keyupDelayMilliseconds = 1000;
 export default class EditDocumentController {
     private readonly httpClient: HttpClient;
     private readonly userAgentProfile: Record<string, any> | null;
+    private documentInitialJson: {} = {};
     private documentId: string | null = null;
     private allowedMarks: string[] = [];
     private allowedNodes: string[] = [];
@@ -44,6 +45,11 @@ export default class EditDocumentController {
         this.saveButton = <HTMLButtonElement> document.querySelector('.js-update-document');
         this.textEditorElement = <HTMLDivElement> document.querySelector('.js-text-editor');
 
+        const documentJsonTextArea = document.querySelector('.js-document-json');
+        if (!(documentJsonTextArea instanceof HTMLTextAreaElement)) {
+            throw new Error('Document JSON text area element not found');
+        }
+
         const documentIdInput = this.formElement.querySelector('[name="document_id"]');
         if (!(documentIdInput instanceof HTMLInputElement)) {
             throw new Error('Document ID element not found');
@@ -64,6 +70,7 @@ export default class EditDocumentController {
             throw new Error('Breadcrumb list element not found');
         }
 
+        this.documentInitialJson = JSON.parse(documentJsonTextArea.value);
         this.documentId = documentIdInput.value;
         this.allowedMarks = JSON.parse(allowedMarksInput.value);
         this.allowedNodes = JSON.parse(allowedNodesInput.value);
@@ -102,7 +109,7 @@ export default class EditDocumentController {
             this.textEditorElement.innerHTML = '';
             this.textEditor = new module.default( // eslint-disable-line new-cap
                 this.textEditorElement,
-                content,
+                this.documentInitialJson,
                 this.allowedMarks,
                 this.allowedNodes,
                 this.userAgentProfile,

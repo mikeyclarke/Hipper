@@ -11,6 +11,7 @@
                 {% include 'document/_document_header.twig' with { mode: 'edit' } %}
 
                 <div class="c-document__content js-text-editor">{{ document_html|raw }}</div>
+                <textarea class="js-document-json" hidden>{{ document.content }}</textarea>
             </div>
         </main>
     </div>

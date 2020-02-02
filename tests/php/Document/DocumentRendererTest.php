@@ -91,6 +91,36 @@ class DocumentRendererTest extends TestCase
     /**
      * @test
      */
+    public function docCanAlreadyBeAnArray()
+    {
+        $doc = [
+            'type' => 'doc',
+            'content' => [
+                [
+                    'type' => 'heading',
+                    'content' => [
+                        [
+                            'type' => 'text',
+                            'text' => 'Hello',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $renderedContent = '<h1>Hello</h1>';
+
+        $this->createContextFactoryExpectation();
+        $this->createHtmlRendererExpectation([$doc, $this->context], $renderedContent);
+
+        $result = $this->documentRenderer->render($doc, 'html', $this->organizationDomain);
+        $this->assertInstanceOf(RendererResult::class, $result);
+        $this->assertEquals($renderedContent, $result->getContent());
+    }
+
+    /**
+     * @test
+     */
     public function renderAsHtmlWithOutline()
     {
         $doc = '{"type": "doc", "content": [{"type": "heading", "content": [{"type": "text", "text": "Hello"}]}]}';

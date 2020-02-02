@@ -65,7 +65,7 @@ class DocumentRenderer
         }
 
         try {
-            $decoded = $this->decoder->decode($doc);
+            $decoded = $this->decodeDoc($doc);
         } catch (ContentDecodeException $e) {
             return $result;
         }
@@ -82,5 +82,13 @@ class DocumentRenderer
         $result->setContent($rendered);
 
         return $result;
+    }
+
+    private function decodeDoc($doc): array
+    {
+        if (is_array($doc)) {
+            return $doc;
+        }
+        return $this->decoder->decode($doc);
     }
 }

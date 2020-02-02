@@ -102,8 +102,6 @@ export default class EditDocumentController {
     }
 
     private setUpTextEditor(): void {
-        const content = this.textEditorElement.innerHTML;
-
         // eslint-disable-next-line @typescript-eslint/func-call-spacing
         import(/* webpackChunkName: "editor" */ 'text-editor/TextEditor').then(module => {
             this.textEditorElement.innerHTML = '';

@@ -2,7 +2,7 @@ import Controller from 'RouteControllers/Controller';
 import EditableFormField from 'components/EditableFormField';
 import showFieldError from 'Validation/showFieldError';
 import HttpClient from 'Http/HttpClient';
-import { HTTPError } from 'ky';
+import ky from 'ky';
 
 export default class CreateTeamController implements Controller {
     private readonly httpClient: HttpClient;
@@ -66,7 +66,7 @@ export default class CreateTeamController implements Controller {
             this.formElement.addEventListener('submit', this.handleFullSubmit.bind(this));
             this.submitButton.textContent = 'Done';
         }).catch((error) => {
-            if (error instanceof HTTPError) {
+            if (error instanceof ky.HTTPError) {
                 this.handleError(error);
             }
         }).finally(() => {
@@ -89,7 +89,7 @@ export default class CreateTeamController implements Controller {
                 window.location.assign(teamUrl);
             })
             .catch((error) => {
-                if (error instanceof HTTPError) {
+                if (error instanceof ky.HTTPError) {
                     this.handleError(error);
                 }
             })
@@ -98,7 +98,7 @@ export default class CreateTeamController implements Controller {
             });
     }
 
-    private handleError(error: HTTPError): void {
+    private handleError(error: InstanceType<typeof ky.HTTPError>): void {
         const response = <Response> error.response;
         if (response.status !== 400) {
             return;

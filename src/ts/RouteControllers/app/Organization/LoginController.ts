@@ -1,6 +1,6 @@
 import HttpClient from 'Http/HttpClient';
 import PopoverAlert from 'components/PopoverAlert';
-import { HTTPError } from 'ky';
+import ky from 'ky';
 import showFieldError from 'Validation/showFieldError';
 
 export default class LoginController {
@@ -55,7 +55,7 @@ export default class LoginController {
                 window.location.assign(url);
             })
             .catch((error) => {
-                if (error instanceof HTTPError) {
+                if (error instanceof ky.HTTPError) {
                     this.handleError(error);
                 }
             })
@@ -64,7 +64,7 @@ export default class LoginController {
             });
     }
 
-    private handleError(error: HTTPError): void {
+    private handleError(error: InstanceType<typeof ky.HTTPError>): void {
         const response = <Response> error.response;
         if (response.status !== 400) {
             return;

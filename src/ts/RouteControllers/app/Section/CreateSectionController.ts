@@ -1,5 +1,5 @@
 import HttpClient from 'Http/HttpClient';
-import { HTTPError } from 'ky';
+import ky from 'ky';
 import showFieldError from 'Validation/showFieldError';
 
 export default class CreateDocumentController {
@@ -62,7 +62,7 @@ export default class CreateDocumentController {
                 window.location.assign(sectionUrl);
             })
             .catch((error) => {
-                if (error instanceof HTTPError) {
+                if (error instanceof ky.HTTPError) {
                     this.handleError(error);
                 }
             })
@@ -71,7 +71,7 @@ export default class CreateDocumentController {
             });
     }
 
-    private handleError(error: HTTPError): void {
+    private handleError(error: InstanceType<typeof ky.HTTPError>): void {
         const response = <Response> error.response;
         if (response.status !== 400) {
             return;

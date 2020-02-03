@@ -1,7 +1,7 @@
 import Controller from 'RouteControllers/Controller';
 import showFieldError from 'Validation/showFieldError';
 import HttpClient from 'Http/HttpClient';
-import { HTTPError } from 'ky';
+import ky from 'ky';
 
 export default class CreateProjectController implements Controller {
     private readonly httpClient: HttpClient;
@@ -48,7 +48,7 @@ export default class CreateProjectController implements Controller {
                 window.location.assign(projectUrl);
             })
             .catch((error) => {
-                if (error instanceof HTTPError) {
+                if (error instanceof ky.HTTPError) {
                     this.handleError(error);
                 }
             })
@@ -57,7 +57,7 @@ export default class CreateProjectController implements Controller {
             });
     }
 
-    private handleError(error: HTTPError): void {
+    private handleError(error: InstanceType<typeof ky.HTTPError>): void {
         const response = <Response> error.response;
         if (response.status !== 400) {
             return;

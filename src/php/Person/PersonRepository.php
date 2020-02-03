@@ -7,7 +7,7 @@ use Doctrine\DBAL\Connection;
 
 class PersonRepository
 {
-    private $connection;
+    private Connection $connection;
 
     public function __construct(
         Connection $connection

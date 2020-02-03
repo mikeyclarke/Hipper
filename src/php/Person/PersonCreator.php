@@ -8,9 +8,9 @@ use Hipper\Organization\OrganizationModel;
 
 class PersonCreator
 {
-    private $personInserter;
-    private $passwordEncoder;
-    private $idGenerator;
+    private PersonInserter $personInserter;
+    private PersonPasswordEncoder $passwordEncoder;
+    private IdGenerator $idGenerator;
 
     public function __construct(
         PersonInserter $personInserter,

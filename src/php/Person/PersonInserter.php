@@ -8,7 +8,7 @@ use PDO;
 
 class PersonInserter
 {
-    private $connection;
+    private Connection $connection;
 
     public function __construct(
         Connection $connection

@@ -25,14 +25,14 @@ class FinalizeController
     {
         $session = $request->getSession();
         $sessionName = $session->getName();
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
 
-        $organizationModel = $this->organization->get($person->getOrganizationId());
+        $organizationModel = $this->organization->get($currentUser->getOrganizationId());
         if (null === $organizationModel->getSubdomain()) {
             return new RedirectResponse('/sign-up/choose-team-url');
         }
 
-        $token = $this->tokenizedLogin->create($person);
+        $token = $this->tokenizedLogin->create($currentUser);
         $session->invalidate();
 
         $response = new RedirectResponse(

@@ -31,7 +31,7 @@ class ProjectModelFromUrlIdMiddleware
     public function before(Request $request): void
     {
         $organization = $request->attributes->get('organization');
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
 
         $urlId = $request->attributes->get('project_url_id');
         $result = $this->projectRepository->findByUrlId($urlId, $organization->getId());
@@ -43,8 +43,11 @@ class ProjectModelFromUrlIdMiddleware
         $request->attributes->set('project', $project);
         $this->twig->addGlobal('project', $project);
 
-        $personIsInProject = $this->projectRepository->existsWithMappingForPerson($project->getId(), $person->getId());
-        $request->attributes->set('personIsInProject', $personIsInProject);
+        $currentUserIsInProject = $this->projectRepository->existsWithMappingForPerson(
+            $project->getId(),
+            $currentUser->getId()
+        );
+        $request->attributes->set('current_user_is_in_project', $currentUserIsInProject);
 
         $this->twig->addGlobal(
             'search_action',

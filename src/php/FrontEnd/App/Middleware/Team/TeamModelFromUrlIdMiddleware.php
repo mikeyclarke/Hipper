@@ -31,7 +31,7 @@ class TeamModelFromUrlIdMiddleware
     public function before(Request $request)
     {
         $organization = $request->attributes->get('organization');
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
 
         $urlId = $request->attributes->get('team_url_id');
         $result = $this->teamRepository->findByUrlId($organization->getId(), $urlId);
@@ -43,8 +43,8 @@ class TeamModelFromUrlIdMiddleware
         $request->attributes->set('team', $team);
         $this->twig->addGlobal('team', $team);
 
-        $personIsInTeam = $this->teamRepository->existsWithMappingForPerson($team->getId(), $person->getId());
-        $request->attributes->set('personIsInTeam', $personIsInTeam);
+        $currentUserIsInTeam = $this->teamRepository->existsWithMappingForPerson($team->getId(), $currentUser->getId());
+        $request->attributes->set('current_user_is_in_team', $currentUserIsInTeam);
 
         $this->twig->addGlobal(
             'search_action',

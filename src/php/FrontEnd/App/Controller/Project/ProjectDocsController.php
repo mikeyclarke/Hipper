@@ -34,7 +34,7 @@ class ProjectDocsController
     {
         $organization = $request->attributes->get('organization');
         $project = $request->attributes->get('project');
-        $personIsInProject = $request->attributes->get('personIsInProject');
+        $currentUserIsInProject = $request->attributes->get('current_user_is_in_project');
 
         list($docs, $sections) = $this->knowledgebaseEntries->get(
             $project->getKnowledgebaseId(),
@@ -56,7 +56,7 @@ class ProjectDocsController
             'knowledgebaseEntries' => $knowledgebaseEntries,
             'html_title' => sprintf('Docs – %s', $project->getName()),
             'project' => $project,
-            'personIsInProject' => $personIsInProject,
+            'current_user_is_in_project' => $currentUserIsInProject,
         ];
 
         return new Response(

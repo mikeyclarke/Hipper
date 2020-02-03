@@ -28,11 +28,11 @@ class CreateProjectController
 
     public function postAction(Request $request): JsonResponse
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
         $organization = $request->attributes->get('organization');
 
         try {
-            $projectModel = $this->project->create($person, $request->request->all());
+            $projectModel = $this->project->create($currentUser, $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

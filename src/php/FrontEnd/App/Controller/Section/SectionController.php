@@ -97,7 +97,7 @@ class SectionController
         string $timeZone
     ): array {
         $team = $request->attributes->get('team');
-        $personIsInTeam = $request->attributes->get('personIsInTeam');
+        $currentUserIsInTeam = $request->attributes->get('current_user_is_in_team');
 
         list($docs, $sections) = $this->knowledgebaseEntries->get(
             $team->getKnowledgebaseId(),
@@ -117,7 +117,7 @@ class SectionController
 
         $context = [
             'team' => $team,
-            'personIsInTeam' => $personIsInTeam,
+            'current_user_is_in_team' => $currentUserIsInTeam,
         ];
 
         return [$context, $knowledgebaseEntries];
@@ -130,7 +130,7 @@ class SectionController
         string $timeZone
     ): array {
         $project = $request->attributes->get('project');
-        $personIsInProject = $request->attributes->get('personIsInProject');
+        $currentUserIsInProject = $request->attributes->get('current_user_is_in_project');
 
         list($docs, $sections) = $this->knowledgebaseEntries->get(
             $project->getKnowledgebaseId(),
@@ -150,7 +150,7 @@ class SectionController
 
         $context = [
             'project' => $project,
-            'personIsInProject' => $personIsInProject,
+            'current_user_is_in_project' => $currentUserIsInProject,
         ];
 
         return [$context, $knowledgebaseEntries];

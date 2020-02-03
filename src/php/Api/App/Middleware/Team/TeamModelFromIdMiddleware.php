@@ -21,7 +21,6 @@ class TeamModelFromIdMiddleware
     public function before(Request $request)
     {
         $organization = $request->attributes->get('organization');
-        $person = $request->attributes->get('person');
 
         $id = $request->attributes->get('team_id');
         $result = $this->teamRepository->findById($organization->getId(), $id);

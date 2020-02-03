@@ -10,8 +10,8 @@ class OnboardingCompletedMiddleware
 {
     public function before(Request $request)
     {
-        $person = $request->attributes->get('person');
-        if (!$person->isOnboardingCompleted()) {
+        $currentUser = $request->attributes->get('current_user');
+        if (!$currentUser->isOnboardingCompleted()) {
             return new RedirectResponse('/welcome');
         }
     }

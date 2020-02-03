@@ -21,7 +21,6 @@ class ProjectModelFromIdMiddleware
     public function before(Request $request): void
     {
         $organization = $request->attributes->get('organization');
-        $person = $request->attributes->get('person');
 
         $id = $request->attributes->get('project_id');
         $result = $this->projectRepository->findById($id, $organization->getId());

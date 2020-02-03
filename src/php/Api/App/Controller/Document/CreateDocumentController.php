@@ -26,11 +26,11 @@ class CreateDocumentController
 
     public function postAction(Request $request): JsonResponse
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
         $organization = $request->attributes->get('organization');
 
         try {
-            list($route, $knowledgebaseOwner) = $this->document->create($person, $request->request->all());
+            list($route, $knowledgebaseOwner) = $this->document->create($currentUser, $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

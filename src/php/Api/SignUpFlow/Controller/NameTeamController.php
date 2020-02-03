@@ -22,10 +22,13 @@ class NameTeamController
 
     public function postAction(Request $request): JsonResponse
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
 
         try {
-            $this->organization->update($person->getOrganizationId(), ['name' => $request->request->get('name', '')]);
+            $this->organization->update(
+                $currentUser->getOrganizationId(),
+                ['name' => $request->request->get('name', '')]
+            );
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

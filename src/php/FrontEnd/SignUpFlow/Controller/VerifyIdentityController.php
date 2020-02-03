@@ -19,11 +19,11 @@ class VerifyIdentityController
 
     public function getAction(Request $request): Response
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
 
         $context = [
             'html_title' => 'Verify your email address',
-            'person' => $person,
+            'current_user' => $currentUser,
         ];
 
         return new Response(

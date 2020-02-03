@@ -32,11 +32,11 @@ class UpdateDocumentController
 
     public function postAction(Request $request): JsonResponse
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
         $organization = $request->attributes->get('organization');
         $documentId = $request->attributes->get('document_id', null);
 
-        $result = $this->documentRepository->findById($documentId, $person->getOrganizationId());
+        $result = $this->documentRepository->findById($documentId, $currentUser->getOrganizationId());
         if (null === $result) {
             throw new NotFoundHttpException;
         }
@@ -44,7 +44,11 @@ class UpdateDocumentController
         $document = DocumentModel::createFromArray($result);
 
         try {
-            list($route, $knowledgebaseOwner) = $this->document->update($person, $document, $request->request->all());
+            list($route, $knowledgebaseOwner) = $this->document->update(
+                $currentUser,
+                $document,
+                $request->request->all()
+            );
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

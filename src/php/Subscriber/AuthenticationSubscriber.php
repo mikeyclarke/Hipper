@@ -62,7 +62,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface
         }
 
         $personModel = PersonModel::createFromArray($person);
-        $request->attributes->set('person', $personModel);
+        $request->attributes->set('current_user', $personModel);
     }
 
     private function isForeignOrganizationContext(Request $request, array $person): bool

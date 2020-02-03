@@ -28,11 +28,11 @@ class CreateTeamController
 
     public function postAction(Request $request): JsonResponse
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
         $organization = $request->attributes->get('organization');
 
         try {
-            $teamModel = $this->team->create($person, $request->request->all());
+            $teamModel = $this->team->create($currentUser, $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

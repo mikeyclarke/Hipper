@@ -21,8 +21,8 @@ class InviteController
 
     public function getAction(Request $request): Response
     {
-        $person = $request->attributes->get('person');
-        $email = $person->getEmailAddress();
+        $currentUser = $request->attributes->get('current_user');
+        $email = $currentUser->getEmailAddress();
         $emailDomain = substr($email, strrpos($email, '@') + 1);
 
         $context = [

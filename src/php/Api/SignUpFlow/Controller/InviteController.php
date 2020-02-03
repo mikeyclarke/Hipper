@@ -26,10 +26,10 @@ class InviteController
 
     public function postAction(Request $request): JsonResponse
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
 
         try {
-            $this->organization->update($person->getOrganizationId(), $request->request->all());
+            $this->organization->update($currentUser->getOrganizationId(), $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }
@@ -39,10 +39,10 @@ class InviteController
 
     public function postEmailInvitesAction(Request $request): JsonResponse
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
 
         try {
-            $this->bulkInvitationCreator->create($person, $request->getHost(), $request->request->all());
+            $this->bulkInvitationCreator->create($currentUser, $request->getHost(), $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

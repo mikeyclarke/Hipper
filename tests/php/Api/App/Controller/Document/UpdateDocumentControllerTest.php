@@ -57,7 +57,7 @@ class UpdateDocumentControllerTest extends TestCase
             ['name' => 'Foo'],
             [
                 'document_id' => 'doc-uuid',
-                'person' => $this->person,
+                'current_user' => $this->person,
                 'organization' => $this->organization,
             ]
         );
@@ -95,7 +95,7 @@ class UpdateDocumentControllerTest extends TestCase
             ['name' => 'Foo'],
             [
                 'document_id' => 'doc-uuid',
-                'person' => $this->person,
+                'current_user' => $this->person,
                 'organization' => $this->organization,
             ]
         );

@@ -59,9 +59,9 @@ class TwigGlobalsSubscriber implements EventSubscriberInterface
             );
         }
 
-        if ($request->attributes->has('person')) {
-            $person = $request->attributes->get('person');
-            $this->twig->addGlobal('person', $person);
+        if ($request->attributes->has('current_user')) {
+            $currentUser = $request->attributes->get('current_user');
+            $this->twig->addGlobal('current_user', $currentUser);
         }
 
         $session = $request->getSession();

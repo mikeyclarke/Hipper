@@ -13,7 +13,7 @@
         <p class="c-page-header__subheading">{{ section.description }}</p>
     {% endif %}
 
-    {% if personIsInProject %}
+    {% if current_user_is_in_project %}
         <button type="button" aria-label="Edit section" class="c-page-header__edit-button">
             <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
         </button>

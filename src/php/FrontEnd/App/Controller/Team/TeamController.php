@@ -20,12 +20,12 @@ class TeamController
     public function getAction(Request $request): Response
     {
         $team = $request->attributes->get('team');
-        $personIsInTeam = $request->attributes->get('personIsInTeam');
+        $currentUserIsInTeam = $request->attributes->get('current_user_is_in_team');
 
         $context = [
             'html_title' => $team->getName(),
             'team' => $team,
-            'personIsInTeam' => $personIsInTeam,
+            'current_user_is_in_team' => $currentUserIsInTeam,
         ];
 
         return new Response(

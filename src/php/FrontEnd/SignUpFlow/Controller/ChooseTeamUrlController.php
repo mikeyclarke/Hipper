@@ -28,8 +28,8 @@ class ChooseTeamUrlController
 
     public function getAction(Request $request): Response
     {
-        $person = $request->attributes->get('person');
-        $organization = $this->organization->get($person->getOrganizationId());
+        $currentUser = $request->attributes->get('current_user');
+        $organization = $this->organization->get($currentUser->getOrganizationId());
 
         if (Organization::DEFAULT_NAME === $organization->getName()) {
             return new RedirectResponse('/sign-up/name-team');

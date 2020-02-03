@@ -26,11 +26,11 @@ class CreateSectionController
 
     public function postAction(Request $request): JsonResponse
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
         $organization = $request->attributes->get('organization');
 
         try {
-            list($model, $route, $knowledgebaseOwner) = $this->section->create($person, $request->request->all());
+            list($model, $route, $knowledgebaseOwner) = $this->section->create($currentUser, $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

@@ -10,8 +10,8 @@ class VerifiedPersonMiddleware
 {
     public function before(Request $request)
     {
-        $person = $request->attributes->get('person');
-        if (!$person->getEmailAddressVerified()) {
+        $currentUser = $request->attributes->get('current_user');
+        if (!$currentUser->getEmailAddressVerified()) {
             return new RedirectResponse('/sign-up/verify-identity');
         }
     }

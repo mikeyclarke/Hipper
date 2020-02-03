@@ -3,12 +3,12 @@
         <div class="c-context-menu__header">
             <div class="c-context-menu__identity">
                 <div class="c-avatar c-context-menu__identity-avatar" aria-hidden="true">
-                    <span class="c-avatar__initials">{{ person.abbreviatedName }}</span>
+                    <span class="c-avatar__initials">{{ current_user.abbreviatedName }}</span>
                 </div>
 
                 <div class="c-context-menu__identity-details">
-                    <span class="c-context-menu__identity-name">{{ person.name }}</span>
-                    <span class="c-context-menu__identity-description">{{ person.jobRoleOrTitle|default('A great person') }}</span>
+                    <span class="c-context-menu__identity-name">{{ current_user.name }}</span>
+                    <span class="c-context-menu__identity-description">{{ current_user.jobRoleOrTitle|default('A great person') }}</span>
                 </div>
 
                 <a class="c-context-menu__identity-action-link" href="" aria-label="View your profile" role="menuitem">

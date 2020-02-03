@@ -43,11 +43,11 @@ class CreateSectionController
     private function getProjectGetActionContext(Request $request): array
     {
         $project = $request->attributes->get('project');
-        $personIsInProject = $request->attributes->get('personIsInProject');
+        $currentUserIsInProject = $request->attributes->get('current_user_is_in_project');
 
         return [
             'knowledgebase_id' => $project->getKnowledgebaseId(),
-            'personIsInProject' => $personIsInProject,
+            'current_user_is_in_project' => $currentUserIsInProject,
             'parent_section_id' => $request->query->get('in', null),
             'project' => $project,
         ];
@@ -56,11 +56,11 @@ class CreateSectionController
     private function getTeamGetActionContext(Request $request): array
     {
         $team = $request->attributes->get('team');
-        $personIsInTeam = $request->attributes->get('personIsInTeam');
+        $currentUserIsInTeam = $request->attributes->get('current_user_is_in_team');
 
         return [
             'knowledgebase_id' => $team->getKnowledgebaseId(),
-            'personIsInTeam' => $personIsInTeam,
+            'current_user_is_in_team' => $currentUserIsInTeam,
             'parent_section_id' => $request->query->get('in', null),
             'team' => $team,
         ];

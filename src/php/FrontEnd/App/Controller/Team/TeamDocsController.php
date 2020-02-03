@@ -34,7 +34,7 @@ class TeamDocsController
     {
         $organization = $request->attributes->get('organization');
         $team = $request->attributes->get('team');
-        $personIsInTeam = $request->attributes->get('personIsInTeam');
+        $currentUserIsInTeam = $request->attributes->get('current_user_is_in_team');
 
         list($docs, $sections) = $this->knowledgebaseEntries->get(
             $team->getKnowledgebaseId(),
@@ -56,7 +56,7 @@ class TeamDocsController
             'knowledgebaseEntries' => $knowledgebaseEntries,
             'html_title' => sprintf('Docs – %s', $team->getName()),
             'team' => $team,
-            'personIsInTeam' => $personIsInTeam,
+            'current_user_is_in_team' => $currentUserIsInTeam,
         ];
 
         return new Response(

@@ -19,7 +19,7 @@
         <span class="c-page-header__attribution-copy--muted">No one leads this team</span>
     </div>
 
-    {% if personIsInTeam %}
+    {% if current_user_is_in_team %}
         <button type="button" aria-label="Edit team" class="c-page-header__edit-button">
             <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
         </button>

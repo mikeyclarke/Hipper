@@ -6,10 +6,10 @@
         <context-menu-toggle>
             <button class="c-mobile-nav__account-button js-button" type="button" aria-label="Hipper settings & log out menu" aria-haspopup="menu" aria-expanded="false" aria-controls="{{ m_account_context_menu_id }}">
                 <div class="c-avatar c-mobile-nav__account-avatar" aria-hidden="true">
-                    <span class="c-avatar__initials">{{ person.abbreviatedName }}</span>
+                    <span class="c-avatar__initials">{{ current_user.abbreviatedName }}</span>
                 </div>
 
-                <span class="c-mobile-nav__account-name">{{ person.name }}</span>
+                <span class="c-mobile-nav__account-name">{{ current_user.name }}</span>
                 <svg class="c-mobile-nav__account-arrow" aria-hidden="true"><use xlink:href="#icon-sprite__chevron-down"/></svg>
             </button>
         </context-menu-toggle>

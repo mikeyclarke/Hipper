@@ -22,11 +22,11 @@ class ChooseTeamUrlController
 
     public function postAction(Request $request): JsonResponse
     {
-        $person = $request->attributes->get('person');
+        $currentUser = $request->attributes->get('current_user');
 
         try {
             $this->organization->update(
-                $person->getOrganizationId(),
+                $currentUser->getOrganizationId(),
                 [
                     'subdomain' => $request->request->get('subdomain', '')
                 ]

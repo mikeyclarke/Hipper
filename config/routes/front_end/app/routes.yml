@@ -1,3 +1,7 @@
+person_routes:
+    resource: person.yml
+    name_prefix: 'front_end.app.'
+
 project_routes:
     resource: project.yml
     name_prefix: 'front_end.app.'

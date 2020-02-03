@@ -1,0 +1,25 @@
+{% extends '_app_default_layout.twig' %}
+
+{% block navigational_header %}{% include 'person/_person_header.twig' %}{% endblock %}
+
+{% block content %}
+
+<header class="c-page-header">
+    <h1 class="c-page-header__title">{{ person.name }}</h1>
+
+    <p class="c-page-header__subheading">{{ person.jobTitleOrRole|default('This person hasn’t added their job role yet') }}</p>
+
+    {% if person.bio is null or person.bio is empty %}
+        <p class="c-page-header__subheading--muted">This person hasn’t added a bio yet</p>
+    {% else %}
+        <p class="c-page-header__subheading">{{ person.bio }}</p>
+    {% endif %}
+
+    {% if person_is_current_user %}
+        <button type="button" aria-label="Edit section" class="c-page-header__edit-button">
+            <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
+        </button>
+    {% endif %}
+</header>
+
+{% endblock %}

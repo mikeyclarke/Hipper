@@ -42,7 +42,7 @@ class UrlSlugGeneratorTest extends TestCase
         $expected = 'test-string';
 
         $this->createAusiSlugGeneratorFactoryExpectation();
-        $this->createSlugGeneratorExpectation([$stringToSluggify, []], $expected);
+        $this->createSlugGeneratorExpectation([$stringToSluggify, ['delimiter' => '-']], $expected);
 
         $result = $this->urlSlugGenerator->generateFromString($stringToSluggify);
         $this->assertEquals($expected, $result);
@@ -57,8 +57,11 @@ class UrlSlugGeneratorTest extends TestCase
         $expected = 'fisted-hand-sign-bottle-with-popping-cork';
 
         $this->createAusiSlugGeneratorFactoryExpectation();
-        $this->createSlugGeneratorExpectation([$stringToSluggify, []], '');
-        $this->createSlugGeneratorExpectation([$stringToSluggify, self::EMOJI_TRANSLITERATE_OPTIONS], $expected);
+        $this->createSlugGeneratorExpectation([$stringToSluggify, ['delimiter' => '-']], '');
+        $this->createSlugGeneratorExpectation(
+            [$stringToSluggify, array_merge(['delimiter' => '-'], self::EMOJI_TRANSLITERATE_OPTIONS)],
+            $expected
+        );
 
         $result = $this->urlSlugGenerator->generateFromString($stringToSluggify);
         $this->assertEquals($expected, $result);
@@ -76,9 +79,9 @@ class UrlSlugGeneratorTest extends TestCase
         $generatorResult = 'waving-hand-sign-regional-indicator-symbol-letter-u-regional-indicator-symbol-letter-n';
 
         $this->createAusiSlugGeneratorFactoryExpectation();
-        $this->createSlugGeneratorExpectation([$stringToSluggify, []], '');
+        $this->createSlugGeneratorExpectation([$stringToSluggify, ['delimiter' => '-']], '');
         $this->createSlugGeneratorExpectation(
-            [$stringToSluggify, self::EMOJI_TRANSLITERATE_OPTIONS],
+            [$stringToSluggify, array_merge(['delimiter' => '-'], self::EMOJI_TRANSLITERATE_OPTIONS)],
             $generatorResult
         );
 
@@ -95,8 +98,11 @@ class UrlSlugGeneratorTest extends TestCase
         $expected = 'untitled';
 
         $this->createAusiSlugGeneratorFactoryExpectation();
-        $this->createSlugGeneratorExpectation([$stringToSluggify, []], '');
-        $this->createSlugGeneratorExpectation([$stringToSluggify, self::EMOJI_TRANSLITERATE_OPTIONS], '');
+        $this->createSlugGeneratorExpectation([$stringToSluggify, ['delimiter' => '-']], '');
+        $this->createSlugGeneratorExpectation(
+            [$stringToSluggify, array_merge(['delimiter' => '-'], self::EMOJI_TRANSLITERATE_OPTIONS)],
+            ''
+        );
 
         $result = $this->urlSlugGenerator->generateFromString($stringToSluggify);
         $this->assertEquals($expected, $result);
@@ -115,7 +121,7 @@ class UrlSlugGeneratorTest extends TestCase
 
         $this->createAusiSlugGeneratorFactoryExpectation();
         $this->createSlugGeneratorExpectation(
-            [$stringToSluggify, []],
+            [$stringToSluggify, ['delimiter' => '-']],
             'this-is-a-super-long-string-that-exceeds-the-max-length-of-one-hundred-characters-but-it-s-not-a-problem'
         );
 

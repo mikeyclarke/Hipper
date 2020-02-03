@@ -22,14 +22,38 @@ class PersonInserter
         string $abbreviatedName,
         string $emailAddress,
         string $password,
+        string $urlId,
+        string $username,
         string $organizationId,
         bool $emailAddressVerified
     ): ?array {
-        $sql = "INSERT INTO person " .
-            "(id, name, abbreviated_name, email_address, password, organization_id, email_address_verified) " .
-            "VALUES " .
-            "(:id, :name, :abbreviated_name, :email_address, :password, :organization_id, :email_address_verified) " .
-            "RETURNING *";
+        $sql = <<<SQL
+INSERT INTO person
+(
+    id,
+    name,
+    abbreviated_name,
+    email_address,
+    password,
+    url_id,
+    username,
+    organization_id,
+    email_address_verified
+)
+VALUES
+(
+    :id,
+    :name,
+    :abbreviated_name,
+    :email_address,
+    :password,
+    :url_id,
+    :username,
+    :organization_id,
+    :email_address_verified
+)
+RETURNING *
+SQL;
         $stmt = $this->connection->prepare($sql);
 
         $stmt->bindValue('id', $id, PDO::PARAM_STR);
@@ -37,6 +61,8 @@ class PersonInserter
         $stmt->bindValue('abbreviated_name', $abbreviatedName, PDO::PARAM_STR);
         $stmt->bindValue('email_address', $emailAddress, PDO::PARAM_STR);
         $stmt->bindValue('password', $password, PDO::PARAM_STR);
+        $stmt->bindValue('url_id', $urlId, PDO::PARAM_STR);
+        $stmt->bindValue('username', $username, PDO::PARAM_STR);
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
         $stmt->bindValue('email_address_verified', $emailAddressVerified, PDO::PARAM_BOOL);
 

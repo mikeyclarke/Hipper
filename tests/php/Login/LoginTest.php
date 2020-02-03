@@ -53,7 +53,10 @@ class LoginTest extends TestCase
             'password' => 'gb6uyjn9hgg2h0',
         ];
 
-        $this->createPersonRepositoryExpectation([$parameters['email_address'], $organization->getId()], $person);
+        $this->createPersonRepositoryExpectation(
+            [$parameters['email_address'], $organization->getId(), ['password']],
+            $person
+        );
         $this->createLoginValidatorExpectation([$parameters]);
         $this->createPasswordEncoderExpectation([$person['password'], $parameters['password']], true);
 
@@ -82,7 +85,10 @@ class LoginTest extends TestCase
 
         $this->expectException(InvalidCredentialsException::class);
 
-        $this->createPersonRepositoryExpectation([$parameters['email_address'], $organization->getId()], $person);
+        $this->createPersonRepositoryExpectation(
+            [$parameters['email_address'], $organization->getId(), ['password']],
+            $person
+        );
         $this->createLoginValidatorExpectation([$parameters]);
 
         $this->login->login($organization, $parameters, $session);
@@ -108,7 +114,10 @@ class LoginTest extends TestCase
 
         $this->expectException(InvalidCredentialsException::class);
 
-        $this->createPersonRepositoryExpectation([$parameters['email_address'], $organization->getId()], $person);
+        $this->createPersonRepositoryExpectation(
+            [$parameters['email_address'], $organization->getId(), ['password']],
+            $person
+        );
         $this->createLoginValidatorExpectation([$parameters]);
         $this->createPasswordEncoderExpectation([$person['password'], $parameters['password']], false);
 

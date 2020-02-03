@@ -1,0 +1,1 @@
+ALTER TABLE person DROP COLUMN IF EXISTS url_id;

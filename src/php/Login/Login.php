@@ -32,7 +32,8 @@ class Login
         if (isset($parameters['email_address'])) {
             $person = $this->personRepository->findOneByEmailAddress(
                 $parameters['email_address'],
-                $organization->getId()
+                $organization->getId(),
+                ['password']
             );
         }
 

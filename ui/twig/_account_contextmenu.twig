@@ -1,3 +1,9 @@
+{% set current_user_page_link = path('front_end.app.person.show', {
+    subdomain: organization.subdomain,
+    url_id: current_user.urlId,
+    username: current_user.username,
+}) %}
+
 <context-menu class="c-context-menu--large" role="menu" tabindex="-1" aria-hidden="true" id="{{ html_id }}">
     <div class="c-context-menu__content">
         <div class="c-context-menu__header">
@@ -11,7 +17,7 @@
                     <span class="c-context-menu__identity-description">{{ current_user.jobRoleOrTitle|default('A great person') }}</span>
                 </div>
 
-                <a class="c-context-menu__identity-action-link" href="" aria-label="View your profile" role="menuitem">
+                <a class="c-context-menu__identity-action-link" href="{{ current_user_page_link }}" aria-label="View your profile" role="menuitem">
                     <svg class="c-context-menu__identity-action-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
                 </a>
             </div>

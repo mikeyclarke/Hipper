@@ -1,0 +1,1 @@
+ALTER TABLE person ADD COLUMN IF NOT EXISTS url_id text CHECK (LENGTH(url_id) <= 8) NOT NULL UNIQUE;

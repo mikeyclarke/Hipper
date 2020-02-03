@@ -1,0 +1,13 @@
+<header class="c-app-header">
+    <div class="c-app-header__top-bar">
+        {% include '_mobile_navigation_toggle.twig' %}
+
+        <div class="c-app-header__compass">
+            <span class="c-app-header__compass-name">{{ person.name }}</span>
+        </div>
+
+        <button type="button" aria-label="Person options" class="c-app-header__top-bar-options-button">
+            <svg class="c-app-header__top-bar-options-icon" aria-hidden="true"><use xlink:href="#icon-sprite__options"/></svg>
+        </button>
+    </div>
+</header>

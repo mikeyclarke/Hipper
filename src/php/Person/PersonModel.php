@@ -11,9 +11,12 @@ final class PersonModel
         'id' => 'id',
         'name' => 'name',
         'abbreviated_name' => 'abbreviatedName',
+        'bio' => 'bio',
         'email_address' => 'emailAddress',
         'email_address_verified' => 'emailAddressVerified',
         'job_role_or_title' => 'jobRoleOrTitle',
+        'url_id' => 'urlId',
+        'username' => 'username',
         'onboarding_completed' => 'onboardingCompleted',
         'organization_id' => 'organizationId',
         'created' => 'created',
@@ -23,9 +26,12 @@ final class PersonModel
     private $id;
     private $name;
     private $abbreviatedName;
+    private $bio;
     private $emailAddress;
     private $emailAddressVerified;
     private $jobRoleOrTitle;
+    private $username;
+    private $urlId;
     private $onboardingCompleted;
     private $organizationId;
     private $created;
@@ -68,6 +74,16 @@ final class PersonModel
         return $this->abbreviatedName;
     }
 
+    public function setBio(?string $bio): void
+    {
+        $this->bio = $bio;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
     public function setEmailAddress(string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
@@ -96,6 +112,26 @@ final class PersonModel
     public function getJobRoleOrTitle(): ?string
     {
         return $this->jobRoleOrTitle;
+    }
+
+    public function setUrlId(string $urlId): void
+    {
+        $this->urlId = $urlId;
+    }
+
+    public function getUrlId(): string
+    {
+        return $this->urlId;
+    }
+
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
     }
 
     public function setOnboardingCompleted(bool $onboardingCompleted): void

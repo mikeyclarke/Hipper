@@ -1,0 +1,7 @@
+person.show:
+    path: /people/{username}~{url_id}
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Person\PersonController::getAction
+    defaults:
+        _before_middlewares:
+            - person_routing_middleware:before

@@ -19,13 +19,13 @@ class UrlSlugGenerator
         $this->slugGeneratorFactory = $slugGeneratorFactory;
     }
 
-    public function generateFromString(string $stringToSluggify): string
+    public function generateFromString(string $stringToSluggify, string $delimiter = '-'): string
     {
         $generator = $this->slugGeneratorFactory->create();
-        $slug = $this->sluggify($generator, $stringToSluggify);
+        $slug = $this->sluggify($generator, $stringToSluggify, $delimiter);
 
         if (empty($slug)) {
-            $slug = $this->sluggify($generator, $stringToSluggify, true);
+            $slug = $this->sluggify($generator, $stringToSluggify, $delimiter, true);
             $slug = $this->replaceRegionIndicators($slug);
         }
 
@@ -40,9 +40,13 @@ class UrlSlugGenerator
         return $slug;
     }
 
-    private function sluggify(SlugGenerator $generator, string $string, bool $transliterateEmoji = false): string
-    {
-        $options = [];
+    private function sluggify(
+        SlugGenerator $generator,
+        string $string,
+        string $delimiter,
+        bool $transliterateEmoji = false
+    ): string {
+        $options = ['delimiter' => $delimiter];
         if ($transliterateEmoji) {
             $options['preTransforms'] = ['Name', "\\\ { 'N' > "];
             $options['ignoreChars'] = "\p{Mn}\p{Lm}\p{Sk}\x{200D}";

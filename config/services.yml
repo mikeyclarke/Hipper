@@ -166,6 +166,9 @@ services:
     knowledgebase_routing_middleware:
         class: Hipper\FrontEnd\App\Middleware\Knowledgebase\KnowledgebaseRoutingMiddleware
 
+    person_routing_middleware:
+        class: Hipper\FrontEnd\App\Middleware\Person\PersonRoutingMiddleware
+
     project_model_from_url_id_middleware:
         class: Hipper\FrontEnd\App\Middleware\Project\ProjectModelFromUrlIdMiddleware
 

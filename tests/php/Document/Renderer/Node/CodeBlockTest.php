@@ -57,7 +57,20 @@ class CodeBlockTest extends TestCase
     {
         $content = "<some><code>\n</code></some>";
 
-        $expected = "```\n<some><code>\n</code></some>\n```\n";
+        $expected = "```\n<some><code>\n</code></some>\n```\n\n";
+
+        $result = $this->codeBlockNode->toMarkdownString($content, 0, null, null);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownStringDoesNotAddTrailingNewlineIfUnnecessary()
+    {
+        $content = "<some><code>\n</code></some>\n";
+
+        $expected = "```\n<some><code>\n</code></some>\n```\n\n";
 
         $result = $this->codeBlockNode->toMarkdownString($content, 0, null, null);
         $this->assertEquals($expected, $result);

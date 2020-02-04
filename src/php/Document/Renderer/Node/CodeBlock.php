@@ -41,7 +41,18 @@ class CodeBlock implements NodeInterface
         ?NodeInterface $parentNode,
         ?array $attributes
     ): string {
-        $result = "```\n{$content}\n```\n";
+        $lines = preg_split('/\r\n|\r|\n/', $content);
+        $lineCount = count($lines);
+
+        $result = "```\n";
+        foreach ($lines as $i => $line) {
+            $result .= "{$line}";
+            $isLastLine = (($i + 1) === $lineCount);
+            if (!$isLastLine || !empty(trim($line))) {
+                $result .= "\n";
+            }
+        }
+        $result .= "```\n\n";
 
         return $result;
     }

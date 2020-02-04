@@ -56,7 +56,7 @@ class Heading implements NodeInterface
         $level = $this->getLevel($attributes);
         $prefix = str_repeat('#', $level);
 
-        $result = "{$prefix} {$content}\n";
+        $result = "{$prefix} {$content}\n\n";
 
         return $result;
     }

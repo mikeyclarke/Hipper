@@ -104,7 +104,7 @@ class HeadingTest extends TestCase
         $content = 'Speaking English is exhausting';
         $attributes = ['level' => 4];
 
-        $expected = "#### Speaking English is exhausting\n";
+        $expected = "#### Speaking English is exhausting\n\n";
 
         $result = $this->headingNode->toMarkdownString($content, 0, null, $attributes);
         $this->assertEquals($expected, $result);
@@ -118,7 +118,7 @@ class HeadingTest extends TestCase
         $content = 'Speaking English is exhausting';
         $attributes = null;
 
-        $expected = "# Speaking English is exhausting\n";
+        $expected = "# Speaking English is exhausting\n\n";
 
         $result = $this->headingNode->toMarkdownString($content, 0, null, $attributes);
         $this->assertEquals($expected, $result);

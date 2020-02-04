@@ -107,9 +107,6 @@ JSON;
                 ],
                 [
                     'type' => 'paragraph',
-                ],
-                [
-                    'type' => 'paragraph',
                     'content' => [
                         [
                             'type' => 'text',

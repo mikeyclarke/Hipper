@@ -55,9 +55,6 @@ class DocumentExporter
                     ],
                 ],
             ],
-            [
-                'type' => 'paragraph',
-            ]
         ];
 
         array_unshift($docContent['content'], ...$nodes);

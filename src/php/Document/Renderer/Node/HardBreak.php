@@ -41,6 +41,10 @@ class HardBreak implements NodeInterface
         ?NodeInterface $parentNode,
         ?array $attributes
     ): string {
-        return "";
+        if ($parentNode instanceof Paragraph && $index === 0) {
+            return '';
+        }
+
+        return "\n";
     }
 }

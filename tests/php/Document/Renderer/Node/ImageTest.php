@@ -6,6 +6,7 @@ namespace Hipper\Tests\Document\Renderer\Node;
 use Hipper\Document\Renderer\HtmlEscaper;
 use Hipper\Document\Renderer\HtmlFragmentRendererContext;
 use Hipper\Document\Renderer\Node\Image;
+use Hipper\Document\Renderer\Node\Paragraph;
 use Hipper\Document\Renderer\UrlAttributeValidator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -171,6 +172,24 @@ class ImageTest extends TestCase
         $expected = "![Some text](https://duckduckgo.com \"A title\")\n";
 
         $result = $this->imageNode->toMarkdownString($content, 0, null, $attributes);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownStringOmitsTrailingNewlineIfInsideParagraph()
+    {
+        $content = '';
+        $parentNode = new Paragraph($this->context);
+        $attributes = ['src' => 'https://duckduckgo.com'];
+
+        $this->createContextGetUrlAttributeValidatorExpectation();
+        $this->createUrlAttributeValidatorExpectation([$attributes['src']], true);
+
+        $expected = "![](https://duckduckgo.com)";
+
+        $result = $this->imageNode->toMarkdownString($content, 0, $parentNode, $attributes);
         $this->assertEquals($expected, $result);
     }
 

@@ -67,12 +67,18 @@ class Image implements NodeInterface
         $src = $attributes['src'];
         $alt = $attributes['alt'] ?? '';
 
+        $result = "![{$alt}]({$src})";
+
         if (isset($attributes['title']) && !empty($attributes['title'])) {
             $title = $attributes['title'];
-            return '![' . $alt . '](' . $src . ' "' . $title . '")' . "\n";
+            $result = '![' . $alt . '](' . $src . ' "' . $title . '")';
         }
 
-        return "![{$alt}]({$src})\n";
+        if (!$parentNode instanceof Paragraph) {
+            $result .= "\n";
+        }
+
+        return $result;
     }
 
     private function hasValidSrc(?array $attributes): bool

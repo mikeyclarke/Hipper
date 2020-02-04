@@ -24,6 +24,8 @@ class PersonSearchRepository
         person.abbreviated_name AS abbreviated_name,
         person.email_address AS email_address,
         person.job_role_or_title AS job_role_or_title,
+        person.url_id AS url_id,
+        person.username AS username,
         person.created AS created
     FROM person
     WHERE person.search_tokens @@ websearch_to_tsquery('simple', :search_query)
@@ -57,6 +59,8 @@ SQL;
         person.abbreviated_name AS abbreviated_name,
         person.email_address AS email_address,
         person.job_role_or_title AS job_role_or_title,
+        person.url_id AS url_id,
+        person.username AS username,
         person.created AS created
     FROM person_to_team_map map
     INNER JOIN person ON person.id = map.person_id
@@ -93,6 +97,8 @@ SQL;
         person.abbreviated_name AS abbreviated_name,
         person.email_address AS email_address,
         person.job_role_or_title AS job_role_or_title,
+        person.url_id AS url_id,
+        person.username AS username,
         person.created AS created
     FROM person_to_project_map map
     INNER JOIN person ON person.id = map.person_id
@@ -123,6 +129,8 @@ SELECT
     abbreviated_name,
     email_address,
     job_role_or_title,
+    url_id,
+    username,
     created,
     ts_headline(
         'simple',

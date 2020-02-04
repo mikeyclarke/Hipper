@@ -126,7 +126,7 @@ class MarkdownRendererTest extends TestCase
         $this->createContextGetMarkdownEscaperExpectation();
         $this->createMarkdownEscaperExpectation(['Hi!!!'], 'Hi I’m escaped!!!');
 
-        $expected = "Hi I’m escaped!!!\n";
+        $expected = "Hi I’m escaped!!!\n\n";
 
         $result = $markdownRenderer->render($doc, $this->context);
         $this->assertEquals($expected, $result);
@@ -162,7 +162,7 @@ class MarkdownRendererTest extends TestCase
         $this->createNodeFactoryExpectation(['code_block', $this->context], new CodeBlock($this->context));
         $this->createNodeFactoryExpectation(['text', $this->context], new Text($this->context));
 
-        $expected = "```\nHi!!!\n```\n";
+        $expected = "```\nHi!!!\n```\n\n";
 
         $result = $markdownRenderer->render($doc, $this->context);
         $this->assertEquals($expected, $result);
@@ -225,7 +225,7 @@ class MarkdownRendererTest extends TestCase
         );
 
         // phpcs:disable Generic.Files.LineLength
-        $expected = "Ansible allows you to assign groups to other groups using the `[groupname:children]` syntax in the inventory.\n";
+        $expected = "Ansible allows you to assign groups to other groups using the `[groupname:children]` syntax in the inventory.\n\n";
         // phpcs:enable
 
         $result = $markdownRenderer->render($doc, $this->context);
@@ -256,7 +256,7 @@ class MarkdownRendererTest extends TestCase
         $this->createNodeFactoryExpectation(['paragraph', $this->context], new Paragraph($this->context));
         $this->createNodeFactoryExpectation(['hard_break', $this->context], new HardBreak($this->context));
 
-        $expected = "\n";
+        $expected = "\n\n";
 
         $result = $markdownRenderer->render($doc, $this->context);
         $this->assertEquals($expected, $result);
@@ -333,7 +333,7 @@ class MarkdownRendererTest extends TestCase
         $this->createContextGetMarkdownEscaperExpectation();
         $this->createMarkdownEscaperExpectation(['.'], '.');
 
-        $expected = "We are bold and *italic*.\n";
+        $expected = "We are bold and *italic*.\n\n";
 
         $result = $markdownRenderer->render($doc, $this->context);
         $this->assertEquals($expected, $result);

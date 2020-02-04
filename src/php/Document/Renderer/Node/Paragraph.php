@@ -44,6 +44,11 @@ class Paragraph implements NodeInterface
         ?array $attributes
     ): string {
         $result = "{$content}\n";
+
+        if (!$parentNode instanceof ListItem) {
+            $result .= "\n";
+        }
+
         return $result;
     }
 }

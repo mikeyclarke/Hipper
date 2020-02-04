@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Tests\Document\Renderer\Node;
 
 use Hipper\Document\Renderer\HtmlFragmentRendererContext;
+use Hipper\Document\Renderer\Node\ListItem;
 use Hipper\Document\Renderer\Node\Paragraph;
 use Hipper\Document\Renderer\StringTerminator;
 use Mockery as m;
@@ -66,9 +67,23 @@ class ParagraphTest extends TestCase
     {
         $content = 'Speaking English is exhausting';
 
-        $expected = "Speaking English is exhausting\n";
+        $expected = "Speaking English is exhausting\n\n";
 
         $result = $this->paragraphNode->toMarkdownString($content, 0, null, null);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toMarkdownStringOmitsAdditionalTrailingNewlineIfInsideListItem()
+    {
+        $content = 'Speaking English is exhausting';
+        $parentNode = new ListItem($this->context);
+
+        $expected = "Speaking English is exhausting\n";
+
+        $result = $this->paragraphNode->toMarkdownString($content, 0, $parentNode, null);
         $this->assertEquals($expected, $result);
     }
 

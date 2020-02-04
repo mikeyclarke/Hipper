@@ -47,11 +47,13 @@ class UnorderedList implements NodeInterface
             $lines = preg_split('/\r\n|\r|\n/', $content);
             $lineCount = count($lines);
 
-            $result = "\n";
-            foreach ($lines as $line) {
+            $result = "";
+            foreach ($lines as $i => $line) {
+                if (($i + 1) === $lineCount && empty(trim($line))) {
+                    continue;
+                }
                 $result .= "    {$line}\n";
             }
-            $result .= "\n";
         }
 
         return $result;

@@ -73,7 +73,7 @@ class UnorderedListTest extends TestCase
         $parentNode = new ListItem($this->context);
 
         $expected =
-            "\n    - List item one.\n    - List item two.\n    - List item three.\n    - List item four.\n    \n\n";
+            "    - List item one.\n    - List item two.\n    - List item three.\n    - List item four.\n";
 
         $result = $this->unorderedListNode->toMarkdownString($content, 0, $parentNode, null);
         $this->assertEquals($expected, $result);

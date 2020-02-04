@@ -98,7 +98,7 @@ class OrderedListTest extends TestCase
         $parentNode = new ListItem($this->context);
 
         $expected =
-            "\n    1. List item one.\n    2. List item two.\n    3. List item three.\n    4. List item four.\n    \n\n";
+            "    1. List item one.\n    2. List item two.\n    3. List item three.\n    4. List item four.\n";
 
         $result = $this->orderedListNode->toMarkdownString($content, 0, $parentNode, null);
         $this->assertEquals($expected, $result);

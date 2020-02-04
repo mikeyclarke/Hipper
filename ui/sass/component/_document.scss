@@ -172,6 +172,10 @@ $content-p-margin: 0 0 30px;
     margin: $content-p-margin;
 }
 
+.c-document__content li > p {
+    margin: 0;
+}
+
 .c-document__content .ProseMirror > p.is-empty:only-child::before {
     color: $header-placeholder-color;
     content: 'Start writing your doc…';

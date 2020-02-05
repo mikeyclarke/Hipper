@@ -1,3 +1,8 @@
+people.list:
+    path: /people
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Person\PeopleController:getAction
+
 person.show:
     path: /people/{username}~{url_id}
     methods: [GET]

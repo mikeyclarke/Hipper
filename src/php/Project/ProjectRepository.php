@@ -116,6 +116,35 @@ class ProjectRepository
         return $result;
     }
 
+    public function getAllWithMappingForPerson(string $personId, string $organizationId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $fields = [
+            'project.id',
+            'project.name',
+            'project.description',
+            'project.url_id',
+            'project.created',
+        ];
+
+        $qb->select($fields)
+            ->from('person_to_project_map', 'map')
+            ->leftJoin('map', 'project', 'project', 'project.id = map.project_id')
+            ->andWhere('map.person_id = :person_id')
+            ->andWhere('project.organization_id = :organization_id');
+
+        $qb->setParameters([
+            'person_id' => $personId,
+            'organization_id' => $organizationId,
+        ]);
+
+        $qb->orderBy('project.name', 'ASC');
+
+        $stmt = $qb->execute();
+        return $stmt->fetchAll();
+    }
+
     public function existsWithName(string $name, string $organizationId): bool
     {
         $stmt = $this->connection->executeQuery(

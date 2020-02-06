@@ -22,4 +22,25 @@
     {% endif %}
 </header>
 
+<section class="c-page-section">
+    <h2 class="c-page-section__title">Working on these projects</h2>
+
+    <div class="c-page-section__content">
+        <ol class="c-list">
+            {% for project in project_memberships %}
+                <li class="c-list__item--with-avatar">
+                    <a class="c-list__item-link" href="{{ project.route }}">
+                        <div class="c-avatar c-list__item-avatar">
+                            <span class="c-avatar__initials">{{ project.name|trim|first|upper }}</span>
+                        </div>
+                        <h2 class="c-list__item-title">{{ project.name }}</h2>
+                        <p class="c-list__item-description">{{ project.description }}</p>
+                        <span class="c-list__item-meta">Created <time datetime="{{ project.created.utc_datetime }}" title="{{ project.created.verbose }}">{{ project.created.time_ago }}</time></span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>
+
 {% endblock %}

@@ -1,8 +1,13 @@
 @use '../config/config';
+@use 'helper/breakpoint';
 @use '../helper/font-smoothing';
 
 .c-page-section {
     margin: 0 0 32px;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-bottom: 42px;
+    }
 }
 
 .c-page-section__title {

@@ -116,6 +116,33 @@ class TeamRepository
         return $result;
     }
 
+    public function getAllWithMappingForPerson(string $personId, string $organizationId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $fields = [
+            'team.id',
+            'team.name',
+            'team.description',
+            'team.url_id',
+            'team.created',
+        ];
+
+        $qb->select($fields)
+            ->from('person_to_team_map', 'map')
+            ->leftJoin('map', 'team', 'team', 'team.id = map.team_id')
+            ->andWhere('map.person_id = :person_id')
+            ->andWhere('team.organization_id = :organization_id');
+
+        $qb->setParameters([
+            'person_id' => $personId,
+            'organization_id' => $organizationId,
+        ]);
+
+        $stmt = $qb->execute();
+        return $stmt->fetchAll();
+    }
+
     public function existsWithName(string $organizationId, string $name): bool
     {
         $stmt = $this->connection->executeQuery(

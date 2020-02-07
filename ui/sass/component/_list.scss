@@ -11,6 +11,12 @@ $profile-card-avatar-size-medium-bp: 80px;
     @extend %c-base-list--responsive;
 }
 
+.c-list--pad-bottom {
+    @extend %c-base-list;
+    @extend %c-base-list--pad-bottom;
+    @extend %c-base-list--responsive;
+}
+
 %c-list__item {
     @extend %c-base-list__item;
     @extend %c-base-list__item--responsive;

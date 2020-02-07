@@ -23,6 +23,27 @@
 </header>
 
 <section class="c-page-section">
+    <h2 class="c-page-section__title">Member of these teams</h2>
+
+    <div class="c-page-section__content">
+        <ol class="c-list">
+            {% for team in team_memberships %}
+                <li class="c-list__item--with-avatar">
+                    <a class="c-list__item-link" href="{{ team.route }}">
+                        <div class="c-avatar c-list__item-avatar">
+                            <span class="c-avatar__initials">{{ team.name|trim|first|upper }}</span>
+                        </div>
+                        <h2 class="c-list__item-title">{{ team.name }}</h2>
+                        <p class="c-list__item-description">{{ team.description }}</p>
+                        <span class="c-list__item-meta">Created <time datetime="{{ team.created.utc_datetime }}" title="{{ team.created.verbose }}">{{ team.created.time_ago }}</time></span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>
+
+<section class="c-page-section">
     <h2 class="c-page-section__title">Working on these projects</h2>
 
     <div class="c-page-section__content">

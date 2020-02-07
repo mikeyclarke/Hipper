@@ -26,6 +26,7 @@ $_more-button-height: 46px;
 
 .c-search-results {
     @extend %c-base-list;
+    @extend %c-base-list--pad-bottom;
 
     @include breakpoint.breakpoint(app, medium) {
         background: transparent;

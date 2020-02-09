@@ -1,4 +1,5 @@
 import PopoverAlert from 'components/PopoverAlert';
+import timeout from 'Timeout/timeout';
 import ky, { Options, ResponsePromise } from 'ky';
 
 interface NormalizedOptions extends RequestInit {
@@ -87,7 +88,8 @@ export default class HttpClient {
             }),
             hooks: {
                 afterResponse: [
-                    this.checkResponse.bind(this),
+                    this.checkCsrfToken.bind(this),
+                    this.handleErrors.bind(this),
                 ],
             },
         };
@@ -103,7 +105,16 @@ export default class HttpClient {
         return !safeHttpMethods.includes(method);
     }
 
-    private checkResponse(request: Request, options: NormalizedOptions, response: Response): ResponsePromise | void {
+    // eslint-disable-next-line consistent-return
+    private checkCsrfToken(request: Request, options: NormalizedOptions, response: Response): ResponsePromise | void {
+        if (response.status === 419 && null !== this.lastRequest && this.shouldRetryCsrfFailure(response)) {
+            this.csrfToken = <string> response.headers.get('X-CSRF-Reset');
+            this.retryCount += 1;
+            return this.makeRequest(...this.lastRequest);
+        }
+    }
+
+    private async handleErrors(request: Request, options: NormalizedOptions, response: Response): Promise<void> {
         if (response.ok) {
             return;
         }
@@ -112,14 +123,16 @@ export default class HttpClient {
             return;
         }
 
-        if (response.status === 419 && null !== this.lastRequest && this.shouldRetryCsrfFailure(response)) {
-            this.csrfToken = <string> response.headers.get('X-CSRF-Reset');
-            this.retryCount += 1;
-            return this.makeRequest(...this.lastRequest); // eslint-disable-line consistent-return
+        if (response.status === 401) {
+            createAuthenticationAlert();
+            await timeout(1500);
+            window.location.reload(false);
+            return;
         }
 
-        createAlert();
+        createErrorAlert();
     }
+
 
     private shouldRetryCsrfFailure(response: Response): boolean {
         if (!response.headers.has('X-CSRF-Reset')) {
@@ -134,7 +147,17 @@ export default class HttpClient {
     }
 }
 
-function createAlert(): void {
+function createAuthenticationAlert(): void {
+    const title = 'Session expired';
+    const message = 'Redirecting you to login page…';
+    const popoverAlert = <PopoverAlert> document.createElement('popover-alert');
+    popoverAlert.setAttribute('alert-title', title);
+    popoverAlert.setAttribute('alert-message', message);
+    popoverAlert.setAttribute('alert-type', 'error');
+    document.body.appendChild(popoverAlert);
+}
+
+function createErrorAlert(): void {
     const title = 'Something went wrong';
     const message = 'If the issue persists please get in touch with our support team';
     const popoverAlert = <PopoverAlert> document.createElement('popover-alert');

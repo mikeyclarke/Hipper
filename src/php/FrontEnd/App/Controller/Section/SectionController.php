@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\FrontEnd\App\Controller\Section;
 
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
+use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
 use Hipper\Knowledgebase\KnowledgebaseEntries;
 use Hipper\Knowledgebase\KnowledgebaseEntriesListFormatter;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
@@ -18,6 +19,7 @@ use Twig\Environment as Twig;
 
 class SectionController
 {
+    private KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter;
     private KnowledgebaseEntries $knowledgebaseEntries;
     private KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter;
     private SectionRepository $sectionRepository;
@@ -25,12 +27,14 @@ class SectionController
     private Twig $twig;
 
     public function __construct(
+        KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
         KnowledgebaseEntries $knowledgebaseEntries,
         KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter,
         SectionRepository $sectionRepository,
         TimeZoneFromRequest $timeZoneFromRequest,
         Twig $twig
     ) {
+        $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
         $this->knowledgebaseEntries = $knowledgebaseEntries;
         $this->knowledgebaseEntriesListFormatter = $knowledgebaseEntriesListFormatter;
         $this->sectionRepository = $sectionRepository;
@@ -115,7 +119,24 @@ class SectionController
             ['team_url_id' => $team->getUrlId()]
         );
 
+        $ancestorSections = [];
+        if (null !== $section->getParentSectionId()) {
+            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
+                $section->getParentSectionId(),
+                $section->getKnowledgebaseId(),
+                $section->getOrganizationId()
+            );
+        }
+
+        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+            $organization,
+            $team,
+            array_reverse($ancestorSections),
+            $section->getName()
+        );
+
         $context = [
+            'breadcrumbs' => $breadcrumbs,
             'team' => $team,
             'current_user_is_in_team' => $currentUserIsInTeam,
         ];
@@ -148,7 +169,24 @@ class SectionController
             ['project_url_id' => $project->getUrlId()]
         );
 
+        $ancestorSections = [];
+        if (null !== $section->getParentSectionId()) {
+            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
+                $section->getParentSectionId(),
+                $section->getKnowledgebaseId(),
+                $section->getOrganizationId()
+            );
+        }
+
+        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+            $organization,
+            $project,
+            array_reverse($ancestorSections),
+            $section->getName()
+        );
+
         $context = [
+            'breadcrumbs' => $breadcrumbs,
             'project' => $project,
             'current_user_is_in_project' => $currentUserIsInProject,
         ];

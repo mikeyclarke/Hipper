@@ -5,6 +5,8 @@
 {% block content %}
 
 <header class="c-page-header">
+    {% include '_breadcrumb_list.twig' %}
+
     <h1 class="c-page-header__title">{{ section.name }}</h1>
 
     {% if section.description is null or section.description is empty %}

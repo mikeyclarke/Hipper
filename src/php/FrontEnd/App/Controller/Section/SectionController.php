@@ -18,11 +18,11 @@ use Twig\Environment as Twig;
 
 class SectionController
 {
-    private $knowledgebaseEntries;
-    private $knowledgebaseEntriesListFormatter;
-    private $sectionRepository;
-    private $timeZoneFromRequest;
-    private $twig;
+    private KnowledgebaseEntries $knowledgebaseEntries;
+    private KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter;
+    private SectionRepository $sectionRepository;
+    private TimeZoneFromRequest $timeZoneFromRequest;
+    private Twig $twig;
 
     public function __construct(
         KnowledgebaseEntries $knowledgebaseEntries,

@@ -1,46 +1,51 @@
 @use '../component/base-list';
 
-.c-list {
+.c-card-list {
     @extend %c-base-list;
+    @extend %c-base-list--responsive;
 }
 
-.c-list--pad-bottom {
+.c-card-list--pad-bottom {
     @extend %c-base-list;
     @extend %c-base-list--pad-bottom;
+    @extend %c-base-list--responsive;
 }
 
-%c-list__item {
+%c-card-list__item {
     @extend %c-base-list__item;
+    @extend %c-base-list__item--responsive;
 }
 
-.c-list__item--with-avatar {
-    @extend %c-list__item;
+.c-card-list__item--with-avatar {
+    @extend %c-card-list__item;
 }
 
-.c-list__item-link {
+.c-card-list__item-link {
     @extend %c-base-list__item-link;
     @extend %c-base-list__item-link--responsive;
 }
 
-.c-list__item-avatar {
+.c-card-list__item-avatar {
     @extend %c-base-list__item-avatar;
+    @extend %c-base-list__item-avatar--responsive;
 }
 
-.c-list__item-title {
+.c-card-list__item-title {
     @extend %c-base-list__item-title;
     @extend %c-base-list__item-title--responsive;
 }
 
-.c-list__item-description {
+.c-card-list__item-description {
     @extend %c-base-list__item-description;
     @extend %c-base-list__item-description--responsive;
 }
 
-.c-list__item-meta {
+.c-card-list__item-meta {
     @extend %c-base-list__item-meta;
     @extend %c-base-list__item-meta--responsive;
 }
 
-.c-list__item--with-avatar {
+.c-card-list__item--with-avatar {
     @extend %c-base-list__item--with-avatar;
+    @extend %c-base-list__item--with-avatar--responsive;
 }

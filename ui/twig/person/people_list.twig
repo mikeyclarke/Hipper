@@ -16,18 +16,18 @@
 
 <h1 class="c-page-title--hide-below-medium">People at {{ organization.name }}</h1>
 
-<ol class="c-list--pad-bottom">
+<ol class="c-card-list--pad-bottom">
     {% for person in people_list %}
-        <li class="c-list__item--with-avatar">
-            <a class="c-list__item-link" href="{{ person.route }}">
-                <div class="c-avatar c-list__item-avatar">
+        <li class="c-card-list__item--with-avatar">
+            <a class="c-card-list__item-link" href="{{ person.route }}">
+                <div class="c-avatar c-card-list__item-avatar">
                     <span class="c-avatar__initials">{{ person.abbreviated_name }}</span>
                 </div>
-                <h2 class="c-list__item-title">{{ person.name }}</h2>
+                <h2 class="c-card-list__item-title">{{ person.name }}</h2>
                 {% if person.job_role_or_title is not null and person.job_role_or_title is not empty %}
-                    <p class="c-list__item-description">{{ person.job_role_or_title }}</p>
+                    <p class="c-card-list__item-description">{{ person.job_role_or_title }}</p>
                 {% endif %}
-                <span class="c-list__item-meta">Jointed <time datetime="{{ person.created.utc_datetime }}" title="{{ person.created.verbose }}">{{ person.created.time_ago }}</time></span>
+                <span class="c-card-list__item-meta">Jointed <time datetime="{{ person.created.utc_datetime }}" title="{{ person.created.verbose }}">{{ person.created.time_ago }}</time></span>
             </a>
         </li>
     {% endfor %}

@@ -16,16 +16,16 @@
 
 <h1 class="c-page-title--hide-below-medium">Projects at {{ organization.name }}</h1>
 
-<ol class="c-list--pad-bottom">
+<ol class="c-card-list--pad-bottom">
     {% for project in projects_list %}
-        <li class="c-list__item--with-avatar">
-            <a class="c-list__item-link" href="{{ project.route }}">
-                <div class="c-avatar c-list__item-avatar">
+        <li class="c-card-list__item--with-avatar">
+            <a class="c-card-list__item-link" href="{{ project.route }}">
+                <div class="c-avatar c-card-list__item-avatar">
                     <span class="c-avatar__initials">{{ project.name|trim|first|upper }}</span>
                 </div>
-                <h2 class="c-list__item-title">{{ project.name }}</h2>
-                <p class="c-list__item-description">{{ project.description }}</p>
-                <span class="c-list__item-meta">Created <time datetime="{{ project.created.utc_datetime }}" title="{{ project.created.verbose }}">{{ project.created.time_ago }}</time></span>
+                <h2 class="c-card-list__item-title">{{ project.name }}</h2>
+                <p class="c-card-list__item-description">{{ project.description }}</p>
+                <span class="c-card-list__item-meta">Created <time datetime="{{ project.created.utc_datetime }}" title="{{ project.created.verbose }}">{{ project.created.time_ago }}</time></span>
             </a>
         </li>
     {% endfor %}

@@ -9,25 +9,32 @@ use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\TimeZone\TimeZoneFromRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment as Twig;
 
 class ProjectDocsController
 {
+    private const CREATE_DOC_ROUTE_NAME = 'front_end.app.project.doc.create';
+    private const CREATE_SECTION_ROUTE_NAME = 'front_end.app.project.section.create';
+
     private KnowledgebaseEntries $knowledgebaseEntries;
     private KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter;
     private TimeZoneFromRequest $timeZoneFromRequest;
     private Twig $twig;
+    private UrlGeneratorInterface $router;
 
     public function __construct(
         KnowledgebaseEntries $knowledgebaseEntries,
         KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter,
         TimeZoneFromRequest $timeZoneFromRequest,
-        Twig $twig
+        Twig $twig,
+        UrlGeneratorInterface $router
     ) {
         $this->knowledgebaseEntries = $knowledgebaseEntries;
         $this->knowledgebaseEntriesListFormatter = $knowledgebaseEntriesListFormatter;
         $this->timeZoneFromRequest = $timeZoneFromRequest;
         $this->twig = $twig;
+        $this->router = $router;
     }
 
     public function getAction(Request $request): Response
@@ -35,6 +42,17 @@ class ProjectDocsController
         $organization = $request->attributes->get('organization');
         $project = $request->attributes->get('project');
         $currentUserIsInProject = $request->attributes->get('current_user_is_in_project');
+        $projectUrlId = $project->getUrlId();
+        $subdomain = $organization->getSubdomain();
+
+        $createDocRoute = $this->router->generate(self::CREATE_DOC_ROUTE_NAME, [
+            'project_url_id' => $projectUrlId,
+            'subdomain' => $subdomain,
+        ]);
+        $createSectionRoute = $this->router->generate(self::CREATE_SECTION_ROUTE_NAME, [
+            'project_url_id' => $projectUrlId,
+            'subdomain' => $subdomain,
+        ]);
 
         list($docs, $sections) = $this->knowledgebaseEntries->get(
             $project->getKnowledgebaseId(),
@@ -49,11 +67,13 @@ class ProjectDocsController
             $sections,
             $timeZone,
             KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME,
-            ['project_url_id' => $project->getUrlId()]
+            ['project_url_id' => $projectUrlId]
         );
 
         $context = [
-            'knowledgebaseEntries' => $knowledgebaseEntries,
+            'create_doc_route' => $createDocRoute,
+            'create_section_route' => $createSectionRoute,
+            'knowledgebase_entries' => $knowledgebaseEntries,
             'html_title' => sprintf('Docs – %s', $project->getName()),
             'project' => $project,
             'current_user_is_in_project' => $currentUserIsInProject,

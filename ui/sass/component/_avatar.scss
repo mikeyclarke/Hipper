@@ -39,8 +39,8 @@ $_section-gradient-to: rgba(color.adjust($_section-color, $lightness: 5%), .2);
 }
 
 .c-avatar__icon {
-    height: 20px;
-    width: 20px;
+    height: .625em;
+    width: .625em;
 }
 
 .c-avatar--document .c-avatar__icon {

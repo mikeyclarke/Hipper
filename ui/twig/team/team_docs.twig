@@ -4,7 +4,7 @@
 
 {% block content %}
 
-{% if knowledgebaseEntries is empty %}
+{% if knowledgebase_entries is empty %}
     <div class="c-empty-page-notice">
         <h1 class="c-empty-page-notice__title">Start sharing knowledge</h1>
         <p class="c-empty-page-notice__copy">Use docs to keep everyone in this team on the same page about how you work and what you’re working on.</p>
@@ -13,25 +13,6 @@
     {% include '_knowledgebase_entries.twig' %}
 {% endif %}
 
-<floating-button>
-    <ol class="floating-button__list js-list" hidden>
-        <li class="floating-button__list-item">
-            <a href="/teams/{{ team.urlId }}/docs/new" class="floating-button__control">
-                <svg class="floating-button__control-icon" aria-hidden="true"><use xlink:href="#icon-sprite__document"/></svg>
-                Add new doc
-            </a>
-        </li>
-        <li class="floating-button__list-item">
-            <a href="/teams/{{ team.urlId }}/docs/new-section" class="floating-button__control">
-                <svg class="floating-button__control-icon" aria-hidden="true"><use xlink:href="#icon-sprite__section"/></svg>
-                Add new section
-            </a>
-        </li>
-    </ol>
-
-    <button type="button" aria-label="Add content…" class="floating-button__button js-button">
-        <svg class="floating-button__button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__add"/></svg>
-    </button>
-</floating-button>
+{% include '_floating_knowledgebase_button.twig' %}
 
 {% endblock %}

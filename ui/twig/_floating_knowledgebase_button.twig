@@ -1,0 +1,31 @@
+{% set new_doc_label = 'Add new doc' %}
+{% set new_section_label = 'Add new section' %}
+
+{% if section is defined and section is not null %}
+    {% set new_section_label = 'Add new sub-section' %}
+{% endif %}
+
+<floating-button>
+    <ol class="floating-button__list js-list" hidden>
+        <li class="floating-button__list-item">
+            <a href="{{ create_doc_route }}" class="floating-button__control">
+                <div class="c-avatar--document floating-button__control-icon">
+                    <svg class="c-avatar__icon" aria-hidden="true"><use xlink:href="#icon-sprite__document"/></svg>
+                </div>
+                {{ new_doc_label }}
+            </a>
+        </li>
+        <li class="floating-button__list-item">
+            <a href="{{ create_section_route }}" class="floating-button__control">
+                <div class="c-avatar--section floating-button__control-icon">
+                    <svg class="c-avatar__icon" aria-hidden="true"><use xlink:href="#icon-sprite__section"/></svg>
+                </div>
+                {{ new_section_label }}
+            </a>
+        </li>
+    </ol>
+
+    <button type="button" aria-label="Add to docs…" class="floating-button__button js-button">
+        <svg class="floating-button__button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__add"/></svg>
+    </button>
+</floating-button>

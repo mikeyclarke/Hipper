@@ -15,16 +15,23 @@ use Hipper\TimeZone\TimeZoneFromRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment as Twig;
 
 class SectionController
 {
+    private const CREATE_PROJECT_DOC_ROUTE_NAME = 'front_end.app.project.doc.create';
+    private const CREATE_PROJECT_SECTION_ROUTE_NAME = 'front_end.app.project.section.create';
+    private const CREATE_TEAM_DOC_ROUTE_NAME = 'front_end.app.team.doc.create';
+    private const CREATE_TEAM_SECTION_ROUTE_NAME = 'front_end.app.team.section.create';
+
     private KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter;
     private KnowledgebaseEntries $knowledgebaseEntries;
     private KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter;
     private SectionRepository $sectionRepository;
     private TimeZoneFromRequest $timeZoneFromRequest;
     private Twig $twig;
+    private UrlGeneratorInterface $router;
 
     public function __construct(
         KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
@@ -32,7 +39,8 @@ class SectionController
         KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter,
         SectionRepository $sectionRepository,
         TimeZoneFromRequest $timeZoneFromRequest,
-        Twig $twig
+        Twig $twig,
+        UrlGeneratorInterface $router
     ) {
         $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
         $this->knowledgebaseEntries = $knowledgebaseEntries;
@@ -40,6 +48,7 @@ class SectionController
         $this->sectionRepository = $sectionRepository;
         $this->timeZoneFromRequest = $timeZoneFromRequest;
         $this->twig = $twig;
+        $this->router = $router;
     }
 
     public function getAction(Request $request): Response
@@ -48,6 +57,7 @@ class SectionController
         $knowledgebaseId = $request->attributes->get('knowledgebase_id');
         $organization = $request->attributes->get('organization');
         $sectionId = $request->attributes->get('section_id');
+        $subdomain = $organization->getSubdomain();
         $timeZone = $this->timeZoneFromRequest->get($request);
 
         $result = $this->sectionRepository->findById($sectionId, $knowledgebaseId, $organization->getId());
@@ -56,141 +66,97 @@ class SectionController
         }
 
         $section = SectionModel::createFromArray($result);
+        $context = [
+            'section' => $section,
+            'html_title' => $section->getName(),
+        ];
 
         switch ($knowledgebaseType) {
             case 'team':
+                $knowledgebaseOwner = $request->attributes->get('team');
+                $teamUrlId = $knowledgebaseOwner->getUrlId();
+                $createDocRoute = $this->router->generate(self::CREATE_TEAM_DOC_ROUTE_NAME, [
+                    'subdomain' => $subdomain,
+                    'team_url_id' => $teamUrlId,
+                    'in' => $section->getId(),
+                ]);
+                $createSectionRoute = $this->router->generate(self::CREATE_TEAM_SECTION_ROUTE_NAME, [
+                    'subdomain' => $subdomain,
+                    'team_url_id' => $teamUrlId,
+                    'in' => $section->getId(),
+                ]);
+                $showDocRouteName = KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME;
+                $showDocRouteParams = ['team_url_id' => $teamUrlId];
                 $twigTemplate = 'team/team_section.twig';
-                list($knowledgebaseOwnerContext, $knowledgebaseEntries) = $this->getTeamContext(
-                    $request,
-                    $section,
-                    $organization,
-                    $timeZone
-                );
+
+                $context['current_user_is_in_team'] = $request->attributes->get('current_user_is_in_team');
+                $context['team'] = $knowledgebaseOwner;
+
                 break;
             case 'project':
+                $knowledgebaseOwner = $request->attributes->get('project');
+                $projectUrlId = $knowledgebaseOwner->getUrlId();
+                $createDocRoute = $this->router->generate(self::CREATE_PROJECT_DOC_ROUTE_NAME, [
+                    'subdomain' => $subdomain,
+                    'project_url_id' => $projectUrlId,
+                    'in' => $section->getId(),
+                ]);
+                $createSectionRoute = $this->router->generate(self::CREATE_PROJECT_SECTION_ROUTE_NAME, [
+                    'subdomain' => $subdomain,
+                    'project_url_id' => $projectUrlId,
+                    'in' => $section->getId(),
+                ]);
+                $showDocRouteName = KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME;
+                $showDocRouteParams = ['project_url_id' => $knowledgebaseOwner->getUrlId()];
                 $twigTemplate = 'project/project_section.twig';
-                list($knowledgebaseOwnerContext, $knowledgebaseEntries) = $this->getProjectContext(
-                    $request,
-                    $section,
-                    $organization,
-                    $timeZone
-                );
+
+                $context['current_user_is_in_project'] = $request->attributes->get('current_user_is_in_project');
+                $context['project'] = $knowledgebaseOwner;
+
                 break;
             default:
                 throw new UnsupportedKnowledgebaseEntityException;
         }
 
-        $context = array_merge(
-            $knowledgebaseOwnerContext,
-            [
-                'knowledgebaseEntries' => $knowledgebaseEntries,
-                'section' => $section,
-                'html_title' => $section->getName(),
-            ]
+        list($docs, $sections) = $this->knowledgebaseEntries->get(
+            $knowledgebaseOwner->getKnowledgebaseId(),
+            $section->getId(),
+            $organization->getId()
         );
+
+        $timeZone = $this->timeZoneFromRequest->get($request);
+        $knowledgebaseEntries = $this->knowledgebaseEntriesListFormatter->format(
+            $organization,
+            $docs,
+            $sections,
+            $timeZone,
+            $showDocRouteName,
+            $showDocRouteParams
+        );
+
+        $ancestorSections = [];
+        if (null !== $section->getParentSectionId()) {
+            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
+                $section->getParentSectionId(),
+                $section->getKnowledgebaseId(),
+                $section->getOrganizationId()
+            );
+        }
+
+        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+            $organization,
+            $knowledgebaseOwner,
+            array_reverse($ancestorSections),
+            $section->getName()
+        );
+
+        $context['create_doc_route'] = $createDocRoute;
+        $context['create_section_route'] = $createSectionRoute;
+        $context['breadcrumbs'] = $breadcrumbs;
+        $context['knowledgebase_entries'] = $knowledgebaseEntries;
 
         return new Response(
             $this->twig->render($twigTemplate, $context)
         );
-    }
-
-    private function getTeamContext(
-        Request $request,
-        SectionModel $section,
-        OrganizationModel $organization,
-        string $timeZone
-    ): array {
-        $team = $request->attributes->get('team');
-        $currentUserIsInTeam = $request->attributes->get('current_user_is_in_team');
-
-        list($docs, $sections) = $this->knowledgebaseEntries->get(
-            $team->getKnowledgebaseId(),
-            $section->getId(),
-            $organization->getId()
-        );
-
-        $timeZone = $this->timeZoneFromRequest->get($request);
-        $knowledgebaseEntries = $this->knowledgebaseEntriesListFormatter->format(
-            $organization,
-            $docs,
-            $sections,
-            $timeZone,
-            KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME,
-            ['team_url_id' => $team->getUrlId()]
-        );
-
-        $ancestorSections = [];
-        if (null !== $section->getParentSectionId()) {
-            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
-                $section->getParentSectionId(),
-                $section->getKnowledgebaseId(),
-                $section->getOrganizationId()
-            );
-        }
-
-        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
-            $organization,
-            $team,
-            array_reverse($ancestorSections),
-            $section->getName()
-        );
-
-        $context = [
-            'breadcrumbs' => $breadcrumbs,
-            'team' => $team,
-            'current_user_is_in_team' => $currentUserIsInTeam,
-        ];
-
-        return [$context, $knowledgebaseEntries];
-    }
-
-    private function getProjectContext(
-        Request $request,
-        SectionModel $section,
-        OrganizationModel $organization,
-        string $timeZone
-    ): array {
-        $project = $request->attributes->get('project');
-        $currentUserIsInProject = $request->attributes->get('current_user_is_in_project');
-
-        list($docs, $sections) = $this->knowledgebaseEntries->get(
-            $project->getKnowledgebaseId(),
-            $section->getId(),
-            $organization->getId()
-        );
-
-        $timeZone = $this->timeZoneFromRequest->get($request);
-        $knowledgebaseEntries = $this->knowledgebaseEntriesListFormatter->format(
-            $organization,
-            $docs,
-            $sections,
-            $timeZone,
-            KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME,
-            ['project_url_id' => $project->getUrlId()]
-        );
-
-        $ancestorSections = [];
-        if (null !== $section->getParentSectionId()) {
-            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
-                $section->getParentSectionId(),
-                $section->getKnowledgebaseId(),
-                $section->getOrganizationId()
-            );
-        }
-
-        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
-            $organization,
-            $project,
-            array_reverse($ancestorSections),
-            $section->getName()
-        );
-
-        $context = [
-            'breadcrumbs' => $breadcrumbs,
-            'project' => $project,
-            'current_user_is_in_project' => $currentUserIsInProject,
-        ];
-
-        return [$context, $knowledgebaseEntries];
     }
 }

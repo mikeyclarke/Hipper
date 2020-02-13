@@ -24,7 +24,7 @@ floating-button[expanded=true] {
     border-radius: 10px;
     height: 108px;
     transition-timing-function: cubic-bezier(.175, .885, .32, 1.275);
-    width: 255px;
+    width: 263px;
 }
 
 .floating-button__button {
@@ -65,7 +65,7 @@ floating-button[expanded=true] .floating-button__button {
     padding: 0;
     position: absolute;
     bottom: 0;
-    right: 66px;
+    right: 54px;
 }
 
 .floating-button__list-item {
@@ -81,7 +81,7 @@ floating-button[expanded=true] .floating-button__button {
     height: 54px;
     padding: 0 12px;
     text-decoration: none;
-    width: 189px;
+    width: 210px;
     @include font-smoothing.font-smoothing;
 }
 
@@ -91,8 +91,9 @@ floating-button[expanded=true] .floating-button__button {
 }
 
 .floating-button__control-icon {
-    fill: config.config-get(global, color, white);
-    height: 16px;
+    background: config.config-get(global, color, white) !important;
+    font-size: 24px !important;
+    height: 24px !important;
     margin: 0 10px 0 0;
-    width: 16px;
+    width: 24px !important;
 }

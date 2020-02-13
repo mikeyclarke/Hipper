@@ -13,10 +13,10 @@ use Twig\Environment as Twig;
 
 class TeamDocsController
 {
-    private $knowledgebaseEntries;
-    private $knowledgebaseEntriesListFormatter;
-    private $timeZoneFromRequest;
-    private $twig;
+    private KnowledgebaseEntries $knowledgebaseEntries;
+    private KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter;
+    private TimeZoneFromRequest $timeZoneFromRequest;
+    private Twig $twig;
 
     public function __construct(
         KnowledgebaseEntries $knowledgebaseEntries,

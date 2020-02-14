@@ -1,0 +1,34 @@
+{% macro start(id) %}
+    <context-menu id="{{ id }}" class="c-context-menu" role="menu" tabindex="-1" aria-hidden="true">
+        <div class="c-context-menu__content">
+{% endmacro %}
+
+{% macro end() %}
+            <button type="button" role="menuitem" class="c-context-menu__close-button js-close-button">Close</button>
+        </div>
+    </context-menu>
+{% endmacro %}
+
+{% macro group_start() %}
+    <div class="c-context-menu__group">
+{% endmacro %}
+
+{% macro group_end() %}
+    </div>
+{% endmacro %}
+
+{% macro item_start(type, attributes = {}) %}
+    {% if type == 'link' %}
+        <a class="c-context-menu__item" role="menuitem"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
+    {% elseif type == 'button' %}
+        <button type="button" class="c-context-menu__item" role="menuitem"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
+    {% endif %}
+{% endmacro %}
+
+{% macro item_end(type) %}
+    {% if type == 'link' %}
+        </a>
+    {% elseif type == 'button' %}
+        </button>
+    {% endif %}
+{% endmacro %}

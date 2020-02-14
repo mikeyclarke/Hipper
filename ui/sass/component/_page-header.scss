@@ -1,12 +1,49 @@
 @use 'sass:color';
 @use '../config/config';
+@use 'helper/breakpoint';
 @use '../helper/font-smoothing';
+@use 'helper/unstyled-button';
 
 $page-header-padding: 24px 16px 32px;
+
+$_actions-margin: 24px 0 0;
+
+$_action-dimension: 46px;
+$_action-background-color: config.config-get(color-shades, dark, 100);
+$_action-background-dimension: 32px;
+$_action-background-offset: ($_action-dimension - $_action-background-dimension) / 2;
+
+$_action-icon-dimension: 18px;
+$_action-icon-fill: config.config-get(color-shades, dark, 800);
+
+$_primary-action-background-color: config.config-get(color-shades, primary, 1100);
+$_primary-action-box-shadow: 0 1px 9px rgba($_primary-action-background-color, .45);
+$_primary-action-color: config.config-get(global, color, white);
+$_primary-action-font-size: 16px;
+$_primary-action-font-weight: 600;
+$_primary-action-height: 46px;
+$_primary-action-padding: 12px 16px 12px 20px;
+$_primary-action-border-radius: $_primary-action-height / 2;
+$_primary-action-focus-box-shadow: 0 0 0 3px rgba($_primary-action-background-color, .45);
+
+$_primary-action-icon-background-color: config.config-get(color-shades, primary, 800);
+$_primary-action-icon-background-dimension: 32px;
+$_primary-action-icon-fill: config.config-get(global, color, white);
+$_primary-action-icon-dimension: 20px;
+$_primary-action-icon-margin: 0 0 0 15px;
 
 .c-page-header {
     padding: $page-header-padding;
     position: relative;
+
+    @include breakpoint.breakpoint(app, medium) {
+        padding-bottom: 42px;
+        padding-top: 0;
+    }
+}
+
+.c-page-header .c-breadcrumb-list {
+    margin-top: -16px;
 }
 
 .c-page-header__title-label {
@@ -168,4 +205,103 @@ $page-header-padding: 24px 16px 32px;
 
 .c-page-header__done-button:focus .c-page-header__done-button-icon {
     fill: color.adjust(config.config-get(global, color, white), $lightness: 10%);
+}
+
+.c-page-header__actions {
+    display: flex;
+    justify-content: space-between;
+    margin: $_actions-margin;
+}
+
+.c-page-header__actions-start,
+.c-page-header__actions-end {
+    position: relative;
+}
+
+.c-page-header__actions-start {
+    display: flex;
+    margin-left: -#{($_action-dimension - $_action-background-dimension) / 2};
+}
+
+.c-page-header__action {
+    @extend %unstyled-button;
+    align-items: center;
+    display: flex;
+    height: $_action-dimension;
+    justify-content: center;
+    position: relative;
+    width: $_action-dimension;
+    z-index: 0;
+}
+
+.c-page-header__action:focus {
+    outline: 0;
+}
+
+.c-page-header__action::before {
+    background-color: $_action-background-color;
+    border-radius: $_action-background-dimension;
+    bottom: $_action-background-offset;
+    content: '';
+    left: $_action-background-offset;
+    position: absolute;
+    right: $_action-background-offset;
+    top: $_action-background-offset;
+    z-index: -1;
+}
+
+.c-page-header__action:focus::before {
+    background-color: color.adjust($_action-background-color, $lightness: -10%);
+}
+
+.c-page-header__action-icon {
+    fill: $_action-icon-fill;
+    height: $_action-icon-dimension;
+    width: $_action-icon-dimension;
+}
+
+.c-page-header__primary-action {
+    @extend %unstyled-button;
+    align-items: center;
+    background-color: $_primary-action-background-color;
+    border-radius: $_primary-action-border-radius;
+    box-shadow: $_primary-action-box-shadow;
+    color: $_primary-action-color;
+    display: none;
+    font-size: $_primary-action-font-size;
+    font-weight: $_primary-action-font-weight;
+    height: $_primary-action-height;
+    padding: $_primary-action-padding;
+    position: relative;
+    transition: box-shadow .2s;
+    z-index: 0;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        display: flex;
+    }
+}
+
+.c-page-header__primary-action:focus {
+    box-shadow: $_primary-action-focus-box-shadow;
+    outline: 0;
+}
+
+.c-page-header__primary-action::after {
+    background-color: $_primary-action-icon-background-color;
+    border-radius: $_primary-action-icon-background-dimension / 2;
+    content: '';
+    height: $_primary-action-icon-background-dimension;
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    width: $_primary-action-icon-background-dimension;
+    z-index: -1;
+}
+
+.c-page-header__primary-action-icon {
+    fill: $_primary-action-icon-fill;
+    height: $_primary-action-icon-dimension;
+    margin: $_primary-action-icon-margin;
+    width: $_primary-action-icon-dimension;
 }

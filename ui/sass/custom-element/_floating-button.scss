@@ -1,4 +1,5 @@
 @use '../config/config';
+@use 'helper/breakpoint';
 @use '../helper/font-smoothing';
 
 floating-button {
@@ -14,6 +15,10 @@ floating-button {
     transition-duration: .2s;
     transition-timing-function: cubic-bezier(.6, -.28, .735, .045);
     width: 54px;
+
+    @include breakpoint.breakpoint(app, medium) {
+        display: none;
+    }
 }
 
 floating-button:focus-within {

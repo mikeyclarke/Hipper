@@ -8,7 +8,7 @@
         {% block navigational_header %}{% endblock %}
 
         <div class="l-app-default__main-content-outer-container">
-            <main class="l-app-default__main-content-inner-container">
+            <main class="l-app-default__main-content-inner-container{% if slim_layout is defined and slim_layout is same as(true) %}--slim{% endif %}">
                 {% block content %}{% endblock %}
             </main>
         </div>

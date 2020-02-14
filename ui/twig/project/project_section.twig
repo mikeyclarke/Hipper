@@ -1,4 +1,4 @@
-{% extends '_app_default_layout.twig' %}
+{% extends '_app_default_layout_slim.twig' %}
 
 {% block navigational_header %}{% include 'project/_project_header.twig' with { activeTab: 'docs' } %}{% endblock %}
 
@@ -16,9 +16,7 @@
     {% endif %}
 
     {% if current_user_is_in_project %}
-        <button type="button" aria-label="Edit section" class="c-page-header__edit-button">
-            <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
-        </button>
+        {% include '_section_actions.twig' %}
     {% endif %}
 </header>
 

@@ -1,0 +1,29 @@
+{% import 'custom_elements/_context_menu.twig' as context_menu %}
+{% import 'custom_elements/_context_menu_toggle.twig' as context_menu_toggle %}
+
+<div class="c-page-header__actions">
+    <div class="c-page-header__actions-start">
+        <button class="c-page-header__action" type="button" aria-label="Edit this section">
+            <svg class="c-page-header__action-icon" aria-hidden="true"><use href="#icon-sprite__edit"/></svg>
+        </button>
+        <button class="c-page-header__action" type="button" aria-label="Pin this section">
+            <svg class="c-page-header__action-icon" aria-hidden="true"><use href="#icon-sprite__pin"/></svg>
+        </button>
+    </div>
+    <div class="c-page-header__actions-end">
+        {{ context_menu_toggle.start('add-kb-entry', ['c-page-header__primary-action']) }}
+            Add to this section
+            <svg class="c-page-header__primary-action-icon" aria-hidden="true"><use href="#icon-sprite__add"></svg>
+        {{ context_menu_toggle.end() }}
+
+        {{ context_menu.start('add-kb-entry') }}
+            {{ context_menu.group_start() }}
+                {{ context_menu.item_start('link', {href: create_doc_route}) }}New doc{{ context_menu.item_end('link') }}
+            {{ context_menu.group_end() }}
+
+            {{ context_menu.group_start() }}
+                {{ context_menu.item_start('link', {href: create_section_route}) }}New sub-section{{ context_menu.item_end('link') }}
+            {{ context_menu.group_end() }}
+        {{ context_menu.end() }}
+    </div>
+</div>

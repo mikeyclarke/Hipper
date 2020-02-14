@@ -1,0 +1,11 @@
+{% macro start(menu_id, classnames = []) %}
+    {% set classname = ['js-button']|merge(classnames)|join(' ') %}
+
+    <context-menu-toggle>
+        <button class="{{ classname }}" type="button" aria-controls="{{ menu_id }}">
+{% endmacro %}
+
+{% macro end() %}
+        </button>
+    </context-menu-toggle>
+{% endmacro %}

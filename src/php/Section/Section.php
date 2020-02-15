@@ -17,17 +17,17 @@ use Hipper\Url\UrlSlugGenerator;
 
 class Section
 {
-    private $connection;
-    private $idGenerator;
-    private $knowledgebaseOwner;
-    private $knowledgebaseRepository;
-    private $knowledgebaseRoute;
-    private $knowledgebaseRouteRepository;
-    private $sectionInserter;
-    private $sectionRepository;
-    private $sectionValidator;
-    private $urlIdGenerator;
-    private $urlSlugGenerator;
+    private Connection $connection;
+    private IdGenerator $idGenerator;
+    private KnowledgebaseOwner $knowledgebaseOwner;
+    private KnowledgebaseRepository $knowledgebaseRepository;
+    private KnowledgebaseRoute $knowledgebaseRoute;
+    private KnowledgebaseRouteRepository $knowledgebaseRouteRepository;
+    private SectionInserter $sectionInserter;
+    private SectionRepository $sectionRepository;
+    private SectionValidator $sectionValidator;
+    private UrlIdGenerator $urlIdGenerator;
+    private UrlSlugGenerator $urlSlugGenerator;
 
     public function __construct(
         Connection $connection,

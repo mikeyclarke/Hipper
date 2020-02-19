@@ -10,7 +10,7 @@ use Twig\Environment as Twig;
 
 class CreateSectionController
 {
-    private $twig;
+    private Twig $twig;
 
     public function __construct(
         Twig $twig

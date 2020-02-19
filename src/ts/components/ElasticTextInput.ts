@@ -18,6 +18,13 @@ export default class ElasticTextInput extends HTMLElement {
             this.setAttribute('has-loaded', 'true');
         }
 
+        textArea.addEventListener('keydown', (event: KeyboardEvent) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+
         autosize(textArea);
     }
 }

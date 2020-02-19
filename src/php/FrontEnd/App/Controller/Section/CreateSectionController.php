@@ -4,36 +4,68 @@ declare(strict_types=1);
 namespace Hipper\FrontEnd\App\Controller\Section;
 
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
+use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
+use Hipper\Section\SectionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\Uuid;
+use Symfony\Component\Validator\Validation;
 use Twig\Environment as Twig;
 
 class CreateSectionController
 {
+    private const DEFAULT_NAME = 'Untitled section';
+
+    private KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter;
+    private SectionRepository $sectionRepository;
     private Twig $twig;
 
     public function __construct(
+        KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
+        SectionRepository $sectionRepository,
         Twig $twig
     ) {
+        $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
+        $this->sectionRepository = $sectionRepository;
         $this->twig = $twig;
     }
 
     public function getAction(Request $request): Response
     {
+        $organization = $request->attributes->get('organization');
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
 
         switch ($knowledgebaseType) {
             case 'project':
                 $twigTemplate = 'project/create_section.twig';
                 $context = $this->getProjectGetActionContext($request);
+                $knowledgebaseOwner = $context['project'];
                 break;
             case 'team':
                 $twigTemplate = 'team/create_section.twig';
                 $context = $this->getTeamGetActionContext($request);
+                $knowledgebaseOwner = $context['team'];
                 break;
             default:
                 throw new UnsupportedKnowledgebaseEntityException;
         }
+
+        $ancestorSections = [];
+        if (null !== $context['parent_section_id'] && $this->isUuid($context['parent_section_id'])) {
+            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
+                $context['parent_section_id'],
+                $knowledgebaseOwner->getKnowledgebaseId(),
+                $knowledgebaseOwner->getOrganizationId()
+            );
+        }
+
+        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+            $organization,
+            $knowledgebaseOwner,
+            array_reverse($ancestorSections),
+            self::DEFAULT_NAME
+        );
+        $context['breadcrumbs'] = $breadcrumbs;
 
         return new Response(
             $this->twig->render($twigTemplate, $context)
@@ -64,5 +96,12 @@ class CreateSectionController
             'parent_section_id' => $request->query->get('in', null),
             'team' => $team,
         ];
+    }
+
+    private function isUuid(string $parentSectionId): bool
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($parentSectionId, [new Uuid]);
+        return count($violations) === 0;
     }
 }

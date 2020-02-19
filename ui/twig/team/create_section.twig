@@ -5,6 +5,8 @@
 {% block content %}
 
 <header class="c-page-header">
+    {% include '_breadcrumb_list.twig' %}
+
     <form class="js-create-section-form">
         <input type="hidden" name="knowledgebase_id" value="{{ knowledgebase_id }}">
         <input type="hidden" name="parent_section_id" value="{{ parent_section_id }}">

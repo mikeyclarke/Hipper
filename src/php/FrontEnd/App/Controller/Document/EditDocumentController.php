@@ -6,9 +6,8 @@ namespace Hipper\FrontEnd\App\Controller\Document;
 use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRenderer;
 use Hipper\Document\DocumentRepository;
-use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
+use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
-use Hipper\Section\SectionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,9 +17,8 @@ class EditDocumentController
 {
     private $documentRenderer;
     private $documentRepository;
-    private $knowledgebaseBreadcrumbsFormatter;
+    private $knowledgebaseBreadcrumbs;
     private $knowledgebaseRouteUrlGenerator;
-    private $sectionRepository;
     private $twig;
     private $documentAllowedMarks;
     private $documentAllowedNodes;
@@ -28,18 +26,16 @@ class EditDocumentController
     public function __construct(
         DocumentRenderer $documentRenderer,
         DocumentRepository $documentRepository,
-        KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
+        KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
-        SectionRepository $sectionRepository,
         Twig $twig,
         array $documentAllowedMarks,
         array $documentAllowedNodes
     ) {
         $this->documentRenderer = $documentRenderer;
         $this->documentRepository = $documentRepository;
-        $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
+        $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
-        $this->sectionRepository = $sectionRepository;
         $this->twig = $twig;
         $this->documentAllowedMarks = $documentAllowedMarks;
         $this->documentAllowedNodes = $documentAllowedNodes;
@@ -64,20 +60,11 @@ class EditDocumentController
 
         $document = DocumentModel::createFromArray($result);
 
-        $ancestorSections = [];
-        if (null !== $document->getSectionId()) {
-            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
-                $document->getSectionId(),
-                $document->getKnowledgebaseId(),
-                $document->getOrganizationId()
-            );
-        }
-
-        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+        $breadcrumbs = $this->knowledgebaseBreadcrumbs->get(
             $organization,
             $knowledgebaseOwner,
-            array_reverse($ancestorSections),
-            $document->getName()
+            $document->getName(),
+            $document->getSectionId()
         );
 
         $backLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];

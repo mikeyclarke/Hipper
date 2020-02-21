@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Api\App\Controller\Section;
 
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
-use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
+use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
 use Hipper\Project\ProjectModel;
@@ -28,7 +28,7 @@ class UpdateSectionController
     private const CREATE_TEAM_DOC_ROUTE_NAME = 'front_end.app.team.doc.create';
     private const CREATE_TEAM_SECTION_ROUTE_NAME = 'front_end.app.team.section.create';
 
-    private KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter;
+    private KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs;
     private KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator;
     private Section $section;
     private SectionRepository $sectionRepository;
@@ -36,14 +36,14 @@ class UpdateSectionController
     private UrlGeneratorInterface $router;
 
     public function __construct(
-        KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
+        KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
         Section $section,
         SectionRepository $sectionRepository,
         Twig $twig,
         UrlGeneratorInterface $router
     ) {
-        $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
+        $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
         $this->section = $section;
         $this->sectionRepository = $sectionRepository;
@@ -77,20 +77,11 @@ class UpdateSectionController
 
         $url = $this->knowledgebaseRouteUrlGenerator->generate($organization, $knowledgebaseOwner, $route);
 
-        $ancestorSections = [];
-        if (null !== $section->getParentSectionId()) {
-            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
-                $section->getParentSectionId(),
-                $section->getKnowledgebaseId(),
-                $section->getOrganizationId()
-            );
-        }
-
-        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+        $breadcrumbs = $this->knowledgebaseBreadcrumbs->get(
             $organization,
             $knowledgebaseOwner,
-            array_reverse($ancestorSections),
-            $section->getName()
+            $section->getName(),
+            $section->getParentSectionId()
         );
 
         $twigContext = [

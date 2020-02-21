@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Hipper\FrontEnd\App\Controller\Document;
 
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
-use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
+use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
-use Hipper\Section\SectionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment as Twig;
@@ -15,21 +14,18 @@ class CreateDocumentController
 {
     const DEFAULT_DOC_TITLE = 'Untitled doc';
 
-    private $knowledgebaseBreadcrumbsFormatter;
-    private $sectionRepository;
+    private $knowledgebaseBreadcrumbs;
     private $twig;
     private $documentAllowedMarks;
     private $documentAllowedNodes;
 
     public function __construct(
-        KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
-        SectionRepository $sectionRepository,
+        KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         Twig $twig,
         array $documentAllowedMarks,
         array $documentAllowedNodes
     ) {
-        $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
-        $this->sectionRepository = $sectionRepository;
+        $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->twig = $twig;
         $this->documentAllowedMarks = $documentAllowedMarks;
         $this->documentAllowedNodes = $documentAllowedNodes;
@@ -59,20 +55,11 @@ class CreateDocumentController
                 throw new UnsupportedKnowledgebaseEntityException;
         }
 
-        $ancestorSections = [];
-        if (null !== $context['section_id']) {
-            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
-                $context['section_id'],
-                $context['knowledgebase_id'],
-                $organization->getId()
-            );
-        }
-
-        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+        $breadcrumbs = $this->knowledgebaseBreadcrumbs->get(
             $organization,
             $knowledgebaseOwner,
-            array_reverse($ancestorSections),
-            self::DEFAULT_DOC_TITLE
+            self::DEFAULT_DOC_TITLE,
+            $context['section_id']
         );
 
         $backLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];

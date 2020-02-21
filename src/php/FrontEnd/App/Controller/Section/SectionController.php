@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Hipper\FrontEnd\App\Controller\Section;
 
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
-use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
+use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseEntries;
 use Hipper\Knowledgebase\KnowledgebaseEntriesListFormatter;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
@@ -25,7 +25,7 @@ class SectionController
     private const CREATE_TEAM_DOC_ROUTE_NAME = 'front_end.app.team.doc.create';
     private const CREATE_TEAM_SECTION_ROUTE_NAME = 'front_end.app.team.section.create';
 
-    private KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter;
+    private KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs;
     private KnowledgebaseEntries $knowledgebaseEntries;
     private KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter;
     private SectionRepository $sectionRepository;
@@ -34,7 +34,7 @@ class SectionController
     private UrlGeneratorInterface $router;
 
     public function __construct(
-        KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
+        KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         KnowledgebaseEntries $knowledgebaseEntries,
         KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter,
         SectionRepository $sectionRepository,
@@ -42,7 +42,7 @@ class SectionController
         Twig $twig,
         UrlGeneratorInterface $router
     ) {
-        $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
+        $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->knowledgebaseEntries = $knowledgebaseEntries;
         $this->knowledgebaseEntriesListFormatter = $knowledgebaseEntriesListFormatter;
         $this->sectionRepository = $sectionRepository;
@@ -138,20 +138,11 @@ class SectionController
             $showDocRouteParams
         );
 
-        $ancestorSections = [];
-        if (null !== $section->getParentSectionId()) {
-            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
-                $section->getParentSectionId(),
-                $section->getKnowledgebaseId(),
-                $section->getOrganizationId()
-            );
-        }
-
-        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+        $breadcrumbs = $this->knowledgebaseBreadcrumbs->get(
             $organization,
             $knowledgebaseOwner,
-            array_reverse($ancestorSections),
-            $section->getName()
+            $section->getName(),
+            $section->getParentSectionId()
         );
 
         $context['create_doc_route'] = $createDocRoute;

@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Hipper\FrontEnd\App\Controller\Section;
 
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
-use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
-use Hipper\Section\SectionRepository;
+use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\Uuid;
@@ -16,17 +15,14 @@ class CreateSectionController
 {
     private const DEFAULT_NAME = 'Untitled section';
 
-    private KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter;
-    private SectionRepository $sectionRepository;
+    private KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs;
     private Twig $twig;
 
     public function __construct(
-        KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
-        SectionRepository $sectionRepository,
+        KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         Twig $twig
     ) {
-        $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
-        $this->sectionRepository = $sectionRepository;
+        $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->twig = $twig;
     }
 
@@ -50,20 +46,11 @@ class CreateSectionController
                 throw new UnsupportedKnowledgebaseEntityException;
         }
 
-        $ancestorSections = [];
-        if (null !== $context['parent_section_id'] && $this->isUuid($context['parent_section_id'])) {
-            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
-                $context['parent_section_id'],
-                $knowledgebaseOwner->getKnowledgebaseId(),
-                $knowledgebaseOwner->getOrganizationId()
-            );
-        }
-
-        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+        $breadcrumbs = $this->knowledgebaseBreadcrumbs->get(
             $organization,
             $knowledgebaseOwner,
-            array_reverse($ancestorSections),
-            self::DEFAULT_NAME
+            self::DEFAULT_NAME,
+            $context['parent_section_id']
         );
         $context['breadcrumbs'] = $breadcrumbs;
 

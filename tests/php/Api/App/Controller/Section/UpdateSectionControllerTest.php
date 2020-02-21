@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Tests\Api\App\Controller\Section;
 
 use Hipper\Api\App\Controller\Section\UpdateSectionController;
-use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
+use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Organization\OrganizationModel;
@@ -23,7 +23,7 @@ use Twig\Environment as Twig;
 
 class UpdateSectionControllerTest extends TestCase
 {
-    private $knowledgebaseBreadcrumbsFormatter;
+    private $knowledgebaseBreadcrumbs;
     private $knowledgebaseRouteUrlGenerator;
     private $section;
     private $sectionRepository;
@@ -35,7 +35,7 @@ class UpdateSectionControllerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->knowledgebaseBreadcrumbsFormatter = m::mock(KnowledgebaseBreadcrumbsFormatter::class);
+        $this->knowledgebaseBreadcrumbs = m::mock(KnowledgebaseBreadcrumbs::class);
         $this->knowledgebaseRouteUrlGenerator = m::mock(KnowledgebaseRouteUrlGenerator::class);
         $this->section = m::mock(Section::class);
         $this->sectionRepository = m::mock(SectionRepository::class);
@@ -43,7 +43,7 @@ class UpdateSectionControllerTest extends TestCase
         $this->router = m::mock(UrlGeneratorInterface::class);
 
         $this->updateSectionController = new UpdateSectionController(
-            $this->knowledgebaseBreadcrumbsFormatter,
+            $this->knowledgebaseBreadcrumbs,
             $this->knowledgebaseRouteUrlGenerator,
             $this->section,
             $this->sectionRepository,
@@ -97,8 +97,8 @@ class UpdateSectionControllerTest extends TestCase
             [$this->currentUser, m::type(SectionModel::class), $request->request->all()],
             [$sectionModel, $route, $knowledgebaseOwner]
         );
-        $this->createKnowledgebaseBreadcrumbsFormatterExpectation(
-            [$this->organization, $knowledgebaseOwner, [], $sectionModel->getName()],
+        $this->createKnowledgebaseBreadcrumbsExpectation(
+            [$this->organization, $knowledgebaseOwner, $sectionModel->getName(), $sectionModel->getParentSectionId()],
             $breadcrumbsResult
         );
         $this->createKnowledgebaseRouteUrlGeneratorExpectation(
@@ -176,10 +176,10 @@ class UpdateSectionControllerTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createKnowledgebaseBreadcrumbsFormatterExpectation($args, $result)
+    private function createKnowledgebaseBreadcrumbsExpectation($args, $result)
     {
-        $this->knowledgebaseBreadcrumbsFormatter
-            ->shouldReceive('format')
+        $this->knowledgebaseBreadcrumbs
+            ->shouldReceive('get')
             ->once()
             ->with(...$args)
             ->andReturn($result);

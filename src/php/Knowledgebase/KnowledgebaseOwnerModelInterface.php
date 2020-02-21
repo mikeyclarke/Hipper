@@ -10,4 +10,6 @@ interface KnowledgebaseOwnerModelInterface
     public function getUrlId(): string;
 
     public function getKnowledgebaseId(): string;
+
+    public function getOrganizationId(): string;
 }

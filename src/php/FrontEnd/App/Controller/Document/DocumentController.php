@@ -7,9 +7,8 @@ use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRepository;
 use Hipper\Document\DocumentRevisionRepository;
 use Hipper\Document\DocumentRenderer;
-use Hipper\Knowledgebase\KnowledgebaseBreadcrumbsFormatter;
+use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
-use Hipper\Section\SectionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,26 +20,23 @@ class DocumentController
     private $documentRenderer;
     private $documentRepository;
     private $documentRevisionRepository;
-    private $knowledgebaseBreadcrumbsFormatter;
+    private $knowledgebaseBreadcrumbs;
     private $knowledgebaseRouteUrlGenerator;
-    private $sectionRepository;
     private $twig;
 
     public function __construct(
         DocumentRenderer $documentRenderer,
         DocumentRepository $documentRepository,
         DocumentRevisionRepository $documentRevisionRepository,
-        KnowledgebaseBreadcrumbsFormatter $knowledgebaseBreadcrumbsFormatter,
+        KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
-        SectionRepository $sectionRepository,
         Twig $twig
     ) {
         $this->documentRenderer = $documentRenderer;
         $this->documentRepository = $documentRepository;
         $this->documentRevisionRepository = $documentRevisionRepository;
-        $this->knowledgebaseBreadcrumbsFormatter = $knowledgebaseBreadcrumbsFormatter;
+        $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
-        $this->sectionRepository = $sectionRepository;
         $this->twig = $twig;
     }
 
@@ -59,20 +55,11 @@ class DocumentController
 
         $document = DocumentModel::createFromArray($result);
 
-        $ancestorSections = [];
-        if (null !== $document->getSectionId()) {
-            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
-                $document->getSectionId(),
-                $document->getKnowledgebaseId(),
-                $document->getOrganizationId()
-            );
-        }
-
-        $breadcrumbs = $this->knowledgebaseBreadcrumbsFormatter->format(
+        $breadcrumbs = $this->knowledgebaseBreadcrumbs->get(
             $organization,
             $knowledgebaseOwner,
-            array_reverse($ancestorSections),
-            $document->getName()
+            $document->getName(),
+            $document->getSectionId()
         );
 
         $backLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];

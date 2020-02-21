@@ -5,3 +5,11 @@ section.create:
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
+
+section.update:
+    path: /_/update-section/{section_id}
+    methods: [POST]
+    controller: Hipper\Api\App\Controller\Section\UpdateSectionController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before

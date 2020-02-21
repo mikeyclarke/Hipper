@@ -3,7 +3,7 @@
 
 <div class="c-page-header__actions">
     <div class="c-page-header__actions-start">
-        <button class="c-page-header__action" type="button" aria-label="Edit this section">
+        <button class="c-page-header__action js-edit-section" type="button" aria-label="Edit this section">
             <svg class="c-page-header__action-icon" aria-hidden="true"><use href="#icon-sprite__edit"/></svg>
         </button>
         <button class="c-page-header__action" type="button" aria-label="Pin this section">
@@ -25,5 +25,13 @@
                 {{ context_menu.item_start('link', {href: create_section_route}) }}New sub-section{{ context_menu.item_end('link') }}
             {{ context_menu.group_end() }}
         {{ context_menu.end() }}
+    </div>
+    <div class="c-page-header__actions-edit">
+        <button class="c-page-header__action js-cancel-edit-section" type="button" aria-label="Cancel">
+            <svg class="c-page-header__action-icon" aria-hidden="true"><use href="#icon-sprite__close"/></svg>
+        </button>
+        <button class="c-page-header__action--confirm js-submit-edit-section" type="button" aria-label="Done">
+            <svg class="c-page-header__action-icon" aria-hidden="true"><use href="#icon-sprite__done"/></svg>
+        </button>
     </div>
 </div>

@@ -274,7 +274,7 @@ class Document
             return null;
         }
 
-        $result = $this->sectionRepository->findById(
+        $result = $this->sectionRepository->findByIdInKnowledgebase(
             $sectionId,
             $knowledgebase->getId(),
             $organizationId

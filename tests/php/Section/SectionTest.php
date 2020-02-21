@@ -12,13 +12,16 @@ use Hipper\Knowledgebase\KnowledgebaseRepository;
 use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
+use Hipper\Organization\Exception\ResourceIsForeignToOrganizationException;
 use Hipper\Person\PersonModel;
 use Hipper\Project\ProjectModel;
 use Hipper\Section\Section;
 use Hipper\Section\SectionInserter;
 use Hipper\Section\SectionModel;
 use Hipper\Section\SectionRepository;
+use Hipper\Section\SectionUpdater;
 use Hipper\Section\SectionValidator;
+use Hipper\Section\UpdateSectionDescendantRoutes;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
@@ -36,7 +39,9 @@ class SectionTest extends TestCase
     private $knowledgebaseRouteRepository;
     private $sectionInserter;
     private $sectionRepository;
+    private $sectionUpdater;
     private $sectionValidator;
+    private $updateSectionDescendantRoutes;
     private $urlIdGenerator;
     private $urlSlugGenerator;
     private $section;
@@ -51,7 +56,9 @@ class SectionTest extends TestCase
         $this->knowledgebaseRouteRepository = m::mock(KnowledgebaseRouteRepository::class);
         $this->sectionInserter = m::mock(SectionInserter::class);
         $this->sectionRepository = m::mock(SectionRepository::class);
+        $this->sectionUpdater = m::mock(SectionUpdater::class);
         $this->sectionValidator = m::mock(SectionValidator::class);
+        $this->updateSectionDescendantRoutes = m::mock(UpdateSectionDescendantRoutes::class);
         $this->urlIdGenerator = m::mock(UrlIdGenerator::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
 
@@ -64,7 +71,9 @@ class SectionTest extends TestCase
             $this->knowledgebaseRouteRepository,
             $this->sectionInserter,
             $this->sectionRepository,
+            $this->sectionUpdater,
             $this->sectionValidator,
+            $this->updateSectionDescendantRoutes,
             $this->urlIdGenerator,
             $this->urlSlugGenerator
         );
@@ -209,6 +218,448 @@ class SectionTest extends TestCase
         $this->assertInstanceOf(KnowledgebaseOwnerModelInterface::class, $result[2]);
     }
 
+    /**
+     * @test
+     */
+    public function updateName()
+    {
+        $sectionId = 'section-uuid';
+        $organizationId = 'org-uuid';
+        $knowledgebaseId = 'kb-uuid';
+        $parentSectionId = 'parent-section-uuid';
+        $name = 'Bar';
+
+        $person = PersonModel::createFromArray([
+            'organization_id' => $organizationId,
+        ]);
+        $sectionModel = SectionModel::createFromArray([
+            'id' => $sectionId,
+            'name' => 'Foo',
+            'description' => 'This is my description',
+            'url_slug' => 'foo',
+            'parent_section_id' => $parentSectionId,
+            'knowledgebase_id' => $knowledgebaseId,
+            'organization_id' => $organizationId,
+        ]);
+        $parameters = [
+            'name' => $name,
+        ];
+
+        $knowledgebaseResult = [
+            'id' => $knowledgebaseId,
+        ];
+        $knowledgebaseOwnerModel = new ProjectModel;
+        $sectionUrlSlug = 'bar';
+        $parentSectionResult = [
+            'id' => $parentSectionId,
+        ];
+        $sectionUpdateResult = [
+            'name' => $name,
+            'url_slug' => $sectionUrlSlug,
+        ];
+        $parentSectionRouteResult = ['route' => 'parent-section'];
+        $newRoute = sprintf('%s/%s', $parentSectionRouteResult['route'], $sectionUrlSlug);
+        $routeModel = KnowledgebaseRouteModel::createFromArray([
+            'route' => $newRoute,
+        ]);
+
+        $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], $knowledgebaseResult);
+        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createSectionValidatorExpectation([$parameters, null, null]);
+        $this->createUrlSlugGeneratorExpectation([$parameters['name']], $sectionUrlSlug);
+        $this->createSectionRepositoryExpectation(
+            [$parentSectionId, $knowledgebaseId, $organizationId],
+            $parentSectionResult
+        );
+        $this->createConnectionBeginTransactionExpectation();
+        $this->createSectionUpdaterExpectation(
+            [$sectionModel->getId(), ['name' => $name, 'url_slug' => $sectionUrlSlug]],
+            $sectionUpdateResult
+        );
+        $this->createKnowledgebaseRouteRepositoryExpectation(
+            [$organizationId, $knowledgebaseId, $parentSectionId],
+            $parentSectionRouteResult
+        );
+        $this->createKnowledgebaseRouteExpectation(
+            [$sectionModel, $newRoute, true],
+            $routeModel
+        );
+        $this->createConnectionCommitExpectation();
+        $this->createUpdateSectionDescendantRoutesExpectation(
+            [$sectionModel, $routeModel]
+        );
+
+        $result = $this->section->update($person, $sectionModel, $parameters);
+        $this->assertEquals($name, $sectionModel->getName());
+        $this->assertEquals($sectionUrlSlug, $sectionModel->getUrlSlug());
+        $this->assertIsArray($result);
+        $this->assertEquals($sectionModel, $result[0]);
+        $this->assertEquals($routeModel, $result[1]);
+        $this->assertEquals($knowledgebaseOwnerModel, $result[2]);
+    }
+
+    /**
+     * @test
+     */
+    public function newRouteIsNotGeneratedIfUpdatedNameResultsInIdenticalUrlSlug()
+    {
+        $sectionId = 'section-uuid';
+        $organizationId = 'org-uuid';
+        $knowledgebaseId = 'kb-uuid';
+        $parentSectionId = 'parent-section-uuid';
+        $name = 'FOO';
+
+        $person = PersonModel::createFromArray([
+            'organization_id' => $organizationId,
+        ]);
+        $sectionModel = SectionModel::createFromArray([
+            'id' => $sectionId,
+            'name' => 'Foo',
+            'description' => 'This is my description',
+            'url_slug' => 'foo',
+            'parent_section_id' => $parentSectionId,
+            'knowledgebase_id' => $knowledgebaseId,
+            'organization_id' => $organizationId,
+        ]);
+        $parameters = [
+            'name' => $name,
+        ];
+
+        $knowledgebaseResult = [
+            'id' => $knowledgebaseId,
+        ];
+        $knowledgebaseOwnerModel = new ProjectModel;
+        $sectionUrlSlug = 'foo';
+        $sectionRouteResult = ['route' => 'parent-section/foo'];
+        $sectionUpdateResult = [
+            'name' => $name,
+        ];
+
+        $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], $knowledgebaseResult);
+        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createSectionValidatorExpectation([$parameters, null, null]);
+        $this->createUrlSlugGeneratorExpectation([$parameters['name']], $sectionUrlSlug);
+        $this->createKnowledgebaseRouteRepositoryExpectation(
+            [$organizationId, $knowledgebaseId, $sectionId],
+            $sectionRouteResult
+        );
+        $this->createConnectionBeginTransactionExpectation();
+        $this->createSectionUpdaterExpectation(
+            [$sectionModel->getId(), ['name' => $name]],
+            $sectionUpdateResult
+        );
+        $this->createConnectionCommitExpectation();
+
+        $result = $this->section->update($person, $sectionModel, $parameters);
+        $this->assertEquals($name, $sectionModel->getName());
+        $this->assertEquals($sectionUrlSlug, $sectionModel->getUrlSlug());
+        $this->assertIsArray($result);
+        $this->assertEquals($sectionModel, $result[0]);
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[1]);
+        $this->assertEquals($knowledgebaseOwnerModel, $result[2]);
+    }
+
+    /**
+     * @test
+     */
+    public function moveToNewParentSection()
+    {
+        $sectionId = 'section-uuid';
+        $organizationId = 'org-uuid';
+        $knowledgebaseId = 'kb-uuid';
+        $parentSectionId = 'parent-section-uuid';
+        $newParentSectionId = 'new-parent-uuid';
+
+        $person = PersonModel::createFromArray([
+            'organization_id' => $organizationId,
+        ]);
+        $sectionModel = SectionModel::createFromArray([
+            'id' => $sectionId,
+            'name' => 'Foo',
+            'description' => 'This is my description',
+            'url_slug' => 'foo',
+            'parent_section_id' => $parentSectionId,
+            'knowledgebase_id' => $knowledgebaseId,
+            'organization_id' => $organizationId,
+        ]);
+        $parameters = [
+            'parent_section_id' => $newParentSectionId,
+        ];
+
+        $knowledgebaseResult = [
+            'id' => $knowledgebaseId,
+        ];
+        $knowledgebaseOwnerModel = new ProjectModel;
+        $parentSectionResult = [
+            'id' => $newParentSectionId,
+        ];
+        $sectionUpdateResult = [
+            'parent_section_id' => $newParentSectionId,
+        ];
+        $parentSectionRouteResult = ['route' => 'new-parent-section'];
+        $newRoute = sprintf('%s/%s', $parentSectionRouteResult['route'], $sectionModel->getUrlSlug());
+        $routeModel = KnowledgebaseRouteModel::createFromArray([
+            'route' => $newRoute,
+        ]);
+
+        $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], $knowledgebaseResult);
+        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createSectionRepositoryExpectation(
+            [$newParentSectionId, $knowledgebaseId, $organizationId],
+            $parentSectionResult
+        );
+        $this->createSectionValidatorExpectation([$parameters, null, m::type(SectionModel::class)]);
+        $this->createConnectionBeginTransactionExpectation();
+        $this->createSectionUpdaterExpectation(
+            [$sectionModel->getId(), ['parent_section_id' => $newParentSectionId]],
+            $sectionUpdateResult
+        );
+        $this->createKnowledgebaseRouteRepositoryExpectation(
+            [$organizationId, $knowledgebaseId, $newParentSectionId],
+            $parentSectionRouteResult
+        );
+        $this->createKnowledgebaseRouteExpectation(
+            [$sectionModel, $newRoute, true],
+            $routeModel
+        );
+        $this->createConnectionCommitExpectation();
+        $this->createUpdateSectionDescendantRoutesExpectation(
+            [$sectionModel, $routeModel]
+        );
+
+        $result = $this->section->update($person, $sectionModel, $parameters);
+        $this->assertEquals($newParentSectionId, $sectionModel->getParentSectionId());
+        $this->assertIsArray($result);
+        $this->assertEquals($sectionModel, $result[0]);
+        $this->assertEquals($routeModel, $result[1]);
+        $this->assertEquals($knowledgebaseOwnerModel, $result[2]);
+    }
+
+    /**
+     * @test
+     */
+    public function updateNameWhilstMovingToNewParentSection()
+    {
+        $sectionId = 'section-uuid';
+        $organizationId = 'org-uuid';
+        $knowledgebaseId = 'kb-uuid';
+        $parentSectionId = 'parent-section-uuid';
+        $name = 'Bar';
+        $newParentSectionId = 'new-parent-uuid';
+
+        $person = PersonModel::createFromArray([
+            'organization_id' => $organizationId,
+        ]);
+        $sectionModel = SectionModel::createFromArray([
+            'id' => $sectionId,
+            'name' => 'Foo',
+            'description' => 'This is my description',
+            'url_slug' => 'foo',
+            'parent_section_id' => $parentSectionId,
+            'knowledgebase_id' => $knowledgebaseId,
+            'organization_id' => $organizationId,
+        ]);
+        $parameters = [
+            'name' => $name,
+            'parent_section_id' => $newParentSectionId,
+        ];
+
+        $knowledgebaseResult = [
+            'id' => $knowledgebaseId,
+        ];
+        $knowledgebaseOwnerModel = new ProjectModel;
+        $parentSectionResult = [
+            'id' => $newParentSectionId,
+        ];
+        $sectionUrlSlug = 'bar';
+        $sectionUpdateResult = [
+            'name' => $name,
+            'parent_section_id' => $newParentSectionId,
+            'url_slug' => $sectionUrlSlug,
+        ];
+        $parentSectionRouteResult = ['route' => 'new-parent-section'];
+        $newRoute = sprintf('%s/%s', $parentSectionRouteResult['route'], $sectionUrlSlug);
+        $routeModel = KnowledgebaseRouteModel::createFromArray([
+            'route' => $newRoute,
+        ]);
+
+        $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], $knowledgebaseResult);
+        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createSectionRepositoryExpectation(
+            [$newParentSectionId, $knowledgebaseId, $organizationId],
+            $parentSectionResult
+        );
+        $this->createSectionValidatorExpectation([$parameters, null, m::type(SectionModel::class)]);
+        $this->createUrlSlugGeneratorExpectation([$parameters['name']], $sectionUrlSlug);
+        $this->createConnectionBeginTransactionExpectation();
+        $this->createSectionUpdaterExpectation(
+            [
+                $sectionModel->getId(),
+                ['name' => $name, 'url_slug' => $sectionUrlSlug, 'parent_section_id' => $newParentSectionId]
+            ],
+            $sectionUpdateResult
+        );
+        $this->createKnowledgebaseRouteRepositoryExpectation(
+            [$organizationId, $knowledgebaseId, $newParentSectionId],
+            $parentSectionRouteResult
+        );
+        $this->createKnowledgebaseRouteExpectation(
+            [$sectionModel, $newRoute, true],
+            $routeModel
+        );
+        $this->createConnectionCommitExpectation();
+        $this->createUpdateSectionDescendantRoutesExpectation(
+            [$sectionModel, $routeModel]
+        );
+
+        $result = $this->section->update($person, $sectionModel, $parameters);
+        $this->assertEquals($newParentSectionId, $sectionModel->getParentSectionId());
+        $this->assertEquals($name, $sectionModel->getName());
+        $this->assertEquals($sectionUrlSlug, $sectionModel->getUrlSlug());
+        $this->assertIsArray($result);
+        $this->assertEquals($sectionModel, $result[0]);
+        $this->assertEquals($routeModel, $result[1]);
+        $this->assertEquals($knowledgebaseOwnerModel, $result[2]);
+    }
+
+    /**
+     * @test
+     */
+    public function updateDescription()
+    {
+        $sectionId = 'section-uuid';
+        $organizationId = 'org-uuid';
+        $knowledgebaseId = 'kb-uuid';
+        $description = 'I changed my description';
+
+        $person = PersonModel::createFromArray([
+            'organization_id' => $organizationId,
+        ]);
+        $sectionModel = SectionModel::createFromArray([
+            'id' => $sectionId,
+            'name' => 'Foo',
+            'description' => 'This is my description',
+            'knowledgebase_id' => $knowledgebaseId,
+            'organization_id' => $organizationId,
+        ]);
+        $parameters = [
+            'description' => $description,
+        ];
+
+        $knowledgebaseResult = [
+            'id' => $knowledgebaseId,
+        ];
+        $knowledgebaseOwnerModel = new ProjectModel;
+        $sectionRouteResult = ['route' => 'foo'];
+        $sectionUpdateResult = [
+            'description' => $description,
+        ];
+
+        $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], $knowledgebaseResult);
+        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createSectionValidatorExpectation([$parameters, null, null]);
+        $this->createKnowledgebaseRouteRepositoryExpectation(
+            [$organizationId, $knowledgebaseId, $sectionId],
+            $sectionRouteResult
+        );
+        $this->createConnectionBeginTransactionExpectation();
+        $this->createSectionUpdaterExpectation(
+            [$sectionModel->getId(), ['description' => $description]],
+            $sectionUpdateResult
+        );
+        $this->createConnectionCommitExpectation();
+
+        $result = $this->section->update($person, $sectionModel, $parameters);
+        $this->assertEquals($description, $sectionModel->getDescription());
+        $this->assertIsArray($result);
+        $this->assertEquals($sectionModel, $result[0]);
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[1]);
+        $this->assertInstanceOf(KnowledgebaseOwnerModelInterface::class, $result[2]);
+    }
+
+    /**
+     * @test
+     */
+    public function updateWithNothingNew()
+    {
+        $sectionId = 'section-uuid';
+        $organizationId = 'org-uuid';
+        $knowledgebaseId = 'kb-uuid';
+
+        $person = PersonModel::createFromArray([
+            'organization_id' => $organizationId,
+        ]);
+        $sectionModel = SectionModel::createFromArray([
+            'id' => $sectionId,
+            'name' => 'Foo',
+            'description' => 'This is my description',
+            'knowledgebase_id' => $knowledgebaseId,
+            'organization_id' => $organizationId,
+        ]);
+        $parameters = [
+            'name' => 'Foo',
+            'description' => 'This is my description',
+        ];
+
+        $knowledgebaseResult = [
+            'id' => $knowledgebaseId,
+        ];
+        $knowledgebaseOwnerModel = new ProjectModel;
+        $sectionRouteResult = ['route' => 'foo'];
+
+        $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], $knowledgebaseResult);
+        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createSectionValidatorExpectation([$parameters, null, null]);
+        $this->createKnowledgebaseRouteRepositoryExpectation(
+            [$organizationId, $knowledgebaseId, $sectionId],
+            $sectionRouteResult
+        );
+
+        $result = $this->section->update($person, $sectionModel, $parameters);
+        $this->assertIsArray($result);
+        $this->assertEquals($sectionModel, $result[0]);
+        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[1]);
+        $this->assertInstanceOf(KnowledgebaseOwnerModelInterface::class, $result[2]);
+    }
+
+    /**
+     * @test
+     */
+    public function updateSectionOutsideCurrentUsersOrganization()
+    {
+        $sectionId = 'section-uuid';
+        $organizationId = 'org-uuid';
+        $knowledgebaseId = 'kb-uuid';
+        $foreignOrganizationId = 'foreign-org-uuid';
+
+        $person = PersonModel::createFromArray([
+            'organization_id' => $organizationId,
+        ]);
+        $sectionModel = SectionModel::createFromArray([
+            'id' => $sectionId,
+            'name' => 'Foo',
+            'description' => 'This is my description',
+            'knowledgebase_id' => $knowledgebaseId,
+            'organization_id' => $foreignOrganizationId,
+        ]);
+        $parameters = [
+            'name' => 'Foo',
+            'description' => 'This is my description',
+        ];
+
+        $this->expectException(ResourceIsForeignToOrganizationException::class);
+
+        $this->section->update($person, $sectionModel, $parameters);
+    }
+
+    private function createUpdateSectionDescendantRoutesExpectation($args)
+    {
+        $this->updateSectionDescendantRoutes
+            ->shouldReceive('update')
+            ->once()
+            ->with(...$args);
+    }
+
     private function createKnowledgebaseOwnerExpectation($args, $result)
     {
         $this->knowledgebaseOwner
@@ -238,6 +689,15 @@ class SectionTest extends TestCase
     {
         $this->knowledgebaseRouteRepository
             ->shouldReceive('findCanonicalRouteForSection')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createSectionUpdaterExpectation($args, $result)
+    {
+        $this->sectionUpdater
+            ->shouldReceive('update')
             ->once()
             ->with(...$args)
             ->andReturn($result);
@@ -287,7 +747,7 @@ class SectionTest extends TestCase
     private function createSectionRepositoryExpectation($args, $result)
     {
         $this->sectionRepository
-            ->shouldReceive('findById')
+            ->shouldReceive('findByIdInKnowledgebase')
             ->once()
             ->with(...$args)
             ->andReturn($result);

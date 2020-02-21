@@ -41,6 +41,11 @@ final class SectionModel implements KnowledgebaseContentModelInterface
         return $model;
     }
 
+    public function updateFromArray(array $array): void
+    {
+        $this->mapProperties($array);
+    }
+
     public function setId(string $id): void
     {
         $this->id = $id;

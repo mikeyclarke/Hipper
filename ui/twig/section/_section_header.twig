@@ -1,0 +1,46 @@
+<header class="c-page-header js-knowledgebase-section-header">
+    {% if mode is same as('create') %}
+        <form class="js-create-section-form">
+            {% include '_breadcrumb_list.twig' %}
+
+            <input type="hidden" name="knowledgebase_id" value="{{ knowledgebase_id }}">
+            <input type="hidden" name="parent_section_id" value="{{ parent_section_id }}">
+
+            <elastic-text-input>
+                <textarea name="name" class="c-page-header__title" placeholder="Name this section" rows="1" maxlength="150" autocomplete="off" autofocus></textarea>
+            </elastic-text-input>
+
+            <elastic-text-input>
+                <textarea name="description" class="c-page-header__subheading" placeholder="Description (optional)" rows="1" maxlength="300" autocomplete="off"></textarea>
+            </elastic-text-input>
+
+            <button type="submit" aria-label="Create section" class="c-page-header__done-button js-submit">
+                <svg class="c-page-header__done-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
+            </button>
+        </form>
+    {% elseif mode is same as('view') %}
+        {% include '_breadcrumb_list.twig' %}
+
+        <div class="js-section-details-display">
+            <h1 class="c-page-header__title">{{ section.name }}</h1>
+
+            <p class="c-page-header__subheading{% if section.description is null or section.description is empty %}--muted{% endif %}">{{ section.description|default('This section doesn’t have a description yet') }}</p>
+        </div>
+
+        {% if is_editable %}
+            <form class="js-section-details-edit-form" hidden>
+                <input type="hidden" name="section_id" value="{{ section.id }}">
+
+                <elastic-text-input>
+                    <textarea name="name" class="c-page-header__title" placeholder="Name this section" rows="1" maxlength="150" autocomplete="off">{{ section.name }}</textarea>
+                </elastic-text-input>
+
+                <elastic-text-input>
+                    <textarea name="description" class="c-page-header__subheading" placeholder="Description (optional)" rows="1" maxlength="300" autocomplete="off">{{ section.description }}</textarea>
+                </elastic-text-input>
+            </form>
+
+            {% include 'section/_section_actions.twig' with { mode: mode } %}
+        {% endif %}
+    {% endif %}    
+</header>

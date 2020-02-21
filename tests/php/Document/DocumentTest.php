@@ -848,7 +848,7 @@ class DocumentTest extends TestCase
     private function createSectionRepositoryExpectation($args, $result)
     {
         $this->sectionRepository
-            ->shouldReceive('findById')
+            ->shouldReceive('findByIdInKnowledgebase')
             ->once()
             ->with(...$args)
             ->andReturn($result);

@@ -87,5 +87,10 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
             path: '/teams/:team_url_id/docs/edit/:doc_route(.+)',
             controller: (): any[] => [bottle.container.editDocumentController, 'start'],
         },
+
+        show_team_knowledgebase_entry: {
+            path: '/teams/:team_url_id/docs/:doc_route(.+)',
+            controller: (): any[] => [bottle.container.documentOrSectionControllerRouter, 'route'],
+        },
     };
 }

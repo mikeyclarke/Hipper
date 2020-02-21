@@ -13,8 +13,12 @@ $_action-background-color: config.config-get(color-shades, dark, 100);
 $_action-background-dimension: 32px;
 $_action-background-offset: ($_action-dimension - $_action-background-dimension) / 2;
 
+$_action-confirm-background-color: config.config-get(color-shades, secondary, 1100);
+
 $_action-icon-dimension: 18px;
 $_action-icon-fill: config.config-get(color-shades, dark, 800);
+
+$_action-confirm-icon-fill: config.config-get(global, color, white);
 
 $_primary-action-background-color: config.config-get(color-shades, primary, 1100);
 $_primary-action-box-shadow: 0 1px 9px rgba($_primary-action-background-color, .45);
@@ -31,6 +35,13 @@ $_primary-action-icon-background-dimension: 32px;
 $_primary-action-icon-fill: config.config-get(global, color, white);
 $_primary-action-icon-dimension: 20px;
 $_primary-action-icon-margin: 0 0 0 15px;
+
+:root.is-editing-page-header .c-standard-nav,
+:root.is-editing-page-header .c-app-header,
+:root.is-editing-page-header .c-page-header ~ * {
+    opacity: .4;
+    pointer-events: none;
+}
 
 .c-page-header {
     padding: $page-header-padding;
@@ -57,7 +68,8 @@ $_primary-action-icon-margin: 0 0 0 15px;
 }
 
 .c-page-header__title,
-.c-page-header__subheading {
+.c-page-header__subheading,
+.c-page-header__subheading--muted {
     background: transparent;
     border: 0;
     box-shadow: none;
@@ -218,12 +230,26 @@ $_primary-action-icon-margin: 0 0 0 15px;
     position: relative;
 }
 
+.c-page-header__actions-edit,
 .c-page-header__actions-start {
     display: flex;
     margin-left: -#{($_action-dimension - $_action-background-dimension) / 2};
 }
 
-.c-page-header__action {
+.c-page-header__actions-edit {
+    display: none;
+}
+
+:root.is-editing-page-header .c-page-header__actions-start,
+:root.is-editing-page-header .c-page-header__actions-end {
+    display: none;
+}
+
+:root.is-editing-page-header .c-page-header__actions-edit {
+    display: flex;
+}
+
+%c-page-header__action {
     @extend %unstyled-button;
     align-items: center;
     display: flex;
@@ -234,11 +260,11 @@ $_primary-action-icon-margin: 0 0 0 15px;
     z-index: 0;
 }
 
-.c-page-header__action:focus {
+%c-page-header__action:focus {
     outline: 0;
 }
 
-.c-page-header__action::before {
+%c-page-header__action::before {
     background-color: $_action-background-color;
     border-radius: $_action-background-dimension;
     bottom: $_action-background-offset;
@@ -250,14 +276,31 @@ $_primary-action-icon-margin: 0 0 0 15px;
     z-index: -1;
 }
 
+.c-page-header__action,
+.c-page-header__action--confirm {
+    @extend %c-page-header__action;
+}
+
 .c-page-header__action:focus::before {
     background-color: color.adjust($_action-background-color, $lightness: -10%);
+}
+
+.c-page-header__action--confirm::before {
+    background-color: $_action-confirm-background-color;
+}
+
+.c-page-header__action--confirm:focus::before {
+    background-color: color.adjust($_action-confirm-background-color, $lightness: -10%);
 }
 
 .c-page-header__action-icon {
     fill: $_action-icon-fill;
     height: $_action-icon-dimension;
     width: $_action-icon-dimension;
+}
+
+.c-page-header__action--confirm .c-page-header__action-icon {
+    fill: $_action-confirm-icon-fill;
 }
 
 .c-page-header__primary-action {

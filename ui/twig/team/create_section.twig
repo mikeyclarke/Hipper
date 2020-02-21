@@ -4,25 +4,6 @@
 
 {% block content %}
 
-<header class="c-page-header">
-    {% include '_breadcrumb_list.twig' %}
-
-    <form class="js-create-section-form">
-        <input type="hidden" name="knowledgebase_id" value="{{ knowledgebase_id }}">
-        <input type="hidden" name="parent_section_id" value="{{ parent_section_id }}">
-
-        <elastic-text-input>
-            <textarea name="name" class="c-page-header__title" placeholder="Name this section" rows="1" maxlength="150" autocomplete="off" autofocus></textarea>
-        </elastic-text-input>
-
-        <elastic-text-input>
-            <textarea name="description" class="c-page-header__subheading" placeholder="Description (optional)" rows="1" maxlength="300" autocomplete="off"></textarea>
-        <elastic-text-input>
-
-        <button type="submit" aria-label="Create section" class="c-page-header__done-button js-submit">
-            <svg class="c-page-header__done-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
-        </button>
-    </form>
-</header>
+{% include 'section/_section_header.twig' with { mode: 'create', is_editable: true } %}
 
 {% endblock %}

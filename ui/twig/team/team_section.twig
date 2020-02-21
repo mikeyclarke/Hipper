@@ -4,21 +4,7 @@
 
 {% block content %}
 
-<header class="c-page-header">
-    {% include '_breadcrumb_list.twig' %}
-
-    <h1 class="c-page-header__title">{{ section.name }}</h1>
-
-    {% if section.description is null or section.description is empty %}
-        <p class="c-page-header__subheading--muted">This section doesn’t have a description yet</p>
-    {% else %}
-        <p class="c-page-header__subheading">{{ section.description }}</p>
-    {% endif %}
-
-    {% if current_user_is_in_team %}
-        {% include '_section_actions.twig' %}
-    {% endif %}
-</header>
+{% include 'section/_section_header.twig' with { mode: 'view', is_editable: current_user_is_in_team } %}
 
 {% if knowledgebase_entries is not empty %}
     {% include '_knowledgebase_entries.twig' %}

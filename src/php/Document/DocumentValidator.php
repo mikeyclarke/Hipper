@@ -55,6 +55,14 @@ class DocumentValidator
                     'maxMessage' => 'Document names can’t be more than {{ limit }} characters long.',
                 ]),
             ],
+            'knowledgebase_id' => [
+                new NotBlank([
+                    'message' => 'Knowledgebase ID can’t be blank',
+                ]),
+                new KnowledgebaseExists([
+                    'knowledgebase' => $knowledgebase,
+                ]),
+            ],
             'description' => [
                 new Length([
                     'max' => 300,
@@ -72,17 +80,6 @@ class DocumentValidator
                 ]),
             ],
         ];
-
-        if ($isNew) {
-            $constraints['knowledgebase_id'] = [
-                new NotBlank([
-                    'message' => 'Knowledgebase ID can’t be blank',
-                ]),
-                new KnowledgebaseExists([
-                    'knowledgebase' => $knowledgebase,
-                ]),
-            ];
-        }
 
         foreach ($constraints as $key => &$value) {
             if (in_array($key, $requiredOnCreate) && $isNew) {

@@ -17,7 +17,31 @@ class SectionRepository
         $this->connection = $connection;
     }
 
-    public function findById(string $sectionId, string $knowledgebaseId, string $organizationId): ?array
+    public function findById(string $sectionId, string $organizationId): ?array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('*')
+            ->from('section')
+            ->andWhere('id = :id')
+            ->andWhere('organization_id = :organization_id');
+
+        $qb->setParameters([
+            'id' => $sectionId,
+            'organization_id' => $organizationId,
+        ]);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetch();
+
+        if (false === $result) {
+            return null;
+        }
+
+        return $result;
+    }
+
+    public function findByIdInKnowledgebase(string $sectionId, string $knowledgebaseId, string $organizationId): ?array
     {
         $qb = $this->connection->createQueryBuilder();
 
@@ -168,5 +192,73 @@ SQL;
         $stmt->execute();
         $result = $stmt->fetchAll();
         return $result;
+    }
+
+    public function getSectionAndDescendants(string $id, string $knowledgebaseId, string $organizationId): array
+    {
+        $sql = <<<SQL
+WITH RECURSIVE tree AS (
+    SELECT
+        id,
+        url_id,
+        url_slug,
+        parent_section_id,
+        knowledgebase_id,
+        organization_id,
+        'section' AS type
+    FROM section
+    WHERE id = :id AND knowledgebase_id = :knowledgebase_id AND organization_id = :organization_id
+
+    UNION ALL
+
+    (
+        SELECT
+            child.id,
+            child.url_id,
+            child.url_slug,
+            child.parent_section_id,
+            child.knowledgebase_id,
+            child.organization_id,
+            child.type
+        FROM
+        (
+            SELECT
+                id,
+                url_id,
+                url_slug,
+                section_id AS parent_section_id,
+                knowledgebase_id,
+                organization_id,
+                'document' AS type
+            FROM document
+            WHERE knowledgebase_id = :knowledgebase_id AND organization_id = :organization_id
+
+            UNION ALL
+
+            SELECT
+                id,
+                url_id,
+                url_slug,
+                parent_section_id,
+                knowledgebase_id,
+                organization_id,
+                'section' AS type
+            FROM section
+            WHERE knowledgebase_id = :knowledgebase_id AND organization_id = :organization_id
+        ) child, tree tree
+        WHERE child.parent_section_id = tree.id
+    )
+)
+
+SELECT * FROM tree;
+SQL;
+        
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('id', $id, PDO::PARAM_STR);
+        $stmt->bindValue('knowledgebase_id', $knowledgebaseId, PDO::PARAM_STR);
+        $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
+
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }

@@ -27,24 +27,6 @@ export default class ContextMenuToggle extends HTMLElement {
             this._button = <HTMLButtonElement> button;
         }
 
-        if (null === this._contextMenu) {
-            const contextMenuId = this._button.getAttribute('aria-controls');
-            if (null === contextMenuId) {
-                throw new Error('Button is not associated with a context-menu element');
-            }
-
-            const contextMenu = document.getElementById(contextMenuId);
-            if (null === contextMenu) {
-                throw new ReferenceError('context-menu element does not exist');
-            }
-
-            if (!(contextMenu instanceof ContextMenu)) {
-                throw new TypeError('Element is not a ContextMenu element');
-            }
-
-            this._contextMenu = contextMenu;
-        }
-
         this._buttonClickListener = onButtonClick.bind(this);
         document.addEventListener('click', this._buttonClickListener, clickOptions);
     }
@@ -67,8 +49,16 @@ function onButtonClick(this: ContextMenuToggle, event: MouseEvent): void {
         return;
     }
 
-    if (null === this._contextMenu || null === this._button) {
+    if (null === this._button) {
         return;
+    }
+
+    if (null === this._contextMenu) {
+        const contextMenu = getContextMenu.bind(this)();
+        if (null === contextMenu) {
+            return;
+        }
+        this._contextMenu = contextMenu;
     }
 
     if (!this.contains(event.target)) {
@@ -90,4 +80,26 @@ function onButtonClick(this: ContextMenuToggle, event: MouseEvent): void {
 
     this._button.setAttribute('aria-expanded', 'true');
     this._contextMenu.expanded = true;
+}
+
+function getContextMenu(this: ContextMenuToggle): ContextMenu | null {
+    if (null === this._button) {
+        throw new Error('Button element does not exist');
+    }
+
+    const contextMenuId = this._button.getAttribute('aria-controls');
+    if (null === contextMenuId) {
+        throw new Error('Button is not associated with a context-menu element');
+    }
+
+    const contextMenu = document.getElementById(contextMenuId);
+    if (null === contextMenu) {
+        throw new ReferenceError('context-menu element does not exist');
+    }
+
+    if (!(contextMenu instanceof ContextMenu)) {
+        throw new TypeError('Element is not a ContextMenu element');
+    }
+
+    return contextMenu;
 }

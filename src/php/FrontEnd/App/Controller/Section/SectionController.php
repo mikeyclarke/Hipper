@@ -60,7 +60,11 @@ class SectionController
         $subdomain = $organization->getSubdomain();
         $timeZone = $this->timeZoneFromRequest->get($request);
 
-        $result = $this->sectionRepository->findById($sectionId, $knowledgebaseId, $organization->getId());
+        $result = $this->sectionRepository->findByIdInKnowledgebase(
+            $sectionId,
+            $knowledgebaseId,
+            $organization->getId()
+        );
         if (null === $result) {
             throw new NotFoundHttpException;
         }

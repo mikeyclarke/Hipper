@@ -52,6 +52,7 @@ class TeamDocsController
         $createSectionRoute = $this->router->generate(self::CREATE_SECTION_ROUTE_NAME, [
             'team_url_id' => $teamUrlId,
             'subdomain' => $subdomain,
+            'return_to' => $request->getRequestUri(),
         ]);
 
         list($docs, $sections) = $this->knowledgebaseEntries->get(

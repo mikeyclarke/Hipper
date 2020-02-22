@@ -88,6 +88,7 @@ class SectionController
                     'subdomain' => $subdomain,
                     'team_url_id' => $teamUrlId,
                     'in' => $section->getId(),
+                    'return_to' => $request->getRequestUri(),
                 ]);
                 $showDocRouteName = KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME;
                 $showDocRouteParams = ['team_url_id' => $teamUrlId];
@@ -109,6 +110,7 @@ class SectionController
                     'subdomain' => $subdomain,
                     'project_url_id' => $projectUrlId,
                     'in' => $section->getId(),
+                    'return_to' => $request->getRequestUri(),
                 ]);
                 $showDocRouteName = KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME;
                 $showDocRouteParams = ['project_url_id' => $knowledgebaseOwner->getUrlId()];

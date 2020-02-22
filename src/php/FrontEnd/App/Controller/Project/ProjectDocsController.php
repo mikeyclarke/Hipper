@@ -52,6 +52,7 @@ class ProjectDocsController
         $createSectionRoute = $this->router->generate(self::CREATE_SECTION_ROUTE_NAME, [
             'project_url_id' => $projectUrlId,
             'subdomain' => $subdomain,
+            'return_to' => $request->getRequestUri(),
         ]);
 
         list($docs, $sections) = $this->knowledgebaseEntries->get(

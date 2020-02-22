@@ -5,6 +5,7 @@ namespace Hipper\FrontEnd\App\Controller\Section;
 
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
 use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
+use Hipper\Security\UntrustedInternalUriRedirector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\Uuid;
@@ -17,19 +18,23 @@ class CreateSectionController
 
     private KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs;
     private Twig $twig;
+    private UntrustedInternalUriRedirector $untrustedInternalUriRedirector;
 
     public function __construct(
         KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
-        Twig $twig
+        Twig $twig,
+        UntrustedInternalUriRedirector $untrustedInternalUriRedirector
     ) {
         $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->twig = $twig;
+        $this->untrustedInternalUriRedirector = $untrustedInternalUriRedirector;
     }
 
     public function getAction(Request $request): Response
     {
         $organization = $request->attributes->get('organization');
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
+        $returnTo = $request->query->get('return_to');
 
         switch ($knowledgebaseType) {
             case 'project':
@@ -53,6 +58,7 @@ class CreateSectionController
             $context['parent_section_id']
         );
         $context['breadcrumbs'] = $breadcrumbs;
+        $context['back_link'] = $this->untrustedInternalUriRedirector->generateUri($returnTo, '.');
 
         return new Response(
             $this->twig->render($twigTemplate, $context)

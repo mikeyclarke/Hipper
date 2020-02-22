@@ -14,9 +14,7 @@
                 <textarea name="description" class="c-page-header__subheading" placeholder="Description (optional)" rows="1" maxlength="300" autocomplete="off"></textarea>
             </elastic-text-input>
 
-            <button type="submit" aria-label="Create section" class="c-page-header__done-button js-submit">
-                <svg class="c-page-header__done-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
-            </button>
+            {% include 'section/_section_actions.twig' with { mode: mode } %}
         </form>
     {% elseif mode is same as('view') %}
         {% include '_breadcrumb_list.twig' %}

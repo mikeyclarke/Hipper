@@ -2,5 +2,6 @@ sourcecode_git_repo: git@github.com:mikeyclarke/Hipper.git
 
 php_timezone: UTC
 php_session_maxlifetime: 345600
+php_preload_file: /var/hipper/var/cache/prod/Hipper_KernelProdContainer.preload.php
 
 fastcgi_pass: unix:/var/run/php/php7.4-fpm.sock

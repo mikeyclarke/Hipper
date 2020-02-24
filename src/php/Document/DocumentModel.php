@@ -20,7 +20,7 @@ final class DocumentModel implements KnowledgebaseContentModelInterface
         'url_id' => 'urlId',
         'knowledgebase_id' => 'knowledgebaseId',
         'organization_id' => 'organizationId',
-        'section_id' => 'sectionId',
+        'topic_id' => 'topicId',
         'created_by' => 'createdBy',
         'last_updated_by' => 'lastUpdatedBy',
         'created' => 'created',
@@ -37,7 +37,7 @@ final class DocumentModel implements KnowledgebaseContentModelInterface
     private $urlId;
     private $knowledgebaseId;
     private $organizationId;
-    private $sectionId;
+    private $topicId;
     private $createdBy;
     private $lastUpdatedBy;
     private $created;
@@ -155,14 +155,14 @@ final class DocumentModel implements KnowledgebaseContentModelInterface
         return $this->organizationId;
     }
 
-    public function setSectionId(?string $sectionId): void
+    public function setTopicId(?string $topicId): void
     {
-        $this->sectionId = $sectionId;
+        $this->topicId = $topicId;
     }
 
-    public function getSectionId(): ?string
+    public function getTopicId(): ?string
     {
-        return $this->sectionId;
+        return $this->topicId;
     }
 
     public function setCreatedBy(string $createdBy): void

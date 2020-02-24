@@ -28,15 +28,15 @@ class DocumentInserter
         string $deducedDescription = null,
         string $content = null,
         string $contentPlain = null,
-        string $sectionId = null
+        string $topicId = null
     ): array {
         $sql = <<<SQL
 INSERT INTO document (
     id, name, description, deduced_description, content, content_plain, url_slug, url_id, knowledgebase_id,
-    organization_id, section_id, created_by, last_updated_by
+    organization_id, topic_id, created_by, last_updated_by
 ) VALUES (
     :id, :name, :description, :deduced_description, :content, :content_plain, :url_slug, :url_id, :knowledgebase_id,
-    :organization_id, :section_id, :created_by, :last_updated_by
+    :organization_id, :topic_id, :created_by, :last_updated_by
 ) RETURNING *
 SQL;
 
@@ -51,7 +51,7 @@ SQL;
         $stmt->bindValue('url_id', $urlId, PDO::PARAM_STR);
         $stmt->bindValue('knowledgebase_id', $knowledgebaseId, PDO::PARAM_STR);
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
-        $stmt->bindValue('section_id', $sectionId, PDO::PARAM_STR);
+        $stmt->bindValue('topic_id', $topicId, PDO::PARAM_STR);
         $stmt->bindValue('created_by', $createdBy, PDO::PARAM_STR);
         $stmt->bindValue('last_updated_by', $createdBy, PDO::PARAM_STR);
 

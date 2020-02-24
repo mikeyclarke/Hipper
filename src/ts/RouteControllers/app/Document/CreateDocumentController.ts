@@ -9,7 +9,7 @@ export default class CreateDocumentController implements Controller {
     private readonly httpClient: HttpClient;
     private readonly userAgentProfile: Record<string, any> | null;
     private knowledgebaseId: string | null = null;
-    private sectionId: string | null = null;
+    private topicId: string | null = null;
     private allowedMarks: string[] = [];
     private allowedNodes: string[] = [];
     private formElement!: HTMLFormElement;
@@ -51,9 +51,9 @@ export default class CreateDocumentController implements Controller {
             throw new Error('Knowledgebase ID element not found');
         }
 
-        const sectionIdInput = this.formElement.querySelector('[name="section_id"]');
-        if (!(sectionIdInput instanceof HTMLInputElement)) {
-            throw new Error('Section ID element not found');
+        const topicIdInput = this.formElement.querySelector('[name="topic_id"]');
+        if (!(topicIdInput instanceof HTMLInputElement)) {
+            throw new Error('Topic ID element not found');
         }
 
         const allowedMarksInput = this.formElement.querySelector('[name="allowed_marks"]');
@@ -72,7 +72,7 @@ export default class CreateDocumentController implements Controller {
         }
 
         this.knowledgebaseId = knowledgebaseIdInput.value;
-        this.sectionId = (sectionIdInput.value !== '') ? sectionIdInput.value : null;
+        this.topicId = (topicIdInput.value !== '') ? topicIdInput.value : null;
         this.allowedMarks = JSON.parse(allowedMarksInput.value);
         this.allowedNodes = JSON.parse(allowedNodesInput.value);
         this.breadcrumbList = breadcrumbList;
@@ -127,7 +127,7 @@ export default class CreateDocumentController implements Controller {
             description: this.descriptionInput.value,
             content: this.textEditor.getContent(),
             knowledgebase_id: this.knowledgebaseId,
-            section_id: this.sectionId,
+            topic_id: this.topicId,
         };
     }
 

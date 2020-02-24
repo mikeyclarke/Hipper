@@ -47,7 +47,7 @@ class DocumentOutlineGeneratorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Something about the first section…',
+                            'text' => 'Something about the first topic…',
                         ]
                     ]
                 ],

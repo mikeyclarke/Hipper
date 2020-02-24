@@ -44,12 +44,12 @@ class KnowledgebaseSearchResultsFormatter
                 list($routeName, $routeParams) = $this->getRouteDetails($knowledgebaseOwner);
 
                 $owners = ["{$knowledgebaseOwner->getName()} {$knowledgebaseOwnerType} docs"];
-                $parentSectionId = $result['parent_section_id'];
-                if (null !== $parentSectionId) {
-                    if (!isset($ancestorTree[$parentSectionId])) {
-                        throw new RuntimeException(sprintf('Section “%s” not found', $parentSectionId));
+                $parentTopicId = $result['parent_topic_id'];
+                if (null !== $parentTopicId) {
+                    if (!isset($ancestorTree[$parentTopicId])) {
+                        throw new RuntimeException(sprintf('Topic “%s” not found', $parentTopicId));
                     }
-                    $owners = [...$owners, ...$ancestorTree[$parentSectionId]];
+                    $owners = [...$owners, ...$ancestorTree[$parentTopicId]];
                 }
 
                 return [
@@ -85,8 +85,8 @@ class KnowledgebaseSearchResultsFormatter
             return $result['deduced_description'];
         }
 
-        if ($result['entry_type'] === 'section') {
-            return 'This section doesn’t have a description yet.';
+        if ($result['entry_type'] === 'topic') {
+            return 'This topic doesn’t have a description yet.';
         }
 
         return 'This doc doesn’t have a description yet.';

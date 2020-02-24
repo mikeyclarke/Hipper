@@ -24,10 +24,10 @@ team.docs.list:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
 
-team.section.create:
-    path: /teams/{team_url_id}/docs/new-section
+team.topic.create:
+    path: /teams/{team_url_id}/docs/new-topic
     methods: [GET]
-    controller: Hipper\FrontEnd\App\Controller\Section\CreateSectionController::getAction
+    controller: Hipper\FrontEnd\App\Controller\Topic\CreateTopicController::getAction
     defaults:
         knowledgebase_type: 'team'
         _before_middlewares:
@@ -69,7 +69,7 @@ team.doc.export:
 team.doc.show:
     path: /teams/{team_url_id}/docs/{path}
     methods: [GET]
-    controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrSectionControllerRouter::route
+    controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrTopicControllerRouter::route
     defaults:
         knowledgebase_type: 'team'
         action: 'getAction'

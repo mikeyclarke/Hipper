@@ -58,7 +58,7 @@ SELECT
     name,
     description,
     deduced_description,
-    parent_section_id,
+    parent_topic_id,
     knowledgebase_id,
     updated,
     ts_headline(
@@ -81,7 +81,7 @@ FROM (
         description,
         deduced_description,
         content_plain,
-        parent_section_id,
+        parent_topic_id,
         knowledgebase_id,
         updated,
         entry_type,
@@ -94,7 +94,7 @@ FROM (
             doc.description AS description,
             doc.deduced_description AS deduced_description,
             doc.updated AS updated,
-            doc.section_id AS parent_section_id,
+            doc.topic_id AS parent_topic_id,
             doc.knowledgebase_id AS knowledgebase_id,
             doc.organization_id AS organization_id,
             doc.content_plain AS content_plain,
@@ -108,21 +108,21 @@ FROM (
         UNION ALL
 
         SELECT
-            section.id AS id,
-            section.name AS name,
-            section.description AS description,
+            topic.id AS id,
+            topic.name AS name,
+            topic.description AS description,
             '' AS deduced_description,
-            section.updated AS updated,
-            section.parent_section_id AS parent_section_id,
-            section.knowledgebase_id AS knowledgebase_id,
-            section.organization_id AS organization_id,
+            topic.updated AS updated,
+            topic.parent_topic_id AS parent_topic_id,
+            topic.knowledgebase_id AS knowledgebase_id,
+            topic.organization_id AS organization_id,
             '' AS content_plain,
-            section.search_tokens AS tokens,
+            topic.search_tokens AS tokens,
             kb_route.route AS route,
             kb_route.url_id AS url_id,
-            'section' AS entry_type
-        FROM section section
-        INNER JOIN knowledgebase_route kb_route ON kb_route.section_id = section.id AND kb_route.is_canonical IS TRUE
+            'topic' AS entry_type
+        FROM topic topic
+        INNER JOIN knowledgebase_route kb_route ON kb_route.topic_id = topic.id AND kb_route.is_canonical IS TRUE
     ) doc_search
     WHERE doc_search.tokens @@ websearch_to_tsquery('english', :search_query)
     $andWhereConditions

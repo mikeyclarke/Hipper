@@ -24,10 +24,10 @@ project.docs.list:
         _before_middlewares:
             - project_model_from_url_id_middleware:before
 
-project.section.create:
-    path: /projects/{project_url_id}/docs/new-section
+project.topic.create:
+    path: /projects/{project_url_id}/docs/new-topic
     methods: [GET]
-    controller: Hipper\FrontEnd\App\Controller\Section\CreateSectionController::getAction
+    controller: Hipper\FrontEnd\App\Controller\Topic\CreateTopicController::getAction
     defaults:
         knowledgebase_type: 'project'
         _before_middlewares:
@@ -69,7 +69,7 @@ project.doc.export:
 project.doc.show:
     path: /projects/{project_url_id}/docs/{path}
     methods: [GET]
-    controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrSectionControllerRouter::route
+    controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrTopicControllerRouter::route
     defaults:
         knowledgebase_type: 'project'
         action: 'getAction'

@@ -6,7 +6,7 @@ namespace Hipper\Knowledgebase;
 use Hipper\Document\DocumentModel;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseContentTypeException;
-use Hipper\Section\SectionModel;
+use Hipper\Topic\TopicModel;
 
 class KnowledgebaseRoute
 {
@@ -34,14 +34,14 @@ class KnowledgebaseRoute
         $id = $this->idGenerator->generate();
 
         $documentId = null;
-        $sectionId = null;
+        $topicId = null;
 
         switch ($contentType) {
             case 'document':
                 $documentId = $content->getId();
                 break;
-            case 'section':
-                $sectionId = $content->getId();
+            case 'topic':
+                $topicId = $content->getId();
                 break;
         }
 
@@ -52,7 +52,7 @@ class KnowledgebaseRoute
             $contentType,
             $content->getOrganizationId(),
             $content->getKnowledgebaseId(),
-            $sectionId,
+            $topicId,
             $documentId,
             $isCanonicalRoute
         );
@@ -75,8 +75,8 @@ class KnowledgebaseRoute
             return 'document';
         }
 
-        if ($content instanceof SectionModel) {
-            return 'section';
+        if ($content instanceof TopicModel) {
+            return 'topic';
         }
 
         throw new UnsupportedKnowledgebaseContentTypeException;

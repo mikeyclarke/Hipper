@@ -9,7 +9,7 @@ use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Knowledgebase\KnowledgebaseRouteInserter;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteUpdater;
-use Hipper\Section\SectionModel;
+use Hipper\Topic\TopicModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
@@ -120,17 +120,17 @@ class KnowledgebaseRouteTest extends TestCase
     /**
      * @test
      */
-    public function createForSection()
+    public function createForTopic()
     {
         $urlId = 'c183c427';
         $route = 'route';
-        $sectionId = 'section-uuid';
+        $topicId = 'topic-uuid';
         $knowledgebaseId = 'knowledgebase-uuid';
         $organizationId = 'organization-uuid';
 
-        $model = new SectionModel;
+        $model = new TopicModel;
         $model->setUrlId($urlId);
-        $model->setId($sectionId);
+        $model->setId($topicId);
         $model->setKnowledgebaseId($knowledgebaseId);
         $model->setOrganizationId($organizationId);
 
@@ -142,7 +142,7 @@ class KnowledgebaseRouteTest extends TestCase
 
         $this->createIdGeneratorExpectation($routeId);
         $this->createKnowledgebaseRouteInserterExpectation(
-            [$routeId, $urlId, $route, 'section', $organizationId, $knowledgebaseId, $sectionId, null, $isCanonical],
+            [$routeId, $urlId, $route, 'topic', $organizationId, $knowledgebaseId, $topicId, null, $isCanonical],
             $routeRow
         );
 

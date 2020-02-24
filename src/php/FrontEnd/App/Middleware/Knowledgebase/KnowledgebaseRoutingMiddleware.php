@@ -80,8 +80,8 @@ class KnowledgebaseRoutingMiddleware
             $request->attributes->set('document_id', $result['document_id']);
         }
 
-        if ($result['entity'] === 'section') {
-            $request->attributes->set('section_id', $result['section_id']);
+        if ($result['entity'] === 'topic') {
+            $request->attributes->set('topic_id', $result['topic_id']);
         }
     }
 

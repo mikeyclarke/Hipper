@@ -23,7 +23,7 @@ class KnowledgebaseEntriesListFormatter
     public function format(
         OrganizationModel $organization,
         array $documents,
-        array $sections,
+        array $topics,
         string $displayTimeZone,
         string $routeName,
         array $routeParams
@@ -41,14 +41,14 @@ class KnowledgebaseEntriesListFormatter
             );
         }
 
-        foreach ($sections as $section) {
+        foreach ($topics as $topic) {
             $entries[] = $this->formatEntry(
                 $organization,
-                $section,
+                $topic,
                 $displayTimeZone,
                 $routeName,
                 $routeParams,
-                'section'
+                'topic'
             );
         }
 
@@ -69,7 +69,7 @@ class KnowledgebaseEntriesListFormatter
     ): array {
         return [
             'description' =>
-                ($type === 'section') ? $this->getSectionDescription($entry) : $this->getDocDescription($entry),
+                ($type === 'topic') ? $this->getTopicDescription($entry) : $this->getDocDescription($entry),
             'id' => $entry['id'],
             'name' => $entry['name'],
             'route' => $this->router->generate(
@@ -87,13 +87,13 @@ class KnowledgebaseEntriesListFormatter
         ];
     }
 
-    private function getSectionDescription(array $entry): string
+    private function getTopicDescription(array $entry): string
     {
         if (null !== $entry['description'] && !empty($entry['description'])) {
             return $entry['description'];
         }
 
-        return 'This section doesn’t have a description yet.';
+        return 'This topic doesn’t have a description yet.';
     }
 
     private function getDocDescription(array $entry): string

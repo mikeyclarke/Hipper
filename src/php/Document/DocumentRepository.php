@@ -38,9 +38,9 @@ class DocumentRepository
         return $result;
     }
 
-    public function getAllForKnowledgebaseInSection(
+    public function getAllForKnowledgebaseInTopic(
         string $knowledgebaseId,
-        ?string $sectionId,
+        ?string $topicId,
         string $organizationId
     ): array {
         $fields = [
@@ -65,17 +65,17 @@ class DocumentRepository
             ->andWhere('document.knowledgebase_id = :knowledgebase_id')
             ->andWhere('document.organization_id = :organization_id');
 
-        if (null === $sectionId) {
-            $qb->andWhere('document.section_id IS NULL');
+        if (null === $topicId) {
+            $qb->andWhere('document.topic_id IS NULL');
         } else {
-            $qb->andWhere('document.section_id = :section_id');
+            $qb->andWhere('document.topic_id = :topic_id');
         }
 
         $qb->orderBy('document.created', 'DESC');
 
         $qb->setParameters([
             'knowledgebase_id' => $knowledgebaseId,
-            'section_id' => $sectionId,
+            'topic_id' => $topicId,
             'organization_id' => $organizationId,
         ]);
 

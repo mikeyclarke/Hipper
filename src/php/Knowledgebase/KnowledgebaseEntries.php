@@ -4,34 +4,34 @@ declare(strict_types=1);
 namespace Hipper\Knowledgebase;
 
 use Hipper\Document\DocumentRepository;
-use Hipper\Section\SectionRepository;
+use Hipper\Topic\TopicRepository;
 
 class KnowledgebaseEntries
 {
     private $documentRepository;
-    private $sectionRepository;
+    private $topicRepository;
 
     public function __construct(
         DocumentRepository $documentRepository,
-        SectionRepository $sectionRepository
+        TopicRepository $topicRepository
     ) {
         $this->documentRepository = $documentRepository;
-        $this->sectionRepository = $sectionRepository;
+        $this->topicRepository = $topicRepository;
     }
 
-    public function get(string $knowledgebaseId, ?string $withinSectionId, string $organizationId): array
+    public function get(string $knowledgebaseId, ?string $withinTopicId, string $organizationId): array
     {
-        $docs = $this->documentRepository->getAllForKnowledgebaseInSection(
+        $docs = $this->documentRepository->getAllForKnowledgebaseInTopic(
             $knowledgebaseId,
-            $withinSectionId,
+            $withinTopicId,
             $organizationId
         );
-        $sections = $this->sectionRepository->getAllForKnowledgebaseInSection(
+        $topics = $this->topicRepository->getAllForKnowledgebaseInTopic(
             $knowledgebaseId,
-            $withinSectionId,
+            $withinTopicId,
             $organizationId
         );
 
-        return [$docs, $sections];
+        return [$docs, $topics];
     }
 }

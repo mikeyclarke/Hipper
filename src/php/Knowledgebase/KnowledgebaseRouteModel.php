@@ -18,7 +18,7 @@ final class KnowledgebaseRouteModel
         'entity' => 'entity',
         'organization_id' => 'organizationId',
         'knowledgebase_id' => 'knowledgebaseId',
-        'section_id' => 'sectionId',
+        'topic_id' => 'topicId',
         'document_id' => 'documentId',
         'created' => 'created',
         'updated' => 'updated',
@@ -31,7 +31,7 @@ final class KnowledgebaseRouteModel
     private $entity;
     private $organizationId;
     private $knowledgebaseId;
-    private $sectionId;
+    private $topicId;
     private $documentId;
     private $created;
     private $updated;
@@ -128,14 +128,14 @@ final class KnowledgebaseRouteModel
         return $this->knowledgebaseId;
     }
 
-    public function setSectionId(?string $sectionId): void
+    public function setTopicId(?string $topicId): void
     {
-        $this->sectionId = $sectionId;
+        $this->topicId = $topicId;
     }
 
-    public function getSectionId(): ?string
+    public function getTopicId(): ?string
     {
-        return $this->sectionId;
+        return $this->topicId;
     }
 
     public function setDocumentId(?string $documentId): void

@@ -4,32 +4,32 @@ declare(strict_types=1);
 namespace Hipper\Knowledgebase;
 
 use Hipper\Organization\OrganizationModel;
-use Hipper\Section\SectionRepository;
+use Hipper\Topic\TopicRepository;
 
 class KnowledgebaseBreadcrumbs
 {
     private KnowledgebaseBreadcrumbsFormatter $formatter;
-    private SectionRepository $sectionRepository;
+    private TopicRepository $topicRepository;
 
     public function __construct(
         KnowledgebaseBreadcrumbsFormatter $formatter,
-        SectionRepository $sectionRepository
+        TopicRepository $topicRepository
     ) {
         $this->formatter = $formatter;
-        $this->sectionRepository = $sectionRepository;
+        $this->topicRepository = $topicRepository;
     }
 
     public function get(
         OrganizationModel $organization,
         KnowledgebaseOwnerModelInterface $knowledgebaseOwner,
         string $currentEntryName,
-        ?string $parentSectionId
+        ?string $parentTopicId
     ): array {
-        $ancestorSections = [];
+        $ancestorTopics = [];
 
-        if (null !== $parentSectionId) {
-            $ancestorSections = $this->sectionRepository->getByIdWithAncestors(
-                $parentSectionId,
+        if (null !== $parentTopicId) {
+            $ancestorTopics = $this->topicRepository->getByIdWithAncestors(
+                $parentTopicId,
                 $knowledgebaseOwner->getKnowledgebaseId(),
                 $knowledgebaseOwner->getOrganizationId()
             );
@@ -38,7 +38,7 @@ class KnowledgebaseBreadcrumbs
         return $this->formatter->format(
             $organization,
             $knowledgebaseOwner,
-            array_reverse($ancestorSections),
+            array_reverse($ancestorTopics),
             $currentEntryName
         );
     }

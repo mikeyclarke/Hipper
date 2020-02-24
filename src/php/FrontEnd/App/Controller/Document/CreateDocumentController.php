@@ -59,7 +59,7 @@ class CreateDocumentController
             $organization,
             $knowledgebaseOwner,
             self::DEFAULT_DOC_TITLE,
-            $context['section_id']
+            $context['topic_id']
         );
 
         $backLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];
@@ -77,7 +77,7 @@ class CreateDocumentController
         return [
             'html_title' => sprintf('New doc – %s', $team->getName()),
             'knowledgebase_id' => $team->getKnowledgebaseId(),
-            'section_id' => $request->query->get('in', null),
+            'topic_id' => $request->query->get('in', null),
             'team' => $team,
         ];
     }
@@ -87,7 +87,7 @@ class CreateDocumentController
         return [
             'html_title' => sprintf('New doc – %s', $project->getName()),
             'knowledgebase_id' => $project->getKnowledgebaseId(),
-            'section_id' => $request->query->get('in', null),
+            'topic_id' => $request->query->get('in', null),
             'project' => $project,
         ];
     }

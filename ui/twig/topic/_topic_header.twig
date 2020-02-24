@@ -1,0 +1,44 @@
+<header class="c-page-header js-knowledgebase-topic-header">
+    {% if mode is same as('create') %}
+        <form class="js-create-topic-form">
+            {% include '_breadcrumb_list.twig' %}
+
+            <input type="hidden" name="knowledgebase_id" value="{{ knowledgebase_id }}">
+            <input type="hidden" name="parent_topic_id" value="{{ parent_topic_id }}">
+
+            <elastic-text-input>
+                <textarea name="name" class="c-page-header__title" placeholder="Name this topic" rows="1" maxlength="150" autocomplete="off" autofocus></textarea>
+            </elastic-text-input>
+
+            <elastic-text-input>
+                <textarea name="description" class="c-page-header__subheading" placeholder="Description (optional)" rows="1" maxlength="300" autocomplete="off"></textarea>
+            </elastic-text-input>
+
+            {% include 'topic/_topic_actions.twig' with { mode: mode } %}
+        </form>
+    {% elseif mode is same as('view') %}
+        {% include '_breadcrumb_list.twig' %}
+
+        <div class="js-topic-details-display">
+            <h1 class="c-page-header__title">{{ topic.name }}</h1>
+
+            <p class="c-page-header__subheading{% if topic.description is null or topic.description is empty %}--muted{% endif %}">{{ topic.description|default('This topic doesn’t have a description yet') }}</p>
+        </div>
+
+        {% if is_editable %}
+            <form class="js-topic-details-edit-form" hidden>
+                <input type="hidden" name="topic_id" value="{{ topic.id }}">
+
+                <elastic-text-input>
+                    <textarea name="name" class="c-page-header__title" placeholder="Name this topic" rows="1" maxlength="150" autocomplete="off">{{ topic.name }}</textarea>
+                </elastic-text-input>
+
+                <elastic-text-input>
+                    <textarea name="description" class="c-page-header__subheading" placeholder="Description (optional)" rows="1" maxlength="300" autocomplete="off">{{ topic.description }}</textarea>
+                </elastic-text-input>
+            </form>
+
+            {% include 'topic/_topic_actions.twig' with { mode: mode } %}
+        {% endif %}
+    {% endif %}    
+</header>

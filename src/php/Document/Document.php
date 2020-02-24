@@ -14,8 +14,8 @@ use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Person\PersonModel;
-use Hipper\Section\SectionModel;
-use Hipper\Section\SectionRepository;
+use Hipper\Topic\TopicModel;
+use Hipper\Topic\TopicRepository;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
 use JSON_THROW_ON_ERROR;
@@ -34,7 +34,7 @@ class Document
     private $knowledgebaseRepository;
     private $knowledgebaseRoute;
     private $knowledgebaseRouteRepository;
-    private $sectionRepository;
+    private $topicRepository;
     private $urlIdGenerator;
     private $urlSlugGenerator;
 
@@ -51,7 +51,7 @@ class Document
         KnowledgebaseRepository $knowledgebaseRepository,
         KnowledgebaseRoute $knowledgebaseRoute,
         KnowledgebaseRouteRepository $knowledgebaseRouteRepository,
-        SectionRepository $sectionRepository,
+        TopicRepository $topicRepository,
         UrlIdGenerator $urlIdGenerator,
         UrlSlugGenerator $urlSlugGenerator
     ) {
@@ -67,7 +67,7 @@ class Document
         $this->knowledgebaseRepository = $knowledgebaseRepository;
         $this->knowledgebaseRoute = $knowledgebaseRoute;
         $this->knowledgebaseRouteRepository = $knowledgebaseRouteRepository;
-        $this->sectionRepository = $sectionRepository;
+        $this->topicRepository = $topicRepository;
         $this->urlIdGenerator = $urlIdGenerator;
         $this->urlSlugGenerator = $urlSlugGenerator;
     }
@@ -76,8 +76,8 @@ class Document
     {
         $organizationId = $person->getOrganizationId();
         $knowledgebase = $this->getKnowledgebase($parameters, $organizationId);
-        $section = $this->getSection($parameters['section_id'] ?? null, $knowledgebase, $organizationId);
-        $this->documentValidator->validate($parameters, $knowledgebase, $section, true);
+        $topic = $this->getTopic($parameters['topic_id'] ?? null, $knowledgebase, $organizationId);
+        $this->documentValidator->validate($parameters, $knowledgebase, $topic, true);
 
         $id = $this->idGenerator->generate();
         $urlSlug = $this->urlSlugGenerator->generateFromString($parameters['name']);
@@ -113,11 +113,11 @@ class Document
                 $deducedDescription,
                 $content,
                 $contentPlain,
-                $parameters['section_id'] ?? null
+                $parameters['topic_id'] ?? null
             );
             $model = DocumentModel::createFromArray($result);
 
-            $routePrefix = $this->getRoutePrefix($organizationId, $parameters['knowledgebase_id'], $section);
+            $routePrefix = $this->getRoutePrefix($organizationId, $parameters['knowledgebase_id'], $topic);
             $route = $this->knowledgebaseRoute->create(
                 $model,
                 $routePrefix . $model->getUrlSlug(),
@@ -148,9 +148,9 @@ class Document
         }
         $knowledgebase = KnowledgebaseModel::createFromArray($result);
         $knowledgebaseOwnerModel = $this->knowledgebaseOwner->get($knowledgebase);
-        $section = $this->getSection($parameters['section_id'] ?? null, $knowledgebase, $organizationId);
+        $topic = $this->getTopic($parameters['topic_id'] ?? null, $knowledgebase, $organizationId);
 
-        $this->documentValidator->validate($parameters, null, $section);
+        $this->documentValidator->validate($parameters, null, $topic);
 
         $propertiesToUpdate = [];
 
@@ -164,8 +164,8 @@ class Document
             }
         }
 
-        if (array_key_exists('section_id', $parameters) && $document->getSectionId() !== $parameters['section_id']) {
-            $propertiesToUpdate['section_id'] = $parameters['section_id'];
+        if (array_key_exists('topic_id', $parameters) && $document->getTopicId() !== $parameters['topic_id']) {
+            $propertiesToUpdate['topic_id'] = $parameters['topic_id'];
         }
 
         if (array_key_exists('description', $parameters) &&
@@ -193,7 +193,7 @@ class Document
         }
 
         $routeHasChanged = isset($propertiesToUpdate['url_slug']) ||
-            array_key_exists('section_id', $propertiesToUpdate);
+            array_key_exists('topic_id', $propertiesToUpdate);
 
         $route = null;
         if (!$routeHasChanged) {
@@ -209,8 +209,8 @@ class Document
             $route = KnowledgebaseRouteModel::createFromArray($routeResult);
         }
 
-        if (!array_key_exists('section_id', $propertiesToUpdate) && $routeHasChanged) {
-            $section = $this->getSection($document->getSectionId(), $knowledgebase, $organizationId);
+        if (!array_key_exists('topic_id', $propertiesToUpdate) && $routeHasChanged) {
+            $topic = $this->getTopic($document->getTopicId(), $knowledgebase, $organizationId);
         }
 
         if (empty($propertiesToUpdate)) {
@@ -228,7 +228,7 @@ class Document
             $document->updateFromArray($result);
 
             if ($routeHasChanged) {
-                $routePrefix = $this->getRoutePrefix($organizationId, $knowledgebaseId, $section);
+                $routePrefix = $this->getRoutePrefix($organizationId, $knowledgebaseId, $topic);
                 $route = $this->knowledgebaseRoute->create(
                     $document,
                     $routePrefix . $document->getUrlSlug(),
@@ -261,12 +261,12 @@ class Document
         return KnowledgebaseModel::createFromArray($result);
     }
 
-    private function getSection(
-        ?string $sectionId,
+    private function getTopic(
+        ?string $topicId,
         ?KnowledgebaseModel $knowledgebase,
         string $organizationId
-    ): ?SectionModel {
-        if (null === $sectionId) {
+    ): ?TopicModel {
+        if (null === $topicId) {
             return null;
         }
 
@@ -274,8 +274,8 @@ class Document
             return null;
         }
 
-        $result = $this->sectionRepository->findByIdInKnowledgebase(
-            $sectionId,
+        $result = $this->topicRepository->findByIdInKnowledgebase(
+            $topicId,
             $knowledgebase->getId(),
             $organizationId
         );
@@ -283,25 +283,25 @@ class Document
             return null;
         }
 
-        return SectionModel::createFromArray($result);
+        return TopicModel::createFromArray($result);
     }
 
-    private function getRoutePrefix(string $organizationId, string $knowledgebaseId, ?SectionModel $section): string
+    private function getRoutePrefix(string $organizationId, string $knowledgebaseId, ?TopicModel $topic): string
     {
-        if (null === $section) {
+        if (null === $topic) {
             return '';
         }
 
-        $result = $this->knowledgebaseRouteRepository->findCanonicalRouteForSection(
+        $result = $this->knowledgebaseRouteRepository->findCanonicalRouteForTopic(
             $organizationId,
             $knowledgebaseId,
-            $section->getId()
+            $topic->getId()
         );
 
         if (null === $result) {
             throw new MissingRouteException(sprintf(
-                'Cannot create document in section %s because it is missing a canonical knowledgebase route',
-                $section->getId()
+                'Cannot create document in topic %s because it is missing a canonical knowledgebase route',
+                $topic->getId()
             ));
         }
 

@@ -22,9 +22,9 @@ use Hipper\Knowledgebase\KnowledgebaseRoute;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Person\PersonModel;
-use Hipper\Section\SectionModel;
-use Hipper\Section\SectionRepository;
 use Hipper\Team\TeamModel;
+use Hipper\Topic\TopicModel;
+use Hipper\Topic\TopicRepository;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
@@ -46,7 +46,7 @@ class DocumentTest extends TestCase
     private $knowledgebaseRepository;
     private $knowledgebaseRoute;
     private $knowledgebaseRouteRepository;
-    private $sectionRepository;
+    private $topicRepository;
     private $urlIdGenerator;
     private $urlSlugGenerator;
     private $document;
@@ -65,7 +65,7 @@ class DocumentTest extends TestCase
         $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
         $this->knowledgebaseRoute = m::mock(KnowledgebaseRoute::class);
         $this->knowledgebaseRouteRepository = m::mock(KnowledgebaseRouteRepository::class);
-        $this->sectionRepository = m::mock(SectionRepository::class);
+        $this->topicRepository = m::mock(TopicRepository::class);
         $this->urlIdGenerator = m::mock(UrlIdGenerator::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
 
@@ -82,7 +82,7 @@ class DocumentTest extends TestCase
             $this->knowledgebaseRepository,
             $this->knowledgebaseRoute,
             $this->knowledgebaseRouteRepository,
-            $this->sectionRepository,
+            $this->topicRepository,
             $this->urlIdGenerator,
             $this->urlSlugGenerator
         );
@@ -163,12 +163,12 @@ class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function createInSection()
+    public function createInTopic()
     {
         $personId = 'person-uuid';
         $organizationId = 'org-uuid';
         $knowledgebaseId = 'kb-uuid';
-        $sectionId = 'section-uuid';
+        $topicId = 'topic-uuid';
 
         $person = new PersonModel;
         $person->setId($personId);
@@ -179,11 +179,11 @@ class DocumentTest extends TestCase
             'description' => null,
             'content' => ["type" => "text", "text" => "👋 Congrats on joining Hipper!"],
             'knowledgebase_id' => $knowledgebaseId,
-            'section_id' => $sectionId,
+            'topic_id' => $topicId,
         ];
 
         $kbResult = ['id' => $knowledgebaseId];
-        $sectionResult = ['id' => $sectionId];
+        $topicResult = ['id' => $topicId];
         $documentId = 'doc-uuid';
         $urlSlug = 'welcome-to-engineering';
         $urlId = 'url-id';
@@ -191,21 +191,21 @@ class DocumentTest extends TestCase
         $contentPlain = '👋 Congrats on joining Hipper!';
         $rendererResult = new RendererResult;
         $rendererResult->setContent($contentPlain);
-        $sectionRoute = 'my/nested/section';
+        $topicRoute = 'my/nested/topic';
 
         $documentRow = [
             'url_slug' => $urlSlug,
             'url_id' => $urlId,
         ];
-        $sectionRouteResult = ['route' => $sectionRoute];
-        $docRoute = $sectionRoute . '/' . $urlSlug;
+        $topicRouteResult = ['route' => $topicRoute];
+        $docRoute = $topicRoute . '/' . $urlSlug;
         $routeModel = new KnowledgebaseRouteModel;
         $knowledgebaseOwnerModel = new TeamModel;
 
         $this->createKnowledgebaseRepositoryExpectation([$parameters['knowledgebase_id'], $organizationId], $kbResult);
-        $this->createSectionRepositoryExpectation([$sectionId, $knowledgebaseId, $organizationId], $sectionResult);
+        $this->createTopicRepositoryExpectation([$topicId, $knowledgebaseId, $organizationId], $topicResult);
         $this->createDocumentValidatorExpectation(
-            [$parameters, m::type(KnowledgebaseModel::class), m::type(SectionModel::class), true]
+            [$parameters, m::type(KnowledgebaseModel::class), m::type(TopicModel::class), true]
         );
         $this->createIdGeneratorExpectation($documentId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
@@ -226,13 +226,13 @@ class DocumentTest extends TestCase
                 $deducedDescription,
                 json_encode($parameters['content']),
                 $contentPlain,
-                $sectionId
+                $topicId
             ],
             $documentRow
         );
         $this->createKnowledgebaseRouteRepositoryExpectation(
-            [$organizationId, $knowledgebaseId, $sectionId],
-            $sectionRouteResult
+            [$organizationId, $knowledgebaseId, $topicId],
+            $topicRouteResult
         );
         $this->createKnowledgebaseRouteExpectation([m::type(DocumentModel::class), $docRoute, true, true], $routeModel);
         $this->createDocumentRevisionExpectation([m::type(DocumentModel::class)]);
@@ -254,7 +254,7 @@ class DocumentTest extends TestCase
         $organizationId = 'org-uuid';
         $knowledgebaseId = 'kb-uuid';
         $documentId = 'doc-uuid';
-        $existingSectionId = 'section-uuid';
+        $existingTopicId = 'topic-uuid';
 
         $person = new PersonModel;
         $person->setId($personId);
@@ -264,7 +264,7 @@ class DocumentTest extends TestCase
         $document->setId($documentId);
         $document->setName('My doc');
         $document->setKnowledgebaseId($knowledgebaseId);
-        $document->setSectionId($existingSectionId);
+        $document->setTopicId($existingTopicId);
         $document->setUrlSlug('my-doc');
 
         $parameters = [
@@ -272,7 +272,7 @@ class DocumentTest extends TestCase
         ];
 
         $kbResult = ['id' => $knowledgebaseId];
-        $sectionResult = ['id' => $existingSectionId];
+        $topicResult = ['id' => $existingTopicId];
         $urlSlug = 'my-updated-doc';
         $propertiesToUpdate = [
             'last_updated_by' => $personId,
@@ -283,9 +283,9 @@ class DocumentTest extends TestCase
             'name' => $parameters['name'],
             'url_slug' => $urlSlug,
         ];
-        $sectionRoute = 'my/nested/section';
-        $sectionRouteResult = ['route' => $sectionRoute];
-        $docRoute = $sectionRoute . '/' . $urlSlug;
+        $topicRoute = 'my/nested/topic';
+        $topicRouteResult = ['route' => $topicRoute];
+        $docRoute = $topicRoute . '/' . $urlSlug;
         $routeModel = new KnowledgebaseRouteModel;
         $knowledgebaseOwnerModel = new TeamModel;
 
@@ -293,15 +293,15 @@ class DocumentTest extends TestCase
         $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
         $this->createDocumentValidatorExpectation([$parameters, null, null]);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
-        $this->createSectionRepositoryExpectation(
-            [$existingSectionId, $knowledgebaseId, $organizationId],
-            $sectionResult
+        $this->createTopicRepositoryExpectation(
+            [$existingTopicId, $knowledgebaseId, $organizationId],
+            $topicResult
         );
         $this->createConnectionBeginTransactionExpectation();
         $this->createDocumentUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
         $this->createKnowledgebaseRouteRepositoryExpectation(
-            [$organizationId, $knowledgebaseId, $existingSectionId],
-            $sectionRouteResult
+            [$organizationId, $knowledgebaseId, $existingTopicId],
+            $topicRouteResult
         );
         $this->createKnowledgebaseRouteExpectation([$document, $docRoute, true], $routeModel);
         $this->createDocumentRevisionExpectation([$document]);
@@ -324,7 +324,7 @@ class DocumentTest extends TestCase
         $organizationId = 'org-uuid';
         $knowledgebaseId = 'kb-uuid';
         $documentId = 'doc-uuid';
-        $existingSectionId = 'prev-section-uuid';
+        $existingTopicId = 'prev-topic-uuid';
 
         $person = new PersonModel;
         $person->setId($personId);
@@ -334,7 +334,7 @@ class DocumentTest extends TestCase
         $document->setId($documentId);
         $document->setName('My doc');
         $document->setKnowledgebaseId($knowledgebaseId);
-        $document->setSectionId($existingSectionId);
+        $document->setTopicId($existingTopicId);
         $document->setUrlSlug('my-doc');
 
         $parameters = [
@@ -342,7 +342,7 @@ class DocumentTest extends TestCase
         ];
 
         $kbResult = ['id' => $knowledgebaseId];
-        $sectionResult = ['id' => $existingSectionId];
+        $topicResult = ['id' => $existingTopicId];
         $urlSlug = 'my-doc';
         $propertiesToUpdate = [
             'last_updated_by' => $personId,
@@ -379,14 +379,14 @@ class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function moveToNewSection()
+    public function moveToNewTopic()
     {
         $personId = 'person-uuid';
         $organizationId = 'org-uuid';
         $knowledgebaseId = 'kb-uuid';
         $documentId = 'doc-uuid';
-        $previousSectionId = 'prev-section-uuid';
-        $sectionId = 'section-uuid';
+        $previousTopicId = 'prev-topic-uuid';
+        $topicId = 'topic-uuid';
 
         $person = new PersonModel;
         $person->setId($personId);
@@ -395,39 +395,39 @@ class DocumentTest extends TestCase
         $document = new DocumentModel;
         $document->setId($documentId);
         $document->setKnowledgebaseId($knowledgebaseId);
-        $document->setSectionId($previousSectionId);
+        $document->setTopicId($previousTopicId);
         $document->setUrlSlug('my-doc');
 
         $parameters = [
-            'section_id' => $sectionId,
+            'topic_id' => $topicId,
         ];
 
         $kbResult = ['id' => $knowledgebaseId];
-        $sectionResult = ['id' => $sectionId];
+        $topicResult = ['id' => $topicId];
         $propertiesToUpdate = [
             'last_updated_by' => $personId,
-            'section_id' => $sectionId,
+            'topic_id' => $topicId,
         ];
         $docUpdateResult = [
-            'section_id' => $sectionId,
+            'topic_id' => $topicId,
         ];
-        $sectionRoute = 'my/nested/section';
-        $sectionRouteResult = ['route' => $sectionRoute];
-        $docRoute = $sectionRoute . '/' . $document->getUrlSlug();
+        $topicRoute = 'my/nested/topic';
+        $topicRouteResult = ['route' => $topicRoute];
+        $docRoute = $topicRoute . '/' . $document->getUrlSlug();
         $routeModel = new KnowledgebaseRouteModel;
         $knowledgebaseOwnerModel = new TeamModel;
 
         $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], $kbResult);
         $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
-        $this->createSectionRepositoryExpectation([$sectionId, $knowledgebaseId, $organizationId], $sectionResult);
+        $this->createTopicRepositoryExpectation([$topicId, $knowledgebaseId, $organizationId], $topicResult);
         $this->createDocumentValidatorExpectation(
-            [$parameters, null, m::type(SectionModel::class)]
+            [$parameters, null, m::type(TopicModel::class)]
         );
         $this->createConnectionBeginTransactionExpectation();
         $this->createDocumentUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
         $this->createKnowledgebaseRouteRepositoryExpectation(
-            [$organizationId, $knowledgebaseId, $sectionId],
-            $sectionRouteResult
+            [$organizationId, $knowledgebaseId, $topicId],
+            $topicRouteResult
         );
         $this->createKnowledgebaseRouteExpectation([$document, $docRoute, true], $routeModel);
         $this->createDocumentRevisionExpectation([$document]);
@@ -437,20 +437,20 @@ class DocumentTest extends TestCase
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
-        $this->assertEquals($sectionId, $document->getSectionId());
+        $this->assertEquals($topicId, $document->getTopicId());
     }
 
     /**
      * @test
      */
-    public function updateNameWhilstMovingToNewSection()
+    public function updateNameWhilstMovingToNewTopic()
     {
         $personId = 'person-uuid';
         $organizationId = 'org-uuid';
         $knowledgebaseId = 'kb-uuid';
         $documentId = 'doc-uuid';
-        $previousSectionId = 'prev-section-uuid';
-        $sectionId = 'section-uuid';
+        $previousTopicId = 'prev-topic-uuid';
+        $topicId = 'topic-uuid';
 
         $person = new PersonModel;
         $person->setId($personId);
@@ -460,46 +460,46 @@ class DocumentTest extends TestCase
         $document->setId($documentId);
         $document->setName('My doc');
         $document->setKnowledgebaseId($knowledgebaseId);
-        $document->setSectionId($previousSectionId);
+        $document->setTopicId($previousTopicId);
         $document->setUrlSlug('my-doc');
 
         $parameters = [
             'name' => 'My updated doc',
-            'section_id' => $sectionId,
+            'topic_id' => $topicId,
         ];
 
         $kbResult = ['id' => $knowledgebaseId];
-        $sectionResult = ['id' => $sectionId];
+        $topicResult = ['id' => $topicId];
         $urlSlug = 'my-updated-doc';
         $propertiesToUpdate = [
             'last_updated_by' => $personId,
             'name' => $parameters['name'],
-            'section_id' => $sectionId,
+            'topic_id' => $topicId,
             'url_slug' => $urlSlug,
         ];
         $docUpdateResult = [
             'name' => $parameters['name'],
-            'section_id' => $sectionId,
+            'topic_id' => $topicId,
             'url_slug' => $urlSlug,
         ];
-        $sectionRoute = 'my/nested/section';
-        $sectionRouteResult = ['route' => $sectionRoute];
-        $docRoute = $sectionRoute . '/' . $urlSlug;
+        $topicRoute = 'my/nested/topic';
+        $topicRouteResult = ['route' => $topicRoute];
+        $docRoute = $topicRoute . '/' . $urlSlug;
         $routeModel = new KnowledgebaseRouteModel;
         $knowledgebaseOwnerModel = new TeamModel;
 
         $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], $kbResult);
         $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
-        $this->createSectionRepositoryExpectation([$sectionId, $knowledgebaseId, $organizationId], $sectionResult);
+        $this->createTopicRepositoryExpectation([$topicId, $knowledgebaseId, $organizationId], $topicResult);
         $this->createDocumentValidatorExpectation(
-            [$parameters, null, m::type(SectionModel::class)]
+            [$parameters, null, m::type(TopicModel::class)]
         );
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
         $this->createConnectionBeginTransactionExpectation();
         $this->createDocumentUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
         $this->createKnowledgebaseRouteRepositoryExpectation(
-            [$organizationId, $knowledgebaseId, $sectionId],
-            $sectionRouteResult
+            [$organizationId, $knowledgebaseId, $topicId],
+            $topicRouteResult
         );
         $this->createKnowledgebaseRouteExpectation([$document, $docRoute, true], $routeModel);
         $this->createDocumentRevisionExpectation([$document]);
@@ -509,7 +509,7 @@ class DocumentTest extends TestCase
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
-        $this->assertEquals($sectionId, $document->getSectionId());
+        $this->assertEquals($topicId, $document->getTopicId());
         $this->assertEquals($parameters['name'], $document->getName());
         $this->assertEquals($urlSlug, $document->getUrlSlug());
     }
@@ -763,7 +763,7 @@ class DocumentTest extends TestCase
     private function createKnowledgebaseRouteRepositoryExpectation($args, $result)
     {
         $this->knowledgebaseRouteRepository
-            ->shouldReceive('findCanonicalRouteForSection')
+            ->shouldReceive('findCanonicalRouteForTopic')
             ->once()
             ->with(...$args)
             ->andReturn($result);
@@ -845,9 +845,9 @@ class DocumentTest extends TestCase
             ->with(...$args);
     }
 
-    private function createSectionRepositoryExpectation($args, $result)
+    private function createTopicRepositoryExpectation($args, $result)
     {
-        $this->sectionRepository
+        $this->topicRepository
             ->shouldReceive('findByIdInKnowledgebase')
             ->once()
             ->with(...$args)

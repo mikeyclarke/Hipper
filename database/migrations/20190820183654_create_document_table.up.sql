@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS document (
     url_id              text CHECK (LENGTH(url_id) <= 8) NOT NULL UNIQUE,
     knowledgebase_id    UUID NOT NULL references knowledgebase(id),
     organization_id     UUID NOT NULL references organization(id),
-    section_id          UUID DEFAULT NULL references section(id),
+    topic_id            UUID DEFAULT NULL references topic(id),
     created_by          UUID NOT NULL references person(id),
     last_updated_by     UUID NOT NULL references person(id),
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,

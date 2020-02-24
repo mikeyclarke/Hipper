@@ -23,14 +23,14 @@ class KnowledgebaseRouteInserter
         string $entity,
         string $organizationId,
         string $knowledgebaseId,
-        string $sectionId = null,
+        string $topicId = null,
         string $documentId = null,
         bool $isCanonical = true
     ): array {
         $sql = <<<SQL
 INSERT INTO knowledgebase_route
-(id, url_id, route, is_canonical, entity, organization_id, knowledgebase_id, section_id, document_id)
-VALUES (:id, :url_id, :route, :is_canonical, :entity, :organization_id, :knowledgebase_id, :section_id, :document_id)
+(id, url_id, route, is_canonical, entity, organization_id, knowledgebase_id, topic_id, document_id)
+VALUES (:id, :url_id, :route, :is_canonical, :entity, :organization_id, :knowledgebase_id, :topic_id, :document_id)
 RETURNING *
 SQL;
 
@@ -42,7 +42,7 @@ SQL;
         $stmt->bindValue('entity', $entity, PDO::PARAM_STR);
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
         $stmt->bindValue('knowledgebase_id', $knowledgebaseId, PDO::PARAM_STR);
-        $stmt->bindValue('section_id', $sectionId, PDO::PARAM_STR);
+        $stmt->bindValue('topic_id', $topicId, PDO::PARAM_STR);
         $stmt->bindValue('document_id', $documentId, PDO::PARAM_STR);
 
         $stmt->execute();

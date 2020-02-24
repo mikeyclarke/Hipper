@@ -28,14 +28,14 @@ class KnowledgebaseBreadcrumbsFormatter
     public function format(
         OrganizationModel $organization,
         KnowledgebaseOwnerModelInterface $knowledgebaseOwner,
-        array $ancestorSections,
+        array $ancestorTopics,
         string $currentEntryName
     ): array {
         $result = array_map(
-            function ($section) use ($organization, $knowledgebaseOwner) {
-                return $this->formatSectionCrumb($organization, $knowledgebaseOwner, $section);
+            function ($topic) use ($organization, $knowledgebaseOwner) {
+                return $this->formatTopicCrumb($organization, $knowledgebaseOwner, $topic);
             },
-            $ancestorSections
+            $ancestorTopics
         );
 
         array_unshift($result, $this->formatKnowledgebaseOwnerCrumb($organization, $knowledgebaseOwner));
@@ -44,7 +44,7 @@ class KnowledgebaseBreadcrumbsFormatter
         return $result;
     }
 
-    private function formatSectionCrumb(
+    private function formatTopicCrumb(
         OrganizationModel $organization,
         KnowledgebaseOwnerModelInterface $knowledgebaseOwner,
         array $item

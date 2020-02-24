@@ -68,14 +68,14 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
             controller: (): any[] => [bottle.container.createDocumentController, 'start'],
         },
 
-        create_project_section: {
-            path: '/projects/:project_url_id/docs/new-section',
-            controller: (): any[] => [bottle.container.createSectionController, 'start'],
+        create_project_topic: {
+            path: '/projects/:project_url_id/docs/new-topic',
+            controller: (): any[] => [bottle.container.createTopicController, 'start'],
         },
 
-        create_team_section: {
-            path: '/teams/:team_url_id/docs/new-section',
-            controller: (): any[] => [bottle.container.createSectionController, 'start'],
+        create_team_topic: {
+            path: '/teams/:team_url_id/docs/new-topic',
+            controller: (): any[] => [bottle.container.createTopicController, 'start'],
         },
 
         edit_project_doc: {
@@ -90,7 +90,7 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
 
         show_team_knowledgebase_entry: {
             path: '/teams/:team_url_id/docs/:doc_route(.+)',
-            controller: (): any[] => [bottle.container.documentOrSectionControllerRouter, 'route'],
+            controller: (): any[] => [bottle.container.documentOrTopicControllerRouter, 'route'],
         },
     };
 }

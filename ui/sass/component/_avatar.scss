@@ -6,9 +6,9 @@ $_document-color: config.config-get(color-shades, primary, 800);
 $_document-gradient-from: rgba($_document-color, .2);
 $_document-gradient-to: rgba(color.adjust($_document-color, $lightness: 5%), .2);
 
-$_section-color: config.config-get(color-shades, secondary, 1100);
-$_section-gradient-from: rgba($_section-color, .2);
-$_section-gradient-to: rgba(color.adjust($_section-color, $lightness: 5%), .2);
+$_topic-color: config.config-get(color-shades, secondary, 1100);
+$_topic-gradient-from: rgba($_topic-color, .2);
+$_topic-gradient-to: rgba(color.adjust($_topic-color, $lightness: 5%), .2);
 
 %c-avatar {
     align-items: center;
@@ -22,7 +22,7 @@ $_section-gradient-to: rgba(color.adjust($_section-color, $lightness: 5%), .2);
 
 .c-avatar,
 .c-avatar--document,
-.c-avatar--section {
+.c-avatar--topic {
     @extend %c-avatar;
 }
 
@@ -34,8 +34,8 @@ $_section-gradient-to: rgba(color.adjust($_section-color, $lightness: 5%), .2);
     background-image: linear-gradient(180deg, $_document-gradient-from 0%, $_document-gradient-to 100%);
 }
 
-.c-avatar--section {
-    background-image: linear-gradient(180deg, $_section-gradient-from 0%, $_section-gradient-to 100%);
+.c-avatar--topic {
+    background-image: linear-gradient(180deg, $_topic-gradient-from 0%, $_topic-gradient-to 100%);
 }
 
 .c-avatar__icon {
@@ -47,8 +47,8 @@ $_section-gradient-to: rgba(color.adjust($_section-color, $lightness: 5%), .2);
     fill: $_document-color;
 }
 
-.c-avatar--section .c-avatar__icon {
-    fill: $_section-color;
+.c-avatar--topic .c-avatar__icon {
+    fill: $_topic-color;
 }
 
 .c-avatar__initials {

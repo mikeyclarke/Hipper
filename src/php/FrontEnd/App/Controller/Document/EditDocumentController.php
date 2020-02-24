@@ -64,7 +64,7 @@ class EditDocumentController
             $organization,
             $knowledgebaseOwner,
             $document->getName(),
-            $document->getSectionId()
+            $document->getTopicId()
         );
 
         $backLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];

@@ -1,0 +1,15 @@
+{% extends '_app_default_layout_slim.twig' %}
+
+{% block navigational_header %}{% include 'project/_project_header.twig' with { activeTab: 'docs' } %}{% endblock %}
+
+{% block content %}
+
+{% include 'topic/_topic_header.twig' with { mode: 'view', is_editable: current_user_is_in_project } %}
+
+{% if knowledgebase_entries is not empty %}
+    {% include '_knowledgebase_entries.twig' %}
+{% endif %}
+
+{% include '_floating_knowledgebase_button.twig' %}
+
+{% endblock %}

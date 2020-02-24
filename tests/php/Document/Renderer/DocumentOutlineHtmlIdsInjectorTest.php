@@ -238,7 +238,7 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'First section',
+                            'text' => 'First topic',
                         ],
                     ],
                 ],
@@ -259,7 +259,7 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Some section 1 intro text',
+                            'text' => 'Some topic 1 intro text',
                         ],
                     ],
                 ],
@@ -271,7 +271,7 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Second section',
+                            'text' => 'Second topic',
                         ],
                     ],
                 ],
@@ -292,7 +292,7 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Some section 2 intro text',
+                            'text' => 'Some topic 2 intro text',
                         ],
                     ],
                 ],
@@ -304,7 +304,7 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Third section',
+                            'text' => 'Third topic',
                         ],
                     ],
                 ],
@@ -325,7 +325,7 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Some section 3 intro text',
+                            'text' => 'Some topic 3 intro text',
                         ],
                     ],
                 ],
@@ -342,10 +342,10 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'First section',
+                            'text' => 'First topic',
                         ],
                     ],
-                    'html_id' => '_first-section',
+                    'html_id' => '_first-topic',
                 ],
                 [
                     'type' => 'heading',
@@ -365,7 +365,7 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Some section 1 intro text',
+                            'text' => 'Some topic 1 intro text',
                         ],
                     ],
                 ],
@@ -377,10 +377,10 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Second section',
+                            'text' => 'Second topic',
                         ],
                     ],
-                    'html_id' => '_second-section',
+                    'html_id' => '_second-topic',
                 ],
                 [
                     'type' => 'heading',
@@ -400,7 +400,7 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Some section 2 intro text',
+                            'text' => 'Some topic 2 intro text',
                         ],
                     ],
                 ],
@@ -412,10 +412,10 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Third section',
+                            'text' => 'Third topic',
                         ],
                     ],
-                    'html_id' => '_third-section',
+                    'html_id' => '_third-topic',
                 ],
                 [
                     'type' => 'heading',
@@ -435,18 +435,18 @@ class DocumentOutlineHtmlIdsInjectorTest extends TestCase
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => 'Some section 3 intro text',
+                            'text' => 'Some topic 3 intro text',
                         ],
                     ],
                 ],
             ],
         ];
 
-        $this->createUrlSlugGeneratorExpectation(['First section'], 'first-section');
+        $this->createUrlSlugGeneratorExpectation(['First topic'], 'first-topic');
         $this->createUrlSlugGeneratorExpectation(['Introduction'], 'introduction');
-        $this->createUrlSlugGeneratorExpectation(['Second section'], 'second-section');
+        $this->createUrlSlugGeneratorExpectation(['Second topic'], 'second-topic');
         $this->createUrlSlugGeneratorExpectation(['Introduction'], 'introduction');
-        $this->createUrlSlugGeneratorExpectation(['Third section'], 'third-section');
+        $this->createUrlSlugGeneratorExpectation(['Third topic'], 'third-topic');
         $this->createUrlSlugGeneratorExpectation(['Introduction'], 'introduction');
 
         $result = $this->injector->inject($doc);

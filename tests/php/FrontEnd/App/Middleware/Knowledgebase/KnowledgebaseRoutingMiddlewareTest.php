@@ -52,7 +52,7 @@ class KnowledgebaseRoutingMiddlewareTest extends TestCase
      */
     public function routeWithNoUrlIdAndNotFound404s()
     {
-        $route = 'some-section/no-document-here';
+        $route = 'some-topic/no-document-here';
 
         $this->request->attributes->set('path', $route);
 
@@ -71,7 +71,7 @@ class KnowledgebaseRoutingMiddlewareTest extends TestCase
      */
     public function routeWithNoUrlIdShouldRedirectToCanonicalRouteWhichIncludesUrlId()
     {
-        $route = 'some-section/some-document';
+        $route = 'some-topic/some-document';
 
         $this->request->attributes->set('path', $route);
         $this->request->attributes->set('_route_params', ['path' => $route]);
@@ -80,7 +80,7 @@ class KnowledgebaseRoutingMiddlewareTest extends TestCase
             'route' => $route,
             'url_id' => 'url-id'
         ];
-        $canonicalRedirectUrl = '/team/engineering/docs/some-section/some-document~url-id';
+        $canonicalRedirectUrl = '/team/engineering/docs/some-topic/some-document~url-id';
 
         $this->createKnowledgebaseRouteRepositoryFindCanonicalRouteByRouteExpectation(
             [$this->organization->getId(), $this->team->getKnowledgebaseId(), $route],
@@ -107,7 +107,7 @@ class KnowledgebaseRoutingMiddlewareTest extends TestCase
      */
     public function routeWithUrlIdNotFound404s()
     {
-        $route = 'some-section/no-document-here';
+        $route = 'some-topic/no-document-here';
         $urlId = 'ab23n9a0';
 
         $this->request->attributes->set('path', sprintf('%s~%s', $route, $urlId));
@@ -127,7 +127,7 @@ class KnowledgebaseRoutingMiddlewareTest extends TestCase
      */
     public function routeWithUrlIdButNotCanonicalRedirectsToCanonical()
     {
-        $route = 'some-section/i-was-called-this';
+        $route = 'some-topic/i-was-called-this';
         $urlId = 'ab23n9a0';
         $path = sprintf('%s~%s', $route, $urlId);
 
@@ -140,11 +140,11 @@ class KnowledgebaseRoutingMiddlewareTest extends TestCase
             'is_canonical' => false,
         ];
         $canonicalKbRouteResult = [
-            'route' => 'some-section/but-i-got-renamed',
+            'route' => 'some-topic/but-i-got-renamed',
             'url_id' => $urlId,
             'is_canonical' => true,
         ];
-        $canonicalRedirectUrl = '/team/engineering/docs/some-section/but-i-got-renamed~' . $urlId;
+        $canonicalRedirectUrl = '/team/engineering/docs/some-topic/but-i-got-renamed~' . $urlId;
 
         $this->createKnowledgebaseRouteRepositoryFindRouteWithRouteAndUrlId(
             [$this->organization->getId(), $this->team->getKnowledgebaseId(), $route, $urlId],

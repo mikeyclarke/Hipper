@@ -1,0 +1,11 @@
+{% set htmlClassList = ['is-editing-page-header'] %}
+
+{% extends '_app_default_layout_slim.twig' %}
+
+{% block navigational_header %}{% include 'team/_team_header.twig' with { activeTab: 'docs' } %}{% endblock %}
+
+{% block content %}
+
+{% include 'topic/_topic_header.twig' with { mode: 'create', is_editable: true } %}
+
+{% endblock %}

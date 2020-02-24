@@ -10,7 +10,7 @@
     <form class="c-document__header js-document-form">
         {% if mode is same as('create') %}
             <input type="hidden" name="knowledgebase_id" value="{{ knowledgebase_id }}">
-            <input type="hidden" name="section_id" value="{{ section_id }}">
+            <input type="hidden" name="topic_id" value="{{ topic_id }}">
         {% else %}
             <input type="hidden" name="document_id" value="{{ document.id }}">
         {% endif %}

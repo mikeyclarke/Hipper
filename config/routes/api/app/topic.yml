@@ -1,0 +1,15 @@
+topic.create:
+    path: /_/create-topic
+    methods: [POST]
+    controller: Hipper\Api\App\Controller\Topic\CreateTopicController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before
+
+topic.update:
+    path: /_/update-topic/{topic_id}
+    methods: [POST]
+    controller: Hipper\Api\App\Controller\Topic\UpdateTopicController::postAction
+    defaults:
+        _before_middlewares:
+            - require_json_content_type_middleware:before

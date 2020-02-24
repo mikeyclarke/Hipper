@@ -1,8 +1,8 @@
 {% set new_doc_label = 'Add new doc' %}
-{% set new_section_label = 'Add new section' %}
+{% set new_topic_label = 'Add new topic' %}
 
-{% if section is defined and section is not null %}
-    {% set new_section_label = 'Add new sub-section' %}
+{% if topic is defined and topic is not null %}
+    {% set new_topic_label = 'Add new sub-topic' %}
 {% endif %}
 
 <floating-button>
@@ -16,11 +16,11 @@
             </a>
         </li>
         <li class="floating-button__list-item">
-            <a href="{{ create_section_route }}" class="floating-button__control">
-                <div class="c-avatar--section floating-button__control-icon">
-                    <svg class="c-avatar__icon" aria-hidden="true"><use xlink:href="#icon-sprite__section"/></svg>
+            <a href="{{ create_topic_route }}" class="floating-button__control">
+                <div class="c-avatar--topic floating-button__control-icon">
+                    <svg class="c-avatar__icon" aria-hidden="true"><use xlink:href="#icon-sprite__topic"/></svg>
                 </div>
-                {{ new_section_label }}
+                {{ new_topic_label }}
             </a>
         </li>
     </ol>

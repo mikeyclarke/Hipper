@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Hipper\Document;
 
 use Hipper\Knowledgebase\KnowledgebaseModel;
-use Hipper\Section\SectionModel;
+use Hipper\Topic\TopicModel;
 use Hipper\Validation\ConstraintViolationListFormatter;
 use Hipper\Validation\Constraints\DocumentStructure;
 use Hipper\Validation\Constraints\KnowledgebaseExists;
-use Hipper\Validation\Constraints\SectionExists;
+use Hipper\Validation\Constraints\TopicExists;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -30,16 +30,16 @@ class DocumentValidator
     public function validate(
         array $input,
         ?KnowledgebaseModel $knowledgebase,
-        ?SectionModel $section,
+        ?TopicModel $topic,
         bool $isNew = false
     ): void {
-        $this->validateInput($input, $knowledgebase, $section, $isNew);
+        $this->validateInput($input, $knowledgebase, $topic, $isNew);
     }
 
     private function validateInput(
         array $input,
         ?KnowledgebaseModel $knowledgebase,
-        ?SectionModel $section,
+        ?TopicModel $topic,
         bool $isNew
     ): void {
         $requiredOnCreate = ['name', 'knowledgebase_id'];
@@ -74,9 +74,9 @@ class DocumentValidator
                     'message' => 'Content invalid',
                 ]),
             ],
-            'section_id' => [
-                new SectionExists([
-                    'section' => $section,
+            'topic_id' => [
+                new TopicExists([
+                    'topic' => $topic,
                 ]),
             ],
         ];

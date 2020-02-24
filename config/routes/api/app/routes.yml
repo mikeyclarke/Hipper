@@ -10,8 +10,8 @@ project_routes:
     resource: project.yml
     name_prefix: 'api.app.'
 
-section_routes:
-    resource: section.yml
+topic_routes:
+    resource: topic.yml
     name_prefix: 'api.app.'
 
 team_routes:

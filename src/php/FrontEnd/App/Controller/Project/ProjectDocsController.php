@@ -15,7 +15,7 @@ use Twig\Environment as Twig;
 class ProjectDocsController
 {
     private const CREATE_DOC_ROUTE_NAME = 'front_end.app.project.doc.create';
-    private const CREATE_SECTION_ROUTE_NAME = 'front_end.app.project.section.create';
+    private const CREATE_TOPIC_ROUTE_NAME = 'front_end.app.project.topic.create';
 
     private KnowledgebaseEntries $knowledgebaseEntries;
     private KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter;
@@ -49,13 +49,13 @@ class ProjectDocsController
             'project_url_id' => $projectUrlId,
             'subdomain' => $subdomain,
         ]);
-        $createSectionRoute = $this->router->generate(self::CREATE_SECTION_ROUTE_NAME, [
+        $createTopicRoute = $this->router->generate(self::CREATE_TOPIC_ROUTE_NAME, [
             'project_url_id' => $projectUrlId,
             'subdomain' => $subdomain,
             'return_to' => $request->getRequestUri(),
         ]);
 
-        list($docs, $sections) = $this->knowledgebaseEntries->get(
+        list($docs, $topics) = $this->knowledgebaseEntries->get(
             $project->getKnowledgebaseId(),
             null,
             $organization->getId()
@@ -65,7 +65,7 @@ class ProjectDocsController
         $knowledgebaseEntries = $this->knowledgebaseEntriesListFormatter->format(
             $organization,
             $docs,
-            $sections,
+            $topics,
             $timeZone,
             KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME,
             ['project_url_id' => $projectUrlId]
@@ -73,7 +73,7 @@ class ProjectDocsController
 
         $context = [
             'create_doc_route' => $createDocRoute,
-            'create_section_route' => $createSectionRoute,
+            'create_topic_route' => $createTopicRoute,
             'knowledgebase_entries' => $knowledgebaseEntries,
             'html_title' => sprintf('Docs – %s', $project->getName()),
             'project' => $project,

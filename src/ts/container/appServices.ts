@@ -3,12 +3,12 @@ import LoginController from 'RouteControllers/app/Organization/LoginController';
 import CreateTeamController from 'RouteControllers/app/Team/CreateTeamController';
 import CreateDocumentController from 'RouteControllers/app/Document/CreateDocumentController';
 import CreateProjectController from 'RouteControllers/app/Project/CreateProjectController';
-import CreateSectionController from 'RouteControllers/app/Section/CreateSectionController';
-import DocumentOrSectionControllerRouter from 'RouteControllers/app/Knowledgebase/DocumentOrSectionControllerRouter';
+import CreateTopicController from 'RouteControllers/app/Topic/CreateTopicController';
+import DocumentOrTopicControllerRouter from 'RouteControllers/app/Knowledgebase/DocumentOrTopicControllerRouter';
 import EditDocumentController from 'RouteControllers/app/Document/EditDocumentController';
 import SearchController from 'RouteControllers/app/SearchController';
 import SearchResultsPaginator from 'Search/SearchResultsPaginator';
-import SectionController from 'RouteControllers/app/Section/SectionController';
+import TopicController from 'RouteControllers/app/Topic/TopicController';
 
 export default function (bottle: Bottle): void {
     bottle.factory('searchResultsPaginator', (container) => {
@@ -42,8 +42,8 @@ export default function (bottle: Bottle): void {
         );
     });
 
-    bottle.factory('createSectionController', (container) => {
-        return new CreateSectionController(
+    bottle.factory('createTopicController', (container) => {
+        return new CreateTopicController(
             container.httpClient,
         );
     });
@@ -61,15 +61,15 @@ export default function (bottle: Bottle): void {
         );
     });
 
-    bottle.factory('sectionController', (container) => {
-        return new SectionController(
+    bottle.factory('topicController', (container) => {
+        return new TopicController(
             container.httpClient
         );
     });
 
-    bottle.factory('documentOrSectionControllerRouter', (container) => {
-        return new DocumentOrSectionControllerRouter(
-            container.sectionController
+    bottle.factory('documentOrTopicControllerRouter', (container) => {
+        return new DocumentOrTopicControllerRouter(
+            container.topicController
         );
     });
 }

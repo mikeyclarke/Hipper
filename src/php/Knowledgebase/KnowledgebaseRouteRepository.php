@@ -102,18 +102,18 @@ class KnowledgebaseRouteRepository
         return $result;
     }
 
-    public function findCanonicalRouteForSection(
+    public function findCanonicalRouteForTopic(
         string $organizationId,
         string $knowledgebaseId,
-        string $sectionId
+        string $topicId
     ): ?array {
         $qb = $this->connection->createQueryBuilder();
         $this->createQuery($qb, $organizationId, $knowledgebaseId);
 
-        $qb->andWhere('section_id = :section_id');
+        $qb->andWhere('topic_id = :topic_id');
         $qb->andWhere('is_canonical IS TRUE');
 
-        $qb->setParameter('section_id', $sectionId);
+        $qb->setParameter('topic_id', $topicId);
 
         $stmt = $qb->execute();
         $result = $stmt->fetch();

@@ -92,5 +92,10 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
             path: '/teams/:team_url_id/docs/:doc_route(.+)',
             controller: (): any[] => [bottle.container.documentOrTopicControllerRouter, 'route'],
         },
+
+        show_project_knowledgebase_entry: {
+            path: '/projects/:project_url_id/docs/:doc_route(.+)',
+            controller: (): any[] => [bottle.container.documentOrTopicControllerRouter, 'route'],
+        },
     };
 }

@@ -1,17 +1,23 @@
+import FocusTrap from 'KeyboardEvent/FocusTrap';
+
 export default class FloatingButton extends HTMLElement {
+    public _focusTrap: FocusTrap | null;
     public _expanded: boolean;
     public _button: HTMLButtonElement | null;
     public _list: HTMLOListElement | null;
+    public _documentKeydownListener: any;
     public _documentClickListener: EventListener | null;
     public _transitionEndListener: EventListener | null;
 
     constructor() {
         super();
 
+        this._focusTrap = null;
         this._expanded = this.hasAttribute('expanded');
         this._button = this.querySelector('.js-button');
         this._list = this.querySelector('.js-list');
         this._documentClickListener = null;
+        this._documentKeydownListener = null;
         this._transitionEndListener = null;
     }
 
@@ -47,16 +53,43 @@ export default class FloatingButton extends HTMLElement {
             if (null !== this._list) {
                 this._list.hidden = false;
             }
+
+            if (null === this._focusTrap) {
+                this._focusTrap = new FocusTrap(this, { treatArrowUpDownAsTabbing: true });
+            }
+
+            this._documentKeydownListener = onDocumentKeydown.bind(this);
+            document.addEventListener('keydown', this._documentKeydownListener);
             return;
+        }
+
+        if (null !== this._documentKeydownListener) {
+            document.removeEventListener('keydown', this._documentKeydownListener);
         }
 
         this._transitionEndListener = onTransitionEnd.bind(this);
         this.addEventListener('transitionend', this._transitionEndListener, { once: true });
+
         this.removeAttribute('expanded');
     }
 
     public get expanded(): boolean {
         return this._expanded;
+    }
+}
+
+function onDocumentKeydown(this: FloatingButton, event: KeyboardEvent): void {
+    const esc = (event.key === 'Escape');
+
+    if (esc) {
+        this.expanded = false;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+    }
+
+    if (null !== this._focusTrap) {
+        this._focusTrap.handleKeydownEvent(event);
     }
 }
 

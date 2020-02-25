@@ -23,6 +23,8 @@
             <h1 class="c-page-header__title">{{ topic.name }}</h1>
 
             <p class="c-page-header__subheading{% if topic.description is null or topic.description is empty %}--muted{% endif %}">{{ topic.description|default('This topic doesn’t have a description yet') }}</p>
+
+            {% include 'topic/_topic_actions.twig' with { mode: mode } %}
         </div>
 
         {% if is_editable %}
@@ -36,9 +38,9 @@
                 <elastic-text-input>
                     <textarea name="description" class="c-page-header__subheading" placeholder="Description (optional)" rows="1" maxlength="300" autocomplete="off">{{ topic.description }}</textarea>
                 </elastic-text-input>
-            </form>
 
-            {% include 'topic/_topic_actions.twig' with { mode: mode } %}
+                {% include 'topic/_topic_actions.twig' with { mode: 'edit' } %}
+            </form>
         {% endif %}
     {% endif %}    
 </header>

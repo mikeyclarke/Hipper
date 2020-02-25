@@ -27,16 +27,17 @@
                 {{ context_menu.group_end() }}
             {{ context_menu.end() }}
         </div>
-        <div class="c-page-header__actions-edit">
+    {% elseif mode is same as('edit') %}
+        <div class="c-page-header__actions-start">
             <button class="c-page-header__action js-cancel-edit-topic" type="button" aria-label="Cancel">
                 <svg class="c-page-header__action-icon" aria-hidden="true"><use href="#icon-sprite__close"/></svg>
             </button>
-            <button class="c-page-header__action--confirm js-submit-edit-topic" type="button" aria-label="Done">
+            <button class="c-page-header__action--confirm js-submit-edit-topic" type="submit" aria-label="Done">
                 <svg class="c-page-header__action-icon" aria-hidden="true"><use href="#icon-sprite__done"/></svg>
             </button>
         </div>
     {% elseif mode is same as('create') %}
-        <div class="c-page-header__actions-edit">
+        <div class="c-page-header__actions-start">
             <a class="c-page-header__action js-cancel-edit-topic" href="{{ back_link }}" aria-label="Cancel">
                 <svg class="c-page-header__action-icon" aria-hidden="true"><use href="#icon-sprite__close"/></svg>
             </a>

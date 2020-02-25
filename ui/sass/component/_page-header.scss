@@ -230,23 +230,9 @@ $_primary-action-icon-margin: 0 0 0 15px;
     position: relative;
 }
 
-.c-page-header__actions-edit,
 .c-page-header__actions-start {
     display: flex;
     margin-left: -#{($_action-dimension - $_action-background-dimension) / 2};
-}
-
-.c-page-header__actions-edit {
-    display: none;
-}
-
-:root.is-editing-page-header .c-page-header__actions-start,
-:root.is-editing-page-header .c-page-header__actions-end {
-    display: none;
-}
-
-:root.is-editing-page-header .c-page-header__actions-edit {
-    display: flex;
 }
 
 %c-page-header__action {

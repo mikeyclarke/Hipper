@@ -1,4 +1,4 @@
-import * as tabbable from 'tabbable';
+import FocusTrap from 'KeyboardEvent/FocusTrap';
 import eventRace from 'Event/eventRace';
 import parseCustomPropertyValue from 'CssObjectModel/parseCustomPropertyValue';
 
@@ -6,12 +6,12 @@ const htmlClassName = 'context-menu-open';
 const eventOptions: AddEventListenerOptions & EventListenerOptions = { passive: true };
 
 export default class ContextMenu extends HTMLElement {
+    public _focusTrap: FocusTrap;
     private _expanded: boolean;
     public _closeButton: HTMLButtonElement | null;
     public _clickListener: any = null;
     public _keydownListener: any = null;
     public _resizeListener: any = null;
-    public _tabbableElements: HTMLElement[] = [];
     public _floating: boolean | null = null;
     public readonly _floatAtPixels: number | null = null;
 
@@ -22,6 +22,7 @@ export default class ContextMenu extends HTMLElement {
     constructor() {
         super();
 
+        this._focusTrap = new FocusTrap(this, { treatArrowUpDownAsTabbing: true });
         this._expanded = this.hasAttribute('expanded');
         this._closeButton = this.querySelector('.js-close-button');
 
@@ -37,7 +38,7 @@ export default class ContextMenu extends HTMLElement {
             this.setAttribute('expanded', '');
             this.setAttribute('aria-hidden', 'false');
             this.focus();
-            cacheTabbableDescendants.bind(this)();
+            this._focusTrap.refreshTabbableElements();
             this.dispatchEvent(new CustomEvent('contextmenuexpanded'));
             this.classList.add('animate-in');
             if (null !== this._floatAtPixels) {
@@ -82,10 +83,6 @@ export default class ContextMenu extends HTMLElement {
             }
         }
     }
-}
-
-function cacheTabbableDescendants(this: ContextMenu): void {
-    this._tabbableElements = tabbable(this);
 }
 
 function addHtmlClassName(): void {
@@ -141,7 +138,7 @@ function onWindowResize(this: ContextMenu, event: Event): void {
     if (!this._floating && window.innerWidth >= this._floatAtPixels) {
         this._floating = true;
         requestAnimationFrame(() => {
-            cacheTabbableDescendants.bind(this)();
+            this._focusTrap.refreshTabbableElements();
         });
         return;
     }
@@ -149,15 +146,13 @@ function onWindowResize(this: ContextMenu, event: Event): void {
     if (this._floating && window.innerWidth < this._floatAtPixels) {
         this._floating = false;
         requestAnimationFrame(() => {
-            cacheTabbableDescendants.bind(this)();
+            this._focusTrap.refreshTabbableElements();
         });
     }
 }
 
 function onDocumentKeydown(this: ContextMenu, event: KeyboardEvent): void {
     const esc = (event.key === 'Escape');
-    const tabUp = (event.key === 'ArrowUp' || (event.key === 'Tab' && event.shiftKey));
-    const tabDown = (event.key === 'ArrowDown' || (event.key === 'Tab' && !event.shiftKey));
 
     if (esc) {
         this.expanded = false;
@@ -166,27 +161,7 @@ function onDocumentKeydown(this: ContextMenu, event: KeyboardEvent): void {
         return;
     }
 
-    if (tabUp || tabDown) {
-        if (null === document.activeElement) {
-            return;
-        }
-
-        const activeElementIndex = this._tabbableElements.indexOf(<HTMLElement> document.activeElement);
-        const lastIndex = this._tabbableElements.length - 1;
-        let nextElement = null;
-
-        if ([-1, 0].includes(activeElementIndex) && tabUp) {
-            nextElement = this._tabbableElements[lastIndex];
-        } else if ([-1, lastIndex].includes(activeElementIndex) && tabDown) {
-            nextElement = this._tabbableElements[0];
-        } else {
-            const nextIndex = (tabDown) ? activeElementIndex + 1 : activeElementIndex - 1;
-            nextElement = this._tabbableElements[nextIndex];
-        }
-
-        nextElement.focus();
-        event.preventDefault();
-    }
+    this._focusTrap.handleKeydownEvent(event);
 }
 
 function onDocumentClick(this: ContextMenu, event: MouseEvent): void {

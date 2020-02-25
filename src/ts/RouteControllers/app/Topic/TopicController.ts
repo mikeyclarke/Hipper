@@ -1,3 +1,4 @@
+import FocusTrap from 'KeyboardEvent/FocusTrap';
 import HttpClient from 'Http/HttpClient';
 
 const PAGE_HEADER_EDITING_CLASSNAME = 'is-editing-page-header';
@@ -8,6 +9,8 @@ export default class TopicController {
     private displayContainer: HTMLElement | null = null;
     private form: HTMLFormElement | null = null;
     private topicId: string | null = null;
+    private focusTrap: FocusTrap | null = null;
+    private keydownEventListener: any = null;
 
     constructor(
         httpClient: HttpClient
@@ -47,9 +50,14 @@ export default class TopicController {
     private attachEvents(): void {
         const eventMap: Record<string, Function> = {
             'js-edit-topic': this.enterEditMode,
-            'js-submit-edit-topic': this.onSaveChangesButtonClick,
             'js-cancel-edit-topic': this.onCancelChangesButtonClick,
         };
+
+        this.header.addEventListener('submit', (event: Event) => {
+            if (event.target instanceof HTMLElement && event.target.classList.contains('js-topic-details-edit-form')) {
+                this.onChangesSubmit.bind(this)(event);
+            }
+        });
 
         this.header.addEventListener('click', (event: UIEvent) => {
             if (!(event.target instanceof Element)) {
@@ -83,10 +91,12 @@ export default class TopicController {
         this.cacheElements();
     }
 
-    private async onSaveChangesButtonClick(): Promise<void> {
+    private async onChangesSubmit(event: Event): Promise<void> {
         if (null === this.topicId || null === this.form) {
             throw new Error('Changes can’t be saved');
         }
+
+        event.preventDefault();
 
         const buttons = this.header.querySelectorAll('.js-submit-edit-topic, .js-cancel-edit-topic');
         const setButtonsDisabled = (value: boolean): void => {
@@ -151,11 +161,28 @@ export default class TopicController {
         }
 
         document.documentElement.classList.add(PAGE_HEADER_EDITING_CLASSNAME);
+
+        this.focusTrap = new FocusTrap(this.form);
+        this.keydownEventListener = (event: KeyboardEvent): void => {
+            if (null !== this.focusTrap) {
+                this.focusTrap.handleKeydownEvent(event);
+            }
+        };
+        document.addEventListener('keydown', this.keydownEventListener);
     }
 
     private exitEditMode(): void {
         if (null === this.form || null === this.displayContainer) {
             return;
+        }
+
+        if (null !== this.keydownEventListener) {
+            document.removeEventListener('keydown', this.keydownEventListener);
+            this.keydownEventListener = null;
+        }
+
+        if (null !== this.focusTrap) {
+            this.focusTrap = null;
         }
 
         this.form.hidden = true;

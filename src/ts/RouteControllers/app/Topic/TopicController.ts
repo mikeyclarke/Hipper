@@ -88,6 +88,17 @@ export default class TopicController {
             throw new Error('Changes can’t be saved');
         }
 
+        const buttons = this.header.querySelectorAll('.js-submit-edit-topic, .js-cancel-edit-topic');
+        const setButtonsDisabled = (value: boolean): void => {
+            buttons.forEach((element) => {
+                if (element instanceof HTMLButtonElement) {
+                    element.disabled = value;
+                }
+            });
+        };
+
+        setButtonsDisabled(true);
+
         const payload: Record<string, string> = {};
         const name = this.form.elements.namedItem('name');
         const description = this.form.elements.namedItem('description');
@@ -108,6 +119,8 @@ export default class TopicController {
         if (responseJson.topic_url !== window.location.pathname) {
             window.history.replaceState(null, document.title, responseJson.topic_url);
         }
+
+        setButtonsDisabled(false);
 
         this.rerender(responseJson.header_html);
         this.exitEditMode();

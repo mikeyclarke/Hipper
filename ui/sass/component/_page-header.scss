@@ -260,6 +260,10 @@ $_primary-action-icon-margin: 0 0 0 15px;
     z-index: 0;
 }
 
+%c-page-header__action:disabled {
+    opacity: .65;
+}
+
 %c-page-header__action:focus {
     outline: 0;
 }

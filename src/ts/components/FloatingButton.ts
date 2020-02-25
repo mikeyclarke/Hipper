@@ -1,4 +1,5 @@
 import FocusTrap from 'KeyboardEvent/FocusTrap';
+import eventRace from 'Event/eventRace';
 
 export default class FloatingButton extends HTMLElement {
     public _focusTrap: FocusTrap | null;
@@ -7,7 +8,6 @@ export default class FloatingButton extends HTMLElement {
     public _list: HTMLOListElement | null;
     public _documentKeydownListener: any;
     public _documentClickListener: EventListener | null;
-    public _transitionEndListener: EventListener | null;
 
     constructor() {
         super();
@@ -18,7 +18,6 @@ export default class FloatingButton extends HTMLElement {
         this._list = this.querySelector('.js-list');
         this._documentClickListener = null;
         this._documentKeydownListener = null;
-        this._transitionEndListener = null;
     }
 
     public connectedCallback(): void {
@@ -45,11 +44,6 @@ export default class FloatingButton extends HTMLElement {
         if (value) {
             this.setAttribute('expanded', 'true');
 
-            if (null !== this._transitionEndListener) {
-                this.removeEventListener('transitionend', this._transitionEndListener);
-                this._transitionEndListener = null;
-            }
-
             if (null !== this._list) {
                 this._list.hidden = false;
             }
@@ -67,8 +61,14 @@ export default class FloatingButton extends HTMLElement {
             document.removeEventListener('keydown', this._documentKeydownListener);
         }
 
-        this._transitionEndListener = onTransitionEnd.bind(this);
-        this.addEventListener('transitionend', this._transitionEndListener, { once: true });
+        const hideList = (): void => {
+            if (null !== this._list) {
+                this._list.hidden = true;
+            }
+        };
+        const endEvent: [EventTarget, string, EventListener] = [this, 'transitionend', hideList];
+        const cancelEvent: [EventTarget, string, EventListener] = [this, 'transitioncancel', hideList];
+        eventRace(1000, hideList, endEvent, cancelEvent);
 
         this.removeAttribute('expanded');
     }
@@ -120,10 +120,4 @@ function onDocumentClick(this: FloatingButton, event: Event): void {
     }
 
     this.expanded = true;
-}
-
-function onTransitionEnd(this: FloatingButton): void {
-    if (null !== this._list) {
-        this._list.hidden = true;
-    }
 }

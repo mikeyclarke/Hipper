@@ -6,6 +6,26 @@
 
 $page-header-padding: 24px 16px 32px;
 
+$_title-font-size: 28px;
+$_title-line-height: 34px;
+$_title-min-height: 38px;
+
+$_title-font-size-medium-bp: 36px;
+$_title-line-height-medium-bp: 48px;
+$_title-min-height-medium-bp: 52px;
+$_title-max-width-medium-bp: 505px;
+
+$_subheading-font-size: 16px;
+$_subheading-line-height: 24px;
+$_subheading-margin: 8px 0 0;
+$_subheading-min-height: 28px;
+
+$_subheading-font-size-medium-bp: 18px;
+$_subheading-line-height-medium-bp: 28px;
+$_subheading-min-height-medium-bp: 32px;
+$_subheading-margin-medium-bp: 15px 0 0;
+$_subheading-max-width-medium-bp: 505px;
+
 $_actions-margin: 24px 0 0;
 
 $_action-dimension: 46px;
@@ -86,19 +106,35 @@ $_primary-action-icon-margin: 0 0 0 15px;
 .c-page-header__title {
     color: config.config-get(color-shades, dark, 900);
     font-weight: 700;
-    font-size: 28px;
-    line-height: 34px;
+    font-size: $_title-font-size;
+    line-height: $_title-line-height;
     margin: 0;
-    min-height: 38px;
-    width: calc(100% - 60px);
+    min-height: $_title-min-height;
+    width: 100%;
     @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $_title-font-size-medium-bp;
+        line-height: $_title-line-height-medium-bp;
+        max-width: $_title-max-width-medium-bp;
+        min-height: $_title-min-height-medium-bp;
+    }
 }
 
 %c-page-header__subheading {
-    font-size: 16px;
-    line-height: 24px;
-    margin: 8px 0 0;
+    font-size: $_subheading-font-size;
+    line-height: $_subheading-line-height;
+    margin: $_subheading-margin;
+    min-height: $_subheading-min-height;
     @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $_subheading-font-size-medium-bp;
+        line-height: $_subheading-line-height-medium-bp;
+        margin: $_subheading-margin-medium-bp;
+        max-width: $_subheading-max-width-medium-bp;
+        min-height: $_subheading-min-height-medium-bp;
+    }
 }
 
 .c-page-header__subheading,

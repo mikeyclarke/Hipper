@@ -1,4 +1,10 @@
 import * as autosize from 'autosize';
+import timeout from 'Timeout/timeout';
+
+async function onFormReset(textArea: HTMLTextAreaElement): Promise<void> {
+    await timeout(100);
+    autosize.update(textArea);
+}
 
 export default class ElasticTextInput extends HTMLElement {
     constructor() {
@@ -24,6 +30,10 @@ export default class ElasticTextInput extends HTMLElement {
                 event.stopPropagation();
             }
         });
+
+        if (textArea.form) {
+            textArea.form.addEventListener('reset', onFormReset.bind(null, textArea));
+        }
 
         autosize(textArea);
     }

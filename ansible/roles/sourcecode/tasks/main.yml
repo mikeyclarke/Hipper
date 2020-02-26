@@ -1,4 +1,10 @@
 ---
+- name: Remove PHP preload file
+  lineinfile:
+      path: /etc/php/7.4/fpm/php.ini
+      regexp: '^opcache.preload ='
+      state: absent
+
 - name: Remove Hipper code directory
   file:
       path: /var/hipper

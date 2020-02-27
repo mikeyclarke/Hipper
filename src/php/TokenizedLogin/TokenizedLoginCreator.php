@@ -8,7 +8,7 @@ use Hipper\Person\PersonModel;
 use Hipper\Security\TokenGenerator;
 use Hipper\TokenizedLogin\Storage\TokenizedLoginInserter;
 
-class TokenizedLogin
+class TokenizedLoginCreator
 {
     private $idGenerator;
     private $tokenGenerator;

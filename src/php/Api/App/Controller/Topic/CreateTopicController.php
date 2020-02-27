@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Api\App\Controller\Topic;
 
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
-use Hipper\Topic\Topic;
+use Hipper\Topic\TopicCreator;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +14,14 @@ class CreateTopicController
     use \Hipper\Api\ApiControllerTrait;
 
     private $knowledgebaseRouteUrlGenerator;
-    private $topic;
+    private $topicCreator;
 
     public function __construct(
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
-        Topic $topic
+        TopicCreator $topicCreator
     ) {
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
-        $this->topic = $topic;
+        $this->topicCreator = $topicCreator;
     }
 
     public function postAction(Request $request): JsonResponse
@@ -30,7 +30,10 @@ class CreateTopicController
         $organization = $request->attributes->get('organization');
 
         try {
-            list($model, $route, $knowledgebaseOwner) = $this->topic->create($currentUser, $request->request->all());
+            list($model, $route, $knowledgebaseOwner) = $this->topicCreator->create(
+                $currentUser,
+                $request->request->all()
+            );
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

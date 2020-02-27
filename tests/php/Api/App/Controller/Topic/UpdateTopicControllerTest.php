@@ -10,7 +10,7 @@ use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonModel;
 use Hipper\Team\TeamModel;
-use Hipper\Topic\Topic;
+use Hipper\Topic\TopicUpdater;
 use Hipper\Topic\TopicModel;
 use Hipper\Topic\TopicRepository;
 use Mockery as m;
@@ -25,8 +25,8 @@ class UpdateTopicControllerTest extends TestCase
 {
     private $knowledgebaseBreadcrumbs;
     private $knowledgebaseRouteUrlGenerator;
-    private $topic;
     private $topicRepository;
+    private $topicUpdater;
     private $twig;
     private $router;
     private $updateTopicController;
@@ -37,16 +37,16 @@ class UpdateTopicControllerTest extends TestCase
     {
         $this->knowledgebaseBreadcrumbs = m::mock(KnowledgebaseBreadcrumbs::class);
         $this->knowledgebaseRouteUrlGenerator = m::mock(KnowledgebaseRouteUrlGenerator::class);
-        $this->topic = m::mock(Topic::class);
         $this->topicRepository = m::mock(TopicRepository::class);
+        $this->topicUpdater = m::mock(TopicUpdater::class);
         $this->twig = m::mock(Twig::class);
         $this->router = m::mock(UrlGeneratorInterface::class);
 
         $this->updateTopicController = new UpdateTopicController(
             $this->knowledgebaseBreadcrumbs,
             $this->knowledgebaseRouteUrlGenerator,
-            $this->topic,
             $this->topicRepository,
+            $this->topicUpdater,
             $this->twig,
             $this->router
         );
@@ -93,7 +93,7 @@ class UpdateTopicControllerTest extends TestCase
             [$request->attributes->get('topic_id'), $this->organization->getId()],
             $topicResult
         );
-        $this->createTopicUpdateExpectation(
+        $this->createTopicUpdaterExpectation(
             [$this->currentUser, m::type(TopicModel::class), $request->request->all()],
             [$topicModel, $route, $knowledgebaseOwner]
         );
@@ -185,9 +185,9 @@ class UpdateTopicControllerTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createTopicUpdateExpectation($args, $result)
+    private function createTopicUpdaterExpectation($args, $result)
     {
-        $this->topic
+        $this->topicUpdater
             ->shouldReceive('update')
             ->once()
             ->with(...$args)

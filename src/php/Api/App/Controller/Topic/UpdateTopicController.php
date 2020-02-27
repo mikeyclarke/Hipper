@@ -9,9 +9,9 @@ use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
 use Hipper\Project\ProjectModel;
 use Hipper\Team\TeamModel;
-use Hipper\Topic\Topic;
 use Hipper\Topic\TopicModel;
 use Hipper\Topic\TopicRepository;
+use Hipper\Topic\TopicUpdater;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,23 +30,23 @@ class UpdateTopicController
 
     private KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs;
     private KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator;
-    private Topic $topic;
     private TopicRepository $topicRepository;
+    private TopicUpdater $topicUpdater;
     private Twig $twig;
     private UrlGeneratorInterface $router;
 
     public function __construct(
         KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
-        Topic $topic,
         TopicRepository $topicRepository,
+        TopicUpdater $topicUpdater,
         Twig $twig,
         UrlGeneratorInterface $router
     ) {
         $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
-        $this->topic = $topic;
         $this->topicRepository = $topicRepository;
+        $this->topicUpdater = $topicUpdater;
         $this->twig = $twig;
         $this->router = $router;
     }
@@ -66,7 +66,7 @@ class UpdateTopicController
         $topic = TopicModel::createFromArray($result);
 
         try {
-            list($topic, $route, $knowledgebaseOwner) = $this->topic->update(
+            list($topic, $route, $knowledgebaseOwner) = $this->topicUpdater->update(
                 $currentUser,
                 $topic,
                 $request->request->all()

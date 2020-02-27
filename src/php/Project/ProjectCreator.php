@@ -11,7 +11,7 @@ use Hipper\Project\Storage\PersonToProjectMapInserter;
 use Hipper\Project\Storage\ProjectInserter;
 use Hipper\Url\UrlSlugGenerator;
 
-class Project
+class ProjectCreator
 {
     private $connection;
     private $idGenerator;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Api\App\Controller\Project;
 
-use Hipper\Project\Project;
+use Hipper\Project\ProjectCreator;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +15,14 @@ class CreateProjectController
 
     const PROJECT_ROUTE_NAME = 'front_end.app.project.show';
 
-    private $project;
+    private $projectCreator;
     private $router;
 
     public function __construct(
-        Project $project,
+        ProjectCreator $projectCreator,
         UrlGeneratorInterface $router
     ) {
-        $this->project = $project;
+        $this->projectCreator = $projectCreator;
         $this->router = $router;
     }
 
@@ -32,7 +32,7 @@ class CreateProjectController
         $organization = $request->attributes->get('organization');
 
         try {
-            $projectModel = $this->project->create($currentUser, $request->request->all());
+            $projectModel = $this->projectCreator->create($currentUser, $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

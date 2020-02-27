@@ -7,7 +7,7 @@ use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
-use Hipper\Project\Project;
+use Hipper\Project\ProjectCreator;
 use Hipper\Project\ProjectModel;
 use Hipper\Project\ProjectValidator;
 use Hipper\Project\Storage\PersonToProjectMapInserter;
@@ -16,7 +16,7 @@ use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
-class ProjectTest extends TestCase
+class ProjectCreatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
@@ -27,7 +27,7 @@ class ProjectTest extends TestCase
     private $projectInserter;
     private $projectValidator;
     private $urlSlugGenerator;
-    private $project;
+    private $projectCreator;
     private $person;
 
     public function setUp(): void
@@ -40,7 +40,7 @@ class ProjectTest extends TestCase
         $this->projectValidator = m::mock(ProjectValidator::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
 
-        $this->project = new Project(
+        $this->projectCreator = new ProjectCreator(
             $this->connection,
             $this->idGenerator,
             $this->knowledgebaseCreator,
@@ -93,7 +93,7 @@ class ProjectTest extends TestCase
         $this->createPersonToProjectMapInserterExpectation([$personToProjectMapId, $this->person->getId(), $projectId]);
         $this->createConnectionCommitExpectation();
 
-        $result = $this->project->create($this->person, $parameters);
+        $result = $this->projectCreator->create($this->person, $parameters);
         $this->assertInstanceOf(ProjectModel::class, $result);
         $this->assertEquals($projectId, $result->getId());
     }
@@ -138,7 +138,7 @@ class ProjectTest extends TestCase
 
         $this->expectException(\Exception::class);
 
-        $this->project->create($this->person, $parameters);
+        $this->projectCreator->create($this->person, $parameters);
     }
 
     private function createConnectionRollBackExpectation()

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Knowledgebase;
+namespace Hipper\Knowledgebase\Storage;
 
 use Doctrine\DBAL\Connection;
 

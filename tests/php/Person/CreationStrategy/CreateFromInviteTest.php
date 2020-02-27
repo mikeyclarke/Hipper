@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Hipper\Tests\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Hipper\Invite\InviteDeleter;
 use Hipper\Invite\InviteRepository;
+use Hipper\Invite\Storage\InviteDeleter;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\CreationStrategy\CreateFromInvite;
 use Hipper\Person\Exception\InviteDoesNotBelongToOrganizationException;

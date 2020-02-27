@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Document;
 
+use Hipper\Document\Storage\DocumentRevisionInserter;
 use Hipper\IdGenerator\IdGenerator;
 
 class DocumentRevision

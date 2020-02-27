@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Project;
+namespace Hipper\Team\Storage;
 
 use Doctrine\DBAL\Connection;
 
-class PersonToProjectMapInserter
+class PersonToTeamMapInserter
 {
     private $connection;
 
@@ -15,14 +15,14 @@ class PersonToProjectMapInserter
         $this->connection = $connection;
     }
 
-    public function insert(string $id, string $personId, string $projectId): void
+    public function insert(string $id, string $personId, string $teamId): void
     {
         $this->connection->insert(
-            'person_to_project_map',
+            'person_to_team_map',
             [
                 'id' => $id,
                 'person_id' => $personId,
-                'project_id' => $projectId,
+                'team_id' => $teamId,
             ]
         );
     }

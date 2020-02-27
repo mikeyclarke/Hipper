@@ -5,6 +5,7 @@ namespace Hipper\Person;
 
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Organization\OrganizationModel;
+use Hipper\Person\Storage\PersonInserter;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
 

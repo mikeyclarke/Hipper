@@ -8,7 +8,7 @@ use Hipper\IdGenerator\IdGenerator;
 use Hipper\Invite\BulkInvitationCreator;
 use Hipper\Invite\BulkInvitationProcessor;
 use Hipper\Invite\BulkInvitationValidator;
-use Hipper\Invite\InviteInserter;
+use Hipper\Invite\Storage\InviteInserter;
 use Hipper\Person\PersonModel;
 use Hipper\TransactionalEmail\BulkInvite;
 use Mockery as m;

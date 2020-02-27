@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\EmailAddressVerification;
+namespace Hipper\EmailAddressVerification\Storage;
 
 use Doctrine\DBAL\Connection;
 

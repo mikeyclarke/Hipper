@@ -6,6 +6,8 @@ namespace Hipper\Document;
 use Doctrine\DBAL\Connection;
 use Hipper\Document\Exception\KnowledgebaseNotFoundException;
 use Hipper\Document\Exception\MissingRouteException;
+use Hipper\Document\Storage\DocumentInserter;
+use Hipper\Document\Storage\DocumentUpdater;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Knowledgebase\KnowledgebaseOwner;

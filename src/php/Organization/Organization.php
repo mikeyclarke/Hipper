@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Hipper\Organization;
 
 use Hipper\IdGenerator\IdGenerator;
+use Hipper\Organization\Storage\OrganizationInserter;
+use Hipper\Organization\Storage\OrganizationUpdater;
 
 class Organization
 {

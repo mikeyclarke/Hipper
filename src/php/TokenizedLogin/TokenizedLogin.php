@@ -6,6 +6,7 @@ namespace Hipper\TokenizedLogin;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Person\PersonModel;
 use Hipper\Security\TokenGenerator;
+use Hipper\TokenizedLogin\Storage\TokenizedLoginInserter;
 
 class TokenizedLogin
 {

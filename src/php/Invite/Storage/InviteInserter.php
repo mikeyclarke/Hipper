@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Invite;
+namespace Hipper\Invite\Storage;
 
 use Doctrine\DBAL\Connection;
 

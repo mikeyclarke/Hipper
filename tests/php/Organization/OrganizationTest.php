@@ -5,11 +5,11 @@ namespace Hipper\Tests\Organization;
 
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Organization\Organization;
-use Hipper\Organization\OrganizationInserter;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Organization\OrganizationRepository;
-use Hipper\Organization\OrganizationUpdater;
 use Hipper\Organization\OrganizationValidator;
+use Hipper\Organization\Storage\OrganizationInserter;
+use Hipper\Organization\Storage\OrganizationUpdater;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 

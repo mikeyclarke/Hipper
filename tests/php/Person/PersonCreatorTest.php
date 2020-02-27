@@ -6,7 +6,7 @@ namespace Hipper\Tests\Person;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonCreator;
-use Hipper\Person\PersonInserter;
+use Hipper\Person\Storage\PersonInserter;
 use Hipper\Person\PersonModel;
 use Hipper\Person\PersonPasswordEncoder;
 use Hipper\Person\PersonRepository;

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Invite;
+namespace Hipper\Invite\Storage;
 
 use Doctrine\DBAL\Connection;
 
-class InviteDeleter
+class InviteUpdater
 {
     private $connection;
 
@@ -15,10 +15,11 @@ class InviteDeleter
         $this->connection = $connection;
     }
 
-    public function delete(string $id): void
+    public function update(string $id, array $properties): void
     {
-        $this->connection->delete(
+        $this->connection->update(
             'invite',
+            $properties,
             ['id' => $id]
         );
     }

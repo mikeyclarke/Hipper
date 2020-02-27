@@ -6,7 +6,7 @@ namespace Hipper\Tests\Invite;
 use Doctrine\DBAL\Connection;
 use Hipper\Invite\BulkInvitationProcessor;
 use Hipper\Invite\InviteRepository;
-use Hipper\Invite\InviteUpdater;
+use Hipper\Invite\Storage\InviteUpdater;
 use Hipper\Organization\Organization;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonRepository;

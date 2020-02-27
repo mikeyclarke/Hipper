@@ -5,6 +5,7 @@ namespace Hipper\Knowledgebase;
 
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
+use Hipper\Knowledgebase\Storage\KnowledgebaseInserter;
 
 class Knowledgebase
 {

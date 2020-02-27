@@ -5,6 +5,7 @@ namespace Hipper\Invite;
 
 use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
+use Hipper\Invite\Storage\InviteInserter;
 use Hipper\Person\PersonModel;
 
 class BulkInvitationCreator

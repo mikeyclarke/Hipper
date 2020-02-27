@@ -6,6 +6,8 @@ namespace Hipper\Knowledgebase;
 use Hipper\Document\DocumentModel;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseContentTypeException;
+use Hipper\Knowledgebase\Storage\KnowledgebaseRouteInserter;
+use Hipper\Knowledgebase\Storage\KnowledgebaseRouteUpdater;
 use Hipper\Topic\TopicModel;
 
 class KnowledgebaseRoute

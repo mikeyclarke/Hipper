@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\EmailAddressVerification;
 
+use Hipper\EmailAddressVerification\Storage\EmailAddressVerificationInserter;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Person\PersonModel;
 use Hipper\TransactionalEmail\VerifyEmailAddressEmail;

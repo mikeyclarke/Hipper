@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Person;
+namespace Hipper\Organization\Storage;
 
 use Doctrine\DBAL\Connection;
 
-class PersonUpdater
+class OrganizationUpdater
 {
     private $connection;
 
@@ -15,13 +15,13 @@ class PersonUpdater
         $this->connection = $connection;
     }
 
-    public function update(string $personId, array $properties): void
+    public function update(string $id, array $properties): void
     {
         $this->connection->update(
-            'person',
+            'organization',
             $properties,
             [
-                'id' => $personId,
+                'id' => $id,
             ]
         );
     }

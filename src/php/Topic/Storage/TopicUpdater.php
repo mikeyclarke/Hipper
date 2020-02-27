@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Topic;
+namespace Hipper\Topic\Storage;
 
 use Doctrine\DBAL\Connection;
 use PDO;

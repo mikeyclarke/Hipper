@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Team;
+namespace Hipper\TokenizedLogin\Storage;
 
 use Doctrine\DBAL\Connection;
 
-class PersonToTeamMapInserter
+class TokenizedLoginInserter
 {
     private $connection;
 
@@ -15,14 +15,15 @@ class PersonToTeamMapInserter
         $this->connection = $connection;
     }
 
-    public function insert(string $id, string $personId, string $teamId): void
+    public function insert(string $id, string $personId, string $token, string $expires): void
     {
         $this->connection->insert(
-            'person_to_team_map',
+            'tokenized_login',
             [
                 'id' => $id,
                 'person_id' => $personId,
-                'team_id' => $teamId,
+                'token' => $token,
+                'expires' => $expires,
             ]
         );
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Invite;
 
 use Doctrine\DBAL\Connection;
+use Hipper\Invite\Storage\InviteUpdater;
 use Hipper\Organization\Organization;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonModel;

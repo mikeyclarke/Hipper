@@ -7,6 +7,8 @@ use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\Knowledgebase;
 use Hipper\Person\PersonModel;
+use Hipper\Project\Storage\PersonToProjectMapInserter;
+use Hipper\Project\Storage\ProjectInserter;
 use Hipper\Url\UrlSlugGenerator;
 
 class Project

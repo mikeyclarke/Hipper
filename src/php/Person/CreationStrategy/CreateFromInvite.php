@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Hipper\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Hipper\Invite\InviteDeleter;
 use Hipper\Invite\InviteRepository;
+use Hipper\Invite\Storage\InviteDeleter;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\Exception\InviteNotFoundException;
 use Hipper\Person\PersonCreationValidator;

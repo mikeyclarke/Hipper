@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Hipper\EmailAddressVerification;
 
 use Hipper\EmailAddressVerification\Exception\EmailAddressVerificationNotFoundException;
-use Hipper\Person\PersonUpdater;
+use Hipper\Person\Storage\PersonUpdater;
 
 class VerifyEmailAddress
 {

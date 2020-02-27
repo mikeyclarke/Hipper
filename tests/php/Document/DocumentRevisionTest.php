@@ -5,7 +5,7 @@ namespace Hipper\Tests\Document;
 
 use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRevision;
-use Hipper\Document\DocumentRevisionInserter;
+use Hipper\Document\Storage\DocumentRevisionInserter;
 use Hipper\IdGenerator\IdGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;

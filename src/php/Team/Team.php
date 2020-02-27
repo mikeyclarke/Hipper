@@ -7,6 +7,8 @@ use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\Knowledgebase;
 use Hipper\Person\PersonModel;
+use Hipper\Team\Storage\PersonToTeamMapInserter;
+use Hipper\Team\Storage\TeamInserter;
 use Hipper\Url\UrlSlugGenerator;
 
 class Team

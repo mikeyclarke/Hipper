@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Organization;
+namespace Hipper\Organization\Storage;
 
 use Doctrine\DBAL\Connection;
 

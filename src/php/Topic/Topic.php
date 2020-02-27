@@ -15,6 +15,8 @@ use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Organization\Exception\ResourceIsForeignToOrganizationException;
 use Hipper\Person\PersonModel;
+use Hipper\Topic\Storage\TopicInserter;
+use Hipper\Topic\Storage\TopicUpdater;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
 

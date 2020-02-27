@@ -11,7 +11,7 @@ use Hipper\Team\Storage\PersonToTeamMapInserter;
 use Hipper\Team\Storage\TeamInserter;
 use Hipper\Url\UrlSlugGenerator;
 
-class Team
+class TeamCreator
 {
     private $connection;
     private $idGenerator;

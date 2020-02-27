@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Api\App\Controller\Team;
 
-use Hipper\Team\Team;
+use Hipper\Team\TeamCreator;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +15,14 @@ class CreateTeamController
 
     const TEAM_ROUTE_NAME = 'front_end.app.team.show';
 
-    private $team;
+    private $teamCreator;
     private $router;
 
     public function __construct(
-        Team $team,
+        TeamCreator $teamCreator,
         UrlGeneratorInterface $router
     ) {
-        $this->team = $team;
+        $this->teamCreator = $teamCreator;
         $this->router = $router;
     }
 
@@ -32,7 +32,7 @@ class CreateTeamController
         $organization = $request->attributes->get('organization');
 
         try {
-            $teamModel = $this->team->create($currentUser, $request->request->all());
+            $teamModel = $this->teamCreator->create($currentUser, $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

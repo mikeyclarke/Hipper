@@ -9,14 +9,14 @@ use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
 use Hipper\Team\Storage\PersonToTeamMapInserter;
 use Hipper\Team\Storage\TeamInserter;
-use Hipper\Team\Team;
+use Hipper\Team\TeamCreator;
 use Hipper\Team\TeamModel;
 use Hipper\Team\TeamValidator;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
-class TeamTest extends TestCase
+class TeamCreatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
@@ -27,7 +27,7 @@ class TeamTest extends TestCase
     private $teamInserter;
     private $teamValidator;
     private $urlSlugGenerator;
-    private $team;
+    private $teamCreator;
     private $person;
 
     public function setUp(): void
@@ -40,7 +40,7 @@ class TeamTest extends TestCase
         $this->teamValidator = m::mock(TeamValidator::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
 
-        $this->team = new Team(
+        $this->teamCreator = new TeamCreator(
             $this->connection,
             $this->idGenerator,
             $this->knowledgebaseCreator,
@@ -92,7 +92,7 @@ class TeamTest extends TestCase
         $this->createPersonToTeamMapInserterExpectation([$personToTeamMapId, $this->person->getId(), $teamId]);
         $this->createConnectionCommitExpectation();
 
-        $result = $this->team->create($this->person, $parameters);
+        $result = $this->teamCreator->create($this->person, $parameters);
         $this->assertInstanceOf(TeamModel::class, $result);
         $this->assertEquals($teamId, $result->getId());
     }
@@ -136,7 +136,7 @@ class TeamTest extends TestCase
 
         $this->expectException(\Exception::class);
 
-        $this->team->create($this->person, $parameters);
+        $this->teamCreator->create($this->person, $parameters);
     }
 
     private function createConnectionRollbackExpectation()

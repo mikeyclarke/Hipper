@@ -5,7 +5,7 @@ namespace Hipper\Tests\Topic;
 
 use Doctrine\DBAL\Connection;
 use Hipper\Document\DocumentModel;
-use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Topic\TopicModel;
 use Hipper\Topic\TopicRepository;
@@ -18,19 +18,19 @@ class UpdateTopicDescendantRoutesTest extends TestCase
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $connection;
-    private $knowledgebaseRoute;
+    private $knowledgebaseRouteCreator;
     private $topicRepository;
     private $updateTopicDescendantRoutes;
 
     public function setUp(): void
     {
         $this->connection = m::mock(Connection::class);
-        $this->knowledgebaseRoute = m::mock(KnowledgebaseRoute::class);
+        $this->knowledgebaseRouteCreator = m::mock(KnowledgebaseRouteCreator::class);
         $this->topicRepository = m::mock(TopicRepository::class);
 
         $this->updateTopicDescendantRoutes = new UpdateTopicDescendantRoutes(
             $this->connection,
-            $this->knowledgebaseRoute,
+            $this->knowledgebaseRouteCreator,
             $this->topicRepository
         );
     }
@@ -142,7 +142,7 @@ class UpdateTopicDescendantRoutesTest extends TestCase
         );
 
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [
                 m::type(DocumentModel::class),
                 'updated-top-topic/doc1',
@@ -153,7 +153,7 @@ class UpdateTopicDescendantRoutesTest extends TestCase
         $this->createConnectionCommitExpectation();
 
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [
                 m::type(TopicModel::class),
                 'updated-top-topic/subtopic1',
@@ -164,7 +164,7 @@ class UpdateTopicDescendantRoutesTest extends TestCase
         $this->createConnectionCommitExpectation();
 
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [
                 m::type(TopicModel::class),
                 'updated-top-topic/subtopic2',
@@ -175,7 +175,7 @@ class UpdateTopicDescendantRoutesTest extends TestCase
         $this->createConnectionCommitExpectation();
 
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [
                 m::type(DocumentModel::class),
                 'updated-top-topic/subtopic1/doc1',
@@ -186,7 +186,7 @@ class UpdateTopicDescendantRoutesTest extends TestCase
         $this->createConnectionCommitExpectation();
 
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [
                 m::type(DocumentModel::class),
                 'updated-top-topic/subtopic1/doc2',
@@ -197,7 +197,7 @@ class UpdateTopicDescendantRoutesTest extends TestCase
         $this->createConnectionCommitExpectation();
 
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [
                 m::type(DocumentModel::class),
                 'updated-top-topic/subtopic2/doc1',
@@ -208,7 +208,7 @@ class UpdateTopicDescendantRoutesTest extends TestCase
         $this->createConnectionCommitExpectation();
 
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [
                 m::type(TopicModel::class),
                 'updated-top-topic/subtopic2/subtopic1',
@@ -219,7 +219,7 @@ class UpdateTopicDescendantRoutesTest extends TestCase
         $this->createConnectionCommitExpectation();
 
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [
                 m::type(DocumentModel::class),
                 'updated-top-topic/subtopic2/subtopic1/doc1',
@@ -239,9 +239,9 @@ class UpdateTopicDescendantRoutesTest extends TestCase
             ->once();
     }
 
-    private function createKnowledgebaseRouteExpectation($args, $result)
+    private function createKnowledgebaseRouteCreatorExpectation($args, $result)
     {
-        $this->knowledgebaseRoute
+        $this->knowledgebaseRouteCreator
             ->shouldReceive('create')
             ->once()
             ->with(...$args)

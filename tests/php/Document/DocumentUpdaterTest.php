@@ -16,7 +16,7 @@ use Hipper\Document\Exception\KnowledgebaseNotFoundException;
 use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Knowledgebase\KnowledgebaseOwner;
 use Hipper\Knowledgebase\KnowledgebaseRepository;
-use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Person\PersonModel;
@@ -39,7 +39,7 @@ class DocumentUpdaterTest extends TestCase
     private $documentValidator;
     private $knowledgebaseOwner;
     private $knowledgebaseRepository;
-    private $knowledgebaseRoute;
+    private $knowledgebaseRouteCreator;
     private $knowledgebaseRouteRepository;
     private $topicRepository;
     private $urlSlugGenerator;
@@ -55,7 +55,7 @@ class DocumentUpdaterTest extends TestCase
         $this->documentValidator = m::mock(DocumentValidator::class);
         $this->knowledgebaseOwner = m::mock(KnowledgebaseOwner::class);
         $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
-        $this->knowledgebaseRoute = m::mock(KnowledgebaseRoute::class);
+        $this->knowledgebaseRouteCreator = m::mock(KnowledgebaseRouteCreator::class);
         $this->knowledgebaseRouteRepository = m::mock(KnowledgebaseRouteRepository::class);
         $this->topicRepository = m::mock(TopicRepository::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
@@ -69,7 +69,7 @@ class DocumentUpdaterTest extends TestCase
             $this->documentValidator,
             $this->knowledgebaseOwner,
             $this->knowledgebaseRepository,
-            $this->knowledgebaseRoute,
+            $this->knowledgebaseRouteCreator,
             $this->knowledgebaseRouteRepository,
             $this->topicRepository,
             $this->urlSlugGenerator
@@ -134,7 +134,7 @@ class DocumentUpdaterTest extends TestCase
             [$organizationId, $knowledgebaseId, $existingTopicId],
             $topicRouteResult
         );
-        $this->createKnowledgebaseRouteExpectation([$document, $docRoute, true], $routeModel);
+        $this->createKnowledgebaseRouteCreatorExpectation([$document, $docRoute, true], $routeModel);
         $this->createDocumentRevisionCreatorExpectation([$document]);
         $this->createConnectionCommitExpectation();
 
@@ -260,7 +260,7 @@ class DocumentUpdaterTest extends TestCase
             [$organizationId, $knowledgebaseId, $topicId],
             $topicRouteResult
         );
-        $this->createKnowledgebaseRouteExpectation([$document, $docRoute, true], $routeModel);
+        $this->createKnowledgebaseRouteCreatorExpectation([$document, $docRoute, true], $routeModel);
         $this->createDocumentRevisionCreatorExpectation([$document]);
         $this->createConnectionCommitExpectation();
 
@@ -332,7 +332,7 @@ class DocumentUpdaterTest extends TestCase
             [$organizationId, $knowledgebaseId, $topicId],
             $topicRouteResult
         );
-        $this->createKnowledgebaseRouteExpectation([$document, $docRoute, true], $routeModel);
+        $this->createKnowledgebaseRouteCreatorExpectation([$document, $docRoute, true], $routeModel);
         $this->createDocumentRevisionCreatorExpectation([$document]);
         $this->createConnectionCommitExpectation();
 
@@ -573,9 +573,9 @@ class DocumentUpdaterTest extends TestCase
             ->with(...$args);
     }
 
-    private function createKnowledgebaseRouteExpectation($args, $result)
+    private function createKnowledgebaseRouteCreatorExpectation($args, $result)
     {
-        $this->knowledgebaseRoute
+        $this->knowledgebaseRouteCreator
             ->shouldReceive('create')
             ->once()
             ->with(...$args)

@@ -5,7 +5,7 @@ namespace Hipper\Team;
 
 use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
-use Hipper\Knowledgebase\Knowledgebase;
+use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
 use Hipper\Team\Storage\PersonToTeamMapInserter;
 use Hipper\Team\Storage\TeamInserter;
@@ -15,7 +15,7 @@ class Team
 {
     private $connection;
     private $idGenerator;
-    private $knowledgebase;
+    private $knowledgebaseCreator;
     private $personToTeamMapInserter;
     private $teamInserter;
     private $teamValidator;
@@ -24,7 +24,7 @@ class Team
     public function __construct(
         Connection $connection,
         IdGenerator $idGenerator,
-        Knowledgebase $knowledgebase,
+        KnowledgebaseCreator $knowledgebaseCreator,
         PersonToTeamMapInserter $personToTeamMapInserter,
         TeamInserter $teamInserter,
         TeamValidator $teamValidator,
@@ -32,7 +32,7 @@ class Team
     ) {
         $this->connection = $connection;
         $this->idGenerator = $idGenerator;
-        $this->knowledgebase = $knowledgebase;
+        $this->knowledgebaseCreator = $knowledgebaseCreator;
         $this->personToTeamMapInserter = $personToTeamMapInserter;
         $this->teamInserter = $teamInserter;
         $this->teamValidator = $teamValidator;
@@ -48,7 +48,7 @@ class Team
 
         $this->connection->beginTransaction();
         try {
-            $knowledgebase = $this->knowledgebase->create('team', $person->getOrganizationId());
+            $knowledgebase = $this->knowledgebaseCreator->create('team', $person->getOrganizationId());
             $team = $this->teamInserter->insert(
                 $id,
                 $parameters['name'],

@@ -5,7 +5,7 @@ namespace Hipper\Tests\Project;
 
 use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
-use Hipper\Knowledgebase\Knowledgebase;
+use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
 use Hipper\Project\Project;
 use Hipper\Project\ProjectModel;
@@ -22,7 +22,7 @@ class ProjectTest extends TestCase
 
     private $connection;
     private $idGenerator;
-    private $knowledgebase;
+    private $knowledgebaseCreator;
     private $personToProjectMapInserter;
     private $projectInserter;
     private $projectValidator;
@@ -34,7 +34,7 @@ class ProjectTest extends TestCase
     {
         $this->connection = m::mock(Connection::class);
         $this->idGenerator = m::mock(IdGenerator::class);
-        $this->knowledgebase = m::mock(Knowledgebase::class);
+        $this->knowledgebaseCreator = m::mock(KnowledgebaseCreator::class);
         $this->personToProjectMapInserter = m::mock(PersonToProjectMapInserter::class);
         $this->projectInserter = m::mock(ProjectInserter::class);
         $this->projectValidator = m::mock(ProjectValidator::class);
@@ -43,7 +43,7 @@ class ProjectTest extends TestCase
         $this->project = new Project(
             $this->connection,
             $this->idGenerator,
-            $this->knowledgebase,
+            $this->knowledgebaseCreator,
             $this->personToProjectMapInserter,
             $this->projectInserter,
             $this->projectValidator,
@@ -84,7 +84,10 @@ class ProjectTest extends TestCase
         $this->createIdGeneratorExpectation($projectId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $projectSlug);
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseExpectation(['project', $this->person->getOrganizationId()], $knowledgebaseResult);
+        $this->createKnowledgebaseCreatorExpectation(
+            ['project', $this->person->getOrganizationId()],
+            $knowledgebaseResult
+        );
         $this->createProjectInserterExpectation($projectInserterArgs, $projectResult);
         $this->createIdGeneratorExpectation($personToProjectMapId);
         $this->createPersonToProjectMapInserterExpectation([$personToProjectMapId, $this->person->getId(), $projectId]);
@@ -122,7 +125,10 @@ class ProjectTest extends TestCase
         $this->createIdGeneratorExpectation($projectId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $projectSlug);
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseExpectation(['project', $this->person->getOrganizationId()], $knowledgebaseResult);
+        $this->createKnowledgebaseCreatorExpectation(
+            ['project', $this->person->getOrganizationId()],
+            $knowledgebaseResult
+        );
         $this->projectInserter
             ->shouldReceive('insert')
             ->once()
@@ -166,9 +172,9 @@ class ProjectTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createKnowledgebaseExpectation($args, $result)
+    private function createKnowledgebaseCreatorExpectation($args, $result)
     {
-        $this->knowledgebase
+        $this->knowledgebaseCreator
             ->shouldReceive('create')
             ->once()
             ->with(...$args)

@@ -10,7 +10,7 @@ use Hipper\Document\Storage\DocumentUpdater as DocumentStorageUpdater;
 use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Knowledgebase\KnowledgebaseOwner;
 use Hipper\Knowledgebase\KnowledgebaseRepository;
-use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Person\PersonModel;
@@ -29,7 +29,7 @@ class DocumentUpdater
     private DocumentValidator $documentValidator;
     private KnowledgebaseOwner $knowledgebaseOwner;
     private KnowledgebaseRepository $knowledgebaseRepository;
-    private KnowledgebaseRoute $knowledgebaseRoute;
+    private KnowledgebaseRouteCreator $knowledgebaseRouteCreator;
     private KnowledgebaseRouteRepository $knowledgebaseRouteRepository;
     private TopicRepository $topicRepository;
     private UrlSlugGenerator $urlSlugGenerator;
@@ -43,7 +43,7 @@ class DocumentUpdater
         DocumentValidator $documentValidator,
         KnowledgebaseOwner $knowledgebaseOwner,
         KnowledgebaseRepository $knowledgebaseRepository,
-        KnowledgebaseRoute $knowledgebaseRoute,
+        KnowledgebaseRouteCreator $knowledgebaseRouteCreator,
         KnowledgebaseRouteRepository $knowledgebaseRouteRepository,
         TopicRepository $topicRepository,
         UrlSlugGenerator $urlSlugGenerator
@@ -56,7 +56,7 @@ class DocumentUpdater
         $this->documentValidator = $documentValidator;
         $this->knowledgebaseOwner = $knowledgebaseOwner;
         $this->knowledgebaseRepository = $knowledgebaseRepository;
-        $this->knowledgebaseRoute = $knowledgebaseRoute;
+        $this->knowledgebaseRouteCreator = $knowledgebaseRouteCreator;
         $this->knowledgebaseRouteRepository = $knowledgebaseRouteRepository;
         $this->topicRepository = $topicRepository;
         $this->urlSlugGenerator = $urlSlugGenerator;
@@ -154,7 +154,7 @@ class DocumentUpdater
 
             if ($routeHasChanged) {
                 $routePrefix = $this->getRoutePrefix($organizationId, $knowledgebaseId, $topic);
-                $route = $this->knowledgebaseRoute->create(
+                $route = $this->knowledgebaseRouteCreator->create(
                     $document,
                     $routePrefix . $document->getUrlSlug(),
                     true

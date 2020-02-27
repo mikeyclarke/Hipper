@@ -9,7 +9,7 @@ use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Knowledgebase\KnowledgebaseOwner;
 use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
 use Hipper\Knowledgebase\KnowledgebaseRepository;
-use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Organization\Exception\ResourceIsForeignToOrganizationException;
@@ -35,7 +35,7 @@ class TopicTest extends TestCase
     private $idGenerator;
     private $knowledgebaseOwner;
     private $knowledgebaseRepository;
-    private $knowledgebaseRoute;
+    private $knowledgebaseRouteCreator;
     private $knowledgebaseRouteRepository;
     private $topicInserter;
     private $topicRepository;
@@ -52,7 +52,7 @@ class TopicTest extends TestCase
         $this->idGenerator = m::mock(IdGenerator::class);
         $this->knowledgebaseOwner = m::mock(KnowledgebaseOwner::class);
         $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
-        $this->knowledgebaseRoute = m::mock(KnowledgebaseRoute::class);
+        $this->knowledgebaseRouteCreator = m::mock(KnowledgebaseRouteCreator::class);
         $this->knowledgebaseRouteRepository = m::mock(KnowledgebaseRouteRepository::class);
         $this->topicInserter = m::mock(TopicInserter::class);
         $this->topicRepository = m::mock(TopicRepository::class);
@@ -67,7 +67,7 @@ class TopicTest extends TestCase
             $this->idGenerator,
             $this->knowledgebaseOwner,
             $this->knowledgebaseRepository,
-            $this->knowledgebaseRoute,
+            $this->knowledgebaseRouteCreator,
             $this->knowledgebaseRouteRepository,
             $this->topicInserter,
             $this->topicRepository,
@@ -126,7 +126,7 @@ class TopicTest extends TestCase
         $this->createUrlIdGeneratorExpectation($topicUrlId);
         $this->createConnectionBeginTransactionExpectation();
         $this->createTopicInserterExpectation($topicInserterArgs, $topicArray);
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [m::type(TopicModel::class), $topicUrlSlug, true, true],
             $knowledgebaseRouteModel
         );
@@ -203,7 +203,7 @@ class TopicTest extends TestCase
             ['org-uuid', $parameters['knowledgebase_id'], $parameters['parent_topic_id']],
             $parentTopicRouteResult
         );
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [m::type(TopicModel::class), $parentTopicRouteResult['route'] . '/' . $topicUrlSlug, true, true],
             $knowledgebaseRouteModel
         );
@@ -280,7 +280,7 @@ class TopicTest extends TestCase
             [$organizationId, $knowledgebaseId, $parentTopicId],
             $parentTopicRouteResult
         );
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [$topicModel, $newRoute, true],
             $routeModel
         );
@@ -418,7 +418,7 @@ class TopicTest extends TestCase
             [$organizationId, $knowledgebaseId, $newParentTopicId],
             $parentTopicRouteResult
         );
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [$topicModel, $newRoute, true],
             $routeModel
         );
@@ -503,7 +503,7 @@ class TopicTest extends TestCase
             [$organizationId, $knowledgebaseId, $newParentTopicId],
             $parentTopicRouteResult
         );
-        $this->createKnowledgebaseRouteExpectation(
+        $this->createKnowledgebaseRouteCreatorExpectation(
             [$topicModel, $newRoute, true],
             $routeModel
         );
@@ -676,9 +676,9 @@ class TopicTest extends TestCase
             ->once();
     }
 
-    private function createKnowledgebaseRouteExpectation($args, $result)
+    private function createKnowledgebaseRouteCreatorExpectation($args, $result)
     {
-        $this->knowledgebaseRoute
+        $this->knowledgebaseRouteCreator
             ->shouldReceive('create')
             ->once()
             ->with(...$args)

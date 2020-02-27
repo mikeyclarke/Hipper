@@ -10,7 +10,7 @@ use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Knowledgebase\KnowledgebaseOwner;
 use Hipper\Knowledgebase\KnowledgebaseRepository;
-use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Person\PersonModel;
@@ -31,7 +31,7 @@ class DocumentCreator
     private IdGenerator $idGenerator;
     private KnowledgebaseOwner $knowledgebaseOwner;
     private KnowledgebaseRepository $knowledgebaseRepository;
-    private KnowledgebaseRoute $knowledgebaseRoute;
+    private KnowledgebaseRouteCreator $knowledgebaseRouteCreator;
     private KnowledgebaseRouteRepository $knowledgebaseRouteRepository;
     private TopicRepository $topicRepository;
     private UrlIdGenerator $urlIdGenerator;
@@ -47,7 +47,7 @@ class DocumentCreator
         IdGenerator $idGenerator,
         KnowledgebaseOwner $knowledgebaseOwner,
         KnowledgebaseRepository $knowledgebaseRepository,
-        KnowledgebaseRoute $knowledgebaseRoute,
+        KnowledgebaseRouteCreator $knowledgebaseRouteCreator,
         KnowledgebaseRouteRepository $knowledgebaseRouteRepository,
         TopicRepository $topicRepository,
         UrlIdGenerator $urlIdGenerator,
@@ -62,7 +62,7 @@ class DocumentCreator
         $this->idGenerator = $idGenerator;
         $this->knowledgebaseOwner = $knowledgebaseOwner;
         $this->knowledgebaseRepository = $knowledgebaseRepository;
-        $this->knowledgebaseRoute = $knowledgebaseRoute;
+        $this->knowledgebaseRouteCreator = $knowledgebaseRouteCreator;
         $this->knowledgebaseRouteRepository = $knowledgebaseRouteRepository;
         $this->topicRepository = $topicRepository;
         $this->urlIdGenerator = $urlIdGenerator;
@@ -115,7 +115,7 @@ class DocumentCreator
             $model = DocumentModel::createFromArray($result);
 
             $routePrefix = $this->getRoutePrefix($organizationId, $parameters['knowledgebase_id'], $topic);
-            $route = $this->knowledgebaseRoute->create(
+            $route = $this->knowledgebaseRouteCreator->create(
                 $model,
                 $routePrefix . $model->getUrlSlug(),
                 true,

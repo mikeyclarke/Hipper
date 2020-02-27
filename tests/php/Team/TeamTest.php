@@ -5,7 +5,7 @@ namespace Hipper\Tests\Team;
 
 use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
-use Hipper\Knowledgebase\Knowledgebase;
+use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
 use Hipper\Team\Storage\PersonToTeamMapInserter;
 use Hipper\Team\Storage\TeamInserter;
@@ -22,7 +22,7 @@ class TeamTest extends TestCase
 
     private $connection;
     private $idGenerator;
-    private $knowledgebase;
+    private $knowledgebaseCreator;
     private $personToTeamMapInserter;
     private $teamInserter;
     private $teamValidator;
@@ -34,7 +34,7 @@ class TeamTest extends TestCase
     {
         $this->connection = m::mock(Connection::class);
         $this->idGenerator = m::mock(IdGenerator::class);
-        $this->knowledgebase = m::mock(Knowledgebase::class);
+        $this->knowledgebaseCreator = m::mock(KnowledgebaseCreator::class);
         $this->personToTeamMapInserter = m::mock(PersonToTeamMapInserter::class);
         $this->teamInserter = m::mock(TeamInserter::class);
         $this->teamValidator = m::mock(TeamValidator::class);
@@ -43,7 +43,7 @@ class TeamTest extends TestCase
         $this->team = new Team(
             $this->connection,
             $this->idGenerator,
-            $this->knowledgebase,
+            $this->knowledgebaseCreator,
             $this->personToTeamMapInserter,
             $this->teamInserter,
             $this->teamValidator,
@@ -83,7 +83,10 @@ class TeamTest extends TestCase
         $this->createIdGeneratorExpectation($teamId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $teamSlug);
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseExpectation(['team', $this->person->getOrganizationId()], $knowledgebaseResult);
+        $this->createKnowledgebaseCreatorExpectation(
+            ['team', $this->person->getOrganizationId()],
+            $knowledgebaseResult
+        );
         $this->createTeamInserterExpectation($teamInserterArgs, $teamResult);
         $this->createIdGeneratorExpectation($personToTeamMapId);
         $this->createPersonToTeamMapInserterExpectation([$personToTeamMapId, $this->person->getId(), $teamId]);
@@ -120,7 +123,10 @@ class TeamTest extends TestCase
         $this->createIdGeneratorExpectation($teamId);
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $teamSlug);
         $this->createConnectionBeginTransactionExpectation();
-        $this->createKnowledgebaseExpectation(['team', $this->person->getOrganizationId()], $knowledgebaseResult);
+        $this->createKnowledgebaseCreatorExpectation(
+            ['team', $this->person->getOrganizationId()],
+            $knowledgebaseResult
+        );
         $this->teamInserter
             ->shouldReceive('insert')
             ->once()
@@ -164,9 +170,9 @@ class TeamTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createKnowledgebaseExpectation($args, $result)
+    private function createKnowledgebaseCreatorExpectation($args, $result)
     {
-        $this->knowledgebase
+        $this->knowledgebaseCreator
             ->shouldReceive('create')
             ->once()
             ->with(...$args)

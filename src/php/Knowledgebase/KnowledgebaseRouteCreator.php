@@ -10,7 +10,7 @@ use Hipper\Knowledgebase\Storage\KnowledgebaseRouteInserter;
 use Hipper\Knowledgebase\Storage\KnowledgebaseRouteUpdater;
 use Hipper\Topic\TopicModel;
 
-class KnowledgebaseRoute
+class KnowledgebaseRouteCreator
 {
     private $idGenerator;
     private $knowledgebaseRouteInserter;

@@ -10,7 +10,7 @@ use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Knowledgebase\KnowledgebaseOwner;
 use Hipper\Knowledgebase\KnowledgebaseRepository;
-use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Organization\Exception\ResourceIsForeignToOrganizationException;
@@ -26,7 +26,7 @@ class Topic
     private IdGenerator $idGenerator;
     private KnowledgebaseOwner $knowledgebaseOwner;
     private KnowledgebaseRepository $knowledgebaseRepository;
-    private KnowledgebaseRoute $knowledgebaseRoute;
+    private KnowledgebaseRouteCreator $knowledgebaseRouteCreator;
     private KnowledgebaseRouteRepository $knowledgebaseRouteRepository;
     private TopicInserter $topicInserter;
     private TopicRepository $topicRepository;
@@ -41,7 +41,7 @@ class Topic
         IdGenerator $idGenerator,
         KnowledgebaseOwner $knowledgebaseOwner,
         KnowledgebaseRepository $knowledgebaseRepository,
-        KnowledgebaseRoute $knowledgebaseRoute,
+        KnowledgebaseRouteCreator $knowledgebaseRouteCreator,
         KnowledgebaseRouteRepository $knowledgebaseRouteRepository,
         TopicInserter $topicInserter,
         TopicRepository $topicRepository,
@@ -55,7 +55,7 @@ class Topic
         $this->idGenerator = $idGenerator;
         $this->knowledgebaseOwner = $knowledgebaseOwner;
         $this->knowledgebaseRepository = $knowledgebaseRepository;
-        $this->knowledgebaseRoute = $knowledgebaseRoute;
+        $this->knowledgebaseRouteCreator = $knowledgebaseRouteCreator;
         $this->knowledgebaseRouteRepository = $knowledgebaseRouteRepository;
         $this->topicInserter = $topicInserter;
         $this->topicRepository = $topicRepository;
@@ -97,7 +97,7 @@ class Topic
             $model = TopicModel::createFromArray($result);
 
             $routePrefix = $this->getRoutePrefix($organizationId, $parameters['knowledgebase_id'], $parentTopic);
-            $route = $this->knowledgebaseRoute->create(
+            $route = $this->knowledgebaseRouteCreator->create(
                 $model,
                 $routePrefix . $model->getUrlSlug(),
                 true,
@@ -199,7 +199,7 @@ class Topic
 
             if ($routeHasChanged) {
                 $routePrefix = $this->getRoutePrefix($organizationId, $knowledgebaseId, $parentTopic);
-                $route = $this->knowledgebaseRoute->create(
+                $route = $this->knowledgebaseRouteCreator->create(
                     $topic,
                     $routePrefix . $topic->getUrlSlug(),
                     true

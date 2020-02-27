@@ -5,7 +5,7 @@ namespace Hipper\Project;
 
 use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
-use Hipper\Knowledgebase\Knowledgebase;
+use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
 use Hipper\Project\Storage\PersonToProjectMapInserter;
 use Hipper\Project\Storage\ProjectInserter;
@@ -15,7 +15,7 @@ class Project
 {
     private $connection;
     private $idGenerator;
-    private $knowledgebase;
+    private $knowledgebaseCreator;
     private $personToProjectMapInserter;
     private $projectInserter;
     private $projectValidator;
@@ -24,7 +24,7 @@ class Project
     public function __construct(
         Connection $connection,
         IdGenerator $idGenerator,
-        Knowledgebase $knowledgebase,
+        KnowledgebaseCreator $knowledgebaseCreator,
         PersonToProjectMapInserter $personToProjectMapInserter,
         ProjectInserter $projectInserter,
         ProjectValidator $projectValidator,
@@ -32,7 +32,7 @@ class Project
     ) {
         $this->connection = $connection;
         $this->idGenerator = $idGenerator;
-        $this->knowledgebase = $knowledgebase;
+        $this->knowledgebaseCreator = $knowledgebaseCreator;
         $this->personToProjectMapInserter = $personToProjectMapInserter;
         $this->projectInserter = $projectInserter;
         $this->projectValidator = $projectValidator;
@@ -50,7 +50,7 @@ class Project
 
         $this->connection->beginTransaction();
         try {
-            $knowledgebase = $this->knowledgebase->create('project', $organizationId);
+            $knowledgebase = $this->knowledgebaseCreator->create('project', $organizationId);
             $projectResult = $this->projectInserter->insert(
                 $id,
                 $parameters['name'],

@@ -5,7 +5,7 @@ namespace Hipper\Tests\Knowledgebase;
 
 use Hipper\Document\DocumentModel;
 use Hipper\IdGenerator\IdGenerator;
-use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\Storage\KnowledgebaseRouteInserter;
 use Hipper\Knowledgebase\Storage\KnowledgebaseRouteUpdater;
@@ -13,14 +13,14 @@ use Hipper\Topic\TopicModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
-class KnowledgebaseRouteTest extends TestCase
+class KnowledgebaseRouteCreatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $idGenerator;
     private $knowledgebaseRouteInserter;
     private $knowledgebaseRouteUpdater;
-    private $knowledgebaseRoute;
+    private $knowledgebaseRouteCreator;
 
     public function setUp(): void
     {
@@ -28,7 +28,7 @@ class KnowledgebaseRouteTest extends TestCase
         $this->knowledgebaseRouteInserter = m::mock(KnowledgebaseRouteInserter::class);
         $this->knowledgebaseRouteUpdater = m::mock(KnowledgebaseRouteUpdater::class);
 
-        $this->knowledgebaseRoute = new KnowledgebaseRoute(
+        $this->knowledgebaseRouteCreator = new KnowledgebaseRouteCreator(
             $this->idGenerator,
             $this->knowledgebaseRouteInserter,
             $this->knowledgebaseRouteUpdater
@@ -64,7 +64,7 @@ class KnowledgebaseRouteTest extends TestCase
             $routeRow
         );
 
-        $result = $this->knowledgebaseRoute->create(
+        $result = $this->knowledgebaseRouteCreator->create(
             $model,
             $route,
             $isCanonical,
@@ -108,7 +108,7 @@ class KnowledgebaseRouteTest extends TestCase
         );
         $this->createKnowledgebaseRouteUpdaterExpectation([$routeId, $urlId, $knowledgebaseId, $organizationId]);
 
-        $result = $this->knowledgebaseRoute->create(
+        $result = $this->knowledgebaseRouteCreator->create(
             $model,
             $route,
             $isCanonical,
@@ -146,7 +146,7 @@ class KnowledgebaseRouteTest extends TestCase
             $routeRow
         );
 
-        $result = $this->knowledgebaseRoute->create(
+        $result = $this->knowledgebaseRouteCreator->create(
             $model,
             $route,
             $isCanonical,

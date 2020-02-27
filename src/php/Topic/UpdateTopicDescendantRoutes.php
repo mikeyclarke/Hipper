@@ -6,23 +6,23 @@ namespace Hipper\Topic;
 use Doctrine\DBAL\Connection;
 use Hipper\Document\DocumentModel;
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseContentTypeException;
-use Hipper\Knowledgebase\KnowledgebaseRoute;
+use Hipper\Knowledgebase\KnowledgebaseRouteCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use RuntimeException;
 
 class UpdateTopicDescendantRoutes
 {
     private Connection $connection;
-    private KnowledgebaseRoute $knowledgebaseRoute;
+    private KnowledgebaseRouteCreator $knowledgebaseRouteCreator;
     private TopicRepository $topicRepository;
 
     public function __construct(
         Connection $connection,
-        KnowledgebaseRoute $knowledgebaseRoute,
+        KnowledgebaseRouteCreator $knowledgebaseRouteCreator,
         TopicRepository $topicRepository
     ) {
         $this->connection = $connection;
-        $this->knowledgebaseRoute = $knowledgebaseRoute;
+        $this->knowledgebaseRouteCreator = $knowledgebaseRouteCreator;
         $this->topicRepository = $topicRepository;
     }
 
@@ -58,7 +58,7 @@ class UpdateTopicDescendantRoutes
 
             $this->connection->beginTransaction();
             try {
-                $route = $this->knowledgebaseRoute->create(
+                $route = $this->knowledgebaseRouteCreator->create(
                     $model,
                     $routePrefix . $model->getUrlSlug(),
                     true

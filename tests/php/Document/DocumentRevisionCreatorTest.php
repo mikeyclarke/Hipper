@@ -4,25 +4,25 @@ declare(strict_types=1);
 namespace Hipper\Tests\Document;
 
 use Hipper\Document\DocumentModel;
-use Hipper\Document\DocumentRevision;
+use Hipper\Document\DocumentRevisionCreator;
 use Hipper\Document\Storage\DocumentRevisionInserter;
 use Hipper\IdGenerator\IdGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
-class DocumentRevisionTest extends TestCase
+class DocumentRevisionCreatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $documentRevisionInserter;
     private $idGenerator;
-    private $documentRevision;
+    private $documentRevisionCreator;
 
     public function setUp(): void
     {
         $this->documentRevisionInserter = m::mock(DocumentRevisionInserter::class);
         $this->idGenerator = m::mock(IdGenerator::class);
-        $this->documentRevision = new DocumentRevision(
+        $this->documentRevisionCreator = new DocumentRevisionCreator(
             $this->documentRevisionInserter,
             $this->idGenerator
         );
@@ -58,7 +58,7 @@ class DocumentRevisionTest extends TestCase
             'content',
         ]);
 
-        $this->documentRevision->create($model);
+        $this->documentRevisionCreator->create($model);
     }
 
     private function createDocumentRevisionInserterExpectation($args)

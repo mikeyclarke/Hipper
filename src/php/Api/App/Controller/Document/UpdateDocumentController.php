@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Hipper\Api\App\Controller\Document;
 
-use Hipper\Document\Document;
 use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRepository;
+use Hipper\Document\DocumentUpdater;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,17 +16,17 @@ class UpdateDocumentController
 {
     use \Hipper\Api\ApiControllerTrait;
 
-    private $document;
     private $documentRepository;
+    private $documentUpdater;
     private $knowledgebaseRouteUrlGenerator;
 
     public function __construct(
-        Document $document,
         DocumentRepository $documentRepository,
+        DocumentUpdater $documentUpdater,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator
     ) {
-        $this->document = $document;
         $this->documentRepository = $documentRepository;
+        $this->documentUpdater = $documentUpdater;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
     }
 
@@ -44,7 +44,7 @@ class UpdateDocumentController
         $document = DocumentModel::createFromArray($result);
 
         try {
-            list($route, $knowledgebaseOwner) = $this->document->update(
+            list($route, $knowledgebaseOwner) = $this->documentUpdater->update(
                 $currentUser,
                 $document,
                 $request->request->all()

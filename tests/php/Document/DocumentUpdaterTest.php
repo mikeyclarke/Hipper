@@ -4,17 +4,15 @@ declare(strict_types=1);
 namespace Hipper\Tests\Document;
 
 use Doctrine\DBAL\Connection;
-use Hipper\Document\Document;
 use Hipper\Document\DocumentDescriptionDeducer;
 use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRenderer;
-use Hipper\Document\DocumentRevision;
+use Hipper\Document\DocumentRevisionCreator;
+use Hipper\Document\DocumentUpdater;
 use Hipper\Document\DocumentValidator;
 use Hipper\Document\Renderer\RendererResult;
-use Hipper\Document\Storage\DocumentInserter;
-use Hipper\Document\Storage\DocumentUpdater;
+use Hipper\Document\Storage\DocumentUpdater as DocumentStorageUpdater;
 use Hipper\Document\Exception\KnowledgebaseNotFoundException;
-use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Knowledgebase\KnowledgebaseOwner;
 use Hipper\Knowledgebase\KnowledgebaseRepository;
@@ -25,224 +23,57 @@ use Hipper\Person\PersonModel;
 use Hipper\Team\TeamModel;
 use Hipper\Topic\TopicModel;
 use Hipper\Topic\TopicRepository;
-use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
-class DocumentTest extends TestCase
+class DocumentUpdaterTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $connection;
     private $documentDescriptionDeducer;
-    private $documentInserter;
     private $documentRenderer;
-    private $documentRevision;
-    private $documentUpdater;
+    private $documentRevisionCreator;
+    private $documentStorageUpdater;
     private $documentValidator;
-    private $idGenerator;
     private $knowledgebaseOwner;
     private $knowledgebaseRepository;
     private $knowledgebaseRoute;
     private $knowledgebaseRouteRepository;
     private $topicRepository;
-    private $urlIdGenerator;
     private $urlSlugGenerator;
-    private $document;
+    private $documentUpdater;
 
     public function setUp(): void
     {
         $this->connection = m::mock(Connection::class);
         $this->documentDescriptionDeducer = m::mock(DocumentDescriptionDeducer::class);
-        $this->documentInserter = m::mock(DocumentInserter::class);
         $this->documentRenderer = m::mock(DocumentRenderer::class);
-        $this->documentRevision = m::mock(DocumentRevision::class);
-        $this->documentUpdater = m::mock(DocumentUpdater::class);
+        $this->documentRevisionCreator = m::mock(DocumentRevisionCreator::class);
+        $this->documentStorageUpdater = m::mock(DocumentStorageUpdater::class);
         $this->documentValidator = m::mock(DocumentValidator::class);
-        $this->idGenerator = m::mock(IdGenerator::class);
         $this->knowledgebaseOwner = m::mock(KnowledgebaseOwner::class);
         $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
         $this->knowledgebaseRoute = m::mock(KnowledgebaseRoute::class);
         $this->knowledgebaseRouteRepository = m::mock(KnowledgebaseRouteRepository::class);
         $this->topicRepository = m::mock(TopicRepository::class);
-        $this->urlIdGenerator = m::mock(UrlIdGenerator::class);
         $this->urlSlugGenerator = m::mock(UrlSlugGenerator::class);
 
-        $this->document = new Document(
+        $this->documentUpdater = new DocumentUpdater(
             $this->connection,
             $this->documentDescriptionDeducer,
-            $this->documentInserter,
             $this->documentRenderer,
-            $this->documentRevision,
-            $this->documentUpdater,
+            $this->documentRevisionCreator,
+            $this->documentStorageUpdater,
             $this->documentValidator,
-            $this->idGenerator,
             $this->knowledgebaseOwner,
             $this->knowledgebaseRepository,
             $this->knowledgebaseRoute,
             $this->knowledgebaseRouteRepository,
             $this->topicRepository,
-            $this->urlIdGenerator,
             $this->urlSlugGenerator
         );
-    }
-
-    /**
-     * @test
-     */
-    public function create()
-    {
-        $personId = 'person-uuid';
-        $organizationId = 'org-uuid';
-        $knowledgebaseId = 'kb-uuid';
-
-        $person = new PersonModel;
-        $person->setId($personId);
-        $person->setOrganizationId($organizationId);
-
-        $parameters = [
-            'name' => 'Welcome to Engineering',
-            'description' => null,
-            'content' => ["type" => "text", "text" => "👋 Congrats on joining Hipper!"],
-            'knowledgebase_id' => $knowledgebaseId,
-        ];
-
-        $kbResult = ['knowledgebase'];
-        $documentId = 'doc-uuid';
-        $urlSlug = 'welcome-to-engineering';
-        $urlId = 'url-id';
-        $deducedDescription = '👋 Congrats on joining Hipper!';
-        $contentPlain = '👋 Congrats on joining Hipper!';
-        $rendererResult = new RendererResult;
-        $rendererResult->setContent($contentPlain);
-
-        $documentRow = [
-            'url_slug' => $urlSlug,
-            'url_id' => $urlId,
-        ];
-        $routeModel = new KnowledgebaseRouteModel;
-        $knowledgebaseOwnerModel = new TeamModel;
-
-        $this->createKnowledgebaseRepositoryExpectation([$parameters['knowledgebase_id'], $organizationId], $kbResult);
-        $this->createDocumentValidatorExpectation([$parameters, m::type(KnowledgebaseModel::class), null, true]);
-        $this->createIdGeneratorExpectation($documentId);
-        $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
-        $this->createUrlIdGeneratorExpectation($urlId);
-        $this->createDocumentDescriptionDeducerExpectation([$parameters['content']], $deducedDescription);
-        $this->createDocumentRendererExpectation([json_encode($parameters['content']), 'text'], $rendererResult);
-        $this->createConnectionBeginTransactionExpectation();
-        $this->createDocumentInserterExpectation(
-            [
-                $documentId,
-                $parameters['name'],
-                $urlSlug,
-                $urlId,
-                $knowledgebaseId,
-                $organizationId,
-                $personId,
-                $parameters['description'],
-                $deducedDescription,
-                json_encode($parameters['content']),
-                $contentPlain,
-                null
-            ],
-            $documentRow
-        );
-        $this->createKnowledgebaseRouteExpectation([m::type(DocumentModel::class), $urlSlug, true, true], $routeModel);
-        $this->createDocumentRevisionExpectation([m::type(DocumentModel::class)]);
-        $this->createConnectionCommitExpectation();
-        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
-
-        $result = $this->document->create($person, $parameters);
-        $this->assertIsArray($result);
-        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
-        $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
-    }
-
-    /**
-     * @test
-     */
-    public function createInTopic()
-    {
-        $personId = 'person-uuid';
-        $organizationId = 'org-uuid';
-        $knowledgebaseId = 'kb-uuid';
-        $topicId = 'topic-uuid';
-
-        $person = new PersonModel;
-        $person->setId($personId);
-        $person->setOrganizationId($organizationId);
-
-        $parameters = [
-            'name' => 'Welcome to Engineering',
-            'description' => null,
-            'content' => ["type" => "text", "text" => "👋 Congrats on joining Hipper!"],
-            'knowledgebase_id' => $knowledgebaseId,
-            'topic_id' => $topicId,
-        ];
-
-        $kbResult = ['id' => $knowledgebaseId];
-        $topicResult = ['id' => $topicId];
-        $documentId = 'doc-uuid';
-        $urlSlug = 'welcome-to-engineering';
-        $urlId = 'url-id';
-        $deducedDescription = '👋 Congrats on joining Hipper!';
-        $contentPlain = '👋 Congrats on joining Hipper!';
-        $rendererResult = new RendererResult;
-        $rendererResult->setContent($contentPlain);
-        $topicRoute = 'my/nested/topic';
-
-        $documentRow = [
-            'url_slug' => $urlSlug,
-            'url_id' => $urlId,
-        ];
-        $topicRouteResult = ['route' => $topicRoute];
-        $docRoute = $topicRoute . '/' . $urlSlug;
-        $routeModel = new KnowledgebaseRouteModel;
-        $knowledgebaseOwnerModel = new TeamModel;
-
-        $this->createKnowledgebaseRepositoryExpectation([$parameters['knowledgebase_id'], $organizationId], $kbResult);
-        $this->createTopicRepositoryExpectation([$topicId, $knowledgebaseId, $organizationId], $topicResult);
-        $this->createDocumentValidatorExpectation(
-            [$parameters, m::type(KnowledgebaseModel::class), m::type(TopicModel::class), true]
-        );
-        $this->createIdGeneratorExpectation($documentId);
-        $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
-        $this->createUrlIdGeneratorExpectation($urlId);
-        $this->createDocumentDescriptionDeducerExpectation([$parameters['content']], $deducedDescription);
-        $this->createDocumentRendererExpectation([json_encode($parameters['content']), 'text'], $rendererResult);
-        $this->createConnectionBeginTransactionExpectation();
-        $this->createDocumentInserterExpectation(
-            [
-                $documentId,
-                $parameters['name'],
-                $urlSlug,
-                $urlId,
-                $knowledgebaseId,
-                $organizationId,
-                $personId,
-                $parameters['description'],
-                $deducedDescription,
-                json_encode($parameters['content']),
-                $contentPlain,
-                $topicId
-            ],
-            $documentRow
-        );
-        $this->createKnowledgebaseRouteRepositoryExpectation(
-            [$organizationId, $knowledgebaseId, $topicId],
-            $topicRouteResult
-        );
-        $this->createKnowledgebaseRouteExpectation([m::type(DocumentModel::class), $docRoute, true, true], $routeModel);
-        $this->createDocumentRevisionExpectation([m::type(DocumentModel::class)]);
-        $this->createConnectionCommitExpectation();
-        $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
-
-        $result = $this->document->create($person, $parameters);
-        $this->assertIsArray($result);
-        $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
-        $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
     }
 
     /**
@@ -298,16 +129,16 @@ class DocumentTest extends TestCase
             $topicResult
         );
         $this->createConnectionBeginTransactionExpectation();
-        $this->createDocumentUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
+        $this->createDocumentStorageUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
         $this->createKnowledgebaseRouteRepositoryExpectation(
             [$organizationId, $knowledgebaseId, $existingTopicId],
             $topicRouteResult
         );
         $this->createKnowledgebaseRouteExpectation([$document, $docRoute, true], $routeModel);
-        $this->createDocumentRevisionExpectation([$document]);
+        $this->createDocumentRevisionCreatorExpectation([$document]);
         $this->createConnectionCommitExpectation();
 
-        $result = $this->document->update($person, $document, $parameters);
+        $result = $this->documentUpdater->update($person, $document, $parameters);
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
@@ -364,11 +195,11 @@ class DocumentTest extends TestCase
             $docRouteResult
         );
         $this->createConnectionBeginTransactionExpectation();
-        $this->createDocumentUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
-        $this->createDocumentRevisionExpectation([$document]);
+        $this->createDocumentStorageUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
+        $this->createDocumentRevisionCreatorExpectation([$document]);
         $this->createConnectionCommitExpectation();
 
-        $result = $this->document->update($person, $document, $parameters);
+        $result = $this->documentUpdater->update($person, $document, $parameters);
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
@@ -424,16 +255,16 @@ class DocumentTest extends TestCase
             [$parameters, null, m::type(TopicModel::class)]
         );
         $this->createConnectionBeginTransactionExpectation();
-        $this->createDocumentUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
+        $this->createDocumentStorageUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
         $this->createKnowledgebaseRouteRepositoryExpectation(
             [$organizationId, $knowledgebaseId, $topicId],
             $topicRouteResult
         );
         $this->createKnowledgebaseRouteExpectation([$document, $docRoute, true], $routeModel);
-        $this->createDocumentRevisionExpectation([$document]);
+        $this->createDocumentRevisionCreatorExpectation([$document]);
         $this->createConnectionCommitExpectation();
 
-        $result = $this->document->update($person, $document, $parameters);
+        $result = $this->documentUpdater->update($person, $document, $parameters);
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
@@ -496,16 +327,16 @@ class DocumentTest extends TestCase
         );
         $this->createUrlSlugGeneratorExpectation([$parameters['name']], $urlSlug);
         $this->createConnectionBeginTransactionExpectation();
-        $this->createDocumentUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
+        $this->createDocumentStorageUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
         $this->createKnowledgebaseRouteRepositoryExpectation(
             [$organizationId, $knowledgebaseId, $topicId],
             $topicRouteResult
         );
         $this->createKnowledgebaseRouteExpectation([$document, $docRoute, true], $routeModel);
-        $this->createDocumentRevisionExpectation([$document]);
+        $this->createDocumentRevisionCreatorExpectation([$document]);
         $this->createConnectionCommitExpectation();
 
-        $result = $this->document->update($person, $document, $parameters);
+        $result = $this->documentUpdater->update($person, $document, $parameters);
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
@@ -572,11 +403,11 @@ class DocumentTest extends TestCase
             $docRouteResult
         );
         $this->createConnectionBeginTransactionExpectation();
-        $this->createDocumentUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
-        $this->createDocumentRevisionExpectation([$document]);
+        $this->createDocumentStorageUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
+        $this->createDocumentRevisionCreatorExpectation([$document]);
         $this->createConnectionCommitExpectation();
 
-        $result = $this->document->update($person, $document, $parameters);
+        $result = $this->documentUpdater->update($person, $document, $parameters);
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
@@ -629,11 +460,11 @@ class DocumentTest extends TestCase
             $docRouteResult
         );
         $this->createConnectionBeginTransactionExpectation();
-        $this->createDocumentUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
-        $this->createDocumentRevisionExpectation([$document]);
+        $this->createDocumentStorageUpdaterExpectation([$document->getId(), $propertiesToUpdate], $docUpdateResult);
+        $this->createDocumentRevisionCreatorExpectation([$document]);
         $this->createConnectionCommitExpectation();
 
-        $result = $this->document->update($person, $document, $parameters);
+        $result = $this->documentUpdater->update($person, $document, $parameters);
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
@@ -684,7 +515,7 @@ class DocumentTest extends TestCase
             $docRouteResult
         );
 
-        $result = $this->document->update($person, $document, $parameters);
+        $result = $this->documentUpdater->update($person, $document, $parameters);
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
@@ -715,7 +546,7 @@ class DocumentTest extends TestCase
         $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], null);
 
         $this->expectException(KnowledgebaseNotFoundException::class);
-        $this->document->update($person, $document, $parameters);
+        $this->documentUpdater->update($person, $document, $parameters);
     }
 
     private function createKnowledgebaseOwnerExpectation($args, $result)
@@ -734,9 +565,9 @@ class DocumentTest extends TestCase
             ->once();
     }
 
-    private function createDocumentRevisionExpectation($args)
+    private function createDocumentRevisionCreatorExpectation($args)
     {
-        $this->documentRevision
+        $this->documentRevisionCreator
             ->shouldReceive('create')
             ->once()
             ->with(...$args);
@@ -769,19 +600,10 @@ class DocumentTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createDocumentUpdaterExpectation($args, $result)
+    private function createDocumentStorageUpdaterExpectation($args, $result)
     {
-        $this->documentUpdater
+        $this->documentStorageUpdater
             ->shouldReceive('update')
-            ->once()
-            ->with(...$args)
-            ->andReturn($result);
-    }
-
-    private function createDocumentInserterExpectation($args, $result)
-    {
-        $this->documentInserter
-            ->shouldReceive('insert')
             ->once()
             ->with(...$args)
             ->andReturn($result);
@@ -812,28 +634,12 @@ class DocumentTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createUrlIdGeneratorExpectation($result)
-    {
-        $this->urlIdGenerator
-            ->shouldReceive('generate')
-            ->once()
-            ->andReturn($result);
-    }
-
     private function createUrlSlugGeneratorExpectation($args, $result)
     {
         $this->urlSlugGenerator
             ->shouldReceive('generateFromString')
             ->once()
             ->with(...$args)
-            ->andReturn($result);
-    }
-
-    private function createIdGeneratorExpectation($result)
-    {
-        $this->idGenerator
-            ->shouldReceive('generate')
-            ->once()
             ->andReturn($result);
     }
 

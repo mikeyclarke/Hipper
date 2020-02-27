@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Api\App\Controller\Document;
 
-use Hipper\Document\Document;
+use Hipper\Document\DocumentCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,14 +13,14 @@ class CreateDocumentController
 {
     use \Hipper\Api\ApiControllerTrait;
 
-    private $document;
+    private $documentCreator;
     private $knowledgebaseRouteUrlGenerator;
 
     public function __construct(
-        Document $document,
+        DocumentCreator $documentCreator,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator
     ) {
-        $this->document = $document;
+        $this->documentCreator = $documentCreator;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
     }
 
@@ -30,7 +30,7 @@ class CreateDocumentController
         $organization = $request->attributes->get('organization');
 
         try {
-            list($route, $knowledgebaseOwner) = $this->document->create($currentUser, $request->request->all());
+            list($route, $knowledgebaseOwner) = $this->documentCreator->create($currentUser, $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

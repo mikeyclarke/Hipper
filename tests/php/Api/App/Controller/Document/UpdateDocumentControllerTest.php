@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Hipper\Tests\Api\App\Controller\Document;
 
 use Hipper\Api\App\Controller\Document\UpdateDocumentController;
-use Hipper\Document\Document;
 use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRepository;
+use Hipper\Document\DocumentUpdater;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Organization\OrganizationModel;
@@ -22,8 +22,8 @@ class UpdateDocumentControllerTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    private $document;
     private $documentRepository;
+    private $documentUpdater;
     private $knowledgebaseRouteUrlGenerator;
     private $controller;
     private $person;
@@ -31,13 +31,13 @@ class UpdateDocumentControllerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->document = m::mock(Document::class);
         $this->documentRepository = m::mock(DocumentRepository::class);
+        $this->documentUpdater = m::mock(DocumentUpdater::class);
         $this->knowledgebaseRouteUrlGenerator = m::mock(KnowledgebaseRouteUrlGenerator::class);
 
         $this->controller = new UpdateDocumentController(
-            $this->document,
             $this->documentRepository,
+            $this->documentUpdater,
             $this->knowledgebaseRouteUrlGenerator
         );
 
@@ -71,7 +71,7 @@ class UpdateDocumentControllerTest extends TestCase
             [$request->attributes->get('document_id'), $this->person->getOrganizationId()],
             $documentResult
         );
-        $this->createDocumentUpdateExpectation(
+        $this->createDocumentUpdaterExpectation(
             [$this->person, m::type(DocumentModel::class), $request->request->all()],
             [$route, $knowledgebaseOwner]
         );
@@ -119,9 +119,9 @@ class UpdateDocumentControllerTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createDocumentUpdateExpectation($args, $result)
+    private function createDocumentUpdaterExpectation($args, $result)
     {
-        $this->document
+        $this->documentUpdater
             ->shouldReceive('update')
             ->once()
             ->with(...$args)

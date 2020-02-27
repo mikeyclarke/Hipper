@@ -6,7 +6,7 @@ namespace Hipper\Document;
 use Hipper\Document\Storage\DocumentRevisionInserter;
 use Hipper\IdGenerator\IdGenerator;
 
-class DocumentRevision
+class DocumentRevisionCreator
 {
     private $documentRevisionInserter;
     private $idGenerator;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Api\SignUpFlow\Controller;
 
-use Hipper\Organization\Organization;
+use Hipper\Organization\OrganizationUpdater;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,12 +12,12 @@ class ChooseTeamUrlController
 {
     use \Hipper\Api\ApiControllerTrait;
 
-    private Organization $organization;
+    private OrganizationUpdater $organizationUpdater;
 
     public function __construct(
-        Organization $organization
+        OrganizationUpdater $organizationUpdater
     ) {
-        $this->organization = $organization;
+        $this->organizationUpdater = $organizationUpdater;
     }
 
     public function postAction(Request $request): JsonResponse
@@ -25,7 +25,7 @@ class ChooseTeamUrlController
         $currentUser = $request->attributes->get('current_user');
 
         try {
-            $this->organization->update(
+            $this->organizationUpdater->update(
                 $currentUser->getOrganizationId(),
                 [
                     'subdomain' => $request->request->get('subdomain', '')

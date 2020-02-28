@@ -7,7 +7,7 @@ use Doctrine\DBAL\Connection;
 use Hipper\Invite\BulkInvitationProcessor;
 use Hipper\Invite\InviteRepository;
 use Hipper\Invite\Storage\InviteUpdater;
-use Hipper\Organization\Organization;
+use Hipper\Organization\OrganizationRepository;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonRepository;
 use Hipper\Security\TokenGenerator;
@@ -23,7 +23,7 @@ class BulkInvitationProcessorTest extends TestCase
     private $connection;
     private $inviteRepository;
     private $inviteUpdater;
-    private $organization;
+    private $organizationRepository;
     private $personRepository;
     private $tokenGenerator;
     private $processor;
@@ -34,7 +34,7 @@ class BulkInvitationProcessorTest extends TestCase
         $this->connection = m::mock(Connection::class);
         $this->inviteRepository = m::mock(InviteRepository::class);
         $this->inviteUpdater = m::mock(InviteUpdater::class);
-        $this->organization = m::mock(Organization::class);
+        $this->organizationRepository = m::mock(OrganizationRepository::class);
         $this->personRepository = m::mock(PersonRepository::class);
         $this->tokenGenerator = m::mock(TokenGenerator::class);
 
@@ -43,7 +43,7 @@ class BulkInvitationProcessorTest extends TestCase
             $this->connection,
             $this->inviteRepository,
             $this->inviteUpdater,
-            $this->organization,
+            $this->organizationRepository,
             $this->personRepository,
             $this->tokenGenerator
         );
@@ -63,9 +63,10 @@ class BulkInvitationProcessorTest extends TestCase
             'invite-id-three',
         ];
 
-        $organization = new OrganizationModel;
-        $organization->setName('hleo');
-        $organization->setSubdomain('hleo');
+        $organizationArray = [
+            'name' => 'Acme',
+            'subdomain' => 'acme',
+        ];
         $personArray = [
             'email_address' => 'mikey@usehipper.com',
             'name' => 'Mikey Clarke',
@@ -84,11 +85,11 @@ class BulkInvitationProcessorTest extends TestCase
             [
                 'sender_email_address' => $personArray['email_address'],
                 'sender_name' => $personArray['name'],
-                'organization_name' => $organization->getName(),
+                'organization_name' => $organizationArray['name'],
                 'recipient_email_address' => $inviteRecords['invite-id-one']['email_address'],
                 'invite_link' => sprintf(
                     'https://%s.%s/join/by-invitation?i=%s&t=%s',
-                    $organization->getSubdomain(),
+                    $organizationArray['subdomain'],
                     $domain,
                     $inviteIds[0],
                     $tokens[0],
@@ -97,11 +98,11 @@ class BulkInvitationProcessorTest extends TestCase
             [
                 'sender_email_address' => $personArray['email_address'],
                 'sender_name' => $personArray['name'],
-                'organization_name' => $organization->getName(),
+                'organization_name' => $organizationArray['name'],
                 'recipient_email_address' => $inviteRecords['invite-id-two']['email_address'],
                 'invite_link' => sprintf(
                     'https://%s.%s/join/by-invitation?i=%s&t=%s',
-                    $organization->getSubdomain(),
+                    $organizationArray['subdomain'],
                     $domain,
                     $inviteIds[1],
                     $tokens[1],
@@ -110,11 +111,11 @@ class BulkInvitationProcessorTest extends TestCase
             [
                 'sender_email_address' => $personArray['email_address'],
                 'sender_name' => $personArray['name'],
-                'organization_name' => $organization->getName(),
+                'organization_name' => $organizationArray['name'],
                 'recipient_email_address' => $inviteRecords['invite-id-three']['email_address'],
                 'invite_link' => sprintf(
                     'https://%s.%s/join/by-invitation?i=%s&t=%s',
-                    $organization->getSubdomain(),
+                    $organizationArray['subdomain'],
                     $domain,
                     $inviteIds[2],
                     $tokens[2],
@@ -122,7 +123,7 @@ class BulkInvitationProcessorTest extends TestCase
             ],
         ];
 
-        $this->createOrganizationExpectation($organizationId, $organization);
+        $this->createOrganizationRepositoryExpectation($organizationId, $organizationArray);
         $this->createPersonRepositoryExpectation($personId, $personArray);
 
         $this->createInviteRepositoryExpectation($inviteIds, $inviteRecords);
@@ -203,10 +204,10 @@ class BulkInvitationProcessorTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createOrganizationExpectation($id, $result)
+    private function createOrganizationRepositoryExpectation($id, $result)
     {
-        $this->organization
-            ->shouldReceive('get')
+        $this->organizationRepository
+            ->shouldReceive('findById')
             ->once()
             ->with($id)
             ->andReturn($result);

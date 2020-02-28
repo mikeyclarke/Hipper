@@ -4,40 +4,28 @@ declare(strict_types=1);
 namespace Hipper\Tests\Organization;
 
 use Hipper\IdGenerator\IdGenerator;
-use Hipper\Organization\Organization;
+use Hipper\Organization\OrganizationCreator;
 use Hipper\Organization\OrganizationModel;
-use Hipper\Organization\OrganizationRepository;
-use Hipper\Organization\OrganizationValidator;
 use Hipper\Organization\Storage\OrganizationInserter;
-use Hipper\Organization\Storage\OrganizationUpdater;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
-class OrganizationTest extends TestCase
+class OrganizationCreatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $idGenerator;
     private $organizationInserter;
-    private $organizationRepository;
-    private $organizationUpdater;
-    private $organizationValidator;
-    private $organization;
+    private $organizationCreator;
 
     public function setUp(): void
     {
         $this->idGenerator = m::mock(IdGenerator::class);
         $this->organizationInserter = m::mock(OrganizationInserter::class);
-        $this->organizationRepository = m::mock(OrganizationRepository::class);
-        $this->organizationUpdater = m::mock(OrganizationUpdater::class);
-        $this->organizationValidator = m::mock(OrganizationValidator::class);
 
-        $this->organization = new Organization(
+        $this->organizationCreator = new OrganizationCreator(
             $this->idGenerator,
-            $this->organizationInserter,
-            $this->organizationRepository,
-            $this->organizationUpdater,
-            $this->organizationValidator
+            $this->organizationInserter
         );
     }
 
@@ -47,7 +35,7 @@ class OrganizationTest extends TestCase
     public function create()
     {
         $organizationId = 'org-uuid';
-        $organizationName = 'Unnamed Organization';
+        $organizationName = OrganizationModel::DEFAULT_NAME;
         $organizationResult = [
             'id' => $organizationId,
             'name' => $organizationName,
@@ -59,40 +47,10 @@ class OrganizationTest extends TestCase
         $expectedId = $organizationId;
         $expectedName = $organizationName;
 
-        $result = $this->organization->create();
+        $result = $this->organizationCreator->create();
         $this->assertInstanceOf(OrganizationModel::class, $result);
         $this->assertEquals($expectedId, $result->getId());
         $this->assertEquals($expectedName, $result->getName());
-    }
-
-    /**
-     * @test
-     */
-    public function update()
-    {
-        $organizationId = 'org-uuid';
-        $properties = ['properties'];
-
-        $this->createOrganizationValidatorExpectation([$properties]);
-        $this->createOrganizationUpdaterExpectation([$organizationId, $properties]);
-
-        $this->organization->update($organizationId, $properties);
-    }
-
-    private function createOrganizationUpdaterExpectation($args)
-    {
-        $this->organizationUpdater
-            ->shouldReceive('update')
-            ->once()
-            ->with(...$args);
-    }
-
-    private function createOrganizationValidatorExpectation($args)
-    {
-        $this->organizationValidator
-            ->shouldReceive('validate')
-            ->once()
-            ->with(...$args);
     }
 
     private function createOrganizationInserterExpectation($args, $result)

@@ -3,21 +3,23 @@ declare(strict_types=1);
 
 namespace Hipper\FrontEnd\SignUpFlow\Controller;
 
-use Hipper\Organization\Organization;
+use Hipper\Organization\Exception\OrganizationNotFoundException;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Organization\OrganizationRepository;
 use Hipper\TokenizedLogin\TokenizedLoginCreator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class FinalizeController
 {
-    private Organization $organization;
+    private OrganizationRepository $organizationRepository;
     private TokenizedLoginCreator $tokenizedLoginCreator;
 
     public function __construct(
-        Organization $organization,
+        OrganizationRepository $organizationRepository,
         TokenizedLoginCreator $tokenizedLoginCreator
     ) {
-        $this->organization = $organization;
+        $this->organizationRepository = $organizationRepository;
         $this->tokenizedLoginCreator = $tokenizedLoginCreator;
     }
 
@@ -27,8 +29,13 @@ class FinalizeController
         $sessionName = $session->getName();
         $currentUser = $request->attributes->get('current_user');
 
-        $organizationModel = $this->organization->get($currentUser->getOrganizationId());
-        if (null === $organizationModel->getSubdomain()) {
+        $result = $this->organizationRepository->findById($currentUser->getOrganizationId());
+        if (null === $result) {
+            throw new OrganizationNotFoundException;
+        }
+        $organization = OrganizationModel::createFromArray($result);
+
+        if (null === $organization->getSubdomain()) {
             return new RedirectResponse('/sign-up/choose-team-url');
         }
 
@@ -38,7 +45,7 @@ class FinalizeController
         $response = new RedirectResponse(
             sprintf(
                 'https://%s.%s/tokenized-login?t=%s',
-                $organizationModel->getSubdomain(),
+                $organization->getSubdomain(),
                 $request->getHttpHost(),
                 $token
             )

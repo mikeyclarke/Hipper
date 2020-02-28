@@ -5,8 +5,8 @@ namespace Hipper\Invite;
 
 use Doctrine\DBAL\Connection;
 use Hipper\Invite\Storage\InviteUpdater;
-use Hipper\Organization\Organization;
 use Hipper\Organization\OrganizationModel;
+use Hipper\Organization\OrganizationRepository;
 use Hipper\Person\PersonModel;
 use Hipper\Person\PersonRepository;
 use Hipper\Security\TokenGenerator;
@@ -18,7 +18,7 @@ class BulkInvitationProcessor
     private Connection $connection;
     private InviteRepository $inviteRepository;
     private InviteUpdater $inviteUpdater;
-    private Organization $organization;
+    private OrganizationRepository $organizationRepository;
     private PersonRepository $personRepository;
     private TokenGenerator $tokenGenerator;
 
@@ -27,7 +27,7 @@ class BulkInvitationProcessor
         Connection $connection,
         InviteRepository $inviteRepository,
         InviteUpdater $inviteUpdater,
-        Organization $organization,
+        OrganizationRepository $organizationRepository,
         PersonRepository $personRepository,
         TokenGenerator $tokenGenerator
     ) {
@@ -35,7 +35,7 @@ class BulkInvitationProcessor
         $this->connection = $connection;
         $this->inviteRepository = $inviteRepository;
         $this->inviteUpdater = $inviteUpdater;
-        $this->organization = $organization;
+        $this->organizationRepository = $organizationRepository;
         $this->personRepository = $personRepository;
         $this->tokenGenerator = $tokenGenerator;
     }
@@ -46,10 +46,12 @@ class BulkInvitationProcessor
         string $domain,
         array $inviteIds
     ): void {
-        $organization = $this->organization->get($organizationId);
-        if (null === $organization) {
+        $result = $this->organizationRepository->findById($organizationId);
+        if (null === $result) {
             throw new \UnexpectedValueException('Organization does not exist');
         }
+        $organization = OrganizationModel::createFromArray($result);
+
         $person = $this->personRepository->findById($personId);
         if (null === $person) {
             throw new \UnexpectedValueException('Person does not exist');

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Hipper\FrontEnd\SignUpFlow\Controller;
 
-use Hipper\Organization\Organization;
+use Hipper\Organization\Exception\OrganizationNotFoundException;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Organization\OrganizationRepository;
 use Hipper\Organization\OrganizationSubdomainGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,16 +14,16 @@ use Twig\Environment as Twig;
 
 class ChooseTeamUrlController
 {
-    private Organization $organization;
+    private OrganizationRepository $organizationRepository;
     private OrganizationSubdomainGenerator $subdomainGenerator;
     private Twig $twig;
 
     public function __construct(
-        Organization $organization,
+        OrganizationRepository $organizationRepository,
         OrganizationSubdomainGenerator $subdomainGenerator,
         Twig $twig
     ) {
-        $this->organization = $organization;
+        $this->organizationRepository = $organizationRepository;
         $this->subdomainGenerator = $subdomainGenerator;
         $this->twig = $twig;
     }
@@ -29,9 +31,14 @@ class ChooseTeamUrlController
     public function getAction(Request $request): Response
     {
         $currentUser = $request->attributes->get('current_user');
-        $organization = $this->organization->get($currentUser->getOrganizationId());
 
-        if (Organization::DEFAULT_NAME === $organization->getName()) {
+        $result = $this->organizationRepository->findById($currentUser->getOrganizationId());
+        if (null === $result) {
+            throw new OrganizationNotFoundException;
+        }
+        $organization = OrganizationModel::createFromArray($result);
+
+        if (OrganizationModel::DEFAULT_NAME === $organization->getName()) {
             return new RedirectResponse('/sign-up/name-team');
         }
 

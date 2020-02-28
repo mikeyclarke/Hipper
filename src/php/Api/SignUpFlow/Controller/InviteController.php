@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Api\SignUpFlow\Controller;
 
 use Hipper\Invite\BulkInvitationCreator;
-use Hipper\Organization\Organization;
+use Hipper\Organization\OrganizationUpdater;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +14,14 @@ class InviteController
     use \Hipper\Api\ApiControllerTrait;
 
     private BulkInvitationCreator $bulkInvitationCreator;
-    private Organization $organization;
+    private OrganizationUpdater $organizationUpdater;
 
     public function __construct(
         BulkInvitationCreator $bulkInvitationCreator,
-        Organization $organization
+        OrganizationUpdater $organizationUpdater
     ) {
         $this->bulkInvitationCreator = $bulkInvitationCreator;
-        $this->organization = $organization;
+        $this->organizationUpdater = $organizationUpdater;
     }
 
     public function postAction(Request $request): JsonResponse
@@ -29,7 +29,7 @@ class InviteController
         $currentUser = $request->attributes->get('current_user');
 
         try {
-            $this->organization->update($currentUser->getOrganizationId(), $request->request->all());
+            $this->organizationUpdater->update($currentUser->getOrganizationId(), $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }

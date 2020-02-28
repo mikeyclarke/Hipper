@@ -5,7 +5,7 @@ namespace Hipper\Tests\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
 use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
-use Hipper\Organization\Organization;
+use Hipper\Organization\OrganizationCreator;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\CreationStrategy\CreateFoundingMember;
 use Hipper\Person\PersonCreator;
@@ -19,7 +19,7 @@ class CreateFoundingMemberTest extends TestCase
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $connection;
-    private $organization;
+    private $organizationCreator;
     private $personCreationValidator;
     private $personCreator;
     private $requestEmailAddressVerification;
@@ -28,14 +28,14 @@ class CreateFoundingMemberTest extends TestCase
     public function setUp(): void
     {
         $this->connection = m::mock(Connection::class);
-        $this->organization = m::mock(Organization::class);
+        $this->organizationCreator = m::mock(OrganizationCreator::class);
         $this->personCreationValidator = m::mock(PersonCreationValidator::class);
         $this->personCreator = m::mock(PersonCreator::class);
         $this->requestEmailAddressVerification = m::mock(RequestEmailAddressVerification::class);
 
         $this->createFoundingMember = new CreateFoundingMember(
             $this->connection,
-            $this->organization,
+            $this->organizationCreator,
             $this->personCreationValidator,
             $this->personCreator,
             $this->requestEmailAddressVerification
@@ -59,7 +59,7 @@ class CreateFoundingMemberTest extends TestCase
 
         $this->createPersonCreationValidatorExpectation($input);
         $this->createConnectionBeginTransactionExpectation();
-        $this->createOrganizationExpectation($organization);
+        $this->createOrganizationCreatorExpectation($organization);
         $this->createPersonCreatorExpectation(
             $organization,
             $input['name'],
@@ -98,9 +98,9 @@ class CreateFoundingMemberTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createOrganizationExpectation($result)
+    private function createOrganizationCreatorExpectation($result)
     {
-        $this->organization
+        $this->organizationCreator
             ->shouldReceive('create')
             ->once()
             ->andReturn($result);

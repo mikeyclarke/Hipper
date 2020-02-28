@@ -7,6 +7,7 @@ final class OrganizationModel
 {
     use \Hipper\ModelTrait;
 
+    const DEFAULT_NAME = 'Unnamed Organization';
     const FIELD_MAP = [
         'id' => 'id',
         'name' => 'name',

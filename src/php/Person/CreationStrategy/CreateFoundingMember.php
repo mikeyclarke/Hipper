@@ -11,11 +11,11 @@ use Hipper\Person\PersonCreator;
 
 class CreateFoundingMember
 {
-    private $connection;
-    private $organization;
-    private $personCreationValidator;
-    private $personCreator;
-    private $requestEmailAddressVerification;
+    private Connection $connection;
+    private Organization $organization;
+    private PersonCreationValidator $personCreationValidator;
+    private PersonCreator $personCreator;
+    private RequestEmailAddressVerification $requestEmailAddressVerification;
 
     public function __construct(
         Connection $connection,

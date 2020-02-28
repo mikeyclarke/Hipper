@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class FinalizeController
 {
-    private $organization;
-    private $tokenizedLoginCreator;
+    private Organization $organization;
+    private TokenizedLoginCreator $tokenizedLoginCreator;
 
     public function __construct(
         Organization $organization,

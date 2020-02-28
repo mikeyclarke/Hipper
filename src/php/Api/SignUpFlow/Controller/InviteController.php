@@ -13,8 +13,8 @@ class InviteController
 {
     use \Hipper\Api\ApiControllerTrait;
 
-    private $bulkInvitationCreator;
-    private $organization;
+    private BulkInvitationCreator $bulkInvitationCreator;
+    private Organization $organization;
 
     public function __construct(
         BulkInvitationCreator $bulkInvitationCreator,

@@ -12,9 +12,9 @@ use Twig\Environment as Twig;
 
 class ChooseTeamUrlController
 {
-    private $organization;
-    private $subdomainGenerator;
-    private $twig;
+    private Organization $organization;
+    private OrganizationSubdomainGenerator $subdomainGenerator;
+    private Twig $twig;
 
     public function __construct(
         Organization $organization,

@@ -14,13 +14,13 @@ use Hipper\TransactionalEmail\BulkInvite;
 
 class BulkInvitationProcessor
 {
-    private $bulkInvite;
-    private $connection;
-    private $inviteRepository;
-    private $inviteUpdater;
-    private $organization;
-    private $personRepository;
-    private $tokenGenerator;
+    private BulkInvite $bulkInvite;
+    private Connection $connection;
+    private InviteRepository $inviteRepository;
+    private InviteUpdater $inviteUpdater;
+    private Organization $organization;
+    private PersonRepository $personRepository;
+    private TokenGenerator $tokenGenerator;
 
     public function __construct(
         BulkInvite $bulkInvite,

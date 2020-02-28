@@ -12,7 +12,7 @@ class ChooseTeamUrlController
 {
     use \Hipper\Api\ApiControllerTrait;
 
-    private $organization;
+    private Organization $organization;
 
     public function __construct(
         Organization $organization

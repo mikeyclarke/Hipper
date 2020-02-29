@@ -11,8 +11,8 @@ use Hipper\Team\TeamRepository;
 
 class KnowledgebaseOwner
 {
-    private $projectRepository;
-    private $teamRepository;
+    private ProjectRepository $projectRepository;
+    private TeamRepository $teamRepository;
 
     public function __construct(
         ProjectRepository $projectRepository,

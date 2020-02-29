@@ -7,6 +7,7 @@ use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
 use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
+use Hipper\Organization\OrganizationModel;
 use Hipper\Project\ProjectModel;
 use Hipper\Team\TeamModel;
 use Hipper\Topic\TopicModel;
@@ -23,6 +24,8 @@ class UpdateTopicController
 {
     use \Hipper\Api\ApiControllerTrait;
 
+    private const CREATE_ORGANIZATION_DOC_ROUTE_NAME = 'front_end.app.organization.doc.create';
+    private const CREATE_ORGANIZATION_TOPIC_ROUTE_NAME = 'front_end.app.organization.topic.create';
     private const CREATE_PROJECT_DOC_ROUTE_NAME = 'front_end.app.project.doc.create';
     private const CREATE_PROJECT_TOPIC_ROUTE_NAME = 'front_end.app.project.topic.create';
     private const CREATE_TEAM_DOC_ROUTE_NAME = 'front_end.app.team.doc.create';
@@ -119,6 +122,10 @@ class UpdateTopicController
                 $routeName = self::CREATE_PROJECT_DOC_ROUTE_NAME;
                 $routeParams = array_merge($parameters, ['project_url_id' => $knowledgebaseOwner->getUrlId()]);
                 break;
+            case OrganizationModel::class:
+                $routeName = self::CREATE_ORGANIZATION_DOC_ROUTE_NAME;
+                $routeParams = $parameters;
+                break;
             default:
                 throw new UnsupportedKnowledgebaseEntityException;
         }
@@ -145,6 +152,10 @@ class UpdateTopicController
             case ProjectModel::class:
                 $routeName = self::CREATE_PROJECT_TOPIC_ROUTE_NAME;
                 $routeParams = array_merge($parameters, ['project_url_id' => $knowledgebaseOwner->getUrlId()]);
+                break;
+            case OrganizationModel::class:
+                $routeName = self::CREATE_ORGANIZATION_TOPIC_ROUTE_NAME;
+                $routeParams = $parameters;
                 break;
             default:
                 throw new UnsupportedKnowledgebaseEntityException;

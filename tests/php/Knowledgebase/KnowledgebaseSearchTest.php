@@ -56,6 +56,7 @@ class KnowledgebaseSearchTest extends TestCase
         $displayTimeZone = 'Europe/London';
         $organization = new OrganizationModel;
         $organization->setId('org-uuid');
+        $organization->setKnowledgebaseId('org-kb-uuid');
 
         $searchResults = [
             [
@@ -107,6 +108,7 @@ class KnowledgebaseSearchTest extends TestCase
             [
                 $organization,
                 [
+                    'org-kb-uuid' => $organization,
                     'kb1-uuid' => TeamModel::createFromArray($knowledgebasesResult[0]),
                     'kb2-uuid' => ProjectModel::createFromArray($knowledgebasesResult[1]),
                 ],
@@ -132,6 +134,7 @@ class KnowledgebaseSearchTest extends TestCase
         $displayTimeZone = 'Europe/London';
         $organization = new OrganizationModel;
         $organization->setId('org-uuid');
+        $organization->setKnowledgebaseId('org-kb-uuid');
         $knowledgebaseOwner = new TeamModel;
         $knowledgebaseOwner->setKnowledgebaseId('team-kb-uuid');
 

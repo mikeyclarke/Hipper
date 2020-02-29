@@ -36,3 +36,56 @@ organization.projects.search:
     path: /search/projects
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Organization\OrganizationProjectsSearchController::getAction
+
+organization.docs.list:
+    path: /docs
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Organization\OrganizationDocsController::getAction
+
+organization.topic.create:
+    path: /docs/new-topic
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Topic\CreateTopicController::getAction
+    defaults:
+        knowledgebase_type: 'organization'
+
+organization.doc.create:
+    path: /docs/new
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Document\CreateDocumentController::getAction
+    defaults:
+        knowledgebase_type: 'organization'
+
+organization.doc.edit:
+    path: /docs/edit/{path}
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Document\EditDocumentController::getAction
+    defaults:
+        knowledgebase_type: 'organization'
+        _before_middlewares:
+            - knowledgebase_routing_middleware:before
+    requirements:
+        path: '.+'
+
+organization.doc.export:
+    path: /docs/export/{path}
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Document\ExportDocumentController::getAction
+    defaults:
+        knowledgebase_type: 'organization'
+        _before_middlewares:
+            - knowledgebase_routing_middleware:before
+    requirements:
+        path: '.+'
+
+organization.doc.show:
+    path: /docs/{path}
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrTopicControllerRouter::route
+    defaults:
+        knowledgebase_type: 'organization'
+        action: 'getAction'
+        _before_middlewares:
+            - knowledgebase_routing_middleware:before
+    requirements:
+        path: '.+'

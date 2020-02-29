@@ -34,7 +34,7 @@ class KnowledgebaseRoutingMiddleware
 
         $organization = $request->attributes->get('organization');
         $organizationId = $organization->getId();
-        $knowledgebaseId = $this->getKnowledgebaseId($request);
+        $knowledgebaseId = $this->getKnowledgebaseId($request, $organization);
 
         if (null === $urlId) {
             $result = $this->knowledgebaseRouteRepository->findCanonicalRouteByRoute(
@@ -95,7 +95,7 @@ class KnowledgebaseRoutingMiddleware
         return [mb_substr($path, 0, -9), $matches[1]];
     }
 
-    private function getKnowledgebaseId(Request $request): string
+    private function getKnowledgebaseId(Request $request, OrganizationModel $organization): string
     {
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
         if ($knowledgebaseType === 'team') {
@@ -106,6 +106,10 @@ class KnowledgebaseRoutingMiddleware
         if ($knowledgebaseType === 'project') {
             $project = $request->attributes->get('project');
             return $project->getKnowledgebaseId();
+        }
+
+        if ($knowledgebaseType === 'organization') {
+            return $organization->getKnowledgebaseId();
         }
 
         throw new UnsupportedKnowledgebaseEntityException;

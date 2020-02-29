@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace Hipper\Organization;
 
-final class OrganizationModel
+use Hipper\Knowledgebase\KnowledgebaseOwnerModelInterface;
+
+final class OrganizationModel implements KnowledgebaseOwnerModelInterface
 {
     use \Hipper\ModelTrait;
 
     const DEFAULT_NAME = 'Unnamed Organization';
     const FIELD_MAP = [
         'id' => 'id',
+        'knowledgebase_id' => 'knowledgebaseId',
         'name' => 'name',
         'subdomain' => 'subdomain',
         'approved_email_domain_signup_allowed' => 'approvedEmailDomainSignupAllowed',
@@ -19,6 +22,7 @@ final class OrganizationModel
     ];
 
     private $id;
+    private $knowledgebaseId;
     private $name;
     private $subdomain;
     private $approvedEmailDomainSignupAllowed;
@@ -41,6 +45,16 @@ final class OrganizationModel
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function setKnowledgebaseId(string $knowledgebaseId): void
+    {
+        $this->knowledgebaseId = $knowledgebaseId;
+    }
+
+    public function getKnowledgebaseId(): string
+    {
+        return $this->knowledgebaseId;
     }
 
     public function setName(string $name): void
@@ -104,5 +118,10 @@ final class OrganizationModel
     public function getUpdated(): string
     {
         return $this->updated;
+    }
+
+    public function getUrlId(): ?string
+    {
+        return null;
     }
 }

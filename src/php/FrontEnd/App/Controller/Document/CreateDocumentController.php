@@ -40,16 +40,21 @@ class CreateDocumentController
             'allowed_marks' => $this->documentAllowedMarks,
             'allowed_nodes' => $this->documentAllowedNodes,
             'htmlClassList' => ['l-document-editor'],
+            'topic_id' => $request->query->get('in', null),
         ];
 
         switch ($knowledgebaseType) {
             case 'team':
                 $knowledgebaseOwner = $request->attributes->get('team');
-                $context = array_merge($context, $this->createTeamContext($request, $knowledgebaseOwner));
+                $context = array_merge($context, $this->createTeamContext($knowledgebaseOwner));
                 break;
             case 'project':
                 $knowledgebaseOwner = $request->attributes->get('project');
-                $context = array_merge($context, $this->createProjectContext($request, $knowledgebaseOwner));
+                $context = array_merge($context, $this->createProjectContext($knowledgebaseOwner));
+                break;
+            case 'organization':
+                $knowledgebaseOwner = $organization;
+                $context = array_merge($context, $this->createOrganizationContext($knowledgebaseOwner));
                 break;
             default:
                 throw new UnsupportedKnowledgebaseEntityException;
@@ -72,23 +77,29 @@ class CreateDocumentController
         );
     }
 
-    private function createTeamContext(Request $request, KnowledgebaseOwnerModelInterface $team): array
+    private function createTeamContext(KnowledgebaseOwnerModelInterface $team): array
     {
         return [
             'html_title' => sprintf('New doc – %s', $team->getName()),
             'knowledgebase_id' => $team->getKnowledgebaseId(),
-            'topic_id' => $request->query->get('in', null),
             'team' => $team,
         ];
     }
 
-    private function createProjectContext(Request $request, KnowledgebaseOwnerModelInterface $project): array
+    private function createProjectContext(KnowledgebaseOwnerModelInterface $project): array
     {
         return [
             'html_title' => sprintf('New doc – %s', $project->getName()),
             'knowledgebase_id' => $project->getKnowledgebaseId(),
-            'topic_id' => $request->query->get('in', null),
             'project' => $project,
+        ];
+    }
+
+    private function createOrganizationContext(KnowledgebaseOwnerModelInterface $organization): array
+    {
+        return [
+            'html_title' => 'New doc',
+            'knowledgebase_id' => $organization->getKnowledgebaseId(),
         ];
     }
 }

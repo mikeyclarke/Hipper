@@ -63,7 +63,9 @@ class KnowledgebaseSearch
             $organization->getId()
         );
 
-        $knowledgebaseOwners = [];
+        $knowledgebaseOwners = [
+            $organization->getKnowledgebaseId() => $organization,
+        ];
         foreach ($knowledgebasesResult as $row) {
             if ($row['entity'] === 'team') {
                 $knowledgebaseOwners[$row['knowledgebase_id']] = TeamModel::createFromArray($row);

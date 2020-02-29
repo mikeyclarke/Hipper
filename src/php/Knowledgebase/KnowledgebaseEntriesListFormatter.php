@@ -26,7 +26,7 @@ class KnowledgebaseEntriesListFormatter
         array $topics,
         string $displayTimeZone,
         string $routeName,
-        array $routeParams
+        array $routeParams = []
     ): array {
         $entries = [];
 

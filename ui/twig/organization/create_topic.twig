@@ -1,0 +1,9 @@
+{% set htmlClassList = ['is-editing-page-header'] %}
+
+{% extends '_app_default_layout_slim.twig' %}
+
+{% block content %}
+
+{% include 'topic/_topic_header.twig' with { mode: 'create', is_editable: true } %}
+
+{% endblock %}

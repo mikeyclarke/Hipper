@@ -9,7 +9,7 @@ use Hipper\Knowledgebase\Storage\KnowledgebaseInserter;
 
 class KnowledgebaseCreator
 {
-    const SUPPORTED_ENTITIES = ['team', 'project'];
+    const SUPPORTED_ENTITIES = ['organization', 'team', 'project'];
 
     private $idGenerator;
     private $knowledgebaseInserter;

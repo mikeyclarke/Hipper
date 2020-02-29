@@ -13,10 +13,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KnowledgebaseRouteUrlGenerator
 {
+    const EDIT_ORGANIZATION_DOC_ROUTE_NAME = 'front_end.app.organization.doc.edit';
     const EDIT_TEAM_DOC_ROUTE_NAME = 'front_end.app.team.doc.edit';
     const EDIT_PROJECT_DOC_ROUTE_NAME = 'front_end.app.project.doc.edit';
+    const EXPORT_ORGANIZATION_DOC_ROUTE_NAME = 'front_end.app.organization.doc.export';
     const EXPORT_TEAM_DOC_ROUTE_NAME = 'front_end.app.team.doc.export';
     const EXPORT_PROJECT_DOC_ROUTE_NAME = 'front_end.app.project.doc.export';
+    const SHOW_ORGANIZATION_DOC_ROUTE_NAME = 'front_end.app.organization.doc.show';
     const SHOW_TEAM_DOC_ROUTE_NAME = 'front_end.app.team.doc.show';
     const SHOW_PROJECT_DOC_ROUTE_NAME = 'front_end.app.project.doc.show';
 
@@ -71,6 +74,19 @@ class KnowledgebaseRouteUrlGenerator
                     $routeName = self::SHOW_PROJECT_DOC_ROUTE_NAME;
             }
             $routeParams['project_url_id'] = $knowledgebaseOwner->getUrlId();
+        }
+
+        if ($knowledgebaseOwner instanceof OrganizationModel) {
+            switch ($method) {
+                case 'edit':
+                    $routeName = self::EDIT_ORGANIZATION_DOC_ROUTE_NAME;
+                    break;
+                case 'export':
+                    $routeName = self::EXPORT_ORGANIZATION_DOC_ROUTE_NAME;
+                    break;
+                default:
+                    $routeName = self::SHOW_ORGANIZATION_DOC_ROUTE_NAME;
+            }
         }
 
         if (null === $routeName) {

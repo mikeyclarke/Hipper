@@ -6,6 +6,8 @@ namespace Hipper\Tests\Knowledgebase;
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
 use Hipper\Knowledgebase\KnowledgebaseModel;
 use Hipper\Knowledgebase\KnowledgebaseOwner;
+use Hipper\Organization\OrganizationModel;
+use Hipper\Organization\OrganizationRepository;
 use Hipper\Project\ProjectModel;
 use Hipper\Project\ProjectRepository;
 use Hipper\Team\TeamModel;
@@ -17,6 +19,7 @@ class KnowledgebaseOwnerTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
+    private $organizationRepository;
     private $projectRepository;
     private $teamRepository;
     private $knowledgebaseOwner;
@@ -24,10 +27,12 @@ class KnowledgebaseOwnerTest extends TestCase
 
     public function setUp(): void
     {
+        $this->organizationRepository = m::mock(OrganizationRepository::class);
         $this->projectRepository = m::mock(ProjectRepository::class);
         $this->teamRepository = m::mock(TeamRepository::class);
 
         $this->knowledgebaseOwner = new KnowledgebaseOwner(
+            $this->organizationRepository,
             $this->projectRepository,
             $this->teamRepository
         );
@@ -82,6 +87,27 @@ class KnowledgebaseOwnerTest extends TestCase
     /**
      * @test
      */
+    public function getWithKnowledgebaseBelongingToOrganization()
+    {
+        $this->knowledgebase->setEntity('organization');
+
+        $organizationRow = [
+            'id' => 'org-uuid',
+            'knowledgebase_id' => 'kb-uuid',
+        ];
+
+        $this->createOrganizationRepositoryExpectation(
+            [$this->knowledgebase->getOrganizationId()],
+            $organizationRow
+        );
+
+        $result = $this->knowledgebaseOwner->get($this->knowledgebase);
+        $this->assertInstanceOf(OrganizationModel::class, $result);
+    }
+
+    /**
+     * @test
+     */
     public function getWithKnowledgebaseBelongingToUnknownEntity()
     {
         $this->knowledgebase->setEntity('foo');
@@ -89,6 +115,15 @@ class KnowledgebaseOwnerTest extends TestCase
         $this->expectException(UnsupportedKnowledgebaseEntityException::class);
 
         $this->knowledgebaseOwner->get($this->knowledgebase);
+    }
+
+    private function createOrganizationRepositoryExpectation($args, $result)
+    {
+        $this->organizationRepository
+            ->shouldReceive('findById')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
     }
 
     private function createProjectRepositoryExpectation($args, $result)

@@ -20,6 +20,8 @@ use Twig\Environment as Twig;
 
 class TopicController
 {
+    private const CREATE_ORGANIZATION_DOC_ROUTE_NAME = 'front_end.app.organization.doc.create';
+    private const CREATE_ORGANIZATION_TOPIC_ROUTE_NAME = 'front_end.app.organization.topic.create';
     private const CREATE_PROJECT_DOC_ROUTE_NAME = 'front_end.app.project.doc.create';
     private const CREATE_PROJECT_TOPIC_ROUTE_NAME = 'front_end.app.project.topic.create';
     private const CREATE_TEAM_DOC_ROUTE_NAME = 'front_end.app.team.doc.create';
@@ -118,6 +120,22 @@ class TopicController
 
                 $context['current_user_is_in_project'] = $request->attributes->get('current_user_is_in_project');
                 $context['project'] = $knowledgebaseOwner;
+
+                break;
+            case 'organization':
+                $knowledgebaseOwner = $organization;
+                $createDocRoute = $this->router->generate(self::CREATE_ORGANIZATION_DOC_ROUTE_NAME, [
+                    'subdomain' => $subdomain,
+                    'in' => $topic->getId(),
+                ]);
+                $createTopicRoute = $this->router->generate(self::CREATE_ORGANIZATION_TOPIC_ROUTE_NAME, [
+                    'subdomain' => $subdomain,
+                    'in' => $topic->getId(),
+                    'return_to' => $request->getRequestUri(),
+                ]);
+                $showDocRouteName = KnowledgebaseRouteUrlGenerator::SHOW_ORGANIZATION_DOC_ROUTE_NAME;
+                $showDocRouteParams = [];
+                $twigTemplate = 'organization/organization_topic.twig';
 
                 break;
             default:

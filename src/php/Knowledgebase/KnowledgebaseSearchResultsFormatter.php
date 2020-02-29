@@ -43,7 +43,12 @@ class KnowledgebaseSearchResultsFormatter
                 $knowledgebaseOwnerType = $this->getKnowledgebaseOwnerType($knowledgebaseOwner);
                 list($routeName, $routeParams) = $this->getRouteDetails($knowledgebaseOwner);
 
-                $owners = ["{$knowledgebaseOwner->getName()} {$knowledgebaseOwnerType} docs"];
+                if (null === $knowledgebaseOwnerType) {
+                    $owners = ["{$knowledgebaseOwner->getName()} docs"];
+                } else {
+                    $owners = ["{$knowledgebaseOwner->getName()} {$knowledgebaseOwnerType} docs"];
+                }
+
                 $parentTopicId = $result['parent_topic_id'];
                 if (null !== $parentTopicId) {
                     if (!isset($ancestorTree[$parentTopicId])) {
@@ -108,10 +113,17 @@ class KnowledgebaseSearchResultsFormatter
             ];
         }
 
+        if ($knowledgebaseOwner instanceof OrganizationModel) {
+            return [
+                KnowledgebaseRouteUrlGenerator::SHOW_ORGANIZATION_DOC_ROUTE_NAME,
+                []
+            ];
+        }
+
         throw new UnsupportedKnowledgebaseEntityException;
     }
 
-    private function getKnowledgebaseOwnerType(KnowledgebaseOwnerModelInterface $knowledgebaseOwner): string
+    private function getKnowledgebaseOwnerType(KnowledgebaseOwnerModelInterface $knowledgebaseOwner): ?string
     {
         if ($knowledgebaseOwner instanceof ProjectModel) {
             return 'project';
@@ -119,6 +131,10 @@ class KnowledgebaseSearchResultsFormatter
 
         if ($knowledgebaseOwner instanceof TeamModel) {
             return 'team';
+        }
+
+        if ($knowledgebaseOwner instanceof OrganizationModel) {
+            return null;
         }
 
         throw new UnsupportedKnowledgebaseEntityException;

@@ -5,6 +5,7 @@ namespace Hipper\FrontEnd\App\Controller\Topic;
 
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
 use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
+use Hipper\Organization\OrganizationModel;
 use Hipper\Security\UntrustedInternalUriRedirector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,16 +37,25 @@ class CreateTopicController
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
         $returnTo = $request->query->get('return_to');
 
+        $context = [
+            'parent_topic_id' => $request->query->get('in', null),
+        ];
+
         switch ($knowledgebaseType) {
             case 'project':
                 $twigTemplate = 'project/create_topic.twig';
-                $context = $this->getProjectGetActionContext($request);
+                $context = array_merge($context, $this->getProjectContext($request, $organization));
                 $knowledgebaseOwner = $context['project'];
                 break;
             case 'team':
                 $twigTemplate = 'team/create_topic.twig';
-                $context = $this->getTeamGetActionContext($request);
+                $context = array_merge($context, $this->getTeamContext($request, $organization));
                 $knowledgebaseOwner = $context['team'];
+                break;
+            case 'organization':
+                $twigTemplate = 'organization/create_topic.twig';
+                $context = array_merge($context, $this->getOrganizationContext($request, $organization));
+                $knowledgebaseOwner = $organization;
                 break;
             default:
                 throw new UnsupportedKnowledgebaseEntityException;
@@ -65,7 +75,7 @@ class CreateTopicController
         );
     }
 
-    private function getProjectGetActionContext(Request $request): array
+    private function getProjectContext(Request $request, OrganizationModel $organization): array
     {
         $project = $request->attributes->get('project');
         $currentUserIsInProject = $request->attributes->get('current_user_is_in_project');
@@ -73,12 +83,11 @@ class CreateTopicController
         return [
             'knowledgebase_id' => $project->getKnowledgebaseId(),
             'current_user_is_in_project' => $currentUserIsInProject,
-            'parent_topic_id' => $request->query->get('in', null),
             'project' => $project,
         ];
     }
 
-    private function getTeamGetActionContext(Request $request): array
+    private function getTeamContext(Request $request, OrganizationModel $organization): array
     {
         $team = $request->attributes->get('team');
         $currentUserIsInTeam = $request->attributes->get('current_user_is_in_team');
@@ -86,8 +95,14 @@ class CreateTopicController
         return [
             'knowledgebase_id' => $team->getKnowledgebaseId(),
             'current_user_is_in_team' => $currentUserIsInTeam,
-            'parent_topic_id' => $request->query->get('in', null),
             'team' => $team,
+        ];
+    }
+
+    private function getOrganizationContext(Request $request, OrganizationModel $organization): array
+    {
+        return [
+            'knowledgebase_id' => $organization->getKnowledgebaseId(),
         ];
     }
 

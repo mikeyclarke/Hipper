@@ -1,0 +1,28 @@
+{% extends '_app_default_layout_slim.twig' %}
+
+{% block navigational_header %}
+<header class="c-app-header--hide-at-medium">
+    <div class="c-app-header__top-bar">
+        {% include '_mobile_navigation_toggle.twig' %}
+
+        <div class="c-app-header__compass">
+            <span class="c-app-header__compass-name">Docs</span>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+{% if knowledgebase_entries is empty %}
+    <div class="c-empty-page-notice">
+        <h1 class="c-empty-page-notice__title">Start sharing knowledge</h1>
+        <p class="c-empty-page-notice__copy">Use docs to keep everyone in this team on the same page about how you work and what you’re working on.</p>
+    </div>
+{% else %}
+    {% include '_knowledgebase_entries.twig' %}
+{% endif %}
+
+{% include '_floating_knowledgebase_button.twig' %}
+
+{% endblock %}

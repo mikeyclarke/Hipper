@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KnowledgebaseBreadcrumbsFormatter
 {
+    const LIST_ORGANIZATION_DOCS_ROUTE_NAME = 'front_end.app.organization.docs.list';
     const LIST_PROJECT_DOCS_ROUTE_NAME = 'front_end.app.project.docs.list';
     const LIST_TEAM_DOCS_ROUTE_NAME = 'front_end.app.team.docs.list';
 
@@ -75,6 +76,11 @@ class KnowledgebaseBreadcrumbsFormatter
             $display = sprintf('%s project docs', $knowledgebaseOwner->getName());
             $routeName = self::LIST_PROJECT_DOCS_ROUTE_NAME;
             $routeParams['project_url_id'] = $knowledgebaseOwner->getUrlId();
+        }
+
+        if ($knowledgebaseOwner instanceof OrganizationModel) {
+            $display = sprintf('%s docs', $knowledgebaseOwner->getName());
+            $routeName = self::LIST_ORGANIZATION_DOCS_ROUTE_NAME;
         }
 
         if (null === $routeName) {

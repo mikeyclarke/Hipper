@@ -31,7 +31,7 @@ class KnowledgebaseBreadcrumbs
             $ancestorTopics = $this->topicRepository->getByIdWithAncestors(
                 $parentTopicId,
                 $knowledgebaseOwner->getKnowledgebaseId(),
-                $knowledgebaseOwner->getOrganizationId()
+                $organization->getId()
             );
         }
 

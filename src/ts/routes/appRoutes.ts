@@ -28,6 +28,21 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
             controller: (): any[] => [bottle.container.searchController, 'start'],
         },
 
+        create_organization_doc: {
+            path: '/docs/new',
+            controller: (): any[] => [bottle.container.createDocumentController, 'start'],
+        },
+
+        create_organization_topic: {
+            path: '/docs/new-topic',
+            controller: (): any[] => [bottle.container.createTopicController, 'start'],
+        },
+
+        edit_organization_doc: {
+            path: '/docs/edit/:doc_route(.+)',
+            controller: (): any[] => [bottle.container.editDocumentController, 'start'],
+        },
+
         team_search: {
             path: '/teams/:team_url_id/search',
             controller: (): any[] => [bottle.container.searchController, 'start'],
@@ -86,6 +101,11 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
         edit_team_doc: {
             path: '/teams/:team_url_id/docs/edit/:doc_route(.+)',
             controller: (): any[] => [bottle.container.editDocumentController, 'start'],
+        },
+
+        show_organization_knowledgebase_entry: {
+            path: '/docs/:doc_route(.+)',
+            controller: (): any[] => [bottle.container.documentOrTopicControllerRouter, 'route'],
         },
 
         show_team_knowledgebase_entry: {

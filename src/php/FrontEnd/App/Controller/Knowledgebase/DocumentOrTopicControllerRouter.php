@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DocumentOrTopicControllerRouter
 {
-    private $documentController;
-    private $topicController;
+    private DocumentController $documentController;
+    private TopicController $topicController;
 
     public function __construct(
         DocumentController $documentController,

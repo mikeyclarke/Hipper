@@ -13,11 +13,11 @@ use Hipper\Person\PersonCreator;
 
 class CreateFromInvite
 {
-    private $connection;
-    private $inviteDeleter;
-    private $inviteRepository;
-    private $personCreationValidator;
-    private $personCreator;
+    private Connection $connection;
+    private InviteDeleter $inviteDeleter;
+    private InviteRepository $inviteRepository;
+    private PersonCreationValidator $personCreationValidator;
+    private PersonCreator $personCreator;
 
     public function __construct(
         Connection $connection,

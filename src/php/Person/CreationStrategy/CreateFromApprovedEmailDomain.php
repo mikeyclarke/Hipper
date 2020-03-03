@@ -14,10 +14,10 @@ use Hipper\Validation\Exception\ValidationException;
 
 class CreateFromApprovedEmailDomain
 {
-    private $connection;
-    private $personCreationValidator;
-    private $personCreator;
-    private $requestEmailAddressVerification;
+    private Connection $connection;
+    private PersonCreationValidator $personCreationValidator;
+    private PersonCreator $personCreator;
+    private RequestEmailAddressVerification $requestEmailAddressVerification;
 
     public function __construct(
         Connection $connection,

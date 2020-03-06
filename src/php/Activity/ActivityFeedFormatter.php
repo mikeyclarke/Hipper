@@ -72,7 +72,7 @@ class ActivityFeedFormatter
         }
 
         try {
-            $decoded = json_decode($entry['storage'], false, JSON_THROW_ON_ERROR);
+            $decoded = json_decode($entry['storage'], true, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
             throw new StorageDecodeException;
         }

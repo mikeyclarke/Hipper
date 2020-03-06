@@ -49,6 +49,7 @@
 @use 'component/search-filters';
 @use 'component/search-results';
 @use 'component/empty-search';
+@use 'component/activity-feed';
 
 @use 'layout/app-default';
 @use 'layout/sheet' as sheet-layout;

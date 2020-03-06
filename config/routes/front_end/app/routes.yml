@@ -14,13 +14,6 @@ organization_routes:
     resource: organization.yml
     name_prefix: 'front_end.app.'
 
-front_end.app.index:
-    path: /
-    controller: Hipper\Controller\DefaultController::index
-    defaults:
-        _before_middlewares:
-            - app_onboarding_completed_middleware:before
-
 front_end.app.welcome.get:
     path: /welcome
     methods: [GET]

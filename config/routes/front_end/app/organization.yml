@@ -17,6 +17,14 @@ organization.sign_out:
     methods: [POST]
     controller: Hipper\FrontEnd\App\Controller\Organization\SignOutController::signOut
 
+organization.home:
+    path: /
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Organization\OrganizationHomeController::getAction
+    defaults:
+        _before_middlewares:
+            - app_onboarding_completed_middleware:before
+
 organization.search:
     path: /search
     methods: [GET]

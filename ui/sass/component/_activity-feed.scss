@@ -1,0 +1,105 @@
+@use 'config/config';
+@use 'helper/breakpoint';
+@use 'helper/font-smoothing';
+
+$_background-color: config.config-get(global, color, white);
+$_border-radius: 8px;
+$_border-radius-medium-bp: 4px;
+$_border: 1px solid config.config-get(color-shades, dark, 100);
+$_margin: 0;
+$_padding: 16px;
+$_padding-medium-bp: 28px;
+
+$_timeline-color: rgba(#c4c2c5, .6);
+
+$_entry-columns: 32px 1fr;
+$_entry-column-gap: 12px;
+$_entry-column-gap-medium-bp: 24px;
+$_entry-margin: 0 0 32px;
+
+$_text-color: config.config-get(color-shades, dark, 900);
+$_text-font-size: 16px;
+$_text-line-height: 24px;
+$_text-margin: 4px 0 6px;
+
+$_link-color: config.config-get(color-shades, primary, 1000);
+$_link-decoration: none;
+$_link-focused-border-radius: 4px;
+$_link-focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+
+$_timestamp-color: config.config-get(color-shades, dark, 500);
+$_timestamp-font-size: 14px;
+
+.c-activity-feed {
+    background-color: $_background-color;
+    border-radius: $_border-radius;
+    border: $_border;
+    list-style: none;
+    margin: $_margin;
+    padding: $_padding;
+
+    @include breakpoint.breakpoint(app, medium) {
+        border-radius: $_border-radius-medium-bp;
+        padding: $_padding-medium-bp;
+    }
+}
+
+.c-activity-feed__entry {
+    display: grid;
+    grid-template-columns: $_entry-columns;
+    column-gap: $_entry-column-gap;
+    margin: $_entry-margin;
+    position: relative;
+
+    @include breakpoint.breakpoint(app, medium) {
+        column-gap: $_entry-column-gap-medium-bp;
+    }
+}
+
+.c-activity-feed__entry:last-child {
+    margin-bottom: 0;
+}
+
+.c-activity-feed__entry:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 38px;
+    left: 15px;
+    bottom: -26px;
+    width: 2px;
+    background: repeating-linear-gradient($_timeline-color, $_timeline-color 2px, transparent 2px, transparent 6px);
+}
+
+.c-activity-feed__body {
+    
+}
+
+.c-activity-feed__text {
+    font-size: $_text-font-size;
+    color: $_text-color;
+    line-height: $_text-line-height;
+    margin: $_text-margin;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-activity-feed__text strong,
+.c-activity-feed__text a {
+    font-weight: 500;
+}
+
+.c-activity-feed__text a {
+    color: $_link-color;
+    text-decoration: $_link-decoration;
+}
+
+.c-activity-feed__text a:focus {
+    border-radius: $_link-focused-border-radius;
+    box-shadow: $_link-focused-box-shadow;
+    outline: 0;
+}
+
+.c-activity-feed__timestamp {
+    color: $_timestamp-color;
+    font-size: $_timestamp-font-size;
+    @include font-smoothing.font-smoothing;
+}

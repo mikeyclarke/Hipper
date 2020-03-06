@@ -2,22 +2,56 @@
 @use 'helper/breakpoint';
 @use '../helper/font-smoothing';
 
+$_margin: 0 0 32px;
+$_margin-medium-bp: 0 0 42px;
+
+$_title-color: config.config-get(color-shades, dark, 900);
+$_title-font-size: 18px;
+$_title-font-weight: 600;
+$_title-margin: 0 16px 20px;
+
+$_title-large-font-size-medium-bp: 24px;
+
+$content-contained-padding: 0 16px;
+
 .c-page-section {
-    margin: 0 0 32px;
+    margin: $_margin;
 
     @include breakpoint.breakpoint(app, medium) {
-        margin-bottom: 42px;
+        margin: $_margin-medium-bp;
+    }
+}
+
+%c-page-section__title {
+    color: $_title-color;
+    font-size: $_title-font-size;
+    font-weight: $_title-font-weight;
+    margin: $_title-margin;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 
 .c-page-section__title {
-    color: config.config-get(color-shades, dark, 1100);
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0 16px 20px;
-    @include font-smoothing.font-smoothing;
+    @extend %c-page-section__title;
+}
+
+.c-page-section__title--large {
+    @extend %c-page-section__title;
+
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $_title-large-font-size-medium-bp;
+    }
 }
 
 .c-page-section__content--contained {
-    padding: 0 16px;
+    padding: $content-contained-padding;
+
+    @include breakpoint.breakpoint(app, medium) {
+        padding-left: 0;
+        padding-right: 0;
+    }
 }

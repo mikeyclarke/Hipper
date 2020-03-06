@@ -1,0 +1,16 @@
+{% for activity in activity_feed %}
+    <li class="c-activity-feed__entry">
+        <a href="{{ activity.actor.route }}" class="c-avatar c-activity-feed__avatar">
+            <span class="c-avatar__initials">{{ activity.actor.abbreviated_name }}</span>
+        </a>
+
+        <div class="c-activity-feed__body">
+            <p class="c-activity-feed__text">{% include 'activity/_' ~ activity.type ~ '_activity.twig' with {
+                activity: activity,
+                organization: organization
+            } only %}</p>
+
+            <span class="c-activity-feed__timestamp"><time datetime="{{ activity.created.utc_datetime }}" title="{{ activity.created.verbose }}">{{ activity.created.time_ago }}</time></span>
+        </div>
+    </li>
+{% endfor %}

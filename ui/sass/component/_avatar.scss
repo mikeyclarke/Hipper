@@ -10,6 +10,8 @@ $_topic-color: config.config-get(color-shades, secondary, 1100);
 $_topic-gradient-from: rgba($_topic-color, .2);
 $_topic-gradient-to: rgba(color.adjust($_topic-color, $lightness: 5%), .2);
 
+$_focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+
 %c-avatar {
     align-items: center;
     border-radius: 100%;
@@ -17,7 +19,13 @@ $_topic-gradient-to: rgba(color.adjust($_topic-color, $lightness: 5%), .2);
     font-size: 32px;
     height: 32px;
     justify-content: center;
+    text-decoration: none;
     width: 32px;
+}
+
+%c-avatar:focus {
+    box-shadow: $_focused-box-shadow;
+    outline: 0;
 }
 
 .c-avatar,

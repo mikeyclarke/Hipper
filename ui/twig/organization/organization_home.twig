@@ -1,0 +1,29 @@
+{% extends '_app_default_layout.twig' %}
+
+{% block navigational_header %}
+<header class="c-app-header--hide-at-medium">
+    <div class="c-app-header__top-bar">
+        {% include '_mobile_navigation_toggle.twig' %}
+
+        <div class="c-app-header__compass">
+            <span class="c-app-header__compass-name">Home</span>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <div class="c-page-section">
+        <h1 class="c-page-section__title--large">Activity</h1>
+
+        <div class="c-page-section__content">
+            <ol class="c-activity-feed">
+                {% include 'activity/_activity_feed_list.twig' %}
+            </ol>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

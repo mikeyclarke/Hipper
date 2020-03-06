@@ -10,8 +10,6 @@ use Hipper\Knowledgebase\KnowledgebaseEntriesListFormatter;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Hipper\Organization\OrganizationModel;
 use Hipper\TimeZone\TimeZoneFromRequest;
-use Hipper\Topic\TopicModel;
-use Hipper\Topic\TopicRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -31,7 +29,6 @@ class TopicController
     private KnowledgebaseEntries $knowledgebaseEntries;
     private KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter;
     private TimeZoneFromRequest $timeZoneFromRequest;
-    private TopicRepository $topicRepository;
     private Twig $twig;
     private UrlGeneratorInterface $router;
 
@@ -40,7 +37,6 @@ class TopicController
         KnowledgebaseEntries $knowledgebaseEntries,
         KnowledgebaseEntriesListFormatter $knowledgebaseEntriesListFormatter,
         TimeZoneFromRequest $timeZoneFromRequest,
-        TopicRepository $topicRepository,
         Twig $twig,
         UrlGeneratorInterface $router
     ) {
@@ -48,7 +44,6 @@ class TopicController
         $this->knowledgebaseEntries = $knowledgebaseEntries;
         $this->knowledgebaseEntriesListFormatter = $knowledgebaseEntriesListFormatter;
         $this->timeZoneFromRequest = $timeZoneFromRequest;
-        $this->topicRepository = $topicRepository;
         $this->twig = $twig;
         $this->router = $router;
     }
@@ -56,22 +51,11 @@ class TopicController
     public function getAction(Request $request): Response
     {
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
-        $knowledgebaseId = $request->attributes->get('knowledgebase_id');
         $organization = $request->attributes->get('organization');
-        $topicId = $request->attributes->get('topic_id');
+        $topic = $request->attributes->get('topic');
         $subdomain = $organization->getSubdomain();
         $timeZone = $this->timeZoneFromRequest->get($request);
 
-        $result = $this->topicRepository->findByIdInKnowledgebase(
-            $topicId,
-            $knowledgebaseId,
-            $organization->getId()
-        );
-        if (null === $result) {
-            throw new NotFoundHttpException;
-        }
-
-        $topic = TopicModel::createFromArray($result);
         $context = [
             'topic' => $topic,
             'html_title' => $topic->getName(),

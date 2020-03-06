@@ -87,5 +87,7 @@ organization.doc.show:
         action: 'getAction'
         _before_middlewares:
             - knowledgebase_routing_middleware:before
+        _after_middlewares:
+            - knowledgebase_entry_view_middleware:after
     requirements:
         path: '.+'

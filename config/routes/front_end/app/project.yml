@@ -76,6 +76,8 @@ project.doc.show:
         _before_middlewares:
             - project_model_from_url_id_middleware:before
             - knowledgebase_routing_middleware:before
+        _after_middlewares:
+            - knowledgebase_entry_view_middleware:after
     requirements:
         path: '.+'
 

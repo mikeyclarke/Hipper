@@ -3,22 +3,18 @@ declare(strict_types=1);
 
 namespace Hipper\FrontEnd\App\Controller\Document;
 
-use Hipper\Document\DocumentModel;
-use Hipper\Document\DocumentRepository;
 use Hipper\Document\DocumentRevisionRepository;
 use Hipper\Document\DocumentRenderer;
 use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment as Twig;
 
 class DocumentController
 {
     private $documentRenderer;
-    private $documentRepository;
     private $documentRevisionRepository;
     private $knowledgebaseBreadcrumbs;
     private $knowledgebaseRouteUrlGenerator;
@@ -26,14 +22,12 @@ class DocumentController
 
     public function __construct(
         DocumentRenderer $documentRenderer,
-        DocumentRepository $documentRepository,
         DocumentRevisionRepository $documentRevisionRepository,
         KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
         Twig $twig
     ) {
         $this->documentRenderer = $documentRenderer;
-        $this->documentRepository = $documentRepository;
         $this->documentRevisionRepository = $documentRevisionRepository;
         $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
@@ -43,17 +37,10 @@ class DocumentController
     public function getAction(Request $request): Response
     {
         $organization = $request->attributes->get('organization');
-        $documentId = $request->attributes->get('document_id');
+        $document = $request->attributes->get('document');
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
         $knowledgebaseOwner = $request->attributes->get($knowledgebaseType);
         $route = $request->attributes->get('knowledgebase_route');
-
-        $result = $this->documentRepository->findById($documentId, $organization->getId());
-        if (null === $result) {
-            throw new NotFoundHttpException;
-        }
-
-        $document = DocumentModel::createFromArray($result);
 
         $breadcrumbs = $this->knowledgebaseBreadcrumbs->get(
             $organization,

@@ -163,6 +163,9 @@ services:
     team_model_from_id_middleware:
         class: Hipper\Api\App\Middleware\Team\TeamModelFromIdMiddleware
 
+    knowledgebase_entry_view_middleware:
+        class: Hipper\FrontEnd\App\Middleware\Knowledgebase\KnowledgebaseEntryViewMiddleware
+
     knowledgebase_routing_middleware:
         class: Hipper\FrontEnd\App\Middleware\Knowledgebase\KnowledgebaseRoutingMiddleware
 

@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
+use Hipper\Team\Event\TeamCreatedEvent;
 use Hipper\Team\Storage\PersonToTeamMapInserter;
 use Hipper\Team\Storage\TeamInserter;
 use Hipper\Team\TeamCreator;
@@ -15,12 +16,14 @@ use Hipper\Team\TeamValidator;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TeamCreatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $connection;
+    private $eventDispatcher;
     private $idGenerator;
     private $knowledgebaseCreator;
     private $personToTeamMapInserter;
@@ -33,6 +36,7 @@ class TeamCreatorTest extends TestCase
     public function setUp(): void
     {
         $this->connection = m::mock(Connection::class);
+        $this->eventDispatcher = m::mock(EventDispatcherInterface::class);
         $this->idGenerator = m::mock(IdGenerator::class);
         $this->knowledgebaseCreator = m::mock(KnowledgebaseCreator::class);
         $this->personToTeamMapInserter = m::mock(PersonToTeamMapInserter::class);
@@ -42,6 +46,7 @@ class TeamCreatorTest extends TestCase
 
         $this->teamCreator = new TeamCreator(
             $this->connection,
+            $this->eventDispatcher,
             $this->idGenerator,
             $this->knowledgebaseCreator,
             $this->personToTeamMapInserter,
@@ -91,6 +96,7 @@ class TeamCreatorTest extends TestCase
         $this->createIdGeneratorExpectation($personToTeamMapId);
         $this->createPersonToTeamMapInserterExpectation([$personToTeamMapId, $this->person->getId(), $teamId]);
         $this->createConnectionCommitExpectation();
+        $this->createEventDispatcherExpectation([m::type(TeamCreatedEvent::class), TeamCreatedEvent::NAME]);
 
         $result = $this->teamCreator->create($this->person, $parameters);
         $this->assertInstanceOf(TeamModel::class, $result);
@@ -137,6 +143,14 @@ class TeamCreatorTest extends TestCase
         $this->expectException(\Exception::class);
 
         $this->teamCreator->create($this->person, $parameters);
+    }
+
+    private function createEventDispatcherExpectation($args)
+    {
+        $this->eventDispatcher
+            ->shouldReceive('dispatch')
+            ->once()
+            ->with(...$args);
     }
 
     private function createConnectionRollbackExpectation()

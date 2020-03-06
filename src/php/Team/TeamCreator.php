@@ -7,13 +7,16 @@ use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
+use Hipper\Team\Event\TeamCreatedEvent;
 use Hipper\Team\Storage\PersonToTeamMapInserter;
 use Hipper\Team\Storage\TeamInserter;
 use Hipper\Url\UrlSlugGenerator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TeamCreator
 {
     private Connection $connection;
+    private EventDispatcherInterface $eventDispatcher;
     private IdGenerator $idGenerator;
     private KnowledgebaseCreator $knowledgebaseCreator;
     private PersonToTeamMapInserter $personToTeamMapInserter;
@@ -23,6 +26,7 @@ class TeamCreator
 
     public function __construct(
         Connection $connection,
+        EventDispatcherInterface $eventDispatcher,
         IdGenerator $idGenerator,
         KnowledgebaseCreator $knowledgebaseCreator,
         PersonToTeamMapInserter $personToTeamMapInserter,
@@ -31,6 +35,7 @@ class TeamCreator
         UrlSlugGenerator $urlSlugGenerator
     ) {
         $this->connection = $connection;
+        $this->eventDispatcher = $eventDispatcher;
         $this->idGenerator = $idGenerator;
         $this->knowledgebaseCreator = $knowledgebaseCreator;
         $this->personToTeamMapInserter = $personToTeamMapInserter;
@@ -49,7 +54,7 @@ class TeamCreator
         $this->connection->beginTransaction();
         try {
             $knowledgebase = $this->knowledgebaseCreator->create('team', $person->getOrganizationId());
-            $team = $this->teamInserter->insert(
+            $result = $this->teamInserter->insert(
                 $id,
                 $parameters['name'],
                 $parameters['description'],
@@ -57,7 +62,7 @@ class TeamCreator
                 $knowledgebase['id'],
                 $person->getOrganizationId()
             );
-            $this->createPersonTeamMap($person->getId(), $team['id']);
+            $this->createPersonTeamMap($person->getId(), $result['id']);
 
             $this->connection->commit();
         } catch (\Exception $e) {
@@ -65,7 +70,12 @@ class TeamCreator
             throw $e;
         }
 
-        return TeamModel::createFromArray($team);
+        $team = TeamModel::createFromArray($result);
+
+        $teamCreatedEvent = new TeamCreatedEvent($team, $person);
+        $this->eventDispatcher->dispatch($teamCreatedEvent, TeamCreatedEvent::NAME);
+
+        return $team;
     }
 
     private function createPersonTeamMap(string $personId, string $teamId): void

@@ -1,0 +1,5 @@
+{% set team_route = path('front_end.app.team.show', {
+    subdomain: organization.subdomain,
+    team_url_id: activity.properties.team_url_id
+}) %}
+<a href="{{ activity.actor.route }}">{{ activity.actor.name }}</a> created the <a href="{{ team_route }}">{{ activity.properties.team_name }}</a> team

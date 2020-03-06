@@ -7,13 +7,16 @@ use Doctrine\DBAL\Connection;
 use Hipper\Invite\InviteRepository;
 use Hipper\Invite\Storage\InviteDeleter;
 use Hipper\Organization\OrganizationModel;
+use Hipper\Person\Event\PersonCreatedEvent;
 use Hipper\Person\Exception\InviteNotFoundException;
 use Hipper\Person\PersonCreationValidator;
 use Hipper\Person\PersonCreator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CreateFromInvite
 {
     private Connection $connection;
+    private EventDispatcherInterface $eventDispatcher;
     private InviteDeleter $inviteDeleter;
     private InviteRepository $inviteRepository;
     private PersonCreationValidator $personCreationValidator;
@@ -21,12 +24,14 @@ class CreateFromInvite
 
     public function __construct(
         Connection $connection,
+        EventDispatcherInterface $eventDispatcher,
         InviteDeleter $inviteDeleter,
         InviteRepository $inviteRepository,
         PersonCreationValidator $personCreationValidator,
         PersonCreator $personCreator
     ) {
         $this->connection = $connection;
+        $this->eventDispatcher = $eventDispatcher;
         $this->inviteDeleter = $inviteDeleter;
         $this->inviteRepository = $inviteRepository;
         $this->personCreationValidator = $personCreationValidator;
@@ -57,6 +62,9 @@ class CreateFromInvite
             $this->connection->rollBack();
             throw $e;
         }
+
+        $personCreatedEvent = new PersonCreatedEvent($person);
+        $this->eventDispatcher->dispatch($personCreatedEvent, PersonCreatedEvent::NAME);
 
         return [$person, $encodedPassword];
     }

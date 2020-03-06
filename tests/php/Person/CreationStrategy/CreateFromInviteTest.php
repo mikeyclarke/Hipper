@@ -8,6 +8,7 @@ use Hipper\Invite\InviteRepository;
 use Hipper\Invite\Storage\InviteDeleter;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\CreationStrategy\CreateFromInvite;
+use Hipper\Person\Event\PersonCreatedEvent;
 use Hipper\Person\Exception\InviteDoesNotBelongToOrganizationException;
 use Hipper\Person\Exception\InviteNotFoundException;
 use Hipper\Person\PersonCreationValidator;
@@ -15,12 +16,14 @@ use Hipper\Person\PersonCreator;
 use Hipper\Person\PersonModel;
 use PHPUnit\Framework\TestCase;
 use Mockery as m;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CreateFromInviteTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $connection;
+    private $eventDispatcher;
     private $inviteDeleter;
     private $inviteRepository;
     private $personCreationValidator;
@@ -30,6 +33,7 @@ class CreateFromInviteTest extends TestCase
     public function setUp(): void
     {
         $this->connection = m::mock(Connection::class);
+        $this->eventDispatcher = m::mock(EventDispatcherInterface::class);
         $this->inviteDeleter = m::mock(InviteDeleter::class);
         $this->inviteRepository = m::mock(InviteRepository::class);
         $this->personCreationValidator = m::mock(PersonCreationValidator::class);
@@ -37,6 +41,7 @@ class CreateFromInviteTest extends TestCase
 
         $this->createFromInvite = new CreateFromInvite(
             $this->connection,
+            $this->eventDispatcher,
             $this->inviteDeleter,
             $this->inviteRepository,
             $this->personCreationValidator,
@@ -84,6 +89,7 @@ class CreateFromInviteTest extends TestCase
         );
         $this->createInviteDeleterExpectation($invite['id']);
         $this->createConnectionCommitExpectation();
+        $this->createEventDispatcherExpectation([m::type(PersonCreatedEvent::class), PersonCreatedEvent::NAME]);
 
         $result = $this->createFromInvite->create($organization, $input);
         $this->assertEquals([$person, $encodedPassword], $result);
@@ -115,6 +121,14 @@ class CreateFromInviteTest extends TestCase
         );
 
         $this->createFromInvite->create($organization, $input);
+    }
+
+    private function createEventDispatcherExpectation($args)
+    {
+        $this->eventDispatcher
+            ->shouldReceive('dispatch')
+            ->once()
+            ->with(...$args);
     }
 
     private function createInviteDeleterExpectation($id)

@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\CreationStrategy\CreateFromApprovedEmailDomain;
+use Hipper\Person\Event\PersonCreatedEvent;
 use Hipper\Person\Exception\ApprovedEmailDomainSignupNotAllowedException;
 use Hipper\Person\PersonCreationValidator;
 use Hipper\Person\PersonCreator;
@@ -14,12 +15,14 @@ use Hipper\Person\PersonModel;
 use Hipper\Validation\Exception\ValidationException;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CreateFromApprovedEmailDomainTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $connection;
+    private $eventDispatcher;
     private $personCreationValidator;
     private $personCreator;
     private $requestEmailAddressVerification;
@@ -28,12 +31,14 @@ class CreateFromApprovedEmailDomainTest extends TestCase
     public function setUp(): void
     {
         $this->connection = m::mock(Connection::class);
+        $this->eventDispatcher = m::mock(EventDispatcherInterface::class);
         $this->personCreationValidator = m::mock(PersonCreationValidator::class);
         $this->personCreator = m::mock(PersonCreator::class);
         $this->requestEmailAddressVerification = m::mock(RequestEmailAddressVerification::class);
 
         $this->createFromApprovedEmailDomain = new CreateFromApprovedEmailDomain(
             $this->connection,
+            $this->eventDispatcher,
             $this->personCreationValidator,
             $this->personCreator,
             $this->requestEmailAddressVerification
@@ -68,6 +73,7 @@ class CreateFromApprovedEmailDomainTest extends TestCase
         );
         $this->createConnectionCommitExpectation();
         $this->createRequestEmailAddressVerificationExpectation($person);
+        $this->createEventDispatcherExpectation([m::type(PersonCreatedEvent::class), PersonCreatedEvent::NAME]);
 
         $result = $this->createFromApprovedEmailDomain->create($organization, $input);
         $this->assertEquals([$person, $encodedPassword], $result);
@@ -106,6 +112,14 @@ class CreateFromApprovedEmailDomainTest extends TestCase
         $this->createPersonCreationValidatorExpectation($input);
 
         $this->createFromApprovedEmailDomain->create($organization, $input);
+    }
+
+    private function createEventDispatcherExpectation($args)
+    {
+        $this->eventDispatcher
+            ->shouldReceive('dispatch')
+            ->once()
+            ->with(...$args);
     }
 
     private function createRequestEmailAddressVerificationExpectation($person)

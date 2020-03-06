@@ -5,13 +5,17 @@ namespace Hipper\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
 use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
+use Hipper\Organization\Event\OrganizationCreatedEvent;
 use Hipper\Organization\OrganizationCreator;
+use Hipper\Person\Event\PersonCreatedEvent;
 use Hipper\Person\PersonCreationValidator;
 use Hipper\Person\PersonCreator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CreateFoundingMember
 {
     private Connection $connection;
+    private EventDispatcherInterface $eventDispatcher;
     private OrganizationCreator $organizationCreator;
     private PersonCreationValidator $personCreationValidator;
     private PersonCreator $personCreator;
@@ -19,12 +23,14 @@ class CreateFoundingMember
 
     public function __construct(
         Connection $connection,
+        EventDispatcherInterface $eventDispatcher,
         OrganizationCreator $organizationCreator,
         PersonCreationValidator $personCreationValidator,
         PersonCreator $personCreator,
         RequestEmailAddressVerification $requestEmailAddressVerification
     ) {
         $this->connection = $connection;
+        $this->eventDispatcher = $eventDispatcher;
         $this->organizationCreator = $organizationCreator;
         $this->personCreationValidator = $personCreationValidator;
         $this->personCreator = $personCreator;
@@ -51,6 +57,12 @@ class CreateFoundingMember
         }
 
         $this->requestEmailAddressVerification->sendVerificationRequest($person);
+
+        $organizationCreatedEvent = new OrganizationCreatedEvent($person);
+        $personCreatedEvent = new PersonCreatedEvent($person);
+
+        $this->eventDispatcher->dispatch($organizationCreatedEvent, OrganizationCreatedEvent::NAME);
+        $this->eventDispatcher->dispatch($personCreatedEvent, PersonCreatedEvent::NAME);
 
         return [$person, $encodedPassword];
     }

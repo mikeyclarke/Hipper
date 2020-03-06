@@ -6,26 +6,31 @@ namespace Hipper\Person\CreationStrategy;
 use Doctrine\DBAL\Connection;
 use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
 use Hipper\Organization\OrganizationModel;
+use Hipper\Person\Event\PersonCreatedEvent;
 use Hipper\Person\Exception\ApprovedEmailDomainSignupNotAllowedException;
 use Hipper\Person\Exception\MalformedEmailAddressException;
 use Hipper\Person\PersonCreationValidator;
 use Hipper\Person\PersonCreator;
 use Hipper\Validation\Exception\ValidationException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CreateFromApprovedEmailDomain
 {
     private Connection $connection;
+    private EventDispatcherInterface $eventDispatcher;
     private PersonCreationValidator $personCreationValidator;
     private PersonCreator $personCreator;
     private RequestEmailAddressVerification $requestEmailAddressVerification;
 
     public function __construct(
         Connection $connection,
+        EventDispatcherInterface $eventDispatcher,
         PersonCreationValidator $personCreationValidator,
         PersonCreator $personCreator,
         RequestEmailAddressVerification $requestEmailAddressVerification
     ) {
         $this->connection = $connection;
+        $this->eventDispatcher = $eventDispatcher;
         $this->personCreationValidator = $personCreationValidator;
         $this->personCreator = $personCreator;
         $this->requestEmailAddressVerification = $requestEmailAddressVerification;
@@ -62,6 +67,9 @@ class CreateFromApprovedEmailDomain
         }
 
         $this->requestEmailAddressVerification->sendVerificationRequest($person);
+
+        $personCreatedEvent = new PersonCreatedEvent($person);
+        $this->eventDispatcher->dispatch($personCreatedEvent, PersonCreatedEvent::NAME);
 
         return [$person, $encodedPassword];
     }

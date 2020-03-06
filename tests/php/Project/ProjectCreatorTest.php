@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
+use Hipper\Project\Event\ProjectCreatedEvent;
 use Hipper\Project\ProjectCreator;
 use Hipper\Project\ProjectModel;
 use Hipper\Project\ProjectValidator;
@@ -15,12 +16,14 @@ use Hipper\Project\Storage\ProjectInserter;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProjectCreatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $connection;
+    private $eventDispatcher;
     private $idGenerator;
     private $knowledgebaseCreator;
     private $personToProjectMapInserter;
@@ -33,6 +36,7 @@ class ProjectCreatorTest extends TestCase
     public function setUp(): void
     {
         $this->connection = m::mock(Connection::class);
+        $this->eventDispatcher = m::mock(EventDispatcherInterface::class);
         $this->idGenerator = m::mock(IdGenerator::class);
         $this->knowledgebaseCreator = m::mock(KnowledgebaseCreator::class);
         $this->personToProjectMapInserter = m::mock(PersonToProjectMapInserter::class);
@@ -42,6 +46,7 @@ class ProjectCreatorTest extends TestCase
 
         $this->projectCreator = new ProjectCreator(
             $this->connection,
+            $this->eventDispatcher,
             $this->idGenerator,
             $this->knowledgebaseCreator,
             $this->personToProjectMapInserter,
@@ -92,6 +97,7 @@ class ProjectCreatorTest extends TestCase
         $this->createIdGeneratorExpectation($personToProjectMapId);
         $this->createPersonToProjectMapInserterExpectation([$personToProjectMapId, $this->person->getId(), $projectId]);
         $this->createConnectionCommitExpectation();
+        $this->createEventDispatcherExpectation([m::type(ProjectCreatedEvent::class), ProjectCreatedEvent::NAME]);
 
         $result = $this->projectCreator->create($this->person, $parameters);
         $this->assertInstanceOf(ProjectModel::class, $result);
@@ -139,6 +145,14 @@ class ProjectCreatorTest extends TestCase
         $this->expectException(\Exception::class);
 
         $this->projectCreator->create($this->person, $parameters);
+    }
+
+    private function createEventDispatcherExpectation($args)
+    {
+        $this->eventDispatcher
+            ->shouldReceive('dispatch')
+            ->once()
+            ->with(...$args);
     }
 
     private function createConnectionRollBackExpectation()

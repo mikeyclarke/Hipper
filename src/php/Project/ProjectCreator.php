@@ -7,13 +7,16 @@ use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Knowledgebase\KnowledgebaseCreator;
 use Hipper\Person\PersonModel;
+use Hipper\Project\Event\ProjectCreatedEvent;
 use Hipper\Project\Storage\PersonToProjectMapInserter;
 use Hipper\Project\Storage\ProjectInserter;
 use Hipper\Url\UrlSlugGenerator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProjectCreator
 {
     private Connection $connection;
+    private EventDispatcherInterface $eventDispatcher;
     private IdGenerator $idGenerator;
     private KnowledgebaseCreator $knowledgebaseCreator;
     private PersonToProjectMapInserter $personToProjectMapInserter;
@@ -23,6 +26,7 @@ class ProjectCreator
 
     public function __construct(
         Connection $connection,
+        EventDispatcherInterface $eventDispatcher,
         IdGenerator $idGenerator,
         KnowledgebaseCreator $knowledgebaseCreator,
         PersonToProjectMapInserter $personToProjectMapInserter,
@@ -31,6 +35,7 @@ class ProjectCreator
         UrlSlugGenerator $urlSlugGenerator
     ) {
         $this->connection = $connection;
+        $this->eventDispatcher = $eventDispatcher;
         $this->idGenerator = $idGenerator;
         $this->knowledgebaseCreator = $knowledgebaseCreator;
         $this->personToProjectMapInserter = $personToProjectMapInserter;
@@ -68,6 +73,10 @@ class ProjectCreator
         }
 
         $project = ProjectModel::createFromArray($projectResult);
+
+        $event = new ProjectCreatedEvent($project, $person);
+        $this->eventDispatcher->dispatch($event, ProjectCreatedEvent::NAME);
+
         return $project;
     }
 

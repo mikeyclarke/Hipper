@@ -1,0 +1,5 @@
+{% set project_route = path('front_end.app.project.show', {
+    subdomain: organization.subdomain,
+    project_url_id: activity.properties.project_url_id
+}) %}
+<a href="{{ activity.actor.route }}">{{ activity.actor.name }}</a> created the <a href="{{ project_route }}">{{ activity.properties.project_name }}</a> project

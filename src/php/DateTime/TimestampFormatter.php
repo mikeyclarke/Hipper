@@ -17,7 +17,7 @@ class TimestampFormatter
         $dateTime = $dateTime->tz($displayTimeZone);
 
         return [
-            'time_ago' => $dateTime->diffForHumans(),
+            'time_ago' => $dateTime->diffForHumans(['options' => Carbon::JUST_NOW | Carbon::ONE_DAY_WORDS]),
             'unix' => $dateTime->unix(),
             'utc_datetime' => $dateTime->toISOString(),
             'verbose' => $dateTime->toDayDateTimeString(),

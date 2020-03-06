@@ -13,13 +13,13 @@ use Hipper\Url\UrlSlugGenerator;
 
 class TeamCreator
 {
-    private $connection;
-    private $idGenerator;
-    private $knowledgebaseCreator;
-    private $personToTeamMapInserter;
-    private $teamInserter;
-    private $teamValidator;
-    private $urlSlugGenerator;
+    private Connection $connection;
+    private IdGenerator $idGenerator;
+    private KnowledgebaseCreator $knowledgebaseCreator;
+    private PersonToTeamMapInserter $personToTeamMapInserter;
+    private TeamInserter $teamInserter;
+    private TeamValidator $teamValidator;
+    private UrlSlugGenerator $urlSlugGenerator;
 
     public function __construct(
         Connection $connection,

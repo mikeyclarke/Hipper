@@ -35,7 +35,7 @@ eslint: ## Lint Typescript files
 ## ---------
 
 phpstan: ## Check that PHP passes static analysis
-	./vendor/bin/phpstan analyse src/php --level 6
+	./vendor/bin/phpstan analyse --memory-limit=-1 src/php --level 6
 
 ## ---------
 ##	Dependancies

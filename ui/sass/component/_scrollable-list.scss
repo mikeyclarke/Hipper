@@ -1,0 +1,80 @@
+@use 'helper/breakpoint';
+
+$_list-margin: 0;
+$_list-padding: 4px;
+
+$_space-between-items: 12px;
+
+%c-scrollable-list {
+    overflow-x: auto;
+    position: relative;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+.c-scrollable-list,
+.c-scrollable-list--not-desktop {
+    @extend %c-scrollable-list;
+}
+
+.c-scrollable-list--not-desktop {
+    @include breakpoint.breakpoint(app, large) {
+        overflow-x: visible;
+    }
+}
+
+.c-scrollable-list__list {
+    display: flex;
+    list-style: none;
+    margin: $_list-margin;
+    padding: $_list-padding;
+    position: relative;
+}
+
+.c-scrollable-list--not-desktop .c-scrollable-list__list {
+    @include breakpoint.breakpoint(app, large) {
+        flex-direction: column;
+    }
+}
+
+.c-scrollable-list__item {
+    display: table-cell;
+    position: relative;
+}
+
+.c-scrollable-list__item {
+    padding-right: $_space-between-items;
+}
+
+.c-scrollable-list__item:first-child {
+    padding-left: $_space-between-items;
+
+    @include breakpoint.breakpoint(app, medium) {
+        padding-left: 0;
+    }
+}
+
+.c-scrollable-list__item:last-child {
+    @include breakpoint.breakpoint(app, medium) {
+        padding-right: 0;
+    }
+}
+
+.c-scrollable-list--not-desktop .c-scrollable-list__item {
+    @include breakpoint.breakpoint(app, large) {
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: $_space-between-items;
+    }
+}
+
+.c-scrollable-list__item > * {
+    height: 100%;
+    max-width: 280px;
+}
+
+.c-scrollable-list--not-desktop .c-scrollable-list__item > * {
+    @include breakpoint.breakpoint(app, large) {
+        max-width: 100%;
+    }
+}

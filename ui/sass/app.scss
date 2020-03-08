@@ -33,6 +33,7 @@
 @use 'component/sheet';
 @use 'component/list';
 @use 'component/card-list';
+@use 'component/mini-card';
 @use 'component/app-header';
 @use 'component/page-header';
 @use 'component/page-title';
@@ -50,6 +51,8 @@
 @use 'component/search-results';
 @use 'component/empty-search';
 @use 'component/activity-feed';
+@use 'component/scrollable-list';
+@use 'component/home-grid';
 
 @use 'layout/app-default';
 @use 'layout/sheet' as sheet-layout;

@@ -1,0 +1,19 @@
+@use 'helper/breakpoint';
+
+.c-home-grid {
+    @include breakpoint.breakpoint(app, large) {
+        display: grid;
+        column-gap: 60px;
+        grid-template-columns: 1fr 312px;
+    }
+}
+
+.c-home-grid__main-column {
+}
+
+.c-home-grid__sidebar-column {
+    @include breakpoint.breakpoint(app, large) {
+        grid-column: 2;
+        grid-row: 1/2 span;
+    }
+}

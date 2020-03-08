@@ -1,0 +1,115 @@
+@use 'config/config';
+@use 'helper/font-smoothing';
+@use 'helper/line-clamp';
+
+$_space-between-elements: 12px;
+
+$_background-color: config.config-get(global, color, white);
+$_border-radius: 4px;
+$_box-shadow: 0 0 4px 0 rgba(#c4c2c5, .4);
+$_min-width: 280px;
+$_padding: 16px 60px 16px 16px;
+
+$_focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+
+$_fixed-width: 280px;
+
+$_avatar-offset-right: 16px;
+$_avatar-offset-top: 12px;
+
+$_title-color: config.config-get(color-shades, dark, 900);
+$_title-font-size: 18px;
+$_title-font-weight: 700;
+$_title-line-height: 22px;
+$_title-margin: 0;
+
+$_description-color: config.config-get(color-shades, dark, 900);
+$_description-font-size: 15px;
+$_description-line-height: 22px;
+$_description-margin: $_space-between-elements 0 0;
+
+$_timestamp-color: config.config-get(color-shades, dark, 600);
+$_timestamp-font-size: 12px;
+$_timestamp-line-height: 12px;
+$_timestamp-margin: $_space-between-elements 0 0;
+
+%c-mini-card {
+    background-color: $_background-color;
+    border-radius: $_border-radius;
+    box-shadow: $_box-shadow;
+    min-width: $_min-width;
+    padding: $_padding;
+    position: relative;
+}
+
+%c-mini-card:focus-within {
+    box-shadow: #{$_box-shadow}, #{$_focused-box-shadow};
+}
+
+.c-mini-card,
+.c-mini-card--fixed {
+    @extend %c-mini-card;
+}
+
+.c-mini-card--fixed {
+    width: $_fixed-width;
+}
+
+.c-mini-card__link-wrap {
+    display: block;
+    text-decoration: none;
+}
+
+.c-mini-card__link-wrap:focus {
+    outline: 0;
+}
+
+.c-mini-card__link-wrap::after {
+    bottom: 0;
+    content: '';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.c-mini-card__avatar {
+    position: absolute;
+    right: $_avatar-offset-right;
+    top: $_avatar-offset-top;
+}
+
+.c-mini-card__title {
+    color: $_title-color;
+    font-size: $_title-font-size;
+    font-weight: $_title-font-weight;
+    line-height: $_title-line-height;
+    margin: $_title-margin;
+    @include font-smoothing.font-smoothing;
+}
+
+%c-mini-card__description {
+    color: $_description-color;
+    font-size: $_description-font-size;
+    line-height: $_description-line-height;
+    margin: $_description-margin;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-mini-card__description,
+.c-mini-card__description--truncated {
+    @extend %c-mini-card__description;
+}
+
+.c-mini-card__description--truncated {
+    @include line-clamp.clamp-to-lines();
+}
+
+.c-mini-card__timestamp {
+    color: $_timestamp-color;
+    display: block;
+    font-size: $_timestamp-font-size;
+    line-height: $_timestamp-line-height;
+    margin: $_timestamp-margin;
+    @include font-smoothing.font-smoothing;
+}

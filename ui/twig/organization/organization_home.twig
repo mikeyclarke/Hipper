@@ -14,15 +14,81 @@
 
 {% block content %}
 
-<div>
-    <div class="c-page-section">
-        <h1 class="c-page-section__title--large">Activity</h1>
+<div class="c-home-grid">
+    <div class="c-home-grid__sidebar-column">
+        <section class="c-page-section">
+            <div class="c-page-section__header">
+                <h1 class="c-page-section__title">Your teams</h1>
+                <a class="c-page-section__control" href="/teams/new?{{ { return_to: app.request.getRequestUri() }|url_encode }}">Add new</a>
+            </div>
 
-        <div class="c-page-section__content">
-            <ol class="c-activity-feed">
-                {% include 'activity/_activity_feed_list.twig' %}
-            </ol>
-        </div>
+            <div class="c-page-section__content">
+                {% if team_memberships is not empty %}
+                    <div class="c-scrollable-list--not-desktop">
+                        <ul class="c-scrollable-list__list">
+                            {% for team in team_memberships %}
+                                <li class="c-scrollable-list__item">
+                                    {% include '_mini_card.twig' with {
+                                        avatar_initials: team.name|trim|first|upper,
+                                        avatar_type: 'initials',
+                                        link_href: team.route,
+                                        timestamp: team.created,
+                                        timestamp_label: 'Created',
+                                        title: team.name,
+                                    } only %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% else %}
+                    <p>You don’t belong to any teams yet</p>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="c-page-section">
+            <div class="c-page-section__header">
+                <h1 class="c-page-section__title">Your projects</h1>
+                <a class="c-page-section__control" href="/projects/new?{{ { return_to: app.request.getRequestUri() }|url_encode }}">Add new</a>
+            </div>
+
+            <div class="c-page-section__content">
+                {% if project_memberships is not empty %}
+                    <div class="c-scrollable-list--not-desktop">
+                        <ul class="c-scrollable-list__list">
+                            {% for project in project_memberships %}
+                                <li class="c-scrollable-list__item">
+                                    {% include '_mini_card.twig' with {
+                                        avatar_initials: project.name|trim|first|upper,
+                                        avatar_type: 'initials',
+                                        link_href: project.route,
+                                        timestamp: project.created,
+                                        timestamp_label: 'Created',
+                                        title: project.name,
+                                    } only %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% else %}
+                    <p>You don’t belong to any projects yet</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+
+    <div class="c-home-grid__main-column">
+        <section class="c-page-section">
+            <div class="c-page-section__header">
+                <h1 class="c-page-section__title--large">Activity</h1>
+            </div>
+
+            <div class="c-page-section__content">
+                <ol class="c-activity-feed">
+                    {% include 'activity/_activity_feed_list.twig' %}
+                </ol>
+            </div>
+        </section>
     </div>
 </div>
 

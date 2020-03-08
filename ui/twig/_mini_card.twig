@@ -1,0 +1,16 @@
+<div class="c-mini-card{% if is_fixed is defined and is_fixed is same as(true) %}--fixed{% endif %}">
+    {% if link_href is defined %}<a class="c-mini-card__link-wrap" href="{{ link_href }}">{% endif %}
+        {% if avatar_type is same as('initials') %}
+            <div class="c-avatar c-mini-card__avatar">
+                <span class="c-avatar__initials">{{ avatar_initials }}</span>
+            </div>
+        {% elseif avatar_type is same as('icon') %}
+            <div class="c-avatar--{{ avatar_icon_type }} c-mini-card__avatar">
+                <svg class="c-avatar__icon" aria-hidden="true"><use xlink:href="#icon-sprite__{{ avatar_icon_type }}"/></svg>
+            </div>
+        {% endif %}
+        <h2 class="c-mini-card__title">{{ title }}</h2>
+        {% if description is defined %}<p class="c-mini-card__description{% if truncate_description is defined and truncate_description is same as(true) %}--truncated{% endif %}">{{ description }}</p>{% endif %}
+        <span class="c-mini-card__timestamp">{{ timestamp_label }} <time datetime="{{ timestamp.utc_datetime }}" title="{{ timestamp.verbose }}">{{ timestamp.time_ago }}</time></span>
+    {% if link_href is defined %}</a>{% endif %}
+</div>

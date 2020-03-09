@@ -15,6 +15,7 @@ use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Organization\Exception\ResourceIsForeignToOrganizationException;
 use Hipper\Person\PersonModel;
 use Hipper\Project\ProjectModel;
+use Hipper\Topic\Event\TopicCreatedEvent;
 use Hipper\Topic\Storage\TopicInserter;
 use Hipper\Topic\TopicCreator;
 use Hipper\Topic\TopicModel;
@@ -25,12 +26,14 @@ use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TopicCreatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $connection;
+    private $eventDispatcher;
     private $idGenerator;
     private $knowledgebaseOwner;
     private $knowledgebaseRepository;
@@ -47,6 +50,7 @@ class TopicCreatorTest extends TestCase
     public function setUp(): void
     {
         $this->connection = m::mock(Connection::class);
+        $this->eventDispatcher = m::mock(EventDispatcherInterface::class);
         $this->idGenerator = m::mock(IdGenerator::class);
         $this->knowledgebaseOwner = m::mock(KnowledgebaseOwner::class);
         $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
@@ -61,6 +65,7 @@ class TopicCreatorTest extends TestCase
 
         $this->topicCreator = new TopicCreator(
             $this->connection,
+            $this->eventDispatcher,
             $this->idGenerator,
             $this->knowledgebaseOwner,
             $this->knowledgebaseRepository,
@@ -128,6 +133,7 @@ class TopicCreatorTest extends TestCase
         );
         $this->createConnectionCommitExpectation();
         $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createEventDispatcherExpectation([m::type(TopicCreatedEvent::class), TopicCreatedEvent::NAME]);
 
         $result = $this->topicCreator->create($person, $parameters);
         $this->assertIsArray($result);
@@ -205,6 +211,7 @@ class TopicCreatorTest extends TestCase
         );
         $this->createConnectionCommitExpectation();
         $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createEventDispatcherExpectation([m::type(TopicCreatedEvent::class), TopicCreatedEvent::NAME]);
 
         $result = $this->topicCreator->create($person, $parameters);
         $this->assertIsArray($result);
@@ -212,6 +219,14 @@ class TopicCreatorTest extends TestCase
         $this->assertEquals($topicId, $result[0]->getId());
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[1]);
         $this->assertInstanceOf(KnowledgebaseOwnerModelInterface::class, $result[2]);
+    }
+
+    private function createEventDispatcherExpectation($args)
+    {
+        $this->eventDispatcher
+            ->shouldReceive('dispatch')
+            ->once()
+            ->with(...$args);
     }
 
     private function createUpdateTopicDescendantRoutesExpectation($args)

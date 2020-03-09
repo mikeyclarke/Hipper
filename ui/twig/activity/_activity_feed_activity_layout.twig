@@ -1,0 +1,13 @@
+<li class="c-activity-feed__entry">
+    <a href="{{ activity.actor.route }}" class="c-avatar c-activity-feed__avatar">
+        <span class="c-avatar__initials">{{ activity.actor.abbreviated_name }}</span>
+    </a>
+
+    <div class="c-activity-feed__body">
+        <p class="c-activity-feed__text">{% block text %}{% endblock %}</p>
+
+        <span class="c-activity-feed__timestamp"><time datetime="{{ activity.created.utc_datetime }}" title="{{ activity.created.verbose }}">{{ activity.created.time_ago }}</time></span>
+
+        <div class="c-activity-feed__attachment">{% block attachment %}{% endblock %}</div>
+    </div>
+</li>

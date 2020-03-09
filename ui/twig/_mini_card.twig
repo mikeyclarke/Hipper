@@ -11,6 +11,6 @@
         {% endif %}
         <h2 class="c-mini-card__title">{{ title }}</h2>
         {% if description is defined %}<p class="c-mini-card__description{% if truncate_description is defined and truncate_description is same as(true) %}--truncated{% endif %}">{{ description }}</p>{% endif %}
-        <span class="c-mini-card__timestamp">{{ timestamp_label }} <time datetime="{{ timestamp.utc_datetime }}" title="{{ timestamp.verbose }}">{{ timestamp.time_ago }}</time></span>
+        {% if timestamp is defined %}<span class="c-mini-card__timestamp">{{ timestamp_label }} <time datetime="{{ timestamp.utc_datetime }}" title="{{ timestamp.verbose }}">{{ timestamp.time_ago }}</time></span>{% endif %}
     {% if link_href is defined %}</a>{% endif %}
 </div>

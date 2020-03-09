@@ -12,13 +12,16 @@ use Hipper\Knowledgebase\KnowledgebaseRepository;
 use Hipper\Knowledgebase\KnowledgebaseRouteCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteRepository;
 use Hipper\Person\PersonModel;
+use Hipper\Topic\Event\TopicCreatedEvent;
 use Hipper\Topic\Storage\TopicInserter;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TopicCreator
 {
     private Connection $connection;
+    private EventDispatcherInterface $eventDispatcher;
     private IdGenerator $idGenerator;
     private KnowledgebaseOwner $knowledgebaseOwner;
     private KnowledgebaseRepository $knowledgebaseRepository;
@@ -33,6 +36,7 @@ class TopicCreator
 
     public function __construct(
         Connection $connection,
+        EventDispatcherInterface $eventDispatcher,
         IdGenerator $idGenerator,
         KnowledgebaseOwner $knowledgebaseOwner,
         KnowledgebaseRepository $knowledgebaseRepository,
@@ -46,6 +50,7 @@ class TopicCreator
         UrlSlugGenerator $urlSlugGenerator
     ) {
         $this->connection = $connection;
+        $this->eventDispatcher = $eventDispatcher;
         $this->idGenerator = $idGenerator;
         $this->knowledgebaseOwner = $knowledgebaseOwner;
         $this->knowledgebaseRepository = $knowledgebaseRepository;
@@ -104,6 +109,9 @@ class TopicCreator
         }
 
         $knowledgebaseOwnerModel = $this->knowledgebaseOwner->get($knowledgebase);
+
+        $event = new TopicCreatedEvent($model, $knowledgebaseOwnerModel, $route, $person);
+        $this->eventDispatcher->dispatch($event, TopicCreatedEvent::NAME);
 
         return [$model, $route, $knowledgebaseOwnerModel];
     }

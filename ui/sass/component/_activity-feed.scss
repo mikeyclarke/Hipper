@@ -30,6 +30,8 @@ $_link-focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 60
 $_timestamp-color: config.config-get(color-shades, dark, 500);
 $_timestamp-font-size: 14px;
 
+$_attachment-margin: 18px 0 0;
+
 .c-activity-feed {
     background-color: $_background-color;
     border-radius: $_border-radius;
@@ -102,4 +104,12 @@ $_timestamp-font-size: 14px;
     color: $_timestamp-color;
     font-size: $_timestamp-font-size;
     @include font-smoothing.font-smoothing;
+}
+
+.c-activity-feed__attachment {
+    margin: $_attachment-margin;
+}
+
+.c-activity-feed__attachment:empty {
+    display: none;
 }

@@ -1,1 +1,5 @@
-<a href="{{ activity.actor.route }}">{{ activity.actor.name }}</a> created the <strong>{{ organization.name }}</strong> organization on Hipper 🍾
+{% extends 'activity/_activity_feed_activity_layout.twig' %}
+
+{% block text %}
+    <a href="{{ activity.actor.route }}">{{ activity.actor.name }}</a> created the <strong>{{ organization.name }}</strong> organization on Hipper 🍾
+{% endblock %}

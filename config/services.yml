@@ -136,6 +136,9 @@ services:
         arguments:
             $assetDomain: '%env(string:ASSET_DOMAIN)%'
 
+    Hipper\Topic\Event\TopicCreatedEvent:
+        autowire: false
+
     Hipper\Person\NameRepresentation:
         autowire: false
 

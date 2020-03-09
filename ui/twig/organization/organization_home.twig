@@ -15,6 +15,40 @@
 {% block content %}
 
 <div class="c-home-grid">
+    <div class="c-home-grid__main-column">
+        <section class="c-page-section--first">
+            <div class="c-page-section__header">
+                <h1 class="c-page-section__title">Recently viewed</h1>
+            </div>
+
+            <div class="c-page-section__content">
+                {% if recently_viewed_knowledgebase_entries is not empty %}
+                    <div class="c-scrollable-list">
+                        <ol class="c-scrollable-list__list">
+                            {% for entry in recently_viewed_knowledgebase_entries %}
+                                <li class="c-scrollable-list__item">
+                                    {% include '_mini_card.twig' with {
+                                        avatar_icon_type: entry.type,
+                                        avatar_type: 'icon',
+                                        description: entry.description,
+                                        is_fixed: true,
+                                        link_href: entry.route,
+                                        timestamp: entry.timestamp,
+                                        timestamp_label: 'Updated',
+                                        title: entry.name,
+                                        truncate_description: true,
+                                    } only %}
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                {% else %}
+                    <p>Docs that you’ve recently viewed will show up here</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+
     <div class="c-home-grid__sidebar-column">
         <section class="c-page-section">
             <div class="c-page-section__header">

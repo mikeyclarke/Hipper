@@ -5,6 +5,7 @@ namespace Hipper\FrontEnd\App\Controller\Organization;
 
 use Hipper\Activity\ActivityFeedFormatter;
 use Hipper\Activity\ActivityRepository;
+use Hipper\Person\RecentlyViewedKnowledgebaseEntries;
 use Hipper\Project\ProjectRepository;
 use Hipper\Project\ProjectsListFormatter;
 use Hipper\Team\TeamRepository;
@@ -18,6 +19,7 @@ class OrganizationHomeController
 {
     private ActivityFeedFormatter $activityFeedFormatter;
     private ActivityRepository $activityRepository;
+    private RecentlyViewedKnowledgebaseEntries $recentlyViewedKnowledgebaseEntries;
     private ProjectRepository $projectRepository;
     private ProjectsListFormatter $projectsListFormatter;
     private TeamRepository $teamRepository;
@@ -28,6 +30,7 @@ class OrganizationHomeController
     public function __construct(
         ActivityFeedFormatter $activityFeedFormatter,
         ActivityRepository $activityRepository,
+        RecentlyViewedKnowledgebaseEntries $recentlyViewedKnowledgebaseEntries,
         ProjectRepository $projectRepository,
         ProjectsListFormatter $projectsListFormatter,
         TeamRepository $teamRepository,
@@ -37,6 +40,7 @@ class OrganizationHomeController
     ) {
         $this->activityFeedFormatter = $activityFeedFormatter;
         $this->activityRepository = $activityRepository;
+        $this->recentlyViewedKnowledgebaseEntries = $recentlyViewedKnowledgebaseEntries;
         $this->projectRepository = $projectRepository;
         $this->projectsListFormatter = $projectsListFormatter;
         $this->teamRepository = $teamRepository;
@@ -71,6 +75,8 @@ class OrganizationHomeController
             $timeZone
         );
 
+        $recentlyViewedDocs = $this->recentlyViewedKnowledgebaseEntries->get($currentUser, $organization, $timeZone);
+
         $activity = $this->activityRepository->getActivityRelevantToUser($currentUser->getOrganizationId());
         $activityFeed = $this->activityFeedFormatter->format($organization, $currentUser, $timeZone, $activity);
 
@@ -78,6 +84,7 @@ class OrganizationHomeController
             'activity_feed' => $activityFeed,
             'html_title' => 'Home',
             'project_memberships' => $formattedProjectMemberships,
+            'recently_viewed_knowledgebase_entries' => $recentlyViewedDocs,
             'team_memberships' => $formattedTeamMemberships,
         ];
 

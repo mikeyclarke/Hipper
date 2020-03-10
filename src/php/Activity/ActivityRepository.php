@@ -35,6 +35,7 @@ class ActivityRepository
             ->from('activity')
             ->innerJoin('activity', 'person', 'person', 'person.id = activity.actor_id')
             ->where('activity.organization_id = :organization_id')
+            ->orderBy('activity.created', 'DESC')
             ->setMaxResults($limit);
 
         $qb->setParameters([

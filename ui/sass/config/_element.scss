@@ -1,5 +1,6 @@
 @use 'sass:map';
 @use 'config/global';
+@use 'config/color-shades';
 
 $config: (
     page: (
@@ -28,4 +29,5 @@ $config: (
         line-height: 22px,
         resize: none,
     ),
+    focused-box-shadow: 0 0 0 3px map.get(map.get(color-shades.$config, 'primary'), 600),
 );

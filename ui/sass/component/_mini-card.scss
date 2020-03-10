@@ -10,7 +10,7 @@ $_box-shadow: 0 0 4px 0 rgba(#c4c2c5, .4);
 $_min-width: 280px;
 $_padding: 16px 60px 16px 16px;
 
-$_focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+$_focused-box-shadow: config.config-get(element, focused-box-shadow);
 
 $_fixed-width: 280px;
 

@@ -25,7 +25,7 @@ $_text-margin: 4px 0 6px;
 $_link-color: config.config-get(color-shades, primary, 1000);
 $_link-decoration: none;
 $_link-focused-border-radius: 4px;
-$_link-focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+$_link-focused-box-shadow: config.config-get(element, focused-box-shadow);
 
 $_timestamp-color: config.config-get(color-shades, dark, 500);
 $_timestamp-font-size: 14px;

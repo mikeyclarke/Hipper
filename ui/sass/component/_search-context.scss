@@ -18,7 +18,7 @@ $copy-margin-medium-bp: 18px 0 0;
 
 $link-color: config.config-get(color-shades, primary, 900);
 $link-focused-border-radius: 4px;
-$link-focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+$link-focused-box-shadow: config.config-get(element, focused-box-shadow);
 
 .c-search-context {
     padding: $padding;

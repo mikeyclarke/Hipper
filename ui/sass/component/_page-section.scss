@@ -24,7 +24,7 @@ $_control-line-height: 14px;
 $_control-text-align: right;
 $_control-offset-top: ($_title-line-height - $_control-line-height) / 2;
 $_control-focused-border-radius: 4px;
-$_control-focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+$_control-focused-box-shadow: config.config-get(element, focused-box-shadow);
 
 $_control-tap-target-size: 44px;
 $_control-pseudo-offset: -#{($_control-tap-target-size - $_control-line-height) / 2};

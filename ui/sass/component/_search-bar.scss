@@ -42,7 +42,7 @@ $back-link-font-weight: 600;
 $back-link-padding: 16px;
 $back-link-focused-border-radius: 4px;
 $back-link-focused-border-offset: 12px;
-$back-link-focused-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+$back-link-focused-box-shadow: config.config-get(element, focused-box-shadow);
 
 .c-search-bar {
     align-items: center;

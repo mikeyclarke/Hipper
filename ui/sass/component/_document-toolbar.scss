@@ -12,7 +12,7 @@ $button-background-offset: ($button-height - $button-background-dimension) / 2;
 $button-border-radius: 4px;
 $button-font-size: 14px;
 $button-font-weight: 600;
-$button-focus-box-shadow: 0 0 0 3px config.config-get(color-shades, primary, 600);
+$button-focus-box-shadow: config.config-get(element, focused-box-shadow);
 
 $back-button-background-color: config.config-get(color-shades, dark, 100);
 $back-button-background-color-focus: config.config-get(color-shades, dark, 300);

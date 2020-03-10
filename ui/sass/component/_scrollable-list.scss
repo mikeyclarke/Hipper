@@ -54,12 +54,6 @@ $_space-between-items: 12px;
     }
 }
 
-.c-scrollable-list__item:last-child {
-    @include breakpoint.breakpoint(app, medium) {
-        padding-right: 0;
-    }
-}
-
 .c-scrollable-list--not-desktop .c-scrollable-list__item {
     @include breakpoint.breakpoint(app, large) {
         padding-left: 0;

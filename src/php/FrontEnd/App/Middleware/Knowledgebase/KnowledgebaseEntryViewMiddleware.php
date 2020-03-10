@@ -5,7 +5,9 @@ namespace Hipper\FrontEnd\App\Middleware\Knowledgebase;
 
 use Hipper\Knowledgebase\Exception\UnsupportedKnowledgebaseContentTypeException;
 use Hipper\Person\PersonKnowledgebaseEntryViewCreator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class KnowledgebaseEntryViewMiddleware
 {
@@ -17,8 +19,12 @@ class KnowledgebaseEntryViewMiddleware
         $this->entryViewCreator = $entryViewCreator;
     }
 
-    public function after(Request $request): void
+    public function after(Request $request, Response $response): void
     {
+        if ($response instanceof RedirectResponse) {
+            return;
+        }
+
         $currentUser = $request->attributes->get('current_user');
         $entityType = $request->attributes->get('entity_type');
 

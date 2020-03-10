@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hipper\Document;
 
 use Doctrine\DBAL\Connection;
+use Hipper\Document\Event\DocumentCreatedEvent;
 use Hipper\Document\Exception\MissingRouteException;
 use Hipper\Document\Storage\DocumentInserter;
 use Hipper\IdGenerator\IdGenerator;
@@ -18,7 +19,7 @@ use Hipper\Topic\TopicModel;
 use Hipper\Topic\TopicRepository;
 use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
-use JSON_THROW_ON_ERROR;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DocumentCreator
 {
@@ -28,6 +29,7 @@ class DocumentCreator
     private DocumentRenderer $documentRenderer;
     private DocumentRevisionCreator $documentRevisionCreator;
     private DocumentValidator $documentValidator;
+    private EventDispatcherInterface $eventDispatcher;
     private IdGenerator $idGenerator;
     private KnowledgebaseOwner $knowledgebaseOwner;
     private KnowledgebaseRepository $knowledgebaseRepository;
@@ -44,6 +46,7 @@ class DocumentCreator
         DocumentRenderer $documentRenderer,
         DocumentRevisionCreator $documentRevisionCreator,
         DocumentValidator $documentValidator,
+        EventDispatcherInterface $eventDispatcher,
         IdGenerator $idGenerator,
         KnowledgebaseOwner $knowledgebaseOwner,
         KnowledgebaseRepository $knowledgebaseRepository,
@@ -59,6 +62,7 @@ class DocumentCreator
         $this->documentRenderer = $documentRenderer;
         $this->documentRevisionCreator = $documentRevisionCreator;
         $this->documentValidator = $documentValidator;
+        $this->eventDispatcher = $eventDispatcher;
         $this->idGenerator = $idGenerator;
         $this->knowledgebaseOwner = $knowledgebaseOwner;
         $this->knowledgebaseRepository = $knowledgebaseRepository;
@@ -130,6 +134,9 @@ class DocumentCreator
         }
 
         $knowledgebaseOwnerModel = $this->knowledgebaseOwner->get($knowledgebase);
+
+        $event = new DocumentCreatedEvent($model, $knowledgebaseOwnerModel, $route, $person);
+        $this->eventDispatcher->dispatch($event, DocumentCreatedEvent::NAME);
 
         return [$route, $knowledgebaseOwnerModel];
     }

@@ -10,6 +10,7 @@ use Hipper\Document\DocumentModel;
 use Hipper\Document\DocumentRenderer;
 use Hipper\Document\DocumentRevisionCreator;
 use Hipper\Document\DocumentValidator;
+use Hipper\Document\Event\DocumentCreatedEvent;
 use Hipper\Document\Renderer\RendererResult;
 use Hipper\Document\Storage\DocumentInserter;
 use Hipper\IdGenerator\IdGenerator;
@@ -27,6 +28,7 @@ use Hipper\Url\UrlIdGenerator;
 use Hipper\Url\UrlSlugGenerator;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DocumentCreatorTest extends TestCase
 {
@@ -38,6 +40,7 @@ class DocumentCreatorTest extends TestCase
     private $documentRenderer;
     private $documentRevisionCreator;
     private $documentValidator;
+    private $eventDispatcher;
     private $idGenerator;
     private $knowledgebaseOwner;
     private $knowledgebaseRepository;
@@ -56,6 +59,7 @@ class DocumentCreatorTest extends TestCase
         $this->documentRenderer = m::mock(DocumentRenderer::class);
         $this->documentRevisionCreator = m::mock(DocumentRevisionCreator::class);
         $this->documentValidator = m::mock(DocumentValidator::class);
+        $this->eventDispatcher = m::mock(EventDispatcherInterface::class);
         $this->idGenerator = m::mock(IdGenerator::class);
         $this->knowledgebaseOwner = m::mock(KnowledgebaseOwner::class);
         $this->knowledgebaseRepository = m::mock(KnowledgebaseRepository::class);
@@ -72,6 +76,7 @@ class DocumentCreatorTest extends TestCase
             $this->documentRenderer,
             $this->documentRevisionCreator,
             $this->documentValidator,
+            $this->eventDispatcher,
             $this->idGenerator,
             $this->knowledgebaseOwner,
             $this->knowledgebaseRepository,
@@ -151,6 +156,7 @@ class DocumentCreatorTest extends TestCase
         $this->createDocumentRevisionCreatorExpectation([m::type(DocumentModel::class)]);
         $this->createConnectionCommitExpectation();
         $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createEventDispatcherExpectation([m::type(DocumentCreatedEvent::class), DocumentCreatedEvent::NAME]);
 
         $result = $this->documentCreator->create($person, $parameters);
         $this->assertIsArray($result);
@@ -239,11 +245,20 @@ class DocumentCreatorTest extends TestCase
         $this->createDocumentRevisionCreatorExpectation([m::type(DocumentModel::class)]);
         $this->createConnectionCommitExpectation();
         $this->createKnowledgebaseOwnerExpectation([m::type(KnowledgebaseModel::class)], $knowledgebaseOwnerModel);
+        $this->createEventDispatcherExpectation([m::type(DocumentCreatedEvent::class), DocumentCreatedEvent::NAME]);
 
         $result = $this->documentCreator->create($person, $parameters);
         $this->assertIsArray($result);
         $this->assertInstanceOf(KnowledgebaseRouteModel::class, $result[0]);
         $this->assertEquals($knowledgebaseOwnerModel, $result[1]);
+    }
+
+    private function createEventDispatcherExpectation($args)
+    {
+        $this->eventDispatcher
+            ->shouldReceive('dispatch')
+            ->once()
+            ->with(...$args);
     }
 
     private function createKnowledgebaseOwnerExpectation($args, $result)

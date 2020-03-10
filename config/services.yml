@@ -86,6 +86,9 @@ services:
         arguments:
             $manifestPath: '%asset_integrity_manifest_path%'
 
+    Hipper\Document\Event\DocumentCreatedEvent:
+        autowire: false
+
     Hipper\Document\Renderer\HtmlFragmentRendererContext:
         autowire: false
 

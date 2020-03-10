@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Hipper\Tests\Topic\Event;
 
-use Hiiper\Knowledgebase\Exception\UnsupportedKnowledgebaseEntityException;
 use Hipper\Activity\ActivityCreator;
 use Hipper\Knowledgebase\KnowledgebaseRouteModel;
 use Hipper\Organization\OrganizationModel;

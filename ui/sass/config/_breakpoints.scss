@@ -1,0 +1,11 @@
+$config: (
+    app: (
+        medium: 752px,
+        large: 1015px,
+        document: (
+            two-column-layout: 920px,
+            three-column-layout: 1193px,
+            fixed-layout: 1270px,
+        ),
+    ),
+);

@@ -2,128 +2,19 @@
 @use 'sass:map';
 @use 'sass:meta';
 @use 'sass:string';
+@use 'config/global';
+@use 'config/color-shades';
+@use 'config/element';
+@use 'config/layout';
+@use 'config/breakpoints';
 
-$config: (
-    global: (
-        color: (
-            primary: #11ae83,
-            white: #fefeff,
-            dark: #3d3d3d,
-            error: #f5515f,
-        ),
-        font: (
-            stack: "'Proxima Soft', sans-serif",
-        ),
-    ),
-    color-shades: (
-        dark: (
-            100: #e7e9eb,
-            200: #d0d4d7,
-            300: #b9bfc4,
-            400: #a2aab0,
-            500: #8b959c,
-            600: #747f89,
-            700: #5d6a75,
-            800: #465561,
-            900: #2f404e,
-            1000: #182b3a,
-            1100: #011627,
-        ),
-        grey: (
-            100: #f4f6f7,
-            200: #e9eeef,
-            300: #dee5e7,
-            400: #d3dde0,
-            500: #c8d4d8,
-            600: #beccd0,
-            700: #b3c3c8,
-            800: #a8bbc1,
-            900: #9db2b9,
-            1000: #92aab1,
-            1100: #88a2aa,
-        ),
-        primary: (
-            100: #e9f1fd,
-            200: #d4e3fc,
-            300: #bfd5f8,
-            400: #a9c8f9,
-            500: #94baf8,
-            600: #7facf6,
-            700: #6a9ef5,
-            800: #5491f4,
-            900: #3f83f2,
-            1000: #2a75f1,
-            1100: #1568f0,
-        ),
-        secondary: (
-            1100: #0dc866,
-        ),
-    ),
-    element: (
-        page: (
-            background-color: #fcfcfc,
-            foreground-color: '_self.global.color.dark',
-        ),
-        input: (
-            background-color: #fff,
-            border-color: #c4c2c5,
-            border-radius: 4px,
-            border-width: 1px,
-            box-shadow: none,
-            height: 44px,
-            padding: 14px,
-            placeholder-color: #b0aeb1,
-            text-color: '_self.global.color.dark',
-            focused: (
-                border-color: #2786ee,
-            ),
-            disabled: (
-                opacity: .2,
-            ),
-        ),
-        textarea: (
-            height: 140px,
-            line-height: 22px,
-            resize: none,
-        ),
-    ),
-    layout: (
-        document: (
-            toolbar: (
-                height: 46px,
-            ),
-        ),
-        sheet: (
-            background-color: #fcfcfc,
-        ),
-    ),
-    breakpoints: (
-        app: (
-            medium: 752px,
-            large: 1015px,
-            document: (
-                two-column-layout: 920px,
-                three-column-layout: 1193px,
-                fixed-layout: 1270px,
-            ),
-        ),
-    ),
-);
+$config: ();
 
-@function split-str($string, $separator) {
-    $split-arr: ();
-    $index: string.index($string, $separator);
-
-    @while $index != null {
-        $item: string.slice($string, 1, $index - 1);
-        $split-arr: list.append($split-arr, $item);
-        $string: string.slice($string, $index + 1);
-        $index: string.index($string, $separator);
-    }
-
-    $split-arr: list.append($split-arr, $string);
-    @return $split-arr;
-}
+$config: map.merge($config, ('global': global.$config));
+$config: map.merge($config, ('color-shades': color-shades.$config));
+$config: map.merge($config, ('element': element.$config));
+$config: map.merge($config, ('layout': layout.$config));
+$config: map.merge($config, ('breakpoints': breakpoints.$config));
 
 // Usage: config-get('namespace', 'subnamespace', 'property');
 // * E.g. config-get('global', 'color', 'primary');
@@ -136,12 +27,6 @@ $config: (
             @warn 'Config entry not found';
         }
         $c: map.get($c, $arg);
-    }
-
-    @if meta.type-of($c) == 'string' and string.index($c, '_self.') != null {
-        $pointer: string.slice($c, string.length('_self.') + 1);
-        $pointer-list: split-str($pointer, '.');
-        @return config-get($pointer-list...);
     }
 
     @return $c;

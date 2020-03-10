@@ -1,0 +1,31 @@
+@use 'sass:map';
+@use 'config/global';
+
+$config: (
+    page: (
+        background-color: #fcfcfc,
+        foreground-color: map.get(map.get(global.$config, 'color'), 'dark'),
+    ),
+    input: (
+        background-color: #fff,
+        border-color: #c4c2c5,
+        border-radius: 4px,
+        border-width: 1px,
+        box-shadow: none,
+        height: 44px,
+        padding: 14px,
+        placeholder-color: #b0aeb1,
+        text-color: map.get(map.get(global.$config, 'color'), 'dark'),
+        focused: (
+            border-color: #2786ee,
+        ),
+        disabled: (
+            opacity: .2,
+        ),
+    ),
+    textarea: (
+        height: 140px,
+        line-height: 22px,
+        resize: none,
+    ),
+);

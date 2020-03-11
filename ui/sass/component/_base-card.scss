@@ -1,0 +1,165 @@
+@use 'config/config';
+@use 'helper/font-smoothing';
+@use 'helper/line-clamp';
+
+$_background-color: config.config-get(global, color, white);
+$_border-radius: 4px;
+$_box-shadow: 0 0 4px 0 rgba(#c4c2c5, .4);
+
+$_focused-box-shadow: config.config-get(element, focused-box-shadow);
+
+$_title-color: config.config-get(color-shades, dark, 900);
+$_title-font-weight: 700;
+
+$_description-color: config.config-get(color-shades, dark, 900);
+
+$_timestamp-color: config.config-get(color-shades, dark, 600);
+
+$_default-card-padding: 23px 80px 20px 20px;
+$_default-card-avatar-offset-right: 20px;
+$_default-card-avatar-offset-top: 14px;
+$_default-card-title-font-size: 24px;
+$_default-card-title-line-height: 29px;
+$_default-card-title-margin: 0 0 22px;
+$_default-card-description-font-size: 16px;
+$_default-card-description-line-height: 24px;
+$_default-card-description-margin: 0 0 20px;
+$_default-card-timestamp-font-size: 13px;
+$_default-card-timestamp-line-height: 13px;
+$_default-card-timestamp-margin: 0;
+
+$_mini-card-space-between-elements: 12px;
+$_mini-card-min-width: 280px;
+$_mini-card-padding: 16px 60px 16px 16px;
+$_mini-card-fixed-width: 280px;
+$_mini-card-avatar-offset-right: 16px;
+$_mini-card-avatar-offset-top: 12px;
+$_mini-card-title-font-size: 18px;
+$_mini-card-title-line-height: 22px;
+$_mini-card-title-margin: 0;
+$_mini-card-description-font-size: 15px;
+$_mini-card-description-line-height: 22px;
+$_mini-card-description-margin: $_mini-card-space-between-elements 0 0;
+$_mini-card-timestamp-font-size: 12px;
+$_mini-card-timestamp-line-height: 12px;
+$_mini-card-timestamp-margin: $_mini-card-space-between-elements 0 0;
+
+@mixin card($size: 'default', $fixed: false) {
+    background-color: $_background-color;
+    border-radius: $_border-radius;
+    box-shadow: $_box-shadow;
+    position: relative;
+
+    @if $size == 'default' {
+        padding: $_default-card-padding;
+    } @else if $size == 'mini' {
+        min-width: $_mini-card-min-width;
+        padding: $_mini-card-padding;
+
+        @if $fixed {
+            width: $_mini-card-fixed-width;
+        }
+    }
+
+    &:focus-within {
+        box-shadow: #{$_box-shadow}, #{$_focused-box-shadow};
+    }
+}
+
+
+@mixin card__link-wrap($card-size: 'default') {
+    text-decoration: none;
+
+    @if $card-size == 'default' {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    } @else {
+        display: block;
+    }
+
+    &:focus {
+        outline: 0;
+    }
+
+    &::after {
+        bottom: 0;
+        content: '';
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    @if $card-size == 'default' {
+        > :last-child {
+            margin-top: auto;
+        }
+    }
+}
+
+@mixin card__avatar($card-size: 'default') {
+    position: absolute;
+
+    @if $card-size == 'default' {
+        right: $_default-card-avatar-offset-right;
+        top: $_default-card-avatar-offset-top;
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+    } @else if $card-size == 'mini' {
+        right: $_mini-card-avatar-offset-right;
+        top: $_mini-card-avatar-offset-top;
+    }
+}
+
+@mixin card__title($card-size: 'default') {
+    color: $_title-color;
+    font-weight: $_title-font-weight;
+    @include font-smoothing.font-smoothing;
+
+    @if $card-size == 'default' {
+        font-size: $_default-card-title-font-size;
+        line-height: $_default-card-title-line-height;
+        margin: $_default-card-title-margin;
+    } @else if $card-size == 'mini' {
+        font-size: $_mini-card-title-font-size;
+        line-height: $_mini-card-title-line-height;
+        margin: $_mini-card-title-margin;
+    }
+}
+
+@mixin card__description($card-size: 'default', $truncated: false) {
+    color: $_description-color;
+    @include font-smoothing.font-smoothing;
+
+    @if $card-size == 'default' {
+        font-size: $_default-card-description-font-size;
+        line-height: $_default-card-description-line-height;
+        margin: $_default-card-description-margin;
+    } @else if $card-size == 'mini' {
+        font-size: $_mini-card-description-font-size;
+        line-height: $_mini-card-description-line-height;
+        margin: $_mini-card-description-margin;
+    }
+
+    @if $truncated {
+        @include line-clamp.clamp-to-lines();
+    }
+}
+
+@mixin card__timestamp($card-size: 'default') {
+    color: $_timestamp-color;
+    display: block;
+    @include font-smoothing.font-smoothing;
+
+    @if $card-size == 'default' {
+        font-size: $_default-card-timestamp-font-size;
+        line-height: $_default-card-timestamp-line-height;
+        margin: $_default-card-timestamp-margin;
+    } @else if $card-size == 'mini' {
+        font-size: $_mini-card-timestamp-font-size;
+        line-height: $_mini-card-timestamp-line-height;
+        margin: $_mini-card-timestamp-margin;
+    }
+}

@@ -1,4 +1,7 @@
+@use 'config/config';
+@use 'helper/breakpoint';
 @use '../component/base-list';
+@use 'component/base-card';
 
 .c-card-list {
     @extend %c-base-list;
@@ -11,41 +14,70 @@
     @extend %c-base-list--responsive;
 }
 
-%c-card-list__item {
+.c-card-list__item {
     @extend %c-base-list__item;
-    @extend %c-base-list__item--responsive;
+    @extend %c-base-list__item--with-avatar;
+    @extend %c-base-list__item--with-avatar--responsive;
+
+    @include breakpoint.breakpoint(app, medium) {
+        @include base-card.card;
+    }
 }
 
-.c-card-list__item--with-avatar {
-    @extend %c-card-list__item;
+.c-card-list__item::after {
+    @include breakpoint.breakpoint(app, medium) {
+        display: none !important;
+    }
 }
 
 .c-card-list__item-link {
     @extend %c-base-list__item-link;
-    @extend %c-base-list__item-link--responsive;
+
+    @include breakpoint.breakpoint(app, medium) {
+        padding: 0;
+        position: static;
+        @include base-card.card__link-wrap;
+    }
+}
+
+.c-card-list__item-link:focus {
+    @include breakpoint.breakpoint(app, medium) {
+        background-color: transparent;
+    }
 }
 
 .c-card-list__item-avatar {
     @extend %c-base-list__item-avatar;
-    @extend %c-base-list__item-avatar--responsive;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-left: 0 !important;
+        @include base-card.card__avatar;
+    }
 }
 
 .c-card-list__item-title {
     @extend %c-base-list__item-title;
-    @extend %c-base-list__item-title--responsive;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-left: 0 !important;
+        @include base-card.card__title;
+    }
 }
 
 .c-card-list__item-description {
     @extend %c-base-list__item-description;
-    @extend %c-base-list__item-description--responsive;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-left: 0 !important;
+        @include base-card.card__description;
+    }
 }
 
 .c-card-list__item-meta {
     @extend %c-base-list__item-meta;
-    @extend %c-base-list__item-meta--responsive;
-}
 
-.c-card-list__item--with-avatar {
-    @extend %c-base-list__item--with-avatar;
-    @extend %c-base-list__item--with-avatar--responsive;
+    @include breakpoint.breakpoint(app, medium) {
+        margin-left: 0 !important;
+        @include base-card.card__timestamp;
+    }
 }

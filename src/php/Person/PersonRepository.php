@@ -88,6 +88,29 @@ class PersonRepository
         return $result;
     }
 
+    public function getAllInProject(string $projectId, string $organizationId): array
+    {
+        $fields = self::DEFAULT_FIELDS;
+
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select($fields)
+            ->from('person_to_project_map', 'map')
+            ->innerJoin('map', 'person', 'person', 'person.id = map.person_id')
+            ->andWhere('map.project_id = :project_id')
+            ->andWhere('person.organization_id = :organization_id');
+
+        $qb->setParameters([
+            'project_id' => $projectId,
+            'organization_id' => $organizationId,
+        ]);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
     public function findById(string $id, array $additionalFields = []): ?array
     {
         $qb = $this->connection->createQueryBuilder();

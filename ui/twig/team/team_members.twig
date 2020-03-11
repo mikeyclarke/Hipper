@@ -1,0 +1,21 @@
+{% extends '_app_default_layout.twig' %}
+
+{% block navigational_header %}{% include 'team/_team_header.twig' with { activeTab: 'members' } %}{% endblock %}
+
+{% block content %}
+
+<ol class="c-card-list--pad-bottom">
+    {% for person in people_list %}
+        {% include '_card_list_item.twig' with {
+            avatar_initials: person.abbreviated_name,
+            avatar_type: 'initials',
+            link_href: person.route,
+            timestamp: person.created,
+            timestamp_label: 'Joined',
+            title: person.name,
+            description: person.job_role_or_title,
+        } only %}
+    {% endfor %}
+</ol>
+
+{% endblock %}

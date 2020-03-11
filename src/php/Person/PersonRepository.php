@@ -11,19 +11,19 @@ class PersonRepository
     private const ALLOWED_SORT_COLUMNS = ['created', 'name'];
     private const ALLOWED_ORDERINGS = ['ASC', 'DESC'];
     private const DEFAULT_FIELDS = [
-        'abbreviated_name',
-        'bio',
-        'created',
-        'email_address',
-        'email_address_verified',
-        'id',
-        'job_role_or_title',
-        'name',
-        'onboarding_completed',
-        'organization_id',
-        'updated',
-        'url_id',
-        'username',
+        'person.abbreviated_name',
+        'person.bio',
+        'person.created',
+        'person.email_address',
+        'person.email_address_verified',
+        'person.id',
+        'person.job_role_or_title',
+        'person.name',
+        'person.onboarding_completed',
+        'person.organization_id',
+        'person.updated',
+        'person.url_id',
+        'person.username',
     ];
 
     private Connection $connection;
@@ -58,6 +58,29 @@ class PersonRepository
             ->orderBy($sortBy, $orderBy);
 
         $qb->setParameter('organization_id', $organizationId);
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
+    public function getAllInTeam(string $teamId, string $organizationId): array
+    {
+        $fields = self::DEFAULT_FIELDS;
+
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select($fields)
+            ->from('person_to_team_map', 'map')
+            ->innerJoin('map', 'person', 'person', 'person.id = map.person_id')
+            ->andWhere('map.team_id = :team_id')
+            ->andWhere('person.organization_id = :organization_id');
+
+        $qb->setParameters([
+            'team_id' => $teamId,
+            'organization_id' => $organizationId,
+        ]);
 
         $stmt = $qb->execute();
         $result = $stmt->fetchAll();

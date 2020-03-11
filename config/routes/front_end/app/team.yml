@@ -89,6 +89,14 @@ team.search:
         _before_middlewares:
             - team_model_from_url_id_middleware:before
 
+team.members.show:
+    path: /teams/{team_url_id}/members
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Team\TeamMembersController::getAction
+    defaults:
+        _before_middlewares:
+            - team_model_from_url_id_middleware:before
+
 team.members.search:
     path: /teams/{team_url_id}/search/members
     methods: [GET]

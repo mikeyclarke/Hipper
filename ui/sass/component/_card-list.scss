@@ -14,19 +14,32 @@
     @extend %c-base-list--responsive;
 }
 
-.c-card-list__item {
+%c-card-list__item {
     @extend %c-base-list__item;
     @extend %c-base-list__item--with-avatar;
     @extend %c-base-list__item--with-avatar--responsive;
+}
 
+%c-card-list__item::after {
+    @include breakpoint.breakpoint(app, medium) {
+        display: none !important;
+    }
+}
+
+.c-card-list__item,
+.c-card-list__item--discreet {
+    @extend %c-card-list__item;
+}
+
+.c-card-list__item {
     @include breakpoint.breakpoint(app, medium) {
         @include base-card.card;
     }
 }
 
-.c-card-list__item::after {
+.c-card-list__item--discreet {
     @include breakpoint.breakpoint(app, medium) {
-        display: none !important;
+        @include base-card.card('discreet');
     }
 }
 
@@ -55,12 +68,24 @@
     }
 }
 
+.c-card-list__item--discreet .c-card-list__item-avatar {
+    @include breakpoint.breakpoint(app, medium) {
+        @include base-card.card__avatar('discreet');
+    }
+}
+
 .c-card-list__item-title {
     @extend %c-base-list__item-title;
 
     @include breakpoint.breakpoint(app, medium) {
         margin-left: 0 !important;
         @include base-card.card__title;
+    }
+}
+
+.c-card-list__item--discreet .c-card-list__item-title {
+    @include breakpoint.breakpoint(app, medium) {
+        @include base-card.card__title('discreet');
     }
 }
 

@@ -49,23 +49,3 @@
         max-width: 1240px + 32px;
     }
 }
-
-.l-app-default__main-content-inner-container--slim {
-    @include breakpoint.breakpoint(app, medium) {
-        min-height: auto;
-        padding: 48px 16px 0;
-    }
-
-    @include breakpoint.breakpoint(app, large) {
-        margin: 0 auto;
-        max-width: 783px + 32px;
-    }
-}
-
-.l-app-default__main-content-inner-container--slim > .c-list,
-.l-app-default__main-content-inner-container--slim > .c-list--pad-bottom {
-    @include breakpoint.breakpoint(app, medium) {
-        margin-left: 16px;
-        margin-right: 16px;
-    }
-}

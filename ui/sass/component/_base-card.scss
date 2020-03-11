@@ -16,6 +16,7 @@ $_description-color: config.config-get(color-shades, dark, 900);
 $_timestamp-color: config.config-get(color-shades, dark, 600);
 
 $_default-card-padding: 23px 80px 20px 20px;
+$_default-card-avatar-dimension: 48px;
 $_default-card-avatar-offset-right: 20px;
 $_default-card-avatar-offset-top: 14px;
 $_default-card-title-font-size: 24px;
@@ -27,6 +28,14 @@ $_default-card-description-margin: 0 0 20px;
 $_default-card-timestamp-font-size: 13px;
 $_default-card-timestamp-line-height: 13px;
 $_default-card-timestamp-margin: 0;
+
+$_discreet-card-padding: 26px 80px 20px 20px;
+$_discreet-card-avatar-offset-right: 20px;
+$_discreet-card-avatar-offset-top: 20px;
+$_discreet-card-avatar-dimension: 36px;
+$_discreet-card-title-font-size: 20px;
+$_discreet-card-title-line-height: 24px;
+$_discreet-card-title-margin: 0 0 22px;
 
 $_mini-card-space-between-elements: 12px;
 $_mini-card-min-width: 280px;
@@ -52,6 +61,8 @@ $_mini-card-timestamp-margin: $_mini-card-space-between-elements 0 0;
 
     @if $size == 'default' {
         padding: $_default-card-padding;
+    } @else if $size == 'discreet' {
+        padding: $_discreet-card-padding;
     } @else if $size == 'mini' {
         min-width: $_mini-card-min-width;
         padding: $_mini-card-padding;
@@ -70,7 +81,7 @@ $_mini-card-timestamp-margin: $_mini-card-space-between-elements 0 0;
 @mixin card__link-wrap($card-size: 'default') {
     text-decoration: none;
 
-    @if $card-size == 'default' {
+    @if $card-size == 'default' or $card-size == 'discreet' {
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -91,7 +102,7 @@ $_mini-card-timestamp-margin: $_mini-card-space-between-elements 0 0;
         top: 0;
     }
 
-    @if $card-size == 'default' {
+    @if $card-size == 'default' or $card-size == 'discreet' {
         > :last-child {
             margin-top: auto;
         }
@@ -104,9 +115,15 @@ $_mini-card-timestamp-margin: $_mini-card-space-between-elements 0 0;
     @if $card-size == 'default' {
         right: $_default-card-avatar-offset-right;
         top: $_default-card-avatar-offset-top;
-        font-size: 48px;
-        width: 48px;
-        height: 48px;
+        font-size: $_default-card-avatar-dimension;
+        width: $_default-card-avatar-dimension;
+        height: $_default-card-avatar-dimension;
+    } @else if $card-size == 'discreet' {
+        right: $_discreet-card-avatar-offset-right;
+        top: $_discreet-card-avatar-offset-top;
+        font-size: $_discreet-card-avatar-dimension;
+        width: $_discreet-card-avatar-dimension;
+        height: $_discreet-card-avatar-dimension;
     } @else if $card-size == 'mini' {
         right: $_mini-card-avatar-offset-right;
         top: $_mini-card-avatar-offset-top;
@@ -122,6 +139,10 @@ $_mini-card-timestamp-margin: $_mini-card-space-between-elements 0 0;
         font-size: $_default-card-title-font-size;
         line-height: $_default-card-title-line-height;
         margin: $_default-card-title-margin;
+    } @else if $card-size == 'discreet' {
+        font-size: $_discreet-card-title-font-size;
+        line-height: $_discreet-card-title-line-height;
+        margin: $_discreet-card-title-margin;
     } @else if $card-size == 'mini' {
         font-size: $_mini-card-title-font-size;
         line-height: $_mini-card-title-line-height;

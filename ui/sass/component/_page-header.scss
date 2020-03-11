@@ -63,7 +63,7 @@ $_primary-action-icon-margin: 0 0 0 15px;
     pointer-events: none;
 }
 
-.c-page-header {
+%c-page-header {
     padding: $page-header-padding;
     position: relative;
 
@@ -72,6 +72,19 @@ $_primary-action-icon-margin: 0 0 0 15px;
         padding-left: 0;
         padding-right: 0;
         padding-top: 0;
+    }
+}
+
+.c-page-header,
+.c-page-header--desktop-only {
+    @extend %c-page-header;
+}
+
+.c-page-header--desktop-only {
+    display: none;
+
+    @include breakpoint.breakpoint(app, medium) {
+        display: block;
     }
 }
 
@@ -263,6 +276,10 @@ $_primary-action-icon-margin: 0 0 0 15px;
     margin: $_actions-margin;
 }
 
+.c-page-header__actions:only-child {
+    margin-top: 0;
+}
+
 .c-page-header__actions-start,
 .c-page-header__actions-end {
     position: relative;
@@ -271,6 +288,10 @@ $_primary-action-icon-margin: 0 0 0 15px;
 .c-page-header__actions-start {
     display: flex;
     margin-left: -#{($_action-dimension - $_action-background-dimension) / 2};
+}
+
+.c-page-header__actions-end {
+    margin-left: auto;
 }
 
 %c-page-header__action {

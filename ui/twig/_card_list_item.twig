@@ -1,0 +1,16 @@
+<li class="c-card-list__item{% if is_discreet is defined and is_discreet is same as(true) %}--discreet{% endif %}">
+    {% if link_href is defined %}<a class="c-card-list__item-link" href="{{ link_href }}">{% endif %}
+        {% if avatar_type is same as('initials') %}
+            <div class="c-avatar c-card-list__item-avatar">
+                <span class="c-avatar__initials">{{ avatar_initials }}</span>
+            </div>
+        {% elseif avatar_type is same as('icon') %}
+            <div class="c-avatar--{{ avatar_icon_type }} c-card-list__item-avatar">
+                <svg class="c-avatar__icon" aria-hidden="true"><use xlink:href="#icon-sprite__{{ avatar_icon_type }}"/></svg>
+            </div>
+        {% endif %}
+        <h2 class="c-card-list__item-title">{{ title }}</h2>
+        {% if description is defined and description is not null %}<p class="c-card-list__item-description">{{ description }}</p>{% endif %}
+        {% if timestamp is defined %}<span class="c-card-list__item-meta">{{ timestamp_label }} <time datetime="{{ timestamp.utc_datetime }}" title="{{ timestamp.verbose }}">{{ timestamp.time_ago }}</time></span>{% endif %}
+    {% if link_href is defined %}</a>{% endif %}
+</li>

@@ -18,16 +18,15 @@
 
 <ol class="c-card-list--pad-bottom">
     {% for project in projects_list %}
-        <li class="c-card-list__item">
-            <a class="c-card-list__item-link" href="{{ project.route }}">
-                <div class="c-avatar c-card-list__item-avatar">
-                    <span class="c-avatar__initials">{{ project.name|trim|first|upper }}</span>
-                </div>
-                <h2 class="c-card-list__item-title">{{ project.name }}</h2>
-                <p class="c-card-list__item-description">{{ project.description }}</p>
-                <span class="c-card-list__item-meta">Created <time datetime="{{ project.created.utc_datetime }}" title="{{ project.created.verbose }}">{{ project.created.time_ago }}</time></span>
-            </a>
-        </li>
+        {% include '_card_list_item.twig' with {
+            avatar_initials: project.name|trim|first|upper,
+            avatar_type: 'initials',
+            link_href: project.route,
+            timestamp: project.created,
+            timestamp_label: 'Created',
+            title: project.name,
+            description: project.description,
+        } only %}
     {% endfor %}
 </ol>
 

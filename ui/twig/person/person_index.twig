@@ -30,16 +30,15 @@
     <div class="c-page-section__content">
         <ol class="c-card-list">
             {% for team in team_memberships %}
-                <li class="c-card-list__item">
-                    <a class="c-card-list__item-link" href="{{ team.route }}">
-                        <div class="c-avatar c-card-list__item-avatar">
-                            <span class="c-avatar__initials">{{ team.name|trim|first|upper }}</span>
-                        </div>
-                        <h2 class="c-card-list__item-title">{{ team.name }}</h2>
-                        <p class="c-card-list__item-description">{{ team.description }}</p>
-                        <span class="c-card-list__item-meta">Created <time datetime="{{ team.created.utc_datetime }}" title="{{ team.created.verbose }}">{{ team.created.time_ago }}</time></span>
-                    </a>
-                </li>
+                {% include '_card_list_item.twig' with {
+                    avatar_initials: team.name|trim|first|upper,
+                    avatar_type: 'initials',
+                    link_href: team.route,
+                    timestamp: team.created,
+                    timestamp_label: 'Created',
+                    title: team.name,
+                    description: team.description,
+                } only %}
             {% endfor %}
         </ol>
     </div>
@@ -53,16 +52,15 @@
     <div class="c-page-section__content">
         <ol class="c-card-list">
             {% for project in project_memberships %}
-                <li class="c-card-list__item">
-                    <a class="c-card-list__item-link" href="{{ project.route }}">
-                        <div class="c-avatar c-card-list__item-avatar">
-                            <span class="c-avatar__initials">{{ project.name|trim|first|upper }}</span>
-                        </div>
-                        <h2 class="c-card-list__item-title">{{ project.name }}</h2>
-                        <p class="c-card-list__item-description">{{ project.description }}</p>
-                        <span class="c-card-list__item-meta">Created <time datetime="{{ project.created.utc_datetime }}" title="{{ project.created.verbose }}">{{ project.created.time_ago }}</time></span>
-                    </a>
-                </li>
+                {% include '_card_list_item.twig' with {
+                    avatar_initials: project.name|trim|first|upper,
+                    avatar_type: 'initials',
+                    link_href: project.route,
+                    timestamp: project.created,
+                    timestamp_label: 'Created',
+                    title: project.name,
+                    description: project.description,
+                } only %}
             {% endfor %}
         </ol>
     </div>

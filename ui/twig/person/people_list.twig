@@ -18,18 +18,15 @@
 
 <ol class="c-card-list--pad-bottom">
     {% for person in people_list %}
-        <li class="c-card-list__item">
-            <a class="c-card-list__item-link" href="{{ person.route }}">
-                <div class="c-avatar c-card-list__item-avatar">
-                    <span class="c-avatar__initials">{{ person.abbreviated_name }}</span>
-                </div>
-                <h2 class="c-card-list__item-title">{{ person.name }}</h2>
-                {% if person.job_role_or_title is not null and person.job_role_or_title is not empty %}
-                    <p class="c-card-list__item-description">{{ person.job_role_or_title }}</p>
-                {% endif %}
-                <span class="c-card-list__item-meta">Jointed <time datetime="{{ person.created.utc_datetime }}" title="{{ person.created.verbose }}">{{ person.created.time_ago }}</time></span>
-            </a>
-        </li>
+        {% include '_card_list_item.twig' with {
+            avatar_initials: person.abbreviated_name,
+            avatar_type: 'initials',
+            link_href: person.route,
+            timestamp: person.created,
+            timestamp_label: 'Joined',
+            title: person.name,
+            description: person.job_role_or_title,
+        } only %}
     {% endfor %}
 </ol>
 

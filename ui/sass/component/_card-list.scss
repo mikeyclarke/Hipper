@@ -103,6 +103,15 @@
 
     @include breakpoint.breakpoint(app, medium) {
         margin-left: 0 !important;
+        @include base-card.card__meta;
+    }
+}
+
+.c-card-list__item-timestamp {
+    @extend %c-base-list__item-timestamp;
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-left: 0 !important;
         @include base-card.card__timestamp;
     }
 }

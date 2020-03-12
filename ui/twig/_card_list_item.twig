@@ -11,6 +11,14 @@
         {% endif %}
         <h2 class="c-card-list__item-title">{{ title }}</h2>
         {% if description is defined and description is not null %}<p class="c-card-list__item-description">{{ description }}</p>{% endif %}
-        {% if timestamp is defined %}<span class="c-card-list__item-meta">{{ timestamp_label }} <time datetime="{{ timestamp.utc_datetime }}" title="{{ timestamp.verbose }}">{{ timestamp.time_ago }}</time></span>{% endif %}
+        {% if meta is defined %}
+            {% for item in meta %}
+                <span class="c-tag c-card-list__item-meta" aria-label="{{ item.label }}">
+                    <svg class="c-tag__icon" aria-hidden="true"><use href="#icon-sprite__{{ item.icon }}"/></svg>
+                    {{ item.value }}
+                </span>
+            {% endfor %}
+        {% endif %}
+        {% if timestamp is defined %}<span class="c-card-list__item-timestamp">{{ timestamp_label }} <time datetime="{{ timestamp.utc_datetime }}" title="{{ timestamp.verbose }}">{{ timestamp.time_ago }}</time></span>{% endif %}
     {% if link_href is defined %}</a>{% endif %}
 </li>

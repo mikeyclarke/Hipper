@@ -114,8 +114,8 @@ $_more-button-height: 46px;
 }
 
 .c-search-results__result-meta {
-    @extend %c-base-list__item-meta;
-    @extend %c-base-list__item-meta--responsive;
+    @extend %c-base-list__item-timestamp;
+    @extend %c-base-list__item-timestamp--responsive;
 }
 
 .c-search-results__result-title,

@@ -25,6 +25,7 @@ $_default-card-title-margin: 0 0 22px;
 $_default-card-description-font-size: 16px;
 $_default-card-description-line-height: 24px;
 $_default-card-description-margin: 0 0 20px;
+$_default-card-meta-margin: 0 0 20px;
 $_default-card-timestamp-font-size: 13px;
 $_default-card-timestamp-line-height: 13px;
 $_default-card-timestamp-margin: 0;
@@ -49,6 +50,7 @@ $_mini-card-title-margin: 0;
 $_mini-card-description-font-size: 15px;
 $_mini-card-description-line-height: 22px;
 $_mini-card-description-margin: $_mini-card-space-between-elements 0 0;
+$_mini-card-meta-margin: $_mini-card-space-between-elements 0 0;
 $_mini-card-timestamp-font-size: 12px;
 $_mini-card-timestamp-line-height: 12px;
 $_mini-card-timestamp-margin: $_mini-card-space-between-elements 0 0;
@@ -82,6 +84,7 @@ $_mini-card-timestamp-margin: $_mini-card-space-between-elements 0 0;
     text-decoration: none;
 
     @if $card-size == 'default' or $card-size == 'discreet' {
+        align-items: flex-start;
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -169,12 +172,22 @@ $_mini-card-timestamp-margin: $_mini-card-space-between-elements 0 0;
     }
 }
 
+@mixin card__meta($card-size: 'default') {
+    @include font-smoothing.font-smoothing;
+
+    @if $card-size == 'default' or $card-size == 'discreet' {
+        margin: $_default-card-meta-margin;
+    } @else if $card-size == 'mini' {
+        margin: $_mini-card-meta-margin;
+    }
+}
+
 @mixin card__timestamp($card-size: 'default') {
     color: $_timestamp-color;
     display: block;
     @include font-smoothing.font-smoothing;
 
-    @if $card-size == 'default' {
+    @if $card-size == 'default' or $card-size == 'discreet' {
         font-size: $_default-card-timestamp-font-size;
         line-height: $_default-card-timestamp-line-height;
         margin: $_default-card-timestamp-margin;

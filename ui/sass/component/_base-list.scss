@@ -200,7 +200,12 @@ $item-description-line-height-medium-bp: 24px;
 }
 
 %c-base-list__item-meta {
+    margin: 0 0 10px;
+}
+
+%c-base-list__item-timestamp {
     color: #b0aeb1;
+    display: block;
     font-size: 12px;
     line-height: 12px;
     margin: 0;
@@ -208,7 +213,7 @@ $item-description-line-height-medium-bp: 24px;
     @include font-smoothing.font-smoothing;
 }
 
-%c-base-list__item-meta--responsive {
+%c-base-list__item-timestamp--responsive {
     @include breakpoint.breakpoint(app, medium) {
         font-size: 14px;
         line-height: 14px;
@@ -224,7 +229,8 @@ $item-description-line-height-medium-bp: 24px;
     %c-base-list__item-title,
     %c-base-list__item-owners,
     %c-base-list__item-description,
-    %c-base-list__item-meta {
+    %c-base-list__item-meta,
+    %c-base-list__item-timestamp {
         margin-left: $content-left-offset-with-avatar;
     }
 }
@@ -233,7 +239,8 @@ $item-description-line-height-medium-bp: 24px;
     %c-base-list__item-title,
     %c-base-list__item-owners,
     %c-base-list__item-description,
-    %c-base-list__item-meta {
+    %c-base-list__item-meta,
+    %c-base-list__item-timestamp {
         @include breakpoint.breakpoint(app, medium) {
             margin-left: $content-left-offset-with-avatar-medium-bp;
         }

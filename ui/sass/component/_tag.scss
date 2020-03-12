@@ -1,0 +1,34 @@
+@use 'config/config';
+@use 'helper/break-text';
+@use 'helper/font-smoothing';
+
+$_background-color: #fafafc;
+$_border-radius: 6px;
+$_color: config.config-get(color-shades, dark, 700);
+$_font-size: 16px;
+$_line-height: 16px;
+$_padding: 3px 6px;
+
+$_icon-dimension: 18px;
+$_icon-fill: config.config-get(global, color, primary);
+$_icon-margin: 0 6px 0 0;
+
+.c-tag {
+    @extend %break-text;
+    align-items: center;
+    background-color: $_background-color;
+    border-radius: $_border-radius;
+    color: $_color;
+    display: inline-flex;
+    font-size: $_font-size;
+    line-height: $_line-height;
+    padding: $_padding;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-tag__icon {
+    fill: $_icon-fill;
+    height: $_icon-dimension;
+    margin: $_icon-margin;
+    width: $_icon-dimension;
+}

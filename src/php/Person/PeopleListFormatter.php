@@ -29,6 +29,7 @@ class PeopleListFormatter
                 return [
                     'abbreviated_name' => $person['abbreviated_name'],
                     'created' => $this->timestampFormatter->format($person['created'], $displayTimeZone),
+                    'email_address' => $person['email_address'],
                     'id' => $person['id'],
                     'job_role_or_title' => $person['job_role_or_title'],
                     'name' => $person['name'],

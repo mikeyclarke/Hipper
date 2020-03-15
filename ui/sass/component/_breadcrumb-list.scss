@@ -18,8 +18,6 @@ $item-height: 46px;
 $item-line-height: 15px;
 $item-font-weight: 400;
 
-$link-width: 3.5ch;
-
 $divider-icon-dimension: 18px;
 $divider-icon-fill: config.config-get(color-shades, grey, 500);
 $divider-icon-margin-right: 2px;
@@ -34,10 +32,6 @@ $overflow-column-width: $overflow-button-width + $divider-icon-dimension + $divi
     display: grid;
     grid-auto-columns: $overflow-column-width 1fr;
     position: relative;
-
-    @media (hover: hover) {
-        display: block;
-    }
 }
 
 .c-breadcrumb-list__overflow {
@@ -90,28 +84,13 @@ $overflow-column-width: $overflow-button-width + $divider-icon-dimension + $divi
     list-style: none;
     margin: 0;
     opacity: 1;
-    overflow: hidden;
+    overflow-x: auto;
     padding: 0;
-
-    @media (hover: hover) {
-        animation: breadcrumbs .25s;
-        display: grid;
-        grid-auto-flow: column;
-        justify-content: start;
-        overflow: visible;
-    }
 }
 
 .c-breadcrumb-list__list:only-child,
 .c-breadcrumb-list__overflow[hidden] + .c-breadcrumb-list__list {
     grid-column: 1/2 span;
-}
-
-@media (hover: hover) {
-    .c-breadcrumb-list__list:hover,
-    .c-breadcrumb-list__list:focus-within {
-        animation: breadcrumbs-2 .25s;
-    }
 }
 
 .c-breadcrumb-list__item {
@@ -133,10 +112,6 @@ $overflow-column-width: $overflow-button-width + $divider-icon-dimension + $divi
 
 .c-breadcrumb-list__item:last-child {
     max-width: 100%;
-
-    @media (hover: hover) {
-        max-width: none;
-    }
 }
 
 .c-breadcrumb-list__item-link {
@@ -145,25 +120,11 @@ $overflow-column-width: $overflow-button-width + $divider-icon-dimension + $divi
     padding: 12px 0;
     text-decoration: none;
     white-space: nowrap;
-
-    @media (hover: hover) {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: $link-width;
-    }
 }
 
 .c-breadcrumb-list__item-link:focus {
     outline: 0;
     text-decoration: underline;
-}
-
-@media (hover: hover) {
-    .c-breadcrumb-list__list:hover .c-breadcrumb-list__item-link,
-    .c-breadcrumb-list__list:focus-within .c-breadcrumb-list__item-link {
-        font-weight: 500;
-        width: auto;
-    }
 }
 
 .c-breadcrumb-list__divider {
@@ -179,24 +140,4 @@ $overflow-column-width: $overflow-button-width + $divider-icon-dimension + $divi
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-@keyframes breadcrumbs {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes breadcrumbs-2 {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
 }

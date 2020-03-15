@@ -21,8 +21,6 @@ export default class BreadcrumbList extends HTMLElement {
     public _overflowContextMenu: ContextMenu | null = null;
     public _overflowItemsContainer: HTMLDivElement | null = null;
     public _resizeEventListener: any | null = null;
-    public _mediaQueryList: MediaQueryList | null = null;
-    private _hoverFeatureChangeListener: any | null = null;
     private readonly _activeBreadcrumbTextElement: HTMLElement | null = null;
     private readonly _initialActiveBreadcrumbText: string | null = null;
 
@@ -56,22 +54,10 @@ export default class BreadcrumbList extends HTMLElement {
             return;
         }
 
-        this._mediaQueryList = window.matchMedia('(hover: hover)');
-        this._hoverFeatureChangeListener = onHoverMediaFeatureChange.bind(this);
-        this._mediaQueryList.addListener(this._hoverFeatureChangeListener);
-
-        if (this._mediaQueryList.matches) {
-            return;
-        }
-
         setUpCollapsingBreadcrumbs.bind(this)();
     }
 
     public disconnectedCallback(): void {
-        if (null !== this._mediaQueryList && null !== this._hoverFeatureChangeListener) {
-            this._mediaQueryList.removeListener(this._hoverFeatureChangeListener);
-        }
-
         if (null !== this._resizeEventListener) {
             window.removeEventListener('resize', this._resizeEventListener);
         }
@@ -90,19 +76,6 @@ export default class BreadcrumbList extends HTMLElement {
             collapseOverflowingBreadcrumbs.bind(this)();
         }
     }
-}
-
-function onHoverMediaFeatureChange(this: BreadcrumbList, event: MediaQueryListEvent): void {
-    if (null === this._mediaQueryList) {
-        return;
-    }
-
-    if (!this._mediaQueryList.matches) {
-        setUpCollapsingBreadcrumbs.bind(this)();
-        return;
-    }
-
-    clearDownCollapsingBreadcrumbs.bind(this)();
 }
 
 function setUpCollapsingBreadcrumbs(this: BreadcrumbList): void {

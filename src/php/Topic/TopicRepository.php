@@ -9,6 +9,19 @@ use PDO;
 
 class TopicRepository
 {
+    private const DEFAULT_FIELDS = [
+        'id',
+        'name',
+        'description',
+        'url_slug',
+        'url_id',
+        'parent_topic_id',
+        'knowledgebase_id',
+        'organization_id',
+        'created',
+        'updated',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -21,7 +34,7 @@ class TopicRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('topic')
             ->andWhere('id = :id')
             ->andWhere('organization_id = :organization_id');
@@ -45,7 +58,7 @@ class TopicRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('topic')
             ->andWhere('id = :id')
             ->andWhere('knowledgebase_id = :knowledgebase_id')

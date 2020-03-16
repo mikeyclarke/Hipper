@@ -8,6 +8,18 @@ use Doctrine\DBAL\Query\QueryBuilder;
 
 class KnowledgebaseRouteRepository
 {
+    private const DEFAULT_FIELDS = [
+        'id',
+        'url_id',
+        'route',
+        'is_canonical',
+        'entity',
+        'organization_id',
+        'knowledgebase_id',
+        'topic_id',
+        'document_id',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -126,7 +138,7 @@ class KnowledgebaseRouteRepository
 
     private function createQuery(QueryBuilder $qb, string $organizationId, string $knowledgebaseId): void
     {
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('knowledgebase_route')
             ->andWhere('knowledgebase_id = :knowledgebase_id')
             ->andWhere('organization_id = :organization_id');

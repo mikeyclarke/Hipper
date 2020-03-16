@@ -7,6 +7,10 @@ use Doctrine\DBAL\Connection;
 
 class TokenizedLoginRepository
 {
+    private const DEFAULT_FIELDS = [
+        'person_id',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -19,7 +23,7 @@ class TokenizedLoginRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('tokenized_login')
             ->andWhere('token = :token')
             ->andWhere('expires > CURRENT_TIMESTAMP');

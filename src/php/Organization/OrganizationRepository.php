@@ -7,6 +7,17 @@ use Doctrine\DBAL\Connection;
 
 class OrganizationRepository
 {
+    private const DEFAULT_FIELDS = [
+        'id',
+        'knowledgebase_id',
+        'name',
+        'subdomain',
+        'approved_email_domain_signup_allowed',
+        'approved_email_domains',
+        'created',
+        'updated',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -19,7 +30,7 @@ class OrganizationRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('organization')
             ->where('id = :id');
 
@@ -39,7 +50,7 @@ class OrganizationRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('organization')
             ->where('subdomain = :subdomain');
 

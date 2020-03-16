@@ -8,6 +8,19 @@ use PDO;
 
 class TopicInserter
 {
+    private const FIELDS_TO_RETURN = [
+        'id',
+        'name',
+        'description',
+        'url_slug',
+        'url_id',
+        'parent_topic_id',
+        'knowledgebase_id',
+        'organization_id',
+        'created',
+        'updated',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -26,12 +39,14 @@ class TopicInserter
         string $description = null,
         string $parentTopicId = null
     ): array {
+        $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
+
         $sql = <<<SQL
 INSERT INTO topic (
     id, name, description, url_slug, url_id, knowledgebase_id, organization_id, parent_topic_id
 ) VALUES (
     :id, :name, :description, :url_slug, :url_id, :knowledgebase_id, :organization_id, :parent_topic_id
-) RETURNING *
+) RETURNING $fieldsToReturn
 SQL;
 
         $stmt = $this->connection->prepare($sql);

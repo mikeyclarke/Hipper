@@ -8,7 +8,15 @@ use PDO;
 
 class OrganizationUpdater
 {
-    private const FIELDS = [
+    private const FIELDS_TO_RETURN = [
+        'name',
+        'knowledgebase_id',
+        'subdomain',
+        'approved_email_domain_signup_allowed',
+        'approved_email_domains',
+        'updated',
+    ];
+    private const UPDATE_FIELDS_WHITELIST = [
         'name' => PDO::PARAM_STR,
         'knowledgebase_id' => PDO::PARAM_STR,
         'subdomain' => PDO::PARAM_STR,
@@ -26,7 +34,8 @@ class OrganizationUpdater
 
     public function update(string $id, array $parameters): array
     {
-        $fieldsToUpdate = array_intersect_key($parameters, array_flip(array_keys(self::FIELDS)));
+        $fieldsToUpdate = array_intersect_key($parameters, array_flip(array_keys(self::UPDATE_FIELDS_WHITELIST)));
+        $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
 
         $sql = 'UPDATE organization SET ';
         $sql .= implode(
@@ -39,13 +48,13 @@ class OrganizationUpdater
             )
         );
         $sql .= ' WHERE id = :id';
-        $sql .= ' RETURNING *';
+        $sql .= " RETURNING {$fieldsToReturn}";
 
         $stmt = $this->connection->prepare($sql);
 
         $stmt->bindValue('id', $id, PDO::PARAM_STR);
         foreach ($fieldsToUpdate as $name => $value) {
-            $type = self::FIELDS[$name];
+            $type = self::UPDATE_FIELDS_WHITELIST[$name];
             $stmt->bindValue($name, $value, $type);
         }
 

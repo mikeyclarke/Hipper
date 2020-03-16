@@ -8,8 +8,18 @@ use InvalidArgumentException;
 
 class ProjectRepository
 {
-    const ALLOWED_SORT_COLUMNS = ['created', 'name'];
-    const ALLOWED_ORDERINGS = ['ASC', 'DESC'];
+    private const ALLOWED_SORT_COLUMNS = ['created', 'name'];
+    private const ALLOWED_ORDERINGS = ['ASC', 'DESC'];
+    private const DEFAULT_FIELDS = [
+        'id',
+        'name',
+        'description',
+        'url_id',
+        'knowledgebase_id',
+        'organization_id',
+        'created',
+        'updated',
+    ];
 
     private $connection;
 
@@ -31,7 +41,7 @@ class ProjectRepository
 
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('project')
             ->where('organization_id = :organization_id')
             ->orderBy($sortBy, $orderBy);
@@ -48,7 +58,7 @@ class ProjectRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('project')
             ->andWhere('organization_id = :organization_id')
             ->andWhere('id = :id');
@@ -72,7 +82,7 @@ class ProjectRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('project')
             ->andWhere('organization_id = :organization_id')
             ->andWhere('url_id = :url_id');
@@ -96,7 +106,7 @@ class ProjectRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('project')
             ->andWhere('organization_id = :organization_id')
             ->andWhere('knowledgebase_id = :knowledgebase_id');

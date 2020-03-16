@@ -7,6 +7,17 @@ use Doctrine\DBAL\Connection;
 
 class TeamInserter
 {
+    private const FIELDS_TO_RETURN = [
+        'id',
+        'name',
+        'description',
+        'url_id',
+        'knowledgebase_id',
+        'organization_id',
+        'created',
+        'updated',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -23,8 +34,10 @@ class TeamInserter
         string $knowledgebaseId,
         string $organizationId
     ): array {
+        $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
         $sql = "INSERT INTO team (id, name, description, url_id, knowledgebase_id, organization_id) " .
-            "VALUES (:id, :name, :description, :url_id, :knowledgebase_id, :organization_id) RETURNING *";
+            "VALUES (:id, :name, :description, :url_id, :knowledgebase_id, :organization_id) " .
+            "RETURNING {$fieldsToReturn}";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $id);
         $stmt->bindValue('name', $name);

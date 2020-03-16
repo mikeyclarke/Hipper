@@ -7,6 +7,23 @@ use Doctrine\DBAL\Connection;
 
 class DocumentRepository
 {
+    private const DEFAULT_FIELDS = [
+        'id',
+        'name',
+        'description',
+        'deduced_description',
+        'content',
+        'url_slug',
+        'url_id',
+        'knowledgebase_id',
+        'organization_id',
+        'topic_id',
+        'created_by',
+        'last_updated_by',
+        'created',
+        'updated',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -18,7 +35,7 @@ class DocumentRepository
     public function findById(string $id, string $organizationId): ?array
     {
         $qb = $this->connection->createQueryBuilder();
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('document')
             ->andWhere('id = :id')
             ->andWhere('organization_id = :organization_id');

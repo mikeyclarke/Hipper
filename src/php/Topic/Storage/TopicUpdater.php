@@ -8,7 +8,15 @@ use PDO;
 
 class TopicUpdater
 {
-    private const FIELDS = [
+    private const FIELDS_TO_RETURN = [
+        'name',
+        'description',
+        'url_slug',
+        'parent_topic_id',
+        'updated',
+    ];
+
+    private const UPDATE_FIELDS_WHITELIST = [
         'name',
         'description',
         'url_slug',
@@ -25,7 +33,8 @@ class TopicUpdater
 
     public function update(string $id, array $parameters): array
     {
-        $fieldsToUpdate = array_intersect_key($parameters, array_flip(self::FIELDS));
+        $fieldsToUpdate = array_intersect_key($parameters, array_flip(self::UPDATE_FIELDS_WHITELIST));
+        $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
 
         $sql = 'UPDATE topic SET ';
         $sql .= implode(
@@ -38,7 +47,7 @@ class TopicUpdater
             )
         );
         $sql .= ' WHERE id = :id';
-        $sql .= ' RETURNING *';
+        $sql .= " RETURNING {$fieldsToReturn}";
 
         $stmt = $this->connection->prepare($sql);
 

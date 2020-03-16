@@ -7,6 +7,11 @@ use Doctrine\DBAL\Connection;
 
 class InviteRepository
 {
+    private const DEFAULT_FIELDS = [
+        'id',
+        'email_address',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -19,7 +24,7 @@ class InviteRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('invite')
             ->where('id in (:ids)')
             ->setParameter('ids', $ids, Connection::PARAM_STR_ARRAY);
@@ -38,7 +43,7 @@ class InviteRepository
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('invite')
             ->andWhere('id = :id')
             ->andWhere('organization_id = :organization_id')

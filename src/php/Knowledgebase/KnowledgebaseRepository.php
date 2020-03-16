@@ -9,6 +9,12 @@ use PDO;
 
 class KnowledgebaseRepository
 {
+    private const DEFAULT_FIELDS = [
+        'id',
+        'entity',
+        'organization_id',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -20,7 +26,7 @@ class KnowledgebaseRepository
     public function findById(string $knowledgebaseId, string $organizationId): ?array
     {
         $qb = $this->connection->createQueryBuilder();
-        $qb->select('*')
+        $qb->select(self::DEFAULT_FIELDS)
             ->from('knowledgebase')
             ->andWhere('id = :id')
             ->andWhere('organization_id = :organization_id');

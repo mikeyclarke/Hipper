@@ -8,7 +8,18 @@ use PDO;
 
 class DocumentUpdater
 {
-    const FIELDS = [
+    private const FIELDS_TO_RETURN = [
+        'name',
+        'description',
+        'deduced_description',
+        'content',
+        'url_slug',
+        'topic_id',
+        'last_updated_by',
+        'updated',
+    ];
+
+    private const UPDATE_FIELDS_WHITELIST = [
         'name',
         'description',
         'deduced_description',
@@ -29,7 +40,8 @@ class DocumentUpdater
 
     public function update(string $id, array $parameters): array
     {
-        $fieldsToUpdate = array_intersect_key($parameters, array_flip(self::FIELDS));
+        $fieldsToUpdate = array_intersect_key($parameters, array_flip(self::UPDATE_FIELDS_WHITELIST));
+        $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
 
         $sql = 'UPDATE document SET ';
         $sql .= implode(
@@ -42,7 +54,7 @@ class DocumentUpdater
             )
         );
         $sql .= ' WHERE id = :id';
-        $sql .= ' RETURNING *';
+        $sql .= " RETURNING {$fieldsToReturn}";
 
         $stmt = $this->connection->prepare($sql);
 

@@ -8,6 +8,23 @@ use PDO;
 
 class DocumentInserter
 {
+    private const DEFAULT_FIELDS = [
+        'id',
+        'name',
+        'description',
+        'deduced_description',
+        'content',
+        'url_slug',
+        'url_id',
+        'knowledgebase_id',
+        'organization_id',
+        'topic_id',
+        'created_by',
+        'last_updated_by',
+        'created',
+        'updated',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -30,6 +47,8 @@ class DocumentInserter
         string $contentPlain = null,
         string $topicId = null
     ): array {
+        $fieldsToReturn = implode(', ', self::DEFAULT_FIELDS);
+
         $sql = <<<SQL
 INSERT INTO document (
     id, name, description, deduced_description, content, content_plain, url_slug, url_id, knowledgebase_id,
@@ -37,7 +56,7 @@ INSERT INTO document (
 ) VALUES (
     :id, :name, :description, :deduced_description, :content, :content_plain, :url_slug, :url_id, :knowledgebase_id,
     :organization_id, :topic_id, :created_by, :last_updated_by
-) RETURNING *
+) RETURNING $fieldsToReturn
 SQL;
 
         $stmt = $this->connection->prepare($sql);

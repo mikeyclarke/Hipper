@@ -8,6 +8,20 @@ use PDO;
 
 class KnowledgebaseRouteInserter
 {
+    private const FIELDS_TO_RETURN = [
+        'id',
+        'url_id',
+        'route',
+        'is_canonical',
+        'entity',
+        'organization_id',
+        'knowledgebase_id',
+        'topic_id',
+        'document_id',
+        'created',
+        'updated',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -27,11 +41,12 @@ class KnowledgebaseRouteInserter
         string $documentId = null,
         bool $isCanonical = true
     ): array {
+        $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
         $sql = <<<SQL
 INSERT INTO knowledgebase_route
 (id, url_id, route, is_canonical, entity, organization_id, knowledgebase_id, topic_id, document_id)
 VALUES (:id, :url_id, :route, :is_canonical, :entity, :organization_id, :knowledgebase_id, :topic_id, :document_id)
-RETURNING *
+RETURNING $fieldsToReturn
 SQL;
 
         $stmt = $this->connection->prepare($sql);

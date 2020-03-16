@@ -8,6 +8,21 @@ use PDO;
 
 class PersonInserter
 {
+    private const FIELDS_TO_RETURN = [
+        'abbreviated_name',
+        'bio',
+        'created',
+        'email_address',
+        'email_address_verified',
+        'id',
+        'job_role_or_title',
+        'name',
+        'onboarding_completed',
+        'organization_id',
+        'updated',
+        'url_id',
+        'username',
+    ];
     private Connection $connection;
 
     public function __construct(
@@ -27,6 +42,8 @@ class PersonInserter
         string $organizationId,
         bool $emailAddressVerified
     ): ?array {
+        $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
+
         $sql = <<<SQL
 INSERT INTO person
 (
@@ -52,7 +69,7 @@ VALUES
     :organization_id,
     :email_address_verified
 )
-RETURNING *
+RETURNING $fieldsToReturn
 SQL;
         $stmt = $this->connection->prepare($sql);
 

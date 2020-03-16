@@ -7,6 +7,17 @@ use Doctrine\DBAL\Connection;
 
 class OrganizationInserter
 {
+    private const FIELDS_TO_RETURN = [
+        'id',
+        'knowledgebase_id',
+        'name',
+        'subdomain',
+        'approved_email_domain_signup_allowed',
+        'approved_email_domains',
+        'created',
+        'updated',
+    ];
+
     private $connection;
 
     public function __construct(
@@ -17,7 +28,8 @@ class OrganizationInserter
 
     public function insert(string $id, string $name): array
     {
-        $sql = "INSERT INTO organization (id, name) VALUES (:id, :name) RETURNING *";
+        $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
+        $sql = "INSERT INTO organization (id, name) VALUES (:id, :name) RETURNING {$fieldsToReturn}";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $id);
         $stmt->bindValue('name', $name);

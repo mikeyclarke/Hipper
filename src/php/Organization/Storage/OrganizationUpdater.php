@@ -9,11 +9,13 @@ use PDO;
 class OrganizationUpdater
 {
     private const FIELDS_TO_RETURN = [
+        'id',
         'name',
         'knowledgebase_id',
         'subdomain',
         'approved_email_domain_signup_allowed',
         'approved_email_domains',
+        'created',
         'updated',
     ];
     private const UPDATE_FIELDS_WHITELIST = [

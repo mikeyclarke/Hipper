@@ -22,6 +22,7 @@ class PersonInserter
         'updated',
         'url_id',
         'username',
+        'password',
     ];
     private Connection $connection;
 

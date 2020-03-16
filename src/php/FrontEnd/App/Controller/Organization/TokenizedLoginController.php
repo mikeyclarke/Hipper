@@ -28,6 +28,7 @@ class TokenizedLoginController
 
     public function getAction(Request $request): Response
     {
+        $organization = $request->attributes->get('organization');
         $token = $request->query->get('t');
 
         if (null == $token) {
@@ -40,6 +41,10 @@ class TokenizedLoginController
         }
 
         $person = $this->personRepository->findById($tokenizedLogin['person_id']);
+        if ($organization->getId() !== $person['organization_id']) {
+            return new Response(null, 401);
+        }
+
         $this->tokenizedLoginRepository->deleteAllForPerson($person['id']);
 
         $session = $request->getSession();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Hipper\Tests\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
 use Hipper\Organization\Event\OrganizationCreatedEvent;
 use Hipper\Organization\OrganizationCreator;
 use Hipper\Organization\OrganizationModel;
@@ -13,6 +12,7 @@ use Hipper\Person\Event\PersonCreatedEvent;
 use Hipper\Person\PersonCreator;
 use Hipper\Person\PersonModel;
 use Hipper\Person\PersonCreationValidator;
+use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -53,35 +53,41 @@ class CreateFoundingMemberTest extends TestCase
      */
     public function create()
     {
-        $input = [
-            'name' => 'Mikey Clarke',
-            'email_address' => 'mikey@usehipper.com',
-            'password' => '32gyewg7sy',
+        $name = 'Mikey Clarke';
+        $emailAddress = 'mikey@usehipper.com';
+        $encodedPassword = 'encoded-password';
+        $authenticationRequest = SignUpAuthenticationModel::createFromArray([
+            'id' => 'auth-req-uuid',
+            'email_address' => $emailAddress,
+            'encoded_password' => $encodedPassword,
+            'name' => $name,
+            'verification_phrase' => 'foo bar baz qux',
+        ]);
+
+        $validationProperties = [
+            'email_address' => $emailAddress,
+            'name' => $name,
         ];
         $organization = new OrganizationModel;
-
         $person = new PersonModel;
-        $encodedPassword = 'encoded-password';
 
-        $this->createPersonCreationValidatorExpectation($input);
+        $this->createPersonCreationValidatorExpectation([$validationProperties]);
         $this->createConnectionBeginTransactionExpectation();
         $this->createOrganizationCreatorExpectation($organization);
         $this->createPersonCreatorExpectation(
-            $organization,
-            $input['name'],
-            $input['email_address'],
-            $input['password'],
-            [$person, $encodedPassword]
+            [$organization, $name, $emailAddress, $encodedPassword],
+            $person
         );
         $this->createConnectionCommitExpectation();
-        $this->createRequestEmailAddressVerificationExpectation($person);
         $this->createEventDispatcherExpectation(
             [m::type(OrganizationCreatedEvent::class), OrganizationCreatedEvent::NAME]
         );
-        $this->createEventDispatcherExpectation([m::type(PersonCreatedEvent::class), PersonCreatedEvent::NAME]);
+        $this->createEventDispatcherExpectation(
+            [m::type(PersonCreatedEvent::class), PersonCreatedEvent::NAME]
+        );
 
-        $result = $this->createFoundingMember->create($input);
-        $this->assertEquals([$person, $encodedPassword], $result);
+        $result = $this->createFoundingMember->create($authenticationRequest);
+        $this->assertEquals($person, $result);
     }
 
     private function createEventDispatcherExpectation($args)
@@ -92,14 +98,6 @@ class CreateFoundingMemberTest extends TestCase
             ->with(...$args);
     }
 
-    private function createRequestEmailAddressVerificationExpectation($person)
-    {
-        $this->requestEmailAddressVerification
-            ->shouldReceive('sendVerificationRequest')
-            ->once()
-            ->with($person);
-    }
-
     private function createConnectionCommitExpectation()
     {
         $this->connection
@@ -107,12 +105,12 @@ class CreateFoundingMemberTest extends TestCase
             ->once();
     }
 
-    private function createPersonCreatorExpectation($organization, $name, $emailAddress, $password, $result)
+    private function createPersonCreatorExpectation($args, $result)
     {
         $this->personCreator
-            ->shouldReceive('create')
+            ->shouldReceive('createWithEncodedPassword')
             ->once()
-            ->with($organization, $name, $emailAddress, $password)
+            ->with(...$args)
             ->andReturn($result);
     }
 
@@ -131,11 +129,11 @@ class CreateFoundingMemberTest extends TestCase
             ->once();
     }
 
-    private function createPersonCreationValidatorExpectation($input)
+    private function createPersonCreationValidatorExpectation($args)
     {
         $this->personCreationValidator
             ->shouldReceive('validate')
             ->once()
-            ->with($input, 'founding_member');
+            ->with(...$args);
     }
 }

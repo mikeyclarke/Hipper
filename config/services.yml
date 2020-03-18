@@ -154,9 +154,6 @@ services:
         class: Hipper\Session\SessionStorage
         arguments: ['%session.storage.options%', '@session.handler', '@session.storage.metadata_bag', '@request_stack']
 
-    onboarding_verified_person_middleware:
-        class: Hipper\FrontEnd\SignUpFlow\Middleware\VerifiedPersonMiddleware
-
     require_json_content_type_middleware:
         class: Hipper\Http\RequireJsonContentTypeMiddleware
 

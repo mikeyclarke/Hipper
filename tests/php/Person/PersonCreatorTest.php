@@ -68,8 +68,8 @@ class PersonCreatorTest extends TestCase
             'password' => $encodedPassword,
         ];
 
-        $this->createIdGeneratorExpectation($personId);
         $this->createPasswordEncoderExpectation($rawPassword, $encodedPassword);
+        $this->createIdGeneratorExpectation($personId);
         $this->createUrlIdGeneratorExpectation($urlId);
         $this->createUrlSlugGeneratorExpectation([$name, '_'], $sluggifiedName);
         $this->createPersonRepositoryExistsWithUsernameExpectation([$username, $organization->getId()], false);
@@ -83,33 +83,28 @@ class PersonCreatorTest extends TestCase
                 $urlId,
                 $username,
                 $organization->getId(),
-                false,
             ],
             $personRow
         );
 
         $result = $this->personCreator->create($organization, $name, $emailAddress, $rawPassword);
-        $this->assertIsArray($result);
-        $this->assertInstanceOf(PersonModel::class, $result[0]);
-        $this->assertEquals($encodedPassword, $result[1]);
-        $this->assertEquals($personId, $result[0]->getId());
+        $this->assertInstanceOf(PersonModel::class, $result);
+        $this->assertEquals($personId, $result->getId());
     }
 
     /**
      * @test
      */
-    public function createWithEmailAddressVerified()
+    public function createWithEncodedPassword()
     {
         $organization = new OrganizationModel;
         $organization->setId('16fd2706-8baf-433b-82eb-8c7fada847da');
         $name = 'Mikey Clarke';
         $abbreviatedName = 'MC';
         $emailAddress = 'mikey@usehipper.com';
-        $rawPassword = 'foobar';
-        $emailAddressVerified = true;
+        $encodedPassword = 'encoded-password';
 
         $personId = '20fd0d4f-132f-43af-9280-e4565bf2a44e';
-        $encodedPassword = 'encoded-password';
         $urlId = 'abcd1234';
         $sluggifiedName = 'mikey_clarke';
         $username = '@' . $sluggifiedName;
@@ -119,7 +114,6 @@ class PersonCreatorTest extends TestCase
         ];
 
         $this->createIdGeneratorExpectation($personId);
-        $this->createPasswordEncoderExpectation($rawPassword, $encodedPassword);
         $this->createUrlIdGeneratorExpectation($urlId);
         $this->createUrlSlugGeneratorExpectation([$name, '_'], $sluggifiedName);
         $this->createPersonRepositoryExistsWithUsernameExpectation([$username, $organization->getId()], false);
@@ -133,22 +127,18 @@ class PersonCreatorTest extends TestCase
                 $urlId,
                 $username,
                 $organization->getId(),
-                $emailAddressVerified,
             ],
             $personRow
         );
 
-        $result = $this->personCreator->create(
+        $result = $this->personCreator->createWithEncodedPassword(
             $organization,
             $name,
             $emailAddress,
-            $rawPassword,
-            $emailAddressVerified
+            $encodedPassword
         );
-        $this->assertIsArray($result);
-        $this->assertInstanceOf(PersonModel::class, $result[0]);
-        $this->assertEquals($encodedPassword, $result[1]);
-        $this->assertEquals($personId, $result[0]->getId());
+        $this->assertInstanceOf(PersonModel::class, $result);
+        $this->assertEquals($personId, $result->getId());
     }
 
     /**
@@ -179,8 +169,8 @@ class PersonCreatorTest extends TestCase
             'password' => $encodedPassword,
         ];
 
-        $this->createIdGeneratorExpectation($personId);
         $this->createPasswordEncoderExpectation($rawPassword, $encodedPassword);
+        $this->createIdGeneratorExpectation($personId);
         $this->createUrlIdGeneratorExpectation($urlId);
         $this->createUrlSlugGeneratorExpectation([$name, '_'], $sluggifiedName);
         $this->createPersonRepositoryExistsWithUsernameExpectation([$username, $organization->getId()], true);
@@ -195,16 +185,13 @@ class PersonCreatorTest extends TestCase
                 $urlId,
                 $incrementedUsername,
                 $organization->getId(),
-                false,
             ],
             $personRow
         );
 
         $result = $this->personCreator->create($organization, $name, $emailAddress, $rawPassword);
-        $this->assertIsArray($result);
-        $this->assertInstanceOf(PersonModel::class, $result[0]);
-        $this->assertEquals($encodedPassword, $result[1]);
-        $this->assertEquals($personId, $result[0]->getId());
+        $this->assertInstanceOf(PersonModel::class, $result);
+        $this->assertEquals($personId, $result->getId());
     }
 
     private function createPersonInserterExpectation($args, $result)

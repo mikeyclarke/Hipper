@@ -38,11 +38,28 @@ class PersonCreator
         OrganizationModel $organization,
         string $name,
         string $emailAddress,
-        string $rawPassword,
-        bool $emailAddressVerified = false
-    ): array {
-        $id = $this->idGenerator->generate();
+        string $rawPassword
+    ): PersonModel {
         $encodedPassword = $this->passwordEncoder->encodePassword($rawPassword);
+        return $this->doCreate($organization, $name, $emailAddress, $encodedPassword);
+    }
+
+    public function createWithEncodedPassword(
+        OrganizationModel $organization,
+        string $name,
+        string $emailAddress,
+        string $encodedPassword
+    ): PersonModel {
+        return $this->doCreate($organization, $name, $emailAddress, $encodedPassword);
+    }
+
+    private function doCreate(
+        OrganizationModel $organization,
+        string $name,
+        string $emailAddress,
+        string $encodedPassword
+    ): PersonModel {
+        $id = $this->idGenerator->generate();
         $abbreviatedName = $this->getAbbreviatedName($name);
         $urlId = $this->generateUrlId();
         $username = $this->generateUsername($name);
@@ -52,7 +69,7 @@ class PersonCreator
             $username = $this->incrementUsername($username, $organizationId);
         }
 
-        $person = $this->personInserter->insert(
+        $result = $this->personInserter->insert(
             $id,
             $name,
             $abbreviatedName,
@@ -60,15 +77,11 @@ class PersonCreator
             $encodedPassword,
             $urlId,
             $username,
-            $organizationId,
-            $emailAddressVerified
+            $organizationId
         );
 
-        $model = PersonModel::createFromArray($person);
-
-        // TODO: If email address verified send welcome email
-
-        return [$model, $person['password']];
+        $person = PersonModel::createFromArray($result);
+        return $person;
     }
 
     private function incrementUsername(string $username, string $organizationId): string

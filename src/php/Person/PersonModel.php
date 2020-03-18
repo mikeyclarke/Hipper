@@ -13,7 +13,6 @@ final class PersonModel
         'abbreviated_name' => 'abbreviatedName',
         'bio' => 'bio',
         'email_address' => 'emailAddress',
-        'email_address_verified' => 'emailAddressVerified',
         'job_role_or_title' => 'jobRoleOrTitle',
         'url_id' => 'urlId',
         'username' => 'username',
@@ -28,7 +27,6 @@ final class PersonModel
     private $abbreviatedName;
     private $bio;
     private $emailAddress;
-    private $emailAddressVerified;
     private $jobRoleOrTitle;
     private $username;
     private $urlId;
@@ -92,16 +90,6 @@ final class PersonModel
     public function getEmailAddress(): string
     {
         return $this->emailAddress;
-    }
-
-    public function setEmailAddressVerified(bool $emailAddressVerified): void
-    {
-        $this->emailAddressVerified = $emailAddressVerified;
-    }
-
-    public function getEmailAddressVerified(): bool
-    {
-        return $this->emailAddressVerified;
     }
 
     public function setJobRoleOrTitle(?string $jobRoleOrTitle): void

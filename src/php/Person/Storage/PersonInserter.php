@@ -13,7 +13,6 @@ class PersonInserter
         'bio',
         'created',
         'email_address',
-        'email_address_verified',
         'id',
         'job_role_or_title',
         'name',
@@ -40,8 +39,7 @@ class PersonInserter
         string $password,
         string $urlId,
         string $username,
-        string $organizationId,
-        bool $emailAddressVerified
+        string $organizationId
     ): ?array {
         $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
 
@@ -55,8 +53,7 @@ INSERT INTO person
     password,
     url_id,
     username,
-    organization_id,
-    email_address_verified
+    organization_id
 )
 VALUES
 (
@@ -67,8 +64,7 @@ VALUES
     :password,
     :url_id,
     :username,
-    :organization_id,
-    :email_address_verified
+    :organization_id
 )
 RETURNING $fieldsToReturn
 SQL;
@@ -82,7 +78,6 @@ SQL;
         $stmt->bindValue('url_id', $urlId, PDO::PARAM_STR);
         $stmt->bindValue('username', $username, PDO::PARAM_STR);
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
-        $stmt->bindValue('email_address_verified', $emailAddressVerified, PDO::PARAM_BOOL);
 
         $stmt->execute();
         $result = $stmt->fetch();

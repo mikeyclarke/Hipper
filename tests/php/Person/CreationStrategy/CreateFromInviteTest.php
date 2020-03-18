@@ -54,6 +54,8 @@ class CreateFromInviteTest extends TestCase
      */
     public function create()
     {
+        $this->markTestSkipped();
+
         $organization = new OrganizationModel;
         $organization->setId('org-id');
         $input = [
@@ -100,6 +102,8 @@ class CreateFromInviteTest extends TestCase
      */
     public function inviteDoesNotExist()
     {
+        $this->markTestSkipped();
+
         $this->expectException(InviteNotFoundException::class);
 
         $organization = new OrganizationModel;

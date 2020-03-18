@@ -15,7 +15,6 @@ class PersonRepository
         'person.bio',
         'person.created',
         'person.email_address',
-        'person.email_address_verified',
         'person.id',
         'person.job_role_or_title',
         'person.name',

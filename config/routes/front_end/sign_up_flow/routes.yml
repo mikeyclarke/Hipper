@@ -9,35 +9,25 @@ front_end.sign_up_flow.verify_identity:
     path: /sign-up/verify-identity
     controller: Hipper\FrontEnd\SignUpFlow\Controller\VerifyIdentityController::getAction
     methods: [GET]
+    defaults:
+        unsecured: true
 
 front_end.sign_up_flow.name_team:
     path: /sign-up/name-team
     controller: Hipper\FrontEnd\SignUpFlow\Controller\NameTeamController::getAction
     methods: [GET]
-    defaults:
-        _before_middlewares:
-            - onboarding_verified_person_middleware:before
 
 front_end.sign_up_flow.choose_team_url:
     path: /sign-up/choose-team-url
     controller: Hipper\FrontEnd\SignUpFlow\Controller\ChooseTeamUrlController::getAction
     methods: [GET]
-    defaults:
-        _before_middlewares:
-            - onboarding_verified_person_middleware:before
 
 front_end.sign_up_flow.invite:
     path: /sign-up/invite
     controller: Hipper\FrontEnd\SignUpFlow\Controller\InviteController::getAction
     methods: [GET]
-    defaults:
-        _before_middlewares:
-            - onboarding_verified_person_middleware:before
 
 front_end.sign_up_flow.finalize:
     path: /sign-up/begin
     controller: Hipper\FrontEnd\SignUpFlow\Controller\FinalizeController::getAction
     methods: [GET]
-    defaults:
-        _before_middlewares:
-            - onboarding_verified_person_middleware:before

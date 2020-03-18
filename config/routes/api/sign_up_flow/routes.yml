@@ -12,6 +12,7 @@ api.sign_up_flow.verify_identity:
     controller: Hipper\Api\SignUpFlow\Controller\VerifyIdentityController::postAction
     methods: [POST]
     defaults:
+        unsecured: true
         _before_middlewares:
             - require_json_content_type_middleware:before
 

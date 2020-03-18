@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Api\SignUpFlow\Controller;
 
-use Hipper\Person\CreationStrategy\CreateFoundingMember;
+use Hipper\SignUpAuthentication\SignUpAuthenticationRequest;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,24 +12,24 @@ class SignUpController
 {
     use \Hipper\Api\ApiControllerTrait;
 
-    private $personCreation;
+    private SignUpAuthenticationRequest $signUpAuthenticationRequest;
 
     public function __construct(
-        CreateFoundingMember $personCreation
+        SignUpAuthenticationRequest $signUpAuthenticationRequest
     ) {
-        $this->personCreation = $personCreation;
+        $this->signUpAuthenticationRequest = $signUpAuthenticationRequest;
     }
 
     public function postAction(Request $request): JsonResponse
     {
         try {
-            list($person, $encodedPassword) = $this->personCreation->create($request->request->all());
+            $authenticationRequest = $this->signUpAuthenticationRequest->create($request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }
 
         $session = $request->getSession();
-        $session->set('_personId', $person->getId());
+        $session->set('_signup_authentication_request_id', $authenticationRequest->getId());
 
         return new JsonResponse(null, 201);
     }

@@ -25,7 +25,7 @@ class ContentSecurityPolicyBuilder
             'font-src' => ['self', 'data:', $this->assetDomain],
             'form-action' => ['self'],
             'frame-ancestors' => ['none'],
-            'img-src' => ['self', 'data:'],
+            'img-src' => ['self', 'data:', 'https:'],
             'script-src' => ['self', $this->assetDomain],
             'style-src' => ['self', $this->assetDomain],
         ];

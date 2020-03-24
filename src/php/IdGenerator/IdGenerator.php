@@ -10,6 +10,10 @@ use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 
 class IdGenerator
 {
+    // This class generates monotonically increasing UUIDs using the timestamp first strategy so that they’re sorted
+    // in the database
+    // See https://web.archive.org/web/20200324203214/https://uuid.ramsey.dev/en/latest/customize/timestamp-first-comb-codec.html
+
     private $factory;
 
     public function __construct()

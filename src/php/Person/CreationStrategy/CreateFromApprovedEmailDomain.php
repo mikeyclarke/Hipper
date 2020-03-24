@@ -4,13 +4,12 @@ declare(strict_types=1);
 namespace Hipper\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\Event\PersonCreatedEvent;
-use Hipper\Person\Exception\ApprovedEmailDomainSignupNotAllowedException;
-use Hipper\Person\Exception\MalformedEmailAddressException;
 use Hipper\Person\PersonCreationValidator;
 use Hipper\Person\PersonCreator;
+use Hipper\Person\PersonModel;
+use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -20,45 +19,36 @@ class CreateFromApprovedEmailDomain
     private EventDispatcherInterface $eventDispatcher;
     private PersonCreationValidator $personCreationValidator;
     private PersonCreator $personCreator;
-    private RequestEmailAddressVerification $requestEmailAddressVerification;
 
     public function __construct(
         Connection $connection,
         EventDispatcherInterface $eventDispatcher,
         PersonCreationValidator $personCreationValidator,
-        PersonCreator $personCreator,
-        RequestEmailAddressVerification $requestEmailAddressVerification
+        PersonCreator $personCreator
     ) {
         $this->connection = $connection;
         $this->eventDispatcher = $eventDispatcher;
         $this->personCreationValidator = $personCreationValidator;
         $this->personCreator = $personCreator;
-        $this->requestEmailAddressVerification = $requestEmailAddressVerification;
     }
 
-    public function create(OrganizationModel $organization, array $input): array
-    {
-        $this->personCreationValidator->validate($input, 'approved_email_domain');
-
-        if (!$organization->isApprovedEmailDomainSignupAllowed()) {
-            throw new ApprovedEmailDomainSignupNotAllowedException;
-        }
-
-        if (!$this->isEmailDomainAllowed($organization, $input)) {
-            throw new ValidationException([
-                'email_address' => [
-                    'Email address domain is not approved for sign-up.',
-                ]
-            ]);
-        }
+    public function create(
+        OrganizationModel $organization,
+        SignUpAuthenticationModel $authenticationRequest
+    ): PersonModel {
+        $parameters = [
+            'email_address' => $authenticationRequest->getEmailAddress(),
+            'name' => $authenticationRequest->getName(),
+        ];
+        $this->personCreationValidator->validate($parameters, $organization, ['approved_email_domain']);
 
         $this->connection->beginTransaction();
         try {
-            list($person, $encodedPassword) = $this->personCreator->create(
+            $person = $this->personCreator->createWithEncodedPassword(
                 $organization,
-                $input['name'],
-                $input['email_address'],
-                $input['password']
+                $authenticationRequest->getName(),
+                $authenticationRequest->getEmailAddress(),
+                $authenticationRequest->getEncodedPassword(),
             );
             $this->connection->commit();
         } catch (\Exception $e) {
@@ -66,27 +56,9 @@ class CreateFromApprovedEmailDomain
             throw $e;
         }
 
-        $this->requestEmailAddressVerification->sendVerificationRequest($person);
-
         $personCreatedEvent = new PersonCreatedEvent($person);
         $this->eventDispatcher->dispatch($personCreatedEvent, PersonCreatedEvent::NAME);
 
-        return [$person, $encodedPassword];
-    }
-
-    private function isEmailDomainAllowed(OrganizationModel $organization, array $input): bool
-    {
-        $allowedDomains = $organization->getApprovedEmailDomains();
-        if (null === $allowedDomains) {
-            return false;
-        }
-
-        $parts = explode('@', $input['email_address']);
-        if (count($parts) !== 2) {
-            throw new MalformedEmailAddressException;
-        }
-
-        $inputDomain = $parts[1];
-        return in_array($inputDomain, $allowedDomains);
+        return $person;
     }
 }

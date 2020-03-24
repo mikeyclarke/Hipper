@@ -1,17 +1,23 @@
 @use '../config/config';
+@use 'helper/font-smoothing';
 
-$checkbox-background-color: config.config-get(element, input, background-color);
-$checkbox-border-color: config.config-get(element, input, border-color);
-$checkbox-border-radius: 2px;
-$checkbox-border-width: config.config-get(element, input, border-width);
-$checkbox-box-shadow--is-focused: 0 0 4px 2px rgba(#000, .14);
-$checkbox-box-shadow--is-checked--is-focused: 0 0 4px 2px rgba(config.config-get(global, color, primary), .14);
-$checkbox-height: 18px;
-$checkbox-width: 18px;
-$checkbox-checked-color: config.config-get(global, color, primary);
-$checkbox-background-color--is-checked: $checkbox-checked-color;
-$checkbox-border-color--is-checked: $checkbox-checked-color;
-$checkbox-label-distance: 12px;
+$_checkbox-background-color: config.config-get(element, input, background-color);
+$_checkbox-border-color: config.config-get(element, input, border-color);
+$_checkbox-border-radius: 2px;
+$_checkbox-border-width: config.config-get(element, input, border-width);
+$_checkbox-height: 14px;
+$_checkbox-width: 14px;
+$_checkbox-checked-color: config.config-get(color-shades, primary, 800);
+$_checkbox-background-color--is-checked: $_checkbox-checked-color;
+$_checkbox-border-color--is-checked: $_checkbox-checked-color;
+$_checkbox-label-distance: 8px;
+$_checkbox-offset-top: 2px;
+
+$_label-font-size: 14px;
+$_label-font-weight: 500;
+$_label-line-height: 18px;
+
+$_focused-box-shadow: config.config-get(element, focused-box-shadow);
 
 .c-checkbox {
     position: relative;
@@ -27,43 +33,61 @@ $checkbox-label-distance: 12px;
 .c-checkbox__label {
     cursor: pointer;
     display: inline-block;
+    font-size: $_label-font-size;
+    font-weight: $_label-font-weight;
+    line-height: $_label-line-height;
     position: relative;
-    padding-left: $checkbox-width + $checkbox-label-distance;
+    padding-left: $_checkbox-width + $_checkbox-label-distance;
+    z-index: 0;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-checkbox__label a:focus {
+    border-radius: 4px;
+}
+
+.c-checkbox__label a:focus {
+    box-shadow: $_focused-box-shadow;
+    outline: 0;
 }
 
 .c-checkbox__label::before {
-    background-color: $checkbox-background-color;
-    border: $checkbox-border-width solid $checkbox-border-color;
-    border-radius: $checkbox-border-radius;
+    background-color: $_checkbox-background-color;
+    border: $_checkbox-border-width solid $_checkbox-border-color;
+    border-radius: $_checkbox-border-radius;
     content: "";
-    height: $checkbox-height;
+    height: $_checkbox-height;
     left: 0;
     position: absolute;
-    width: $checkbox-width;
+    top: $_checkbox-offset-top;
+    width: $_checkbox-width;
 }
 
 .c-checkbox__input:focus + .c-checkbox__label::before {
-    box-shadow: $checkbox-box-shadow--is-focused;
-    transform: scale(1.1);
+    box-shadow: $_focused-box-shadow;
 }
 
 .c-checkbox__input:checked + .c-checkbox__label::before {
-    background-color: $checkbox-background-color--is-checked;
-    border-color: $checkbox-border-color--is-checked;
-}
-
-.c-checkbox__input:checked + .c-checkbox__label::after {
+    background-color: $_checkbox-background-color--is-checked;
     background-image: url('../images/icons/component/checkbox__checkmark.svg');
     background-position: center center;
     background-repeat: no-repeat;
+    background-size: 14px;
+    border-color: $_checkbox-border-color--is-checked;
     content: "";
-    height: $checkbox-height;
+    height: $_checkbox-height;
     left: 0;
     position: absolute;
-    top: 0;
-    width: $checkbox-width;
+    top: $_checkbox-offset-top;
+    width: $_checkbox-width;
 }
 
-.c-checkbox__input:checked:focus + .c-checkbox__label::before {
-    box-shadow: $checkbox-box-shadow--is-checked--is-focused;
+.c-checkbox__label::after {
+    bottom: -14px;
+    content: '';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -14px;
+    z-index: -1;
 }

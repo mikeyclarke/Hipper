@@ -1,6 +1,7 @@
 @use 'sass:list';
 @use '../config/config';
 @use '../helper/font-smoothing';
+@use 'helper/break-text';
 
 $form-margin: 40px 30px;
 
@@ -23,6 +24,13 @@ $form-label-margin-bottom: 7px;
 
 $form-footer-margin: 36px 0 0;
 $form-footer-text-align: right;
+
+$_input-group-text-background-color: #fafafc;
+
+$_field-description-color: config.config-get(color-shades, dark, 600);
+$_field-description-font-size: 14px;
+$_field-description-font-weight: 400;
+$_field-description-margin: 8px 0 0;
 
 .c-form {
     margin: $form-margin;
@@ -101,6 +109,54 @@ $form-footer-text-align: right;
 
 .c-form__input:read-only {
     border-color: transparent;
+}
+
+.c-form__input-group-text {
+    align-items: center;
+    background-color: $_input-group-text-background-color;
+    border: config.config-get(element, input, border-width) solid config.config-get(element, input, border-color);
+    border-radius: config.config-get(element, input, border-radius);
+    box-shadow: config.config-get(element, input, box-shadow);
+    display: inline-block;
+    color: config.config-get(element, input, text-color);
+    height: config.config-get(element, input, height);
+    overflow: hidden;
+    padding: config.config-get(element, input, padding);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-form__input-group {
+    display: flex;
+}
+
+.c-form__input-group:focus-within .c-form__input-group-member:first-child {
+    border-right-color: config.config-get(element, input, focused, border-color);
+}
+
+.c-form__input-group-member:first-child {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 50%;
+}
+
+.c-form__input-group-member:last-child {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-left: 0;
+    flex-shrink: 1;
+    max-width: 50%;
+}
+
+.c-form__field-description {
+    color: $_field-description-color;
+    font-size: $_field-description-font-size;
+    font-weight: $_field-description-font-weight;
+    margin: $_field-description-margin;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-form__error {

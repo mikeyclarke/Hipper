@@ -1,0 +1,83 @@
+{% extends 'base_layout.twig' %}
+
+{% block page_content %}
+<div class="c-login-screen">
+    <div class="c-login-screen__header">
+        <a href="https://usehipper.com" target="_blank"><svg class="c-login-screen__header-logo" role="img" aria-label="Hipper"><use xlink:href="#icon-sprite__wordmark"/></svg></a>
+    </div>
+
+    {% if organization.isApprovedEmailDomainSignupAllowed %}
+        <main class="c-login-screen__inner">
+            <header class="c-login-screen__inner-header">
+                <h1 class="c-login-screen__inner-title">Join {{ organization.name }} on Hipper</h1>
+            </header>
+
+            <form class="js-join-form" novalidate>
+                <fieldset class="c-form__field">
+                    <label for="input-name" class="c-form__label">Your name</label>
+                    <input class="c-form__input js-name-input" type="text" name="name" id="input-name" required autocomplete="name" autocapitalize="words" spellcheck="false" placeholder="e.g. Sue Shei">
+                </fieldset>
+
+                <fieldset class="c-form__field">
+                    <label for="input-email-local-part" class="c-form__label">Your email address</label>
+                    <div class="c-form__input-group">
+                        <input class="c-form__input c-form__input-group-member" type="text" name="email_local_part" id="input-email-local-part" required placeholder="e.g. sue" aria-label="Email address local part" autocomplete="off" autocapitalize="off" spellcheck="false">
+                        {% if approved_email_domains|length == 1 %}
+                            <input type="hidden" name="email_domain" value="{{ approved_email_domains|first }}">
+                            <span class="c-form__input-group-text c-form__input-group-member" aria-label="Email address domain" title="@{{ approved_email_domains|first|escape('html_attr') }}">@{{ approved_email_domains|first }}</span>
+                        {% else %}
+                            <select name="email_domain" class="c-form__select c-form__input-group-member" aria-label="Email address domain">
+                                {% for domain in approved_email_domains %}
+                                    <option value="{{ domain }}"{% if loop.first %} selected{% endif %}>@{{ domain }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    </div>
+                </fieldset>
+
+                <fieldset class="c-form__field">
+                    <label for="input-password" class="c-form__label">Password</label>
+                    <password-input class="c-password-input">
+                        <input class="c-form__input c-password-input__input js-password-input" type="password" name="password" id="input-password" required autocomplete="new-password" minlength="8" aria-describedby="password-rules">
+                        <button class="c-password-input__visibility-button js-toggle-password-visibility" type="button" aria-hidden="true" tabindex="-1" aria-controls="input-password">Show</button>
+                    </password-input>
+                    <p class="c-form__field-description" id="password-rules">At least 8 characters.</p>
+                </fieldset>
+
+                <fieldset class="c-form__field">
+                    <div class="c-checkbox">
+                        <input class="c-checkbox__input" type="checkbox" name="terms_agreed" id="input-terms-agreed">
+                        <label for="input-terms-agreed" class="c-checkbox__label">I agree to the Hipper <a href="{{ terms_url }}" target="_blank">terms of use</a></label>
+                    </div>
+                </fieldset>
+
+                <button class="c-login-screen__submit-button js-submit" type="submit" disabled autocomplete="off">Join</button>
+            </form>
+        </main>
+
+        <footer class="c-login-screen__footer">
+            {% if approved_email_domains|length == 1 %}
+                <p class="c-login-screen__footer-copy">✋ Don’t have an @{{ approved_email_domains|first }} email address? Ask someone in your organization who’s already on Hipper to send you an invite.</p>
+            {% else %}
+                {% set approved_email_domains_str = '' %}
+                {% for domain in approved_email_domains %}
+                    {% if loop.last %}
+                        {% set approved_email_domains_str = approved_email_domains_str ~ ' or ' %}
+                    {% elseif loop.index0 > 0 %}
+                        {% set approved_email_domains_str = approved_email_domains_str ~ ', ' %}
+                    {% endif %}
+                    {% set approved_email_domains_str = approved_email_domains_str ~ '@' ~ domain %}
+                {% endfor %}
+                <p class="c-login-screen__footer-copy">✋ Don’t have an {{ approved_email_domains_str }} email address? Ask someone in your organization who’s already on Hipper to send you an invite.</p>
+            {% endif %}
+        </footer>
+    {% else %}
+        <main class="c-login-screen__inner">
+            <header class="c-login-screen__inner-header">
+                <h1 class="c-login-screen__inner-title">Join {{ organization.name }} on Hipper</h1>
+                <p class="c-login-screen__inner-description">You’ll need an invite to join {{ organization.name }}. Please ask someone in your organization who’s already on Hipper to send you one.</p>
+            </header>
+        </main>
+    {% endif %}
+</div>
+{% endblock %}

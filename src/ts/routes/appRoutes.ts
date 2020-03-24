@@ -3,6 +3,16 @@ import RouteDefinition from 'routes/route';
 
 export default function appRoutes(bottle: Bottle): Record<string, RouteDefinition> {
     return {
+        join_organization: {
+            path: '/join',
+            controller: (): any[] => [bottle.container.joinOrganizationController, 'start'],
+        },
+
+        verify_email_address: {
+            path: '/join/verify-email-address',
+            controller: (): any[] => [bottle.container.verifyEmailAddressController, 'start'],
+        },
+
         login: {
             path: '/login',
             controller: (): any[] => [bottle.container.loginController, 'start'],

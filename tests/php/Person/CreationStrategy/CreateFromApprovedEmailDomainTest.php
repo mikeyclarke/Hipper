@@ -4,15 +4,13 @@ declare(strict_types=1);
 namespace Hipper\Tests\Person\CreationStrategy;
 
 use Doctrine\DBAL\Connection;
-use Hipper\EmailAddressVerification\RequestEmailAddressVerification;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\CreationStrategy\CreateFromApprovedEmailDomain;
 use Hipper\Person\Event\PersonCreatedEvent;
-use Hipper\Person\Exception\ApprovedEmailDomainSignupNotAllowedException;
 use Hipper\Person\PersonCreationValidator;
 use Hipper\Person\PersonCreator;
 use Hipper\Person\PersonModel;
-use Hipper\Validation\Exception\ValidationException;
+use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,7 +23,6 @@ class CreateFromApprovedEmailDomainTest extends TestCase
     private $eventDispatcher;
     private $personCreationValidator;
     private $personCreator;
-    private $requestEmailAddressVerification;
     private $createFromApprovedEmailDomain;
 
     public function setUp(): void
@@ -34,14 +31,12 @@ class CreateFromApprovedEmailDomainTest extends TestCase
         $this->eventDispatcher = m::mock(EventDispatcherInterface::class);
         $this->personCreationValidator = m::mock(PersonCreationValidator::class);
         $this->personCreator = m::mock(PersonCreator::class);
-        $this->requestEmailAddressVerification = m::mock(RequestEmailAddressVerification::class);
 
         $this->createFromApprovedEmailDomain = new CreateFromApprovedEmailDomain(
             $this->connection,
             $this->eventDispatcher,
             $this->personCreationValidator,
-            $this->personCreator,
-            $this->requestEmailAddressVerification
+            $this->personCreator
         );
     }
 
@@ -50,74 +45,33 @@ class CreateFromApprovedEmailDomainTest extends TestCase
      */
     public function create()
     {
-        $this->markTestSkipped();
-
-        $input = [
-            'name' => 'Mikey Clarke',
-            'email_address' => 'mikey@usehipper.com',
-            'password' => '32gyewg7sy',
-        ];
         $organization = new OrganizationModel;
-        $organization->setApprovedEmailDomainSignupAllowed(true);
-        $organization->setApprovedEmailDomains('["usehipper.com"]');
+        $name = 'Mikey Clarke';
+        $emailAddress = 'mikey@usehipper.com';
+        $encodedPassword = 'encoded-password';
+        $signUpAuthentication = SignUpAuthenticationModel::createFromArray([
+            'name' => $name,
+            'email_address' => $emailAddress,
+            'encoded_password' => $encodedPassword,
+        ]);
+
+        $validationParameters = [
+            'email_address' => $emailAddress,
+            'name' => $name,
+        ];
 
         $person = new PersonModel;
-        $encodedPassword = 'encoded-password';
 
-        $this->createPersonCreationValidatorExpectation($input);
-        $this->createConnectionBeginTransactionExpectation();
-        $this->createPersonCreatorExpectation(
-            $organization,
-            $input['name'],
-            $input['email_address'],
-            $input['password'],
-            [$person, $encodedPassword]
+        $this->createPersonCreationValidatorExpectation(
+            [$validationParameters, $organization, ['approved_email_domain']]
         );
+        $this->createConnectionBeginTransactionExpectation();
+        $this->createPersonCreatorExpectation([$organization, $name, $emailAddress, $encodedPassword], $person);
         $this->createConnectionCommitExpectation();
-        $this->createRequestEmailAddressVerificationExpectation($person);
         $this->createEventDispatcherExpectation([m::type(PersonCreatedEvent::class), PersonCreatedEvent::NAME]);
 
-        $result = $this->createFromApprovedEmailDomain->create($organization, $input);
-        $this->assertEquals([$person, $encodedPassword], $result);
-    }
-
-    /**
-     * @test
-     */
-    public function cannotSignupIfEmailDomainIsNotApproved()
-    {
-        $this->markTestSkipped();
-
-        $this->expectException(ValidationException::class);
-
-        $input = [
-            'email_address' => 'mikey@lithosapp.com',
-        ];
-        $organization = new OrganizationModel;
-        $organization->setApprovedEmailDomainSignupAllowed(true);
-        $organization->setApprovedEmailDomains('["usehipper.test", "usehipper.com"]');
-
-        $this->createPersonCreationValidatorExpectation($input);
-
-        $this->createFromApprovedEmailDomain->create($organization, $input);
-    }
-
-    /**
-     * @test
-     */
-    public function cannotSignupIfApprovedEmailDomainSignupDisabled()
-    {
-        $this->markTestSkipped();
-
-        $this->expectException(ApprovedEmailDomainSignupNotAllowedException::class);
-
-        $input = [];
-        $organization = new OrganizationModel;
-        $organization->setApprovedEmailDomainSignupAllowed(false);
-
-        $this->createPersonCreationValidatorExpectation($input);
-
-        $this->createFromApprovedEmailDomain->create($organization, $input);
+        $result = $this->createFromApprovedEmailDomain->create($organization, $signUpAuthentication);
+        $this->assertEquals($person, $result);
     }
 
     private function createEventDispatcherExpectation($args)
@@ -128,14 +82,6 @@ class CreateFromApprovedEmailDomainTest extends TestCase
             ->with(...$args);
     }
 
-    private function createRequestEmailAddressVerificationExpectation($person)
-    {
-        $this->requestEmailAddressVerification
-            ->shouldReceive('sendVerificationRequest')
-            ->once()
-            ->with($person);
-    }
-
     private function createConnectionCommitExpectation()
     {
         $this->connection
@@ -143,13 +89,12 @@ class CreateFromApprovedEmailDomainTest extends TestCase
             ->once();
     }
 
-    private function createPersonCreatorExpectation($organization, $name, $emailAddress, $password, $result)
+    private function createPersonCreatorExpectation($args, $result)
     {
         $this->personCreator
-            ->shouldReceive('create')
+            ->shouldReceive('createWithEncodedPassword')
             ->once()
-            ->with($organization, $name, $emailAddress, $password)
-            ->once()
+            ->with(...$args)
             ->andReturn($result);
     }
 
@@ -160,11 +105,11 @@ class CreateFromApprovedEmailDomainTest extends TestCase
             ->once();
     }
 
-    private function createPersonCreationValidatorExpectation($input)
+    private function createPersonCreationValidatorExpectation($args)
     {
         $this->personCreationValidator
             ->shouldReceive('validate')
             ->once()
-            ->with($input, 'approved_email_domain');
+            ->with(...$args);
     }
 }

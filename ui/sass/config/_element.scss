@@ -14,15 +14,18 @@ $config: (
         border-width: 1px,
         box-shadow: none,
         height: 44px,
-        padding: 14px,
-        placeholder-color: #b0aeb1,
-        text-color: map.get(map.get(global.$config, 'color'), 'dark'),
+        padding: 12px 14px,
+        placeholder-color: map.get(map.get(color-shades.$config, 'dark'), 300),
+        text-color: map.get(map.get(color-shades.$config, 'dark'), 1000),
         focused: (
             border-color: #2786ee,
         ),
         disabled: (
             opacity: .2,
         ),
+    ),
+    label: (
+        color: map.get(map.get(color-shades.$config, 'dark'), 1000),
     ),
     textarea: (
         height: 140px,

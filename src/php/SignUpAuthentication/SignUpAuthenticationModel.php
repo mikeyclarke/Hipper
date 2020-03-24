@@ -15,6 +15,7 @@ final class SignUpAuthenticationModel
         'email_address' => 'emailAddress',
         'name' => 'name',
         'encoded_password' => 'encodedPassword',
+        'organization_id' => 'organizationId',
     ];
 
     private $id;
@@ -22,6 +23,7 @@ final class SignUpAuthenticationModel
     private $emailAddress;
     private $name;
     private $encodedPassword;
+    private $organizationId;
 
     public static function createFromArray(array $array): self
     {
@@ -78,5 +80,15 @@ final class SignUpAuthenticationModel
     public function getEncodedPassword(): string
     {
         return $this->encodedPassword;
+    }
+
+    public function setOrganizationId(?string $organizationId): void
+    {
+        $this->organizationId = $organizationId;
+    }
+
+    public function getOrganizationId(): ?string
+    {
+        return $this->organizationId;
     }
 }

@@ -26,7 +26,6 @@ class CreateFoundingMemberTest extends TestCase
     private $organizationCreator;
     private $personCreationValidator;
     private $personCreator;
-    private $requestEmailAddressVerification;
     private $createFoundingMember;
 
     public function setUp(): void
@@ -36,15 +35,13 @@ class CreateFoundingMemberTest extends TestCase
         $this->organizationCreator = m::mock(OrganizationCreator::class);
         $this->personCreationValidator = m::mock(PersonCreationValidator::class);
         $this->personCreator = m::mock(PersonCreator::class);
-        $this->requestEmailAddressVerification = m::mock(RequestEmailAddressVerification::class);
 
         $this->createFoundingMember = new CreateFoundingMember(
             $this->connection,
             $this->eventDispatcher,
             $this->organizationCreator,
             $this->personCreationValidator,
-            $this->personCreator,
-            $this->requestEmailAddressVerification
+            $this->personCreator
         );
     }
 

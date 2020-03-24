@@ -26,7 +26,8 @@ class SignUpAuthenticationInserter
         string $verificationPhrase,
         string $emailAddress,
         string $name,
-        string $encodedPassword
+        string $encodedPassword,
+        ?string $organizationId = null
     ): void {
         $key = $this->storageKeyComposer->compose($id);
 
@@ -35,6 +36,7 @@ class SignUpAuthenticationInserter
             'email_address' => $emailAddress,
             'name' => $name,
             'encoded_password' => $encodedPassword,
+            'organization_id' => $organizationId,
         ]);
         $this->redis->expire($key, self::TTL);
     }

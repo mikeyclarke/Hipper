@@ -1,0 +1,42 @@
+@use 'config/config';
+@use 'helper/font-smoothing';
+
+$_background-position: right 7px top 50%;
+$_background-size: 24px;
+
+select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: config.config-get(element, input, background-color);
+    background-image: url('../images/icons/component/select__expand.svg');
+    background-position: $_background-position;
+    background-repeat: no-repeat;
+    background-size: $_background-size;
+    border: config.config-get(element, input, border-width) solid config.config-get(element, input, border-color);
+    border-radius: config.config-get(element, input, border-radius);
+    box-shadow: config.config-get(element, input, box-shadow);
+    color: config.config-get(element, input, text-color);
+    height: config.config-get(element, input, height);
+    padding: config.config-get(element, input, padding);
+    padding-right: 31px;
+    text-overflow: ellipsis;
+    @include font-smoothing.font-smoothing;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select:focus {
+    border-color: config.config-get(element, input, focused, border-color);
+    outline: 0;
+}
+
+select:disabled {
+    opacity: config.config-get(element, input, disabled, opacity);
+}
+
+option {
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+}

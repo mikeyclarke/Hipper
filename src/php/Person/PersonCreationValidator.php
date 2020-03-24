@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Hipper\Person;
 
+use Hipper\Organization\OrganizationModel;
+use Hipper\Validation\Constraints\ApprovedEmailDomain;
 use Hipper\Validation\Constraints\UniqueEmailAddress;
 use Hipper\Validation\ConstraintViolationListFormatter;
 use Hipper\Validation\Exception\ValidationException;
@@ -17,8 +19,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PersonCreationValidator
 {
-    const ALLOWED_VALIDATION_GROUPS = ['sign_up_authentication', 'invite'];
-
     private $validatorInterface;
 
     public function __construct(
@@ -27,17 +27,27 @@ class PersonCreationValidator
         $this->validatorInterface = $validatorInterface;
     }
 
-    public function validate(array $input, string $validationGroup = null): void
+    public function validate(array $input, OrganizationModel $organization = null, array $validationGroups = []): void
     {
-        if (null !== $validationGroup && !in_array($validationGroup, self::ALLOWED_VALIDATION_GROUPS)) {
-            throw new \InvalidArgumentException('Unsupported validation group');
-        }
-
-        $this->validateInput($input, $validationGroup);
+        $this->validateInput($input, $organization, $validationGroups);
     }
 
-    private function validateInput(array $input, string $validationGroup = null): void
-    {
+    private function validateInput(
+        array $input,
+        OrganizationModel $organization = null,
+        array $validationGroups = []
+    ): void {
+        $emailAddressConstraints = [
+            new NotBlank,
+            new Email([
+                'mode' => 'html5',
+            ]),
+            new UniqueEmailAddress,
+        ];
+        if (in_array('approved_email_domain', $validationGroups)) {
+            $emailAddressConstraints[] = new ApprovedEmailDomain(['organization' => $organization]);
+        }
+
         $constraints = [
             'name' => new Required([
                 new NotBlank,
@@ -46,14 +56,10 @@ class PersonCreationValidator
                     'max' => 100,
                 ]),
             ]),
-            'email_address' => new Required([
-                new NotBlank,
-                new Email,
-                new UniqueEmailAddress,
-            ]),
+            'email_address' => new Required($emailAddressConstraints),
         ];
 
-        if (null !== $validationGroup) {
+        if (in_array('sign_up_authentication', $validationGroups)) {
             $constraints['password'] = [
                 new Required([
                     new NotBlank,

@@ -5,6 +5,20 @@ organization.login:
     defaults:
         unsecured: true
 
+organization.join:
+    path: /join
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Organization\Join\JoinOrganizationController::getAction
+    defaults:
+        unsecured: true
+
+organization.join.verify_email:
+    path: /join/verify-email-address
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Organization\Join\VerifyEmailAddressController::getAction
+    defaults:
+        unsecured: true
+
 organization.tokenized_login:
     path: /tokenized-login
     methods: [GET]

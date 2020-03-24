@@ -5,6 +5,7 @@ namespace Hipper\Tests\SignUpAuthentication;
 
 use Hipper\EmailAddressVerification\VerificationPhraseGenerator;
 use Hipper\IdGenerator\IdGenerator;
+use Hipper\Organization\OrganizationModel;
 use Hipper\Person\PersonCreationValidator;
 use Hipper\Person\PersonPasswordEncoder;
 use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
@@ -63,12 +64,12 @@ class SignUpAuthenticationRequestTest extends TestCase
         $verificationPhrase = 'alter berlin paint meaning';
         $encodedPassword = 'encoded-password';
 
-        $this->createPersonCreationValidatorExpectation([$input, 'sign_up_authentication']);
+        $this->createPersonCreationValidatorExpectation([$input, null, ['sign_up_authentication']]);
         $this->createIdGeneratorExpectation($authenticationRequestId);
         $this->createVerificationPhraseGeneratorExpectation($verificationPhrase);
         $this->createPasswordEncoderExpectation([$password], $encodedPassword);
         $this->createSignUpAuthenticationInserterExpectation(
-            [$authenticationRequestId, $verificationPhrase, $emailAddress, $name, $encodedPassword]
+            [$authenticationRequestId, $verificationPhrase, $emailAddress, $name, $encodedPassword, null]
         );
         $this->createVerifyEmailAddressEmailExpectation([$name, $emailAddress, $verificationPhrase]);
 
@@ -79,6 +80,51 @@ class SignUpAuthenticationRequestTest extends TestCase
         $this->assertEquals($emailAddress, $result->getEmailAddress());
         $this->assertEquals($encodedPassword, $result->getEncodedPassword());
         $this->assertEquals($verificationPhrase, $result->getVerificationPhrase());
+        $this->assertEquals(null, $result->getOrganizationId());
+    }
+
+    /**
+     * @test
+     */
+    public function createForApprovedEmailDomain()
+    {
+        $name = 'James Holden';
+        $emailAddress = 'jh@example.com';
+        $password = 'p455w0rd';
+        $input = [
+            'name' => $name,
+            'email_address' => $emailAddress,
+            'password' => $password,
+        ];
+        $organizationId = 'org-uuid';
+        $organization = OrganizationModel::createFromArray([
+            'id' => $organizationId,
+        ]);
+        $validationGroups = ['approved_email_domain'];
+
+        $authenticationRequestId = 'auth-req-uuid';
+        $verificationPhrase = 'alter berlin paint meaning';
+        $encodedPassword = 'encoded-password';
+
+        $this->createPersonCreationValidatorExpectation(
+            [$input, $organization, ['sign_up_authentication', 'approved_email_domain']]
+        );
+        $this->createIdGeneratorExpectation($authenticationRequestId);
+        $this->createVerificationPhraseGeneratorExpectation($verificationPhrase);
+        $this->createPasswordEncoderExpectation([$password], $encodedPassword);
+        $this->createSignUpAuthenticationInserterExpectation(
+            [$authenticationRequestId, $verificationPhrase, $emailAddress, $name, $encodedPassword, $organizationId]
+        );
+        $this->createVerifyEmailAddressEmailExpectation([$name, $emailAddress, $verificationPhrase]);
+
+        $result = $this->signUpAuthenticationRequest->create($input, $organization, $validationGroups);
+        $this->assertInstanceOf(SignUpAuthenticationModel::class, $result);
+        $this->assertEquals($authenticationRequestId, $result->getId());
+        $this->assertEquals($name, $result->getName());
+        $this->assertEquals($emailAddress, $result->getEmailAddress());
+        $this->assertEquals($encodedPassword, $result->getEncodedPassword());
+        $this->assertEquals($verificationPhrase, $result->getVerificationPhrase());
+        $this->assertEquals($organizationId, $result->getOrganizationId());
     }
 
     private function createVerifyEmailAddressEmailExpectation($args)

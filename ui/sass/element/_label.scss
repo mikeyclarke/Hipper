@@ -1,0 +1,7 @@
+@use 'config/config';
+
+$_label-color: config.config-get(element, label, color);
+
+label {
+    color: $_label-color;
+}

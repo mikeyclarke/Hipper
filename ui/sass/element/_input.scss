@@ -60,4 +60,5 @@ $selector: ();
 
 ::placeholder {
     color: config.config-get(element, input, placeholder-color);
+    opacity: 1;
 }

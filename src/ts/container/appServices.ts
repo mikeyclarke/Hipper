@@ -1,5 +1,7 @@
 import * as Bottle from 'bottlejs';
+import JoinOrganizationController from 'RouteControllers/app/Organization/JoinOrganizationController';
 import LoginController from 'RouteControllers/app/Organization/LoginController';
+import VerifyEmailAddressController from 'RouteControllers/app/Organization/VerifyEmailAddressController';
 import CreateTeamController from 'RouteControllers/app/Team/CreateTeamController';
 import CreateDocumentController from 'RouteControllers/app/Document/CreateDocumentController';
 import CreateProjectController from 'RouteControllers/app/Project/CreateProjectController';
@@ -70,6 +72,18 @@ export default function (bottle: Bottle): void {
     bottle.factory('documentOrTopicControllerRouter', (container) => {
         return new DocumentOrTopicControllerRouter(
             container.topicController
+        );
+    });
+
+    bottle.factory('joinOrganizationController', (container) => {
+        return new JoinOrganizationController(
+            container.httpClient
+        );
+    });
+
+    bottle.factory('verifyEmailAddressController', (container) => {
+        return new VerifyEmailAddressController(
+            container.httpClient
         );
     });
 }

@@ -6,6 +6,7 @@ namespace Hipper\Login;
 use Hipper\Login\Exception\InvalidCredentialsException;
 use Hipper\Person\PersonPasswordEncoder;
 use Hipper\Organization\OrganizationModel;
+use Hipper\Person\PersonModel;
 use Hipper\Person\PersonRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use UnexpectedValueException;
@@ -28,9 +29,9 @@ class Login
 
     public function login(OrganizationModel $organization, array $parameters, SessionInterface $session): void
     {
-        $person = null;
+        $result = null;
         if (isset($parameters['email_address'])) {
-            $person = $this->personRepository->findOneByEmailAddress(
+            $result = $this->personRepository->findOneByEmailAddress(
                 $parameters['email_address'],
                 $organization->getId(),
                 ['password']
@@ -39,23 +40,25 @@ class Login
 
         $this->loginValidator->validate($parameters);
 
-        if (null === $person) {
+        if (null === $result) {
             throw new InvalidCredentialsException;
         }
 
-        if (!isset($person['password'])) {
-            throw new UnexpectedValueException('Expected person array to contain a “password” property');
+        if (!isset($result['password'])) {
+            throw new UnexpectedValueException('Expected result array to contain a “password” property');
         }
 
-        if (!$this->passwordEncoder->isPasswordValid($person['password'], $parameters['password'])) {
+        if (!$this->passwordEncoder->isPasswordValid($result['password'], $parameters['password'])) {
             throw new InvalidCredentialsException;
         }
 
+        $person = PersonModel::createFromArray($result);
         $this->populateSession($session, $person);
     }
 
-    public function populateSession(SessionInterface $session, array $person): void
+    public function populateSession(SessionInterface $session, PersonModel $person): void
     {
-        $session->set('_personId', $person['id']);
+        $session->set('_personId', $person->getId());
+        $session->migrate();
     }
 }

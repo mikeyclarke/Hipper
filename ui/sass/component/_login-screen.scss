@@ -20,14 +20,22 @@ $login-screen-inner-box-shadow: 0 2px 6px 0 rgba(#000, .1);
 $login-screen-inner-padding: 32px 24px 24px;
 $login-screen-inner-padded-layout-padding: 32px 30px 0;
 $login-screen-inner-padded-layout-border-radius: 8px;
+$login-screen-inner-last-child-margin: 0 0 64px;
 
+$login-screen-inner-header-margin: 0 0 32px;
 $login-screen-inner-header-text-align: center;
 
 $login-screen-inner-title-color: config.config-get(color-shades, dark, 900);
 $login-screen-inner-title-font-size: 24px;
 $login-screen-inner-title-font-weight: 700;
-$login-screen-inner-title-margin: 0 0 32px;
+$login-screen-inner-title-margin: 0;
 $login-screen-inner-title-padded-layout-font-size: 28px;
+
+$_inner-description-color: config.config-get(color-shades, dark, 800);
+$_inner-description-font-size: 16px;
+$_inner-description-line-height: 22px;
+$_inner-description-margin: 18px 0 0;
+$_inner-description-text-align: left;
 
 $login-screen-submit-button-background-color: config.config-get(color-shades, primary, 1000);
 $login-screen-submit-button-border-radius: 6px;
@@ -49,6 +57,7 @@ $login-screen-footer-padded-layout-padding: 20px 24px;
 $login-screen-footer-copy-color: config.config-get(color-shades, dark, 700);
 $login-screen-footer-copy-font-size: 14px;
 $login-screen-footer-copy-font-weight: 500;
+$login-screen-footer-copy-line-height: 18px;
 
 $login-screen-footer-link-color: #0a924b;
 $login-screen-footer-text-decoration: underline;
@@ -114,7 +123,12 @@ $login-screen-footer-text-decoration: underline;
     }
 }
 
+.c-login-screen__inner:last-child {
+    margin: $login-screen-inner-last-child-margin;
+}
+
 .c-login-screen__inner-header {
+    margin: $login-screen-inner-header-margin;
     text-align: $login-screen-inner-header-text-align;
 }
 
@@ -128,6 +142,19 @@ $login-screen-footer-text-decoration: underline;
     @include padded-layout {
         font-size: $login-screen-inner-title-padded-layout-font-size;
     }
+}
+
+.c-login-screen__inner-description {
+    color: $_inner-description-color;
+    font-size: $_inner-description-font-size;
+    line-height: $_inner-description-line-height;
+    margin: $_inner-description-margin;
+    text-align: $_inner-description-text-align;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-login-screen__inner-description .em-med {
+    font-weight: 500;
 }
 
 .c-login-screen__submit-button {
@@ -156,6 +183,10 @@ $login-screen-footer-text-decoration: underline;
         left: -#{list.nth($login-screen-inner-padded-layout-padding, 2)};
         width: $login-screen-padded-layout-width;
     }
+}
+
+.c-login-screen__submit-button:disabled {
+    opacity: .6;
 }
 
 .c-login-screen__submit-button:focus {
@@ -201,6 +232,7 @@ $login-screen-footer-text-decoration: underline;
     color: $login-screen-footer-copy-color;
     font-size: $login-screen-footer-copy-font-size;
     font-weight: $login-screen-footer-copy-font-weight;
+    line-height: $login-screen-footer-copy-line-height;
     margin: auto;
     @include font-smoothing.font-smoothing;
 }

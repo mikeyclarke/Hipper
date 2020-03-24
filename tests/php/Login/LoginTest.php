@@ -7,6 +7,7 @@ use Hipper\Login\Exception\InvalidCredentialsException;
 use Hipper\Login\Login;
 use Hipper\Login\LoginValidator;
 use Hipper\Organization\OrganizationModel;
+use Hipper\Person\PersonModel;
 use Hipper\Person\PersonPasswordEncoder;
 use Hipper\Person\PersonRepository;
 use Mockery as m;
@@ -59,11 +60,8 @@ class LoginTest extends TestCase
         );
         $this->createLoginValidatorExpectation([$parameters]);
         $this->createPasswordEncoderExpectation([$person['password'], $parameters['password']], true);
-
-        $session
-            ->shouldReceive('set')
-            ->once()
-            ->with('_personId', $person['id']);
+        $this->createSessionSetExpectation($session, ['_personId', $person['id']]);
+        $this->createSessionMigrateExpectation($session);
 
         $this->login->login($organization, $parameters, $session);
     }
@@ -122,6 +120,38 @@ class LoginTest extends TestCase
         $this->createPasswordEncoderExpectation([$person['password'], $parameters['password']], false);
 
         $this->login->login($organization, $parameters, $session);
+    }
+
+    /**
+     * @test
+     */
+    public function populateSession()
+    {
+        $session = m::mock(SessionInterface::class);
+        $personId = 'person-uuid';
+        $person = PersonModel::createFromArray([
+            'id' => $personId,
+        ]);
+
+        $this->createSessionSetExpectation($session, ['_personId', $personId]);
+        $this->createSessionMigrateExpectation($session);
+
+        $this->login->populateSession($session, $person);
+    }
+
+    private function createSessionMigrateExpectation($session)
+    {
+        $session
+            ->shouldReceive('migrate')
+            ->once();
+    }
+
+    private function createSessionSetExpectation($session, $args)
+    {
+        $session
+            ->shouldReceive('set')
+            ->once()
+            ->with(...$args);
     }
 
     private function createPasswordEncoderExpectation($args, $result)

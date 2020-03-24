@@ -1,0 +1,31 @@
+{% extends 'base_layout.twig' %}
+
+{% block page_content %}
+<div class="c-login-screen">
+    <div class="c-login-screen__header">
+        <a href="https://usehipper.com" target="_blank"><svg class="c-login-screen__header-logo" role="img" aria-label="Hipper"><use xlink:href="#icon-sprite__wordmark"/></svg></a>
+    </div>
+
+    {% if organization.isApprovedEmailDomainSignupAllowed %}
+        <main class="c-login-screen__inner">
+            <header class="c-login-screen__inner-header">
+                <h1 class="c-login-screen__inner-title">Verify email address</h1>
+                <p class="c-login-screen__inner-description">We’ve sent a verification phrase to <span class="em-med">{{ email_address }}</span>. Paste it below to continue.</p>
+            </header>
+
+            <form class="js-verify-form" novalidate>
+                <fieldset class="c-form__field">
+                    <label for="input-phrase" class="c-form__label">Verification phrase</label>
+                    <input class="c-form__input js-phrase-input" type="text" name="phrase" id="input-phrase" required autocapitalize="off" spellcheck="false">
+                </fieldset>
+
+                <button class="c-login-screen__submit-button js-submit" type="submit" disabled autocomplete="off">Continue</button>
+            </form>
+        </main>
+    {% endif %}
+
+    <footer class="c-login-screen__footer">
+        <p class="c-login-screen__footer-copy">Don’t see our email? Check your spam folder.</p>
+    </footer>
+</div>
+{% endblock %}

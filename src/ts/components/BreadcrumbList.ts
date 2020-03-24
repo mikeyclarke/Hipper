@@ -88,23 +88,6 @@ function setUpCollapsingBreadcrumbs(this: BreadcrumbList): void {
     collapseOverflowingBreadcrumbs.bind(this)();
 }
 
-function clearDownCollapsingBreadcrumbs(this: BreadcrumbList): void {
-    if (null !== this._resizeEventListener) {
-        window.removeEventListener('resize', this._resizeEventListener);
-    }
-
-    uncollapseAll.bind(this)();
-    if (null !== this._overflowContainer) {
-        this.removeChild(this._overflowContainer);
-    }
-
-    this._breadcrumbWidthCache = null;
-    this._breadcrumbOverflowMap = null;
-    this._overflowContainer = null;
-    this._overflowItemsContainer = null;
-    this._overflowContextMenu = null;
-}
-
 function createCache(this: BreadcrumbList): void {
     if (null === this._list) {
         return;

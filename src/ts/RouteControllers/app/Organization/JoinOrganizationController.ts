@@ -17,12 +17,18 @@ export default class JoinOrganizationController {
     }
 
     public start(): void {
+        const formElement = document.querySelector('.js-join-form');
+        if (!(formElement instanceof HTMLFormElement)) {
+            return;
+        }
+
+        this.formElement = formElement;
+
         this.cacheElements();
         this.attachEvents();
     }
 
     private cacheElements(): void {
-        this.formElement = <HTMLFormElement> document.querySelector('.js-join-form');
         this.submitButton = <HTMLButtonElement> this.formElement.querySelector('.js-submit');
         this.emailLocalPartInput = <HTMLInputElement> this.formElement.querySelector('[name="email_local_part"]');
         this.emailDomainInput =

@@ -30,16 +30,20 @@ class RecentlyViewedKnowledgebaseEntriesFormatter
         OrganizationModel $organization,
         array $knowledgebaseOwners,
         string $displayTimeZone,
+        ?string $returnTo,
         array $results
     ): array {
         return array_map(
-            function ($result) use ($knowledgebaseOwners, $organization, $displayTimeZone) {
+            function ($result) use ($knowledgebaseOwners, $organization, $displayTimeZone, $returnTo) {
                 $knowledgebaseOwner = $knowledgebaseOwners[$result['knowledgebase_id']] ?? null;
                 if (null === $knowledgebaseOwner) {
                     throw new RuntimeException('Knowledgebase not found');
                 }
 
                 list($routeName, $routeParams) = $this->getRouteDetails($knowledgebaseOwner);
+                if (null !== $returnTo) {
+                    $routeParams['return_to'] = $returnTo;
+                }
 
                 return [
                     'name' => $result['name'],

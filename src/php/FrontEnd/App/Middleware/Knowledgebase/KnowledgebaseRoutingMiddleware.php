@@ -118,7 +118,8 @@ class KnowledgebaseRoutingMiddleware
     private function generateRouteRedirectUrl(Request $request, OrganizationModel $organization, array $route): string
     {
         $routeName = $request->attributes->get('_route');
-        $routeParameters = $request->attributes->get('_route_params');
+        $routeParameters = $request->query->all();
+        $routeParameters = array_merge($routeParameters, $request->attributes->get('_route_params'));
 
         $routeParameters['path'] = sprintf('%s~%s', $route['route'], $route['url_id']);
         $routeParameters['subdomain'] = $organization->getSubdomain();

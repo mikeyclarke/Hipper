@@ -7,6 +7,7 @@ use Hipper\Document\DocumentRevisionRepository;
 use Hipper\Document\DocumentRenderer;
 use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
+use Hipper\Security\UntrustedInternalUriRedirector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -19,19 +20,22 @@ class DocumentController
     private KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs;
     private KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator;
     private Twig $twig;
+    private UntrustedInternalUriRedirector $untrustedInternalUriRedirector;
 
     public function __construct(
         DocumentRenderer $documentRenderer,
         DocumentRevisionRepository $documentRevisionRepository,
         KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
-        Twig $twig
+        Twig $twig,
+        UntrustedInternalUriRedirector $untrustedInternalUriRedirector
     ) {
         $this->documentRenderer = $documentRenderer;
         $this->documentRevisionRepository = $documentRevisionRepository;
         $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
         $this->twig = $twig;
+        $this->untrustedInternalUriRedirector = $untrustedInternalUriRedirector;
     }
 
     public function getAction(Request $request): Response
@@ -41,6 +45,7 @@ class DocumentController
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
         $knowledgebaseOwner = $request->attributes->get($knowledgebaseType);
         $route = $request->attributes->get('knowledgebase_route');
+        $returnTo = $request->query->get('return_to');
 
         $breadcrumbs = $this->knowledgebaseBreadcrumbs->get(
             $organization,
@@ -49,7 +54,8 @@ class DocumentController
             $document->getTopicId()
         );
 
-        $backLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];
+        $parentLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];
+        $backLink = $this->untrustedInternalUriRedirector->generateUri($returnTo, $parentLink);
 
         $history = $this->documentRevisionRepository->getHistoryForDocument(
             $document->getId(),
@@ -58,7 +64,18 @@ class DocumentController
         );
 
         $rendererResult = $this->documentRenderer->render($document->getContent(), 'html', $request->getHost(), true);
-        $editUrl = $this->knowledgebaseRouteUrlGenerator->generate($organization, $knowledgebaseOwner, $route, 'edit');
+
+        $editRouteParams = [];
+        if (null !== $returnTo) {
+            $editRouteParams['return_to'] = $returnTo;
+        }
+        $editUrl = $this->knowledgebaseRouteUrlGenerator->generate(
+            $organization,
+            $knowledgebaseOwner,
+            $route,
+            'edit',
+            $editRouteParams
+        );
         $exportUrl = $this->knowledgebaseRouteUrlGenerator->generate(
             $organization,
             $knowledgebaseOwner,
@@ -70,6 +87,7 @@ class DocumentController
             $knowledgebaseOwner,
             $route,
             'show',
+            [],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 

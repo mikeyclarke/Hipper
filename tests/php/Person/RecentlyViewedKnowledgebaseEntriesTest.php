@@ -53,6 +53,7 @@ class RecentlyViewedKnowledgebaseEntriesTest extends TestCase
             'knowledgebase_id' => $organizationKnowledgebaseId,
         ]);
         $displayTimeZone = 'Europe/London';
+        $returnTo = '/';
 
         $entryViewRepositoryResult = [
             [
@@ -121,11 +122,11 @@ class RecentlyViewedKnowledgebaseEntriesTest extends TestCase
             $knowledgebaseRepositoryResult
         );
         $this->createFormatterExpectation(
-            [$organization, $knowledgebaseOwners, $displayTimeZone, $entryViewRepositoryResult],
+            [$organization, $knowledgebaseOwners, $displayTimeZone, $returnTo, $entryViewRepositoryResult],
             $formatterResult
         );
 
-        $result = $this->recentlyViewedKnowledgebaseEntries->get($person, $organization, $displayTimeZone);
+        $result = $this->recentlyViewedKnowledgebaseEntries->get($person, $organization, $displayTimeZone, $returnTo);
         $this->assertEquals($formatterResult, $result);
     }
 

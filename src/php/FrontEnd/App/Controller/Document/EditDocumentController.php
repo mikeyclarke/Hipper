@@ -8,6 +8,7 @@ use Hipper\Document\DocumentRenderer;
 use Hipper\Document\DocumentRepository;
 use Hipper\Knowledgebase\KnowledgebaseBreadcrumbs;
 use Hipper\Knowledgebase\KnowledgebaseRouteUrlGenerator;
+use Hipper\Security\UntrustedInternalUriRedirector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,6 +21,7 @@ class EditDocumentController
     private KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs;
     private KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator;
     private Twig $twig;
+    private UntrustedInternalUriRedirector $untrustedInternalUriRedirector;
     private array $documentAllowedMarks;
     private array $documentAllowedNodes;
 
@@ -29,6 +31,7 @@ class EditDocumentController
         KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs,
         KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator,
         Twig $twig,
+        UntrustedInternalUriRedirector $untrustedInternalUriRedirector,
         array $documentAllowedMarks,
         array $documentAllowedNodes
     ) {
@@ -37,6 +40,7 @@ class EditDocumentController
         $this->knowledgebaseBreadcrumbs = $knowledgebaseBreadcrumbs;
         $this->knowledgebaseRouteUrlGenerator = $knowledgebaseRouteUrlGenerator;
         $this->twig = $twig;
+        $this->untrustedInternalUriRedirector = $untrustedInternalUriRedirector;
         $this->documentAllowedMarks = $documentAllowedMarks;
         $this->documentAllowedNodes = $documentAllowedNodes;
     }
@@ -52,6 +56,7 @@ class EditDocumentController
         $knowledgebaseType = $request->attributes->get('knowledgebase_type');
         $knowledgebaseOwner = $request->attributes->get($knowledgebaseType);
         $route = $request->attributes->get('knowledgebase_route');
+        $returnTo = $request->query->get('return_to');
 
         $result = $this->documentRepository->findById($documentId, $organization->getId());
         if (null === $result) {
@@ -67,7 +72,8 @@ class EditDocumentController
             $document->getTopicId()
         );
 
-        $backLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];
+        $parentLink = $breadcrumbs[count($breadcrumbs) - 2]['pathname'];
+        $backLink = $this->untrustedInternalUriRedirector->generateUri($returnTo, $parentLink);
 
         $rendererResult = $this->documentRenderer->render($document->getContent(), 'html', $request->getHost());
         $viewUrl = $this->knowledgebaseRouteUrlGenerator->generate($organization, $knowledgebaseOwner, $route);

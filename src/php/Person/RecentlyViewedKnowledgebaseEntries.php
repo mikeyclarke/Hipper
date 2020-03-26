@@ -28,6 +28,7 @@ class RecentlyViewedKnowledgebaseEntries
         PersonModel $person,
         OrganizationModel $organization,
         string $displayTimeZone,
+        ?string $returnTo,
         int $maxEntries = 5
     ): array {
         $entries = $this->entryViewRepository->getMostRecentlyViewedForPerson($person->getId(), $maxEntries);
@@ -55,6 +56,7 @@ class RecentlyViewedKnowledgebaseEntries
             $organization,
             $knowledgebaseOwners,
             $displayTimeZone,
+            $returnTo,
             $entries
         );
 

@@ -1,6 +1,6 @@
 {% for result in search_results %}
     <li class="c-search-results__result">
-        <a class="c-search-results__result-link" href="{{ result.route }}">
+        <a class="c-search-results__result-link" href="{{ result.route }}?{{ { return_to: app.request.getRequestUri() }|url_encode }}">
             <div class="c-avatar{% if result.type in ['document', 'topic'] %}--{{ result.type }}{% endif %} c-search-results__result-avatar">
                 {% if result.type in ['document', 'topic'] %}
                     <svg class="c-avatar__icon c-search-results__result-avatar-icon" aria-hidden="true"><use xlink:href="#icon-sprite__{{ result.type }}"/></svg>

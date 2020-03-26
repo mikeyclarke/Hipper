@@ -36,6 +36,7 @@ class KnowledgebaseRouteUrlGenerator
         KnowledgebaseOwnerModelInterface $knowledgebaseOwner,
         KnowledgebaseRouteModel $route,
         string $method = 'show',
+        array $additionalRouteParams = [],
         int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     ): string {
         if (!in_array($method, ['show', 'edit', 'export'])) {
@@ -43,10 +44,10 @@ class KnowledgebaseRouteUrlGenerator
         }
 
         $routeName = null;
-        $routeParams = [
+        $routeParams = array_merge($additionalRouteParams, [
             'path' => $route->toUrlSegment(),
             'subdomain' => $organization->getSubdomain(),
-        ];
+        ]);
 
         if ($knowledgebaseOwner instanceof TeamModel) {
             switch ($method) {

@@ -75,7 +75,12 @@ class OrganizationHomeController
             $timeZone
         );
 
-        $recentlyViewedDocs = $this->recentlyViewedKnowledgebaseEntries->get($currentUser, $organization, $timeZone);
+        $recentlyViewedDocs = $this->recentlyViewedKnowledgebaseEntries->get(
+            $currentUser,
+            $organization,
+            $timeZone,
+            '/'
+        );
 
         $activity = $this->activityRepository->getActivityRelevantToUser($currentUser->getOrganizationId());
         $activityFeed = $this->activityFeedFormatter->format($organization, $currentUser, $timeZone, $activity);

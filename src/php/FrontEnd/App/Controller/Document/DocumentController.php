@@ -14,11 +14,11 @@ use Twig\Environment as Twig;
 
 class DocumentController
 {
-    private $documentRenderer;
-    private $documentRevisionRepository;
-    private $knowledgebaseBreadcrumbs;
-    private $knowledgebaseRouteUrlGenerator;
-    private $twig;
+    private DocumentRenderer $documentRenderer;
+    private DocumentRevisionRepository $documentRevisionRepository;
+    private KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs;
+    private KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator;
+    private Twig $twig;
 
     public function __construct(
         DocumentRenderer $documentRenderer,

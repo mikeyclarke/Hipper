@@ -15,13 +15,13 @@ use Twig\Environment as Twig;
 
 class EditDocumentController
 {
-    private $documentRenderer;
-    private $documentRepository;
-    private $knowledgebaseBreadcrumbs;
-    private $knowledgebaseRouteUrlGenerator;
-    private $twig;
-    private $documentAllowedMarks;
-    private $documentAllowedNodes;
+    private DocumentRenderer $documentRenderer;
+    private DocumentRepository $documentRepository;
+    private KnowledgebaseBreadcrumbs $knowledgebaseBreadcrumbs;
+    private KnowledgebaseRouteUrlGenerator $knowledgebaseRouteUrlGenerator;
+    private Twig $twig;
+    private array $documentAllowedMarks;
+    private array $documentAllowedNodes;
 
     public function __construct(
         DocumentRenderer $documentRenderer,

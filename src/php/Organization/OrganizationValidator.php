@@ -21,8 +21,11 @@ class OrganizationValidator
 {
     // Pattern taken from HTML5 email validator minus the local-part
     // https://bit.ly/2IrHgZR
-    const EMAIL_DOMAIN_PATTERN =
+    private const EMAIL_DOMAIN_PATTERN =
         '/[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/';
+    private const SUBDOMAIN_MESSAGE =
+        'Can only contain letters, numbers, and dashes, and must begin and end with a letter or number';
+    private const SUBDOMAIN_PATTERN = '/^[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?$/';
 
     private $validatorInterface;
 
@@ -57,7 +60,8 @@ class OrganizationValidator
                         'max' => 63,
                     ]),
                     new Regex([
-                        'pattern' => '/[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?/',
+                        'message' => self::SUBDOMAIN_MESSAGE,
+                        'pattern' => self::SUBDOMAIN_PATTERN,
                     ]),
                     new NotReservedSubdomain,
                     new UniqueSubdomain,

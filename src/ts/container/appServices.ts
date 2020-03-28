@@ -21,13 +21,13 @@ export default function (bottle: Bottle): void {
 
     bottle.factory('loginController', (container) => {
         return new LoginController(
-            container.httpClient,
+            container.formSubmitHelper
         );
     });
 
     bottle.factory('createTeamController', (container) => {
         return new CreateTeamController(
-            container.httpClient,
+            container.formSubmitHelper
         );
     });
 
@@ -40,13 +40,13 @@ export default function (bottle: Bottle): void {
 
     bottle.factory('createProjectController', (container) => {
         return new CreateProjectController(
-            container.httpClient,
+            container.formSubmitHelper
         );
     });
 
     bottle.factory('createTopicController', (container) => {
         return new CreateTopicController(
-            container.httpClient,
+            container.formSubmitHelper
         );
     });
 
@@ -77,13 +77,13 @@ export default function (bottle: Bottle): void {
 
     bottle.factory('joinOrganizationController', (container) => {
         return new JoinOrganizationController(
-            container.httpClient
+            container.formSubmitHelper
         );
     });
 
     bottle.factory('verifyEmailAddressController', (container) => {
         return new VerifyEmailAddressController(
-            container.httpClient
+            container.formSubmitHelper
         );
     });
 }

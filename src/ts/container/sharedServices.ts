@@ -1,6 +1,7 @@
 import * as Bottle from 'bottlejs';
 import HttpClient from 'Http/HttpClient';
 import DocumentCookies from 'Cookie/DocumentCookies';
+import FormSubmitHelper from 'Helper/FormSubmitHelper';
 import TimeZoneCookie from 'TimeZone/TimeZoneCookie';
 import TimeZoneRetriever from 'TimeZone/TimeZoneRetriever';
 import CallbackControllerInvoker from 'Routing/CallbackControllerInvoker';
@@ -15,6 +16,12 @@ export default function sharedServices(bottle: Bottle): void {
     });
 
     bottle.factory('documentCookies', () => new DocumentCookies());
+
+    bottle.factory('formSubmitHelper', (container) => {
+        return new FormSubmitHelper(
+            container.httpClient
+        );
+    });
 
     bottle.factory('timeZoneRetriever', () => new TimeZoneRetriever());
 

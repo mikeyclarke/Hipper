@@ -1,9 +1,9 @@
-import HttpClient from 'Http/HttpClient';
-import ky from 'ky';
-import showFieldError from 'Validation/showFieldError';
+import FormSubmitHelper from 'Helper/FormSubmitHelper';
+
+const ENDPOINT = '/_/create-topic';
 
 export default class CreateDocumentController {
-    private readonly httpClient: HttpClient;
+    private readonly formSubmitHelper: FormSubmitHelper;
     private knowledgebaseId: string | null = null;
     private parentTopicId: string | null = null;
     private formElement!: HTMLFormElement;
@@ -12,9 +12,9 @@ export default class CreateDocumentController {
     private descriptionInput!: HTMLTextAreaElement;
 
     constructor(
-        httpClient: HttpClient
+        formSubmitHelper: FormSubmitHelper
     ) {
-        this.httpClient = httpClient;
+        this.formSubmitHelper = formSubmitHelper;
     }
 
     public start(): void {
@@ -46,49 +46,6 @@ export default class CreateDocumentController {
         this.formElement.addEventListener('submit', this.handleSubmit.bind(this));
     }
 
-    private handleSubmit(event: Event): void {
-        event.preventDefault();
-        if (this.formElement.querySelectorAll('[aria-invalid="true"]').length > 0) {
-            const firstError = <HTMLElement> this.formElement.querySelector('[aria-invalid="true"]');
-            firstError.focus();
-            return;
-        }
-
-        this.submitButton.disabled = true;
-
-        const payload = this.composePayload();
-        this.createTopic(payload)
-            .then((topicUrl) => {
-                window.location.assign(topicUrl);
-            })
-            .catch((error) => {
-                if (error instanceof ky.HTTPError) {
-                    this.handleError(error);
-                }
-            })
-            .finally(() => {
-                this.submitButton.disabled = false;
-            });
-    }
-
-    private handleError(error: InstanceType<typeof ky.HTTPError>): void {
-        const response = <Response> error.response;
-        if (response.status !== 400) {
-            return;
-        }
-
-        response.json().then((json) => {
-            if (json.name === 'invalid_request_payload' && json.violations) {
-                Object.entries(json.violations).forEach(([fieldName, errorMessage]) => {
-                    const fieldInput = <HTMLElement> this.formElement.querySelector(`[name="${fieldName}"]`);
-                    showFieldError(fieldInput, <string> errorMessage);
-                });
-                const firstError = <HTMLElement> this.formElement.querySelector('[aria-invalid="true"]');
-                firstError.focus();
-            }
-        });
-    }
-
     private composePayload(): object {
         return {
             name: this.nameInput.value,
@@ -98,13 +55,13 @@ export default class CreateDocumentController {
         };
     }
 
-    private async createTopic(payload: object): Promise<string> {
-        const endpoint = '/_/create-topic';
+    private async handleSubmit(event: Event): Promise<void> {
+        event.preventDefault();
 
-        const response = await this.httpClient.post(endpoint, {
-            json: payload,
-        });
-        const json = await response.json();
-        return json.topic_url;
+        const payload = this.composePayload();
+        const json = await this.formSubmitHelper.submit(this.formElement, this.submitButton, ENDPOINT, payload);
+        if (null !== json) {
+            window.location.assign(json.topic_url);
+        }
     }
 }

@@ -1,11 +1,12 @@
 import Controller from 'RouteControllers/Controller';
 import EditableFormField from 'components/EditableFormField';
-import showFieldError from 'Validation/showFieldError';
-import HttpClient from 'Http/HttpClient';
-import ky from 'ky';
+import FormSubmitHelper from 'Helper/FormSubmitHelper';
+
+const SUGGEST_ENDPOINT = '/_/suggest-team-description';
+const CREATE_ENDPOINT = '/_/create-team';
 
 export default class CreateTeamController implements Controller {
-    private readonly httpClient: HttpClient;
+    private readonly formSubmitHelper: FormSubmitHelper;
     private handleNameSubmitHandler!: EventListener;
     private formElement!: HTMLFormElement;
     private submitButton!: HTMLButtonElement;
@@ -15,9 +16,9 @@ export default class CreateTeamController implements Controller {
     private descriptionInput!: HTMLTextAreaElement;
 
     constructor(
-        httpClient: HttpClient
+        formSubmitHelper: FormSubmitHelper
     ) {
-        this.httpClient = httpClient;
+        this.formSubmitHelper = formSubmitHelper;
     }
 
     public start(): void {
@@ -41,16 +42,25 @@ export default class CreateTeamController implements Controller {
         this.descriptionInput = <HTMLTextAreaElement> this.descriptionField.querySelector('.js-team-description');
     }
 
-    private handleNameSubmit(event: Event): void {
+    private composeNamePayload(): object {
+        return {
+            name: this.nameInput.value,
+        };
+    }
+
+    private async handleNameSubmit(event: Event): Promise<void> {
         event.preventDefault();
+
         if (null !== document.activeElement) {
             const activeElement = <HTMLElement> document.activeElement;
             activeElement.blur();
         }
 
-        this.submitButton.disabled = true;
+        const payload = this.composeNamePayload();
+        const json = await this.formSubmitHelper.submit(this.formElement, this.submitButton, SUGGEST_ENDPOINT, payload);
+        if (null !== json) {
+            const suggestedDescription = json.suggested_description;
 
-        this.suggestDescription(this.nameInput.value).then((suggestedDescription) => {
             this.descriptionField.classList.remove('is-invisible');
             this.descriptionField.setAttribute('aria-hidden', 'false');
 
@@ -65,82 +75,23 @@ export default class CreateTeamController implements Controller {
             this.formElement.removeEventListener('submit', this.handleNameSubmitHandler);
             this.formElement.addEventListener('submit', this.handleFullSubmit.bind(this));
             this.submitButton.textContent = 'Done';
-        }).catch((error) => {
-            if (error instanceof ky.HTTPError) {
-                this.handleError(error);
-            }
-        }).finally(() => {
-            this.submitButton.disabled = false;
-        });
+        }
     }
 
-    private handleFullSubmit(event: Event): void {
+    private composeFullPayload(): object {
+        return {
+            name: this.nameInput.value,
+            description: this.descriptionInput.value,
+        };
+    }
+
+    private async handleFullSubmit(event: Event): Promise<void> {
         event.preventDefault();
-        if (this.formElement.querySelectorAll('[aria-invalid="true"]').length > 0) {
-            const firstError = <HTMLElement> this.formElement.querySelector('[aria-invalid="true"]');
-            firstError.focus();
-            return;
+
+        const payload = this.composeFullPayload();
+        const json = await this.formSubmitHelper.submit(this.formElement, this.submitButton, CREATE_ENDPOINT, payload);
+        if (null !== json) {
+            window.location.assign(json.team_url);
         }
-
-        this.submitButton.disabled = true;
-
-        this.createTeam(this.nameInput.value, this.descriptionInput.value)
-            .then((teamUrl) => {
-                window.location.assign(teamUrl);
-            })
-            .catch((error) => {
-                if (error instanceof ky.HTTPError) {
-                    this.handleError(error);
-                }
-            })
-            .finally(() => {
-                this.submitButton.disabled = false;
-            });
-    }
-
-    private handleError(error: InstanceType<typeof ky.HTTPError>): void {
-        const response = <Response> error.response;
-        if (response.status !== 400) {
-            return;
-        }
-
-        response.json().then((json) => {
-            if (json.name === 'invalid_request_payload' && json.violations) {
-                Object.entries(json.violations).forEach(([fieldName, errorMessage]) => {
-                    const fieldInput = <HTMLElement> this.formElement.querySelector(`[name="${fieldName}"]`);
-                    if (fieldInput.parentElement instanceof EditableFormField && !fieldInput.parentElement.editable) {
-                        fieldInput.parentElement.editable = true;
-                    }
-                    showFieldError(fieldInput, <string> errorMessage);
-                });
-                const firstError = <HTMLElement> this.formElement.querySelector('[aria-invalid="true"]');
-                firstError.focus();
-            }
-        });
-    }
-
-    private async createTeam(teamName: string, teamDescription: string): Promise<string> {
-        const endpoint = '/_/create-team';
-
-        const response = await this.httpClient.post(endpoint, {
-            json: {
-                name: teamName,
-                description: teamDescription,
-            },
-        });
-        const json = await response.json();
-        return json.team_url;
-    }
-
-    private async suggestDescription(teamName: string): Promise<string> {
-        const endpoint = '/_/suggest-team-description';
-
-        const response = await this.httpClient.post(endpoint, {
-            json: {
-                name: teamName,
-            },
-        });
-        const json = await response.json();
-        return json.suggested_description;
     }
 }

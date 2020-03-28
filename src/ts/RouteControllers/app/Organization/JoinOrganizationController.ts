@@ -1,9 +1,9 @@
-import HttpClient from 'Http/HttpClient';
-import ky from 'ky';
-import showFieldError from 'Validation/showFieldError';
+import FormSubmitHelper from 'Helper/FormSubmitHelper';
+
+const ENDPOINT = '/_/join';
 
 export default class JoinOrganizationController {
-    private readonly httpClient: HttpClient;
+    private readonly formSubmitHelper: FormSubmitHelper;
     private formElement!: HTMLFormElement;
     private submitButton!: HTMLButtonElement;
     private emailLocalPartInput!: HTMLInputElement;
@@ -12,8 +12,10 @@ export default class JoinOrganizationController {
     private passwordInput!: HTMLInputElement;
     private termsCheckbox!: HTMLInputElement;
 
-    constructor(httpClient: HttpClient) {
-        this.httpClient = httpClient;
+    constructor(
+        formSubmitHelper: FormSubmitHelper
+    ) {
+        this.formSubmitHelper = formSubmitHelper;
     }
 
     public start(): void {
@@ -57,53 +59,6 @@ export default class JoinOrganizationController {
         this.submitButton.disabled = !eligible;
     }
 
-    private handleSubmit(event: Event): void {
-        event.preventDefault();
-        if (this.formElement.querySelectorAll('[aria-invalid="true"]').length > 0) {
-            const firstError = <HTMLElement> this.formElement.querySelector('[aria-invalid="true"]');
-            firstError.focus();
-            return;
-        }
-
-        this.submitButton.disabled = true;
-
-        const payload = this.composePayload();
-        this.submitRequest(payload)
-            .then((url) => {
-                window.location.assign(url);
-            })
-            .catch((error) => {
-                if (error instanceof ky.HTTPError) {
-                    this.handleError(error);
-                }
-            })
-            .finally(() => {
-                this.submitButton.disabled = false;
-            });
-    }
-
-    private handleError(error: InstanceType<typeof ky.HTTPError>): void {
-        const response = <Response> error.response;
-        if (response.status !== 400) {
-            return;
-        }
-
-        response.json().then((json) => {
-            if (json.name === 'invalid_request_payload' && json.violations) {
-                Object.entries(json.violations).forEach(([fieldName, errorMessage]) => {
-                    if (fieldName === 'email_address') {
-                        fieldName = 'email_local_part';
-                    }
-
-                    const fieldInput = <HTMLElement> this.formElement.querySelector(`[name="${fieldName}"]`);
-                    showFieldError(fieldInput, <string> errorMessage);
-                });
-                const firstError = <HTMLElement> this.formElement.querySelector('[aria-invalid="true"]');
-                firstError.focus();
-            }
-        });
-    }
-
     private composePayload(): object {
         return {
             name: this.nameInput.value,
@@ -114,13 +69,20 @@ export default class JoinOrganizationController {
         };
     }
 
-    private async submitRequest(payload: object): Promise<string> {
-        const endpoint = '/_/join';
+    private async handleSubmit(event: Event): Promise<void> {
+        event.preventDefault();
 
-        const response = await this.httpClient.post(endpoint, {
-            json: payload,
-        });
-        const json = await response.json();
-        return json.url;
+        const payload = this.composePayload();
+        const fieldReplacements = { email_address: 'email_local_part' };
+        const json = await this.formSubmitHelper.submit(
+            this.formElement,
+            this.submitButton,
+            ENDPOINT,
+            payload,
+            fieldReplacements
+        );
+        if (null !== json) {
+            window.location.assign(json.url);
+        }
     }
 }

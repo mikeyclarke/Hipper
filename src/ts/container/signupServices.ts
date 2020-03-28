@@ -7,25 +7,25 @@ import ChooseOrganizationUrlController from 'SignUpFlow/Controller/ChooseOrganiz
 export default function signupServices(bottle: Bottle): void {
     bottle.factory('signUpController', (container) => {
         return new SignUpController(
-            container.httpClient
+            container.formSubmitHelper
         );
     });
 
     bottle.factory('verifyEmailAddressController', (container) => {
         return new VerifyEmailAddressController(
-            container.httpClient
+            container.formSubmitHelper
         );
     });
 
     bottle.factory('nameOrganizationController', (container) => {
         return new NameOrganizationController(
-            container.httpClient
+            container.formSubmitHelper
         );
     });
 
     bottle.factory('chooseOrganizationUrlController', (container) => {
         return new ChooseOrganizationUrlController(
-            container.httpClient
+            container.formSubmitHelper
         );
     });
 }

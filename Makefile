@@ -6,6 +6,8 @@ include .env.local
 ##	Testing
 ## ---------
 
+test: test_ts test_php
+
 test_ts: eslint jest ## Run all TypeScript tests (TSLint, and Jest)
 
 test_php: phpunit phpcs phpstan ## Run all PHP tests (PHPCS, PHPUnit, and PHPStan)

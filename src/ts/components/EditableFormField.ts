@@ -1,5 +1,3 @@
-import querySelectorNotNull from 'hleo/QuerySelector/querySelectorNotNull';
-
 export default class EditableFormField extends HTMLElement {
     public _editable: boolean;
     public readonly _inputElement: HTMLInputElement | HTMLTextAreaElement;
@@ -13,7 +11,7 @@ export default class EditableFormField extends HTMLElement {
         super();
 
         this._editable = this.hasAttribute('editable');
-        this._inputElement = <HTMLInputElement | HTMLTextAreaElement> querySelectorNotNull(this, 'input, textarea');
+        this._inputElement = <HTMLInputElement | HTMLTextAreaElement> this.querySelector('input, textarea');
         this._editButtonElement = <HTMLButtonElement | null> this.querySelector('.js-edit-button');
         addEditButtonClickEvent(this);
     }

@@ -1,0 +1,28 @@
+{% extends 'sign_up_flow/sign_up_flow_layout.twig' %}
+
+{% block page_content %}
+<div class="c-login-screen">
+    <div class="c-login-screen__header">
+        <a href="https://usehipper.com" target="_blank"><svg class="c-login-screen__header-logo" role="img" aria-label="Hipper"><use xlink:href="#icon-sprite__wordmark"/></svg></a>
+    </div>
+
+    <main class="c-login-screen__inner">
+        <header class="c-login-screen__inner-header">
+            <h1 class="c-login-screen__inner-title">Choose URL</h1>
+            <p class="c-login-screen__inner-description">This is the URL everyone in your organization will use to sign-in to Hipper.</p>
+        </header>
+
+        <form class="js-url-form" novalidate>
+            <fieldset class="c-form__field">
+                <label for="input-organization-subdomain" class="c-form__label">URL</label>
+                <div class="c-form__input-group">
+                    <input class="c-form__input c-form__input-group-member" type="text" name="subdomain" id="input-organization-subdomain" required spellcheck="false" autocomplete="off" autocapitalize="off" pattern="^[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?$" minlength="3" maxlength="63" placeholder="e.g. acme"{% if subdomain_suggestion is not empty %} value="{{ subdomain_suggestion }}"{% endif %}>
+                    <span class="c-form__input-group-text c-form__input-group-member" aria-label="Hipper domain">.{{ domain }}</span>
+                </div>
+            </fieldset>
+
+            <button class="c-login-screen__submit-button js-submit" type="submit" autocomplete="off"{% if subdomain_suggestion is empty %} disabled{% endif %}>Continue</button>
+        </form>
+    </main>
+</div>
+{% endblock %}

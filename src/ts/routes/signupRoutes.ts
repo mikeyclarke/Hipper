@@ -5,22 +5,22 @@ export default function signupRoutes(bottle: Bottle): Record<string, RouteDefini
     return {
         sign_up: {
             path: '/sign-up',
-            controller: (): any[] => [bottle.container.signupController, 'start'],
+            controller: (): any[] => [bottle.container.signUpController, 'start'],
         },
 
-        verify_identity: {
-            path: '/sign-up/verify-identity',
-            controller: (): any[] => [bottle.container.verifyIdentityController, 'start'],
+        verify_email_address: {
+            path: '/sign-up/verify-email-address',
+            controller: (): any[] => [bottle.container.verifyEmailAddressController, 'start'],
         },
 
         name_team: {
-            path: '/sign-up/name-team',
-            controller: (): any[] => [bottle.container.nameTeamController, 'start'],
+            path: '/sign-up/name-organization',
+            controller: (): any[] => [bottle.container.nameOrganizationController, 'start'],
         },
 
-        choose_team_url: {
-            path: '/sign-up/choose-team-url',
-            controller: (): any[] => [bottle.container.teamSubdomainController, 'start'],
+        choose_organization_url: {
+            path: '/sign-up/choose-organization-url',
+            controller: (): any[] => [bottle.container.chooseOrganizationUrlController, 'start'],
         },
     };
 }

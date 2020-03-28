@@ -1,19 +1,27 @@
-import querySelectorNotNull from 'hleo/QuerySelector/querySelectorNotNull';
-
 export default class PasswordInput extends HTMLElement {
-    private button!: HTMLElement;
-    private input!: HTMLFormElement;
+    private button!: HTMLButtonElement;
+    private input!: HTMLInputElement;
 
     public connectedCallback(): void {
-        this.button = querySelectorNotNull(this, 'button');
-        this.input = <HTMLFormElement> querySelectorNotNull(this, 'input');
+        const button = this.querySelector('button');
+        if (!(button instanceof HTMLButtonElement)) {
+            return;
+        }
+        this.button = button;
+
+        const input = this.querySelector('input');
+        if (!(input instanceof HTMLInputElement)) {
+            return;
+        }
+        this.input = input;
+
         this.button.addEventListener('click', this.toggleVisibility.bind(this));
     }
 
     private unmask(): void {
         this.input.type = 'text';
         this.input.spellcheck = false;
-        this.input.autocorrect = 'off';
+        this.input.setAttribute('autocorrect', 'off');
 
         this.button.textContent = 'Hide';
 

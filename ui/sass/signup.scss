@@ -19,6 +19,6 @@
 @use 'component/checkbox';
 @use 'component/password-input';
 @use 'component/form';
-@use 'component/signup-form';
+@use 'component/login-screen';
 
-@use 'layout/splash-screen';
+@use 'layout/app-default';

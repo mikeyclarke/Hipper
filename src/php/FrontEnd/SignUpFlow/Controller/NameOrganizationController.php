@@ -7,10 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment as Twig;
 
-class SignUpController
+class NameOrganizationController
 {
-    private const TERMS_URL = '/terms-of-use';
-
     private $twig;
 
     public function __construct(
@@ -22,12 +20,11 @@ class SignUpController
     public function getAction(Request $request): Response
     {
         $context = [
-            'html_title' => 'Sign-up',
-            'terms_url' => self::TERMS_URL,
+            'html_title' => 'Name your organization',
         ];
 
         return new Response(
-            $this->twig->render('sign_up_flow/sign_up.twig', $context)
+            $this->twig->render('sign_up_flow/name_organization.twig', $context)
         );
     }
 }

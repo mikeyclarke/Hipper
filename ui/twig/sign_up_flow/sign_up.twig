@@ -1,0 +1,45 @@
+{% extends 'sign_up_flow/sign_up_flow_layout.twig' %}
+
+{% block page_content %}
+<div class="c-login-screen">
+    <div class="c-login-screen__header">
+        <a href="https://usehipper.com" target="_blank"><svg class="c-login-screen__header-logo" role="img" aria-label="Hipper"><use xlink:href="#icon-sprite__wordmark"/></svg></a>
+    </div>
+
+    <main class="c-login-screen__inner">
+        <header class="c-login-screen__inner-header">
+            <h1 class="c-login-screen__inner-title">Sign-up</h1>
+        </header>
+
+        <form class="js-sign-up-form" novalidate>
+            <fieldset class="c-form__field">
+                <label for="input-name" class="c-form__label">Your name</label>
+                <input class="c-form__input" type="text" name="name" id="input-name" required autocomplete="name" spellcheck="false" placeholder="e.g. Sue Shei" minlength="3">
+            </fieldset>
+
+            <fieldset class="c-form__field">
+                <label for="input-email" class="c-form__label">Your email address</label>
+                <input class="c-form__input" type="email" name="email_address" id="input-email" required placeholder="e.g. sue@acme.com" autocomplete="email" autocapitalize="off" spellcheck="false">
+            </fieldset>
+
+            <fieldset class="c-form__field">
+                <label for="input-password" class="c-form__label">Password</label>
+                <password-input class="c-password-input">
+                    <input class="c-form__input c-password-input__input js-password-input" type="password" name="password" id="input-password" required autocomplete="new-password" minlength="8" aria-describedby="password-rules">
+                    <button class="c-password-input__visibility-button js-toggle-password-visibility" type="button" aria-hidden="true" tabindex="-1" aria-controls="input-password">Show</button>
+                </password-input>
+                <p class="c-form__field-description" id="password-rules">At least 8 characters.</p>
+            </fieldset>
+
+            <fieldset class="c-form__field">
+                <div class="c-checkbox">
+                    <input class="c-checkbox__input" type="checkbox" name="terms_agreed" id="input-terms-agreed">
+                    <label for="input-terms-agreed" class="c-checkbox__label">I agree to the Hipper <a href="{{ terms_url }}" target="_blank">terms of use</a></label>
+                </div>
+            </fieldset>
+
+            <button class="c-login-screen__submit-button js-submit" type="submit" disabled autocomplete="off">Sign up</button>
+        </form>
+    </main>
+</div>
+{% endblock %}

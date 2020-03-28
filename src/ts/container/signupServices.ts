@@ -1,30 +1,30 @@
 import * as Bottle from 'bottlejs';
-import SignupController from 'RouteControllers/onboarding/SignupController';
-import VerifyIdentityController from 'RouteControllers/onboarding/VerifyIdentityController';
-import TeamSubdomainController from 'RouteControllers/onboarding/TeamSubdomainController';
-import NameTeamController from 'RouteControllers/onboarding/NameTeamController';
+import SignUpController from 'SignUpFlow/Controller/SignUpController';
+import VerifyEmailAddressController from 'SignUpFlow/Controller/VerifyEmailAddressController';
+import NameOrganizationController from 'SignUpFlow/Controller/NameOrganizationController';
+import ChooseOrganizationUrlController from 'SignUpFlow/Controller/ChooseOrganizationUrlController';
 
 export default function signupServices(bottle: Bottle): void {
-    bottle.factory('signupController', (container) => {
-        return new SignupController(
+    bottle.factory('signUpController', (container) => {
+        return new SignUpController(
             container.httpClient
         );
     });
 
-    bottle.factory('verifyIdentityController', (container) => {
-        return new VerifyIdentityController(
+    bottle.factory('verifyEmailAddressController', (container) => {
+        return new VerifyEmailAddressController(
             container.httpClient
         );
     });
 
-    bottle.factory('nameTeamController', (container) => {
-        return new NameTeamController(
+    bottle.factory('nameOrganizationController', (container) => {
+        return new NameOrganizationController(
             container.httpClient
         );
     });
 
-    bottle.factory('teamSubdomainController', (container) => {
-        return new TeamSubdomainController(
+    bottle.factory('chooseOrganizationUrlController', (container) => {
+        return new ChooseOrganizationUrlController(
             container.httpClient
         );
     });

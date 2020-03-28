@@ -8,25 +8,25 @@ api.sign_up_flow.signup:
             - require_json_content_type_middleware:before
 
 api.sign_up_flow.verify_identity:
-    path: /_/verify-identity
-    controller: Hipper\Api\SignUpFlow\Controller\VerifyIdentityController::postAction
+    path: /_/sign-up/verify-email-address
+    controller: Hipper\Api\SignUpFlow\Controller\VerifyEmailAddressController::postAction
     methods: [POST]
     defaults:
         unsecured: true
         _before_middlewares:
             - require_json_content_type_middleware:before
 
-api.sign_up_flow.name_team:
-    path: /_/name-team
-    controller: Hipper\Api\SignUpFlow\Controller\NameTeamController::postAction
+api.sign_up_flow.name_organization:
+    path: /_/sign-up/name-organization
+    controller: Hipper\Api\SignUpFlow\Controller\NameOrganizationController::postAction
     methods: [POST]
     defaults:
         _before_middlewares:
             - require_json_content_type_middleware:before
 
-api.sign_up_flow.choose_team_url:
-    path: /_/choose-team-url
-    controller: Hipper\Api\SignUpFlow\Controller\ChooseTeamUrlController::postAction
+api.sign_up_flow.choose_organization_url:
+    path: /_/sign-up/choose-organization-url
+    controller: Hipper\Api\SignUpFlow\Controller\ChooseOrganizationUrlController::postAction
     methods: [POST]
     defaults:
         _before_middlewares:

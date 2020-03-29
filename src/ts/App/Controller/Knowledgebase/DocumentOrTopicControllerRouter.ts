@@ -1,4 +1,4 @@
-import TopicController from 'RouteControllers/app/Topic/TopicController';
+import TopicController from 'App/Controller/Topic/TopicController';
 
 export default class DocumentOrTopicControllerRouter {
     private readonly topicController: TopicController;

@@ -1,9 +1,8 @@
-import Controller from 'RouteControllers/Controller';
 import FormSubmitHelper from 'Helper/FormSubmitHelper';
 
 const ENDPOINT = '/_/create-project';
 
-export default class CreateProjectController implements Controller {
+export default class CreateProjectController {
     private readonly formSubmitHelper: FormSubmitHelper;
     private formElement!: HTMLFormElement;
     private submitButton!: HTMLButtonElement;

@@ -1,11 +1,10 @@
-import Controller from 'RouteControllers/Controller';
 import EditableFormField from 'components/EditableFormField';
 import FormSubmitHelper from 'Helper/FormSubmitHelper';
 
 const SUGGEST_ENDPOINT = '/_/suggest-team-description';
 const CREATE_ENDPOINT = '/_/create-team';
 
-export default class CreateTeamController implements Controller {
+export default class CreateTeamController {
     private readonly formSubmitHelper: FormSubmitHelper;
     private handleNameSubmitHandler!: EventListener;
     private formElement!: HTMLFormElement;

@@ -1,11 +1,10 @@
 import BreadcrumbList from 'components/BreadcrumbList';
-import Controller from 'RouteControllers/Controller';
 import TextEditor from 'text-editor/TextEditor';
 import HttpClient from 'Http/HttpClient';
 
 const keyupDelayMilliseconds = 1000;
 
-export default class CreateDocumentController implements Controller {
+export default class CreateDocumentController {
     private readonly httpClient: HttpClient;
     private readonly userAgentProfile: Record<string, any> | null;
     private knowledgebaseId: string | null = null;

@@ -1,16 +1,16 @@
 import * as Bottle from 'bottlejs';
-import JoinOrganizationController from 'RouteControllers/app/Organization/JoinOrganizationController';
-import LoginController from 'RouteControllers/app/Organization/LoginController';
-import VerifyEmailAddressController from 'RouteControllers/app/Organization/VerifyEmailAddressController';
-import CreateTeamController from 'RouteControllers/app/Team/CreateTeamController';
-import CreateDocumentController from 'RouteControllers/app/Document/CreateDocumentController';
-import CreateProjectController from 'RouteControllers/app/Project/CreateProjectController';
-import CreateTopicController from 'RouteControllers/app/Topic/CreateTopicController';
-import DocumentOrTopicControllerRouter from 'RouteControllers/app/Knowledgebase/DocumentOrTopicControllerRouter';
-import EditDocumentController from 'RouteControllers/app/Document/EditDocumentController';
-import SearchController from 'RouteControllers/app/SearchController';
+import JoinOrganizationController from 'App/Controller/Organization/Join/JoinOrganizationController';
+import LoginController from 'App/Controller/Organization/LoginController';
+import VerifyEmailAddressController from 'App/Controller/Organization/Join/VerifyEmailAddressController';
+import CreateTeamController from 'App/Controller/Team/CreateTeamController';
+import CreateDocumentController from 'App/Controller/Document/CreateDocumentController';
+import CreateProjectController from 'App/Controller/Project/CreateProjectController';
+import CreateTopicController from 'App/Controller/Topic/CreateTopicController';
+import DocumentOrTopicControllerRouter from 'App/Controller/Knowledgebase/DocumentOrTopicControllerRouter';
+import EditDocumentController from 'App/Controller/Document/EditDocumentController';
+import SearchController from 'App/Controller/SearchController';
 import SearchResultsPaginator from 'Search/SearchResultsPaginator';
-import TopicController from 'RouteControllers/app/Topic/TopicController';
+import TopicController from 'App/Controller/Topic/TopicController';
 
 export default function (bottle: Bottle): void {
     bottle.factory('searchResultsPaginator', (container) => {

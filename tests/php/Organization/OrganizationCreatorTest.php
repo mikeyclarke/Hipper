@@ -42,8 +42,9 @@ class OrganizationCreatorTest extends TestCase
      */
     public function create()
     {
+        $organizationName = 'Acme';
+
         $organizationId = 'org-uuid';
-        $organizationName = OrganizationModel::DEFAULT_NAME;
         $knowledgebaseId = 'kb-uuid';
         $organizationResult = [
             'id' => $organizationId,
@@ -69,7 +70,7 @@ class OrganizationCreatorTest extends TestCase
         $expectedId = $organizationId;
         $expectedName = $organizationName;
 
-        $result = $this->organizationCreator->create();
+        $result = $this->organizationCreator->create($organizationName);
         $this->assertInstanceOf(OrganizationModel::class, $result);
         $this->assertEquals($expectedId, $result->getId());
         $this->assertEquals($expectedName, $result->getName());

@@ -13,6 +13,11 @@
 
         <form class="js-sign-up-form" novalidate>
             <fieldset class="c-form__field">
+                <label for="input-organization-name" class="c-form__label">Organization name</label>
+                <input class="c-form__input" type="text" name="organization_name" id="input-organization-name" required spellcheck="false" autocomplete="organization" minlength="3" maxlength="50" placeholder="e.g. Acme">
+            </fieldset>
+
+            <fieldset class="c-form__field">
                 <label for="input-name" class="c-form__label">Your name</label>
                 <input class="c-form__input" type="text" name="name" id="input-name" required autocomplete="name" spellcheck="false" placeholder="e.g. Sue Shei" minlength="3">
             </fieldset>

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\SignUpAuthentication\Storage;
+namespace Hipper\SignUp\Storage;
 
-use Hipper\SignUpAuthentication\Storage\StorageKeyComposer;
+use Hipper\SignUp\Storage\StorageKeyComposer;
 use Redis;
 
-class SignUpAuthenticationInserter
+class SignUpAuthorizationRequestInserter
 {
     private const TTL = 10800; // 3 hours
 
@@ -27,7 +27,8 @@ class SignUpAuthenticationInserter
         string $emailAddress,
         string $name,
         string $encodedPassword,
-        ?string $organizationId = null
+        ?string $organizationId = null,
+        ?string $organizationName = null
     ): void {
         $key = $this->storageKeyComposer->compose($id);
 
@@ -37,6 +38,7 @@ class SignUpAuthenticationInserter
             'name' => $name,
             'encoded_password' => $encodedPassword,
             'organization_id' => $organizationId,
+            'organization_name' => $organizationName,
         ]);
         $this->redis->expire($key, self::TTL);
     }

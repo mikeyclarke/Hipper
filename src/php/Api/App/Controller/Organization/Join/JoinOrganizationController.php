@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Api\App\Controller\Organization\Join;
 
-use Hipper\SignUpAuthentication\SignUpAuthenticationRequest;
+use Hipper\SignUp\AuthorizationStrategy\ApprovedEmailDomainSignUpAuthorization;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +15,14 @@ class JoinOrganizationController
 
     private const VERIFY_EMAIL_ADDRESS_ROUTE_NAME = 'front_end.app.organization.join.verify_email';
 
-    private SignUpAuthenticationRequest $signUpAuthenticationRequest;
+    private ApprovedEmailDomainSignUpAuthorization $signUpAuthorization;
     private UrlGeneratorInterface $router;
 
     public function __construct(
-        SignUpAuthenticationRequest $signUpAuthenticationRequest,
+        ApprovedEmailDomainSignUpAuthorization $signUpAuthorization,
         UrlGeneratorInterface $router
     ) {
-        $this->signUpAuthenticationRequest = $signUpAuthenticationRequest;
+        $this->signUpAuthorization = $signUpAuthorization;
         $this->router = $router;
     }
 
@@ -36,17 +36,13 @@ class JoinOrganizationController
         }
 
         try {
-            $authenticationRequest = $this->signUpAuthenticationRequest->create(
-                $requestParameters,
-                $organization,
-                ['approved_email_domain']
-            );
+            $authorizationRequest = $this->signUpAuthorization->request($organization, $requestParameters);
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }
 
         $session = $request->getSession();
-        $session->set('_signup_authentication_request_id', $authenticationRequest->getId());
+        $session->set('_signup_authorization_request_id', $authorizationRequest->getId());
 
         $url = $this->router->generate(self::VERIFY_EMAIL_ADDRESS_ROUTE_NAME, [
             'subdomain' => $organization->getSubdomain(),

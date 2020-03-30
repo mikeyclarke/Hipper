@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Hipper\FrontEnd\App\Controller\Organization\Join;
 
-use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
-use Hipper\SignUpAuthentication\SignUpAuthenticationRepository;
+use Hipper\SignUp\SignUpAuthorizationRequestModel;
+use Hipper\SignUp\SignUpAuthorizationRequestRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,14 +12,14 @@ use Twig\Environment as Twig;
 
 class VerifyEmailAddressController
 {
-    private SignUpAuthenticationRepository $signUpAuthenticationRepository;
+    private SignUpAuthorizationRequestRepository $signUpAuthorizationRequestRepository;
     private Twig $twig;
 
     public function __construct(
-        SignUpAuthenticationRepository $signUpAuthenticationRepository,
+        SignUpAuthorizationRequestRepository $signUpAuthorizationRequestRepository,
         Twig $twig
     ) {
-        $this->signUpAuthenticationRepository = $signUpAuthenticationRepository;
+        $this->signUpAuthorizationRequestRepository = $signUpAuthorizationRequestRepository;
         $this->twig = $twig;
     }
 
@@ -28,27 +28,27 @@ class VerifyEmailAddressController
         $session = $request->getSession();
         $organization = $request->attributes->get('organization');
 
-        $authenticationRequestId = $session->get('_signup_authentication_request_id');
-        if (null === $authenticationRequestId) {
+        $authorizationRequestId = $session->get('_signup_authorization_request_id');
+        if (null === $authorizationRequestId) {
             return new RedirectResponse('/join');
         }
 
-        $result = $this->signUpAuthenticationRepository->findById($authenticationRequestId);
+        $result = $this->signUpAuthorizationRequestRepository->findById($authorizationRequestId);
         if (null === $result) {
             return new RedirectResponse('/join');
         }
 
-        $authenticationRequest = SignUpAuthenticationModel::createFromArray(
-            array_merge(['id' => $authenticationRequestId], $result)
+        $authorizationRequest = SignUpAuthorizationRequestModel::createFromArray(
+            array_merge(['id' => $authorizationRequestId], $result)
         );
 
-        if ($authenticationRequest->getOrganizationId() !== $organization->getId()) {
+        if ($authorizationRequest->getOrganizationId() !== $organization->getId()) {
             return new RedirectResponse('/join');
         }
 
         $context = [
             'html_title' => 'Verify your email address',
-            'email_address' => $authenticationRequest->getEmailAddress(),
+            'email_address' => $authorizationRequest->getEmailAddress(),
         ];
 
         return new Response(

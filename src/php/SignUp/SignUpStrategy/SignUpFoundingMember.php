@@ -1,55 +1,67 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Person\CreationStrategy;
+namespace Hipper\SignUp\SignUpStrategy;
 
 use Doctrine\DBAL\Connection;
 use Hipper\Organization\Event\OrganizationCreatedEvent;
 use Hipper\Organization\OrganizationCreator;
 use Hipper\Person\Event\PersonCreatedEvent;
-use Hipper\Person\PersonCreationValidator;
 use Hipper\Person\PersonCreator;
 use Hipper\Person\PersonModel;
-use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
+use Hipper\Person\PersonRepository;
+use Hipper\SignUp\Exception\AuthorizationRequestMissingOrganizationNameException;
+use Hipper\SignUp\Exception\EmailAddressAlreadyInUseException;
+use Hipper\SignUp\SignUpAuthorization;
+use Hipper\SignUp\SignUpAuthorizationRequestModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CreateFoundingMember
+class SignUpFoundingMember
 {
     private Connection $connection;
     private EventDispatcherInterface $eventDispatcher;
     private OrganizationCreator $organizationCreator;
-    private PersonCreationValidator $personCreationValidator;
     private PersonCreator $personCreator;
+    private PersonRepository $personRepository;
+    private SignUpAuthorization $signUpAuthorization;
 
     public function __construct(
         Connection $connection,
         EventDispatcherInterface $eventDispatcher,
         OrganizationCreator $organizationCreator,
-        PersonCreationValidator $personCreationValidator,
-        PersonCreator $personCreator
+        PersonCreator $personCreator,
+        PersonRepository $personRepository,
+        SignUpAuthorization $signUpAuthorization
     ) {
         $this->connection = $connection;
         $this->eventDispatcher = $eventDispatcher;
         $this->organizationCreator = $organizationCreator;
-        $this->personCreationValidator = $personCreationValidator;
         $this->personCreator = $personCreator;
+        $this->personRepository = $personRepository;
+        $this->signUpAuthorization = $signUpAuthorization;
     }
 
-    public function create(SignUpAuthenticationModel $authenticationRequest): PersonModel
+    public function signUp(SignUpAuthorizationRequestModel $authorizationRequest, array $input): PersonModel
     {
-        $this->personCreationValidator->validate([
-            'email_address' => $authenticationRequest->getEmailAddress(),
-            'name' => $authenticationRequest->getName(),
-        ]);
+        $this->signUpAuthorization->authorize($authorizationRequest, $input);
+
+        $organizationName = $authorizationRequest->getOrganizationName();
+        if (null === $organizationName) {
+            throw new AuthorizationRequestMissingOrganizationNameException;
+        }
+
+        if ($this->personRepository->existsWithEmailAddress($authorizationRequest->getEmailAddress())) {
+            throw new EmailAddressAlreadyInUseException;
+        }
 
         $this->connection->beginTransaction();
         try {
-            $organization = $this->organizationCreator->create();
+            $organization = $this->organizationCreator->create($organizationName);
             $person = $this->personCreator->createWithEncodedPassword(
                 $organization,
-                $authenticationRequest->getName(),
-                $authenticationRequest->getEmailAddress(),
-                $authenticationRequest->getEncodedPassword(),
+                $authorizationRequest->getName(),
+                $authorizationRequest->getEmailAddress(),
+                $authorizationRequest->getEncodedPassword(),
             );
             $this->connection->commit();
         } catch (\Exception $e) {

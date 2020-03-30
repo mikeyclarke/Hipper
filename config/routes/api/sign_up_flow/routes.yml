@@ -16,14 +16,6 @@ api.sign_up_flow.verify_identity:
         _before_middlewares:
             - require_json_content_type_middleware:before
 
-api.sign_up_flow.name_organization:
-    path: /_/sign-up/name-organization
-    controller: Hipper\Api\SignUpFlow\Controller\NameOrganizationController::postAction
-    methods: [POST]
-    defaults:
-        _before_middlewares:
-            - require_json_content_type_middleware:before
-
 api.sign_up_flow.choose_organization_url:
     path: /_/sign-up/choose-organization-url
     controller: Hipper\Api\SignUpFlow\Controller\ChooseOrganizationUrlController::postAction

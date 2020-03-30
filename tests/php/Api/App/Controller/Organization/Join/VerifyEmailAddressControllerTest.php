@@ -6,10 +6,10 @@ namespace Hipper\Tests\Api\App\Controller\Organization\Join;
 use Hipper\Api\App\Controller\Organization\Join\VerifyEmailAddressController;
 use Hipper\Login\Login;
 use Hipper\Organization\OrganizationModel;
-use Hipper\Person\CreationStrategy\CreateFromApprovedEmailDomain;
 use Hipper\Person\PersonModel;
-use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
-use Hipper\SignUpAuthentication\VerifySignUpAuthentication;
+use Hipper\SignUp\SignUpAuthorizationRequestModel;
+use Hipper\SignUp\SignUpAuthorizationRequestRepository;
+use Hipper\SignUp\SignUpStrategy\SignUpFromApprovedEmailDomain;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,26 +21,26 @@ class VerifyEmailAddressControllerTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    private $createFromApprovedEmailDomain;
     private $login;
+    private $signUpAuthorizationRequestRepository;
+    private $signUpFromApprovedEmailDomain;
     private $router;
-    private $verifySignUpAuthentication;
     private $controller;
     private $request;
     private $session;
 
     public function setUp(): void
     {
-        $this->createFromApprovedEmailDomain = m::mock(CreateFromApprovedEmailDomain::class);
         $this->login = m::mock(Login::class);
+        $this->signUpAuthorizationRequestRepository = m::mock(SignUpAuthorizationRequestRepository::class);
+        $this->signUpFromApprovedEmailDomain = m::mock(SignUpFromApprovedEmailDomain::class);
         $this->router = m::mock(UrlGeneratorInterface::class);
-        $this->verifySignUpAuthentication = m::mock(VerifySignUpAuthentication::class);
 
         $this->controller = new VerifyEmailAddressController(
-            $this->createFromApprovedEmailDomain,
             $this->login,
-            $this->router,
-            $this->verifySignUpAuthentication
+            $this->signUpAuthorizationRequestRepository,
+            $this->signUpFromApprovedEmailDomain,
+            $this->router
         );
 
         $this->request = new Request();
@@ -61,22 +61,33 @@ class VerifyEmailAddressControllerTest extends TestCase
         ]);
         $this->request->attributes->set('organization', $organization);
         $verificationPhrase = 'foo bar baz qux';
-        $this->request->request->set('phrase', $verificationPhrase);
+        $requestBody = [
+            'phrase' => $verificationPhrase,
+        ];
+        $this->request->request->add($requestBody);
 
-        $authenticationRequestId = 'signup-auth-uuid';
-        $authenticationRequest = SignUpAuthenticationModel::createFromArray([
+        $authorizationRequestId = 'auth-req-uuid';
+        $authorizationRequestArray = [
             'organization_id' => $organizationId,
-        ]);
+            'name' => 'Mikey Clarke',
+            'email_address' => 'mikey@usehipper.com',
+            'encoded_password' => 'encoded-password',
+            'verification_phrase' => $verificationPhrase,
+        ];
+        $authorizationRequestId = 'signup-auth-uuid';
         $person = new PersonModel;
         $routerArgs = ['front_end.app.organization.home', ['subdomain' => $organizationSubdomain]];
         $url = '/';
 
-        $this->createSessionExpectation(['_signup_authentication_request_id'], $authenticationRequestId);
-        $this->createVerifySignUpAuthenticationExpectation(
-            [$authenticationRequestId, $verificationPhrase],
-            $authenticationRequest
+        $this->createSessionExpectation(['_signup_authorization_request_id'], $authorizationRequestId);
+        $this->createSignUpAuthorizationRequestRepositoryExpectation(
+            [$authorizationRequestId],
+            $authorizationRequestArray
         );
-        $this->createCreateFromApprovedEmailDomainExpectation([$organization, $authenticationRequest], $person);
+        $this->createSignUpFromApprovedEmailDomainExpectation(
+            [m::type(SignUpAuthorizationRequestModel::class), $organization, $requestBody],
+            $person
+        );
         $this->createLoginExpectation([$this->session, $person]);
         $this->createRouterExpectation($routerArgs, $url);
 
@@ -84,23 +95,6 @@ class VerifyEmailAddressControllerTest extends TestCase
         $this->assertInstanceOf(JsonResponse::class, $result);
         $this->assertEquals(200, $result->getStatusCode());
         $this->assertEquals($url, json_decode($result->getContent(), true)['url']);
-    }
-
-    /**
-     * @test
-     */
-    public function noAuthenticationRequestIdInSession()
-    {
-        $organization = new OrganizationModel;
-        $this->request->attributes->set('organization', $organization);
-        $verificationPhrase = 'foo bar baz qux';
-        $this->request->request->set('phrase', $verificationPhrase);
-
-        $this->createSessionExpectation(['_signup_authentication_request_id'], null);
-
-        $result = $this->controller->postAction($this->request);
-        $this->assertInstanceOf(JsonResponse::class, $result);
-        $this->assertEquals(400, $result->getStatusCode());
     }
 
     private function createRouterExpectation($args, $result)
@@ -120,19 +114,19 @@ class VerifyEmailAddressControllerTest extends TestCase
             ->with(...$args);
     }
 
-    private function createCreateFromApprovedEmailDomainExpectation($args, $result)
+    private function createSignUpFromApprovedEmailDomainExpectation($args, $result)
     {
-        $this->createFromApprovedEmailDomain
-            ->shouldReceive('create')
+        $this->signUpFromApprovedEmailDomain
+            ->shouldReceive('signUp')
             ->once()
             ->with(...$args)
             ->andReturn($result);
     }
 
-    private function createVerifySignUpAuthenticationExpectation($args, $result)
+    private function createSignUpAuthorizationRequestRepositoryExpectation($args, $result)
     {
-        $this->verifySignUpAuthentication
-            ->shouldReceive('verifyWithPhrase')
+        $this->signUpAuthorizationRequestRepository
+            ->shouldReceive('findById')
             ->once()
             ->with(...$args)
             ->andReturn($result);

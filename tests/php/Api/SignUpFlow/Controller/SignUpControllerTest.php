@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Hipper\Tests\Api\SignUpFlow\Controller;
 
 use Hipper\Api\SignUpFlow\Controller\SignUpController;
-use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
-use Hipper\SignUpAuthentication\SignUpAuthenticationRequest;
+use Hipper\SignUp\AuthorizationStrategy\FoundingMemberSignUpAuthorization;
+use Hipper\SignUp\SignUpAuthorizationRequestModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +17,7 @@ class SignUpControllerTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    private $signUpAuthenticationRequest;
+    private $signUpAuthorization;
     private $router;
     private $signUpController;
     private $request;
@@ -25,11 +25,11 @@ class SignUpControllerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->signUpAuthenticationRequest = m::mock(SignUpAuthenticationRequest::class);
+        $this->signUpAuthorization = m::mock(FoundingMemberSignUpAuthorization::class);
         $this->router = m::mock(UrlGeneratorInterface::class);
 
         $this->signUpController = new SignUpController(
-            $this->signUpAuthenticationRequest,
+            $this->signUpAuthorization,
             $this->router
         );
 
@@ -50,18 +50,15 @@ class SignUpControllerTest extends TestCase
         ];
         $this->request->request->add($requestBody);
 
-        $authenticationRequestId = 'auth-req-uuid';
-        $authenticationRequest = SignUpAuthenticationModel::createFromArray([
-            'id' => $authenticationRequestId,
-            'name' => 'James Holden',
-            'email_address' => 'jh@example.com',
-            'password' => 'p455w0rd',
+        $authorizationRequestId = 'auth-req-uuid';
+        $authorizationRequest = SignUpAuthorizationRequestModel::createFromArray([
+            'id' => $authorizationRequestId,
         ]);
         $routeName = 'front_end.sign_up_flow.verify_email_address';
         $url = '/sign-up/verify-email-address';
 
-        $this->createSignUpAuthenticationRequestExpectation([$requestBody], $authenticationRequest);
-        $this->createSessionExpectation(['_signup_authentication_request_id', $authenticationRequestId]);
+        $this->createSignUpAuthorizationExpectation([$requestBody], $authorizationRequest);
+        $this->createSessionExpectation(['_signup_authorization_request_id', $authorizationRequestId]);
         $this->createRouterExpectation([$routeName], $url);
 
         $result = $this->signUpController->postAction($this->request);
@@ -88,10 +85,10 @@ class SignUpControllerTest extends TestCase
             ->with(...$args);
     }
 
-    private function createSignUpAuthenticationRequestExpectation($args, $result)
+    private function createSignUpAuthorizationExpectation($args, $result)
     {
-        $this->signUpAuthenticationRequest
-            ->shouldReceive('create')
+        $this->signUpAuthorization
+            ->shouldReceive('request')
             ->once()
             ->with(...$args)
             ->andReturn($result);

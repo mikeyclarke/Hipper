@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Hipper\Api\SignUpFlow\Controller;
 
 use Hipper\Api\ApiControllerTrait;
-use Hipper\Person\CreationStrategy\CreateFoundingMember;
-use Hipper\SignUpAuthentication\VerifySignUpAuthentication;
+use Hipper\SignUp\Exception\EmailAddressAlreadyInUseException;
+use Hipper\SignUp\SignUpAuthorizationRequestModel;
+use Hipper\SignUp\SignUpAuthorizationRequestRepository;
+use Hipper\SignUp\SignUpStrategy\SignUpFoundingMember;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,48 +17,57 @@ class VerifyEmailAddressController
 {
     use ApiControllerTrait;
 
-    private const ORGANIZATION_NAME_ROUTE = 'front_end.sign_up_flow.name_organization';
+    private const AUTH_REQUEST_NOT_FOUND_BODY = [
+        'name' => 'sign_up_auth_request_not_found',
+        'message' => 'Sign-up authorization request not found',
+    ];
+    private const ORGANIZATION_URL_ROUTE = 'front_end.sign_up_flow.choose_organization_url';
 
-    private CreateFoundingMember $createFoundingMember;
+    private SignUpAuthorizationRequestRepository $signUpAuthorizationRequestRepository;
+    private SignUpFoundingMember $signUpFoundingMember;
     private UrlGeneratorInterface $router;
-    private VerifySignUpAuthentication $verifySignUpAuthentication;
 
     public function __construct(
-        CreateFoundingMember $createFoundingMember,
-        UrlGeneratorInterface $router,
-        VerifySignUpAuthentication $verifySignUpAuthentication
+        SignUpAuthorizationRequestRepository $signUpAuthorizationRequestRepository,
+        SignUpFoundingMember $signUpFoundingMember,
+        UrlGeneratorInterface $router
     ) {
-        $this->createFoundingMember = $createFoundingMember;
+        $this->signUpAuthorizationRequestRepository = $signUpAuthorizationRequestRepository;
+        $this->signUpFoundingMember = $signUpFoundingMember;
         $this->router = $router;
-        $this->verifySignUpAuthentication = $verifySignUpAuthentication;
     }
 
     public function postAction(Request $request): JsonResponse
     {
         $session = $request->getSession();
-        $authenticationRequestId = $session->get('_signup_authentication_request_id');
-        if (null === $authenticationRequestId) {
-            return new JsonResponse(['error_reason' => 'not_found'], 400);
+        $authorizationRequestId = $session->get('_signup_authorization_request_id');
+        if (null === $authorizationRequestId) {
+            return new JsonResponse(self::AUTH_REQUEST_NOT_FOUND_BODY, 400);
         }
 
-        try {
-            $authenticationRequest = $this->verifySignUpAuthentication->verifyWithPhrase(
-                $authenticationRequestId,
-                $request->request->get('phrase', '')
-            );
-        } catch (ValidationException $e) {
-            return $this->createValidationExceptionResponse($e);
+        $result = $this->signUpAuthorizationRequestRepository->findById($authorizationRequestId);
+        if (null === $result) {
+            return new JsonResponse(self::AUTH_REQUEST_NOT_FOUND_BODY, 400);
         }
 
+        $authorizationRequest = SignUpAuthorizationRequestModel::createFromArray(
+            array_merge(['id' => $authorizationRequestId], $result)
+        );
+
         try {
-            $person = $this->createFoundingMember->create($authenticationRequest);
+            $person = $this->signUpFoundingMember->signUp($authorizationRequest, $request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
+        } catch (EmailAddressAlreadyInUseException $e) {
+            return new JsonResponse([
+                'name' => 'email_address_taken',
+                'message' => 'Email address already in use',
+            ], 400);
         }
 
         $session->set('_personId', $person->getId());
 
-        $url = $this->router->generate(self::ORGANIZATION_NAME_ROUTE);
+        $url = $this->router->generate(self::ORGANIZATION_URL_ROUTE);
         return new JsonResponse(['url' => $url], 200);
     }
 }

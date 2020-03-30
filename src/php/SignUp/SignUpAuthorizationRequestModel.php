@@ -1,11 +1,11 @@
 <?Php
 declare(strict_types=1);
 
-namespace Hipper\SignUpAuthentication;
+namespace Hipper\SignUp;
 
 use Hipper\ModelTrait;
 
-final class SignUpAuthenticationModel
+final class SignUpAuthorizationRequestModel
 {
     use ModelTrait;
 
@@ -16,6 +16,7 @@ final class SignUpAuthenticationModel
         'name' => 'name',
         'encoded_password' => 'encodedPassword',
         'organization_id' => 'organizationId',
+        'organization_name' => 'organizationName',
     ];
 
     private $id;
@@ -24,6 +25,7 @@ final class SignUpAuthenticationModel
     private $name;
     private $encodedPassword;
     private $organizationId;
+    private $organizationName;
 
     public static function createFromArray(array $array): self
     {
@@ -90,5 +92,15 @@ final class SignUpAuthenticationModel
     public function getOrganizationId(): ?string
     {
         return $this->organizationId;
+    }
+
+    public function setOrganizationName(?string $organizationName): void
+    {
+        $this->organizationName = $organizationName;
+    }
+
+    public function getOrganizationName(): ?string
+    {
+        return $this->organizationName;
     }
 }

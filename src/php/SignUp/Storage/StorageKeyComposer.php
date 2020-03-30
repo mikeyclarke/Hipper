@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\SignUpAuthentication\Storage;
+namespace Hipper\SignUp\Storage;
 
 class StorageKeyComposer
 {

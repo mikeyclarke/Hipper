@@ -5,6 +5,7 @@ const ENDPOINT = '/_/sign-up';
 export default class SignUpController {
     private readonly formSubmitHelper: FormSubmitHelper;
     private formElement!: HTMLFormElement;
+    private organizationNameInput!: HTMLInputElement;
     private nameInput!: HTMLInputElement;
     private emailInput!: HTMLInputElement;
     private passwordInput!: HTMLInputElement;
@@ -24,6 +25,7 @@ export default class SignUpController {
 
     private cacheElements(): void {
         this.formElement = <HTMLFormElement> document.querySelector('.js-sign-up-form');
+        this.organizationNameInput = <HTMLInputElement> this.formElement.querySelector('[name="organization_name"]');
         this.nameInput = <HTMLInputElement> this.formElement.querySelector('[name="name"]');
         this.emailInput = <HTMLInputElement> this.formElement.querySelector('[name="email_address"]');
         this.passwordInput = <HTMLInputElement> this.formElement.querySelector('[name="password"]');
@@ -42,7 +44,8 @@ export default class SignUpController {
     }
 
     private canSubmit(): boolean {
-        return this.nameInput.value.length > 0 &&
+        return this.organizationNameInput.value.length > 0 &&
+            this.nameInput.value.length > 0 &&
             this.emailInput.value.length > 0 &&
             this.passwordInput.value.length >= 8 &&
             this.termsCheckbox.checked;
@@ -50,6 +53,7 @@ export default class SignUpController {
 
     private composePayload(): object {
         return {
+            organization_name: this.organizationNameInput.value,
             name: this.nameInput.value,
             email_address: this.emailInput.value,
             password: this.passwordInput.value,

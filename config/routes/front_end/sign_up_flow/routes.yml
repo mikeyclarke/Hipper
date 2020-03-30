@@ -12,11 +12,6 @@ front_end.sign_up_flow.verify_email_address:
     defaults:
         unsecured: true
 
-front_end.sign_up_flow.name_organization:
-    path: /sign-up/name-organization
-    controller: Hipper\FrontEnd\SignUpFlow\Controller\NameOrganizationController::getAction
-    methods: [GET]
-
 front_end.sign_up_flow.choose_organization_url:
     path: /sign-up/choose-organization-url
     controller: Hipper\FrontEnd\SignUpFlow\Controller\ChooseOrganizationUrlController::getAction

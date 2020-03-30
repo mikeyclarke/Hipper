@@ -5,8 +5,8 @@ namespace Hipper\Tests\Api\App\Controller\Organization\Join;
 
 use Hipper\Api\App\Controller\Organization\Join\JoinOrganizationController;
 use Hipper\Organization\OrganizationModel;
-use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
-use Hipper\SignUpAuthentication\SignUpAuthenticationRequest;
+use Hipper\SignUp\AuthorizationStrategy\ApprovedEmailDomainSignUpAuthorization;
+use Hipper\SignUp\SignUpAuthorizationRequestModel;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,7 +18,7 @@ class JoinOrganizationControllerTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    private $signUpAuthenticationRequest;
+    private $signUpAuthorization;
     private $router;
     private $controller;
     private $request;
@@ -26,11 +26,11 @@ class JoinOrganizationControllerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->signUpAuthenticationRequest = m::mock(SignUpAuthenticationRequest::class);
+        $this->signUpAuthorization = m::mock(ApprovedEmailDomainSignUpAuthorization::class);
         $this->router = m::mock(UrlGeneratorInterface::class);
 
         $this->controller = new JoinOrganizationController(
-            $this->signUpAuthenticationRequest,
+            $this->signUpAuthorization,
             $this->router
         );
 
@@ -67,17 +67,16 @@ class JoinOrganizationControllerTest extends TestCase
             'terms_agreed' => true,
             'email_address' => 'mikey@usehipper.com',
         ];
-        $authenticationRequestId = 'auth-req-uuid';
-        $authenticationRequest = SignUpAuthenticationModel::createFromArray([
-            'id' => $authenticationRequestId,
+
+        $authorizationRequestId = 'auth-req-uuid';
+        $authorizationRequest = SignUpAuthorizationRequestModel::createFromArray([
+            'id' => $authorizationRequestId,
         ]);
         $routerArgs = ['front_end.app.organization.join.verify_email', ['subdomain' => $organizationSubdomain]];
         $url = '/join/verify-email-address';
-        $this->createSignUpAuthenticationRequestExpectation(
-            [$input, $organization, ['approved_email_domain']],
-            $authenticationRequest
-        );
-        $this->createSessionExpectation(['_signup_authentication_request_id', $authenticationRequestId]);
+
+        $this->createSignUpAuthorizationExpectation([$organization, $input], $authorizationRequest);
+        $this->createSessionExpectation(['_signup_authorization_request_id', $authorizationRequestId]);
         $this->createRouterExpectation($routerArgs, $url);
 
         $result = $this->controller->postAction($this->request);
@@ -130,10 +129,10 @@ class JoinOrganizationControllerTest extends TestCase
             ->with(...$args);
     }
 
-    private function createSignUpAuthenticationRequestExpectation($args, $result)
+    private function createSignUpAuthorizationExpectation($args, $result)
     {
-        $this->signUpAuthenticationRequest
-            ->shouldReceive('create')
+        $this->signUpAuthorization
+            ->shouldReceive('request')
             ->once()
             ->with(...$args)
             ->andReturn($result);

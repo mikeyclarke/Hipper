@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Hipper\Api\SignUpFlow\Controller;
 
-use Hipper\SignUpAuthentication\SignUpAuthenticationRequest;
+use Hipper\SignUp\AuthorizationStrategy\FoundingMemberSignUpAuthorization;
 use Hipper\Validation\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,27 +15,27 @@ class SignUpController
 
     private const VERIFY_EMAIL_ROUTE = 'front_end.sign_up_flow.verify_email_address';
 
-    private SignUpAuthenticationRequest $signUpAuthenticationRequest;
+    private FoundingMemberSignUpAuthorization $signUpAuthorization;
     private UrlGeneratorInterface $router;
 
     public function __construct(
-        SignUpAuthenticationRequest $signUpAuthenticationRequest,
+        FoundingMemberSignUpAuthorization $signUpAuthorization,
         UrlGeneratorInterface $router
     ) {
-        $this->signUpAuthenticationRequest = $signUpAuthenticationRequest;
+        $this->signUpAuthorization = $signUpAuthorization;
         $this->router = $router;
     }
 
     public function postAction(Request $request): JsonResponse
     {
         try {
-            $authenticationRequest = $this->signUpAuthenticationRequest->create($request->request->all());
+            $authorizationRequest = $this->signUpAuthorization->request($request->request->all());
         } catch (ValidationException $e) {
             return $this->createValidationExceptionResponse($e);
         }
 
         $session = $request->getSession();
-        $session->set('_signup_authentication_request_id', $authenticationRequest->getId());
+        $session->set('_signup_authorization_request_id', $authorizationRequest->getId());
 
         $url = $this->router->generate(self::VERIFY_EMAIL_ROUTE);
         return new JsonResponse(['url' => $url], 201);

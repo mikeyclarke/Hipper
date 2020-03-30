@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\SignUpAuthentication;
+namespace Hipper\SignUp;
 
-use Hipper\SignUpAuthentication\Storage\StorageKeyComposer;
+use Hipper\SignUp\Storage\StorageKeyComposer;
 use Redis;
 
-class SignUpAuthenticationRepository
+class SignUpAuthorizationRequestRepository
 {
     private StorageKeyComposer $storageKeyComposer;
     private Redis $redis;

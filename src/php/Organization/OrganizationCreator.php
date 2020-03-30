@@ -27,11 +27,11 @@ class OrganizationCreator
         $this->organizationStorageUpdater = $organizationStorageUpdater;
     }
 
-    public function create(): OrganizationModel
+    public function create(string $name): OrganizationModel
     {
         $result = $this->organizationInserter->insert(
             $this->idGenerator->generate(),
-            OrganizationModel::DEFAULT_NAME
+            $name
         );
         $organizationId = $result['id'];
         $knowledgebase = $this->knowledgebaseCreator->create('organization', $organizationId);

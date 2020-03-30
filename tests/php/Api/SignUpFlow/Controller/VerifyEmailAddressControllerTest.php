@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Hipper\Tests\Api\SignUpFlow\Controller;
 
 use Hipper\Api\SignUpFlow\Controller\VerifyEmailAddressController;
-use Hipper\Person\CreationStrategy\CreateFoundingMember;
 use Hipper\Person\PersonModel;
-use Hipper\SignUpAuthentication\SignUpAuthenticationModel;
-use Hipper\SignUpAuthentication\VerifySignUpAuthentication;
+use Hipper\SignUp\SignUpAuthorizationRequestModel;
+use Hipper\SignUp\SignUpAuthorizationRequestRepository;
+use Hipper\SignUp\SignUpStrategy\SignUpFoundingMember;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,23 +19,23 @@ class VerifyEmailAddressControllerTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    private $createFoundingMember;
+    private $signUpAuthorizationRequestRepository;
+    private $signUpFoundingMember;
     private $router;
-    private $verifySignUpAuthentication;
     private $verifyEmailAddressController;
     private $request;
     private $session;
 
     public function setUp(): void
     {
-        $this->createFoundingMember = m::mock(CreateFoundingMember::class);
+        $this->signUpAuthorizationRequestRepository = m::mock(SignUpAuthorizationRequestRepository::class);
+        $this->signUpFoundingMember = m::mock(SignUpFoundingMember::class);
         $this->router = m::mock(UrlGeneratorInterface::class);
-        $this->verifySignUpAuthentication = m::mock(VerifySignUpAuthentication::class);
 
         $this->verifyEmailAddressController = new VerifyEmailAddressController(
-            $this->createFoundingMember,
+            $this->signUpAuthorizationRequestRepository,
+            $this->signUpFoundingMember,
             $this->router,
-            $this->verifySignUpAuthentication
         );
 
         $this->request = new Request();
@@ -54,20 +54,30 @@ class VerifyEmailAddressControllerTest extends TestCase
         ];
         $this->request->request->add($requestBody);
 
-        $authenticationRequestId = 'auth-req-uuid';
-        $authenticationRequest = new SignUpAuthenticationModel;
+        $authorizationRequestId = 'auth-req-uuid';
+        $authorizationRequestArray = [
+            'organization_name' => 'Acme',
+            'name' => 'Mikey Clarke',
+            'email_address' => 'mikey@usehipper.com',
+            'encoded_password' => 'encoded-password',
+            'verification_phrase' => $phrase,
+        ];
         $personId = 'person-uuid';
         $person = PersonModel::createFromArray([
             'id' => $personId,
         ]);
-        $routeName = 'front_end.sign_up_flow.name_organization';
-        $url = '/sign-up/name-organization';
-        $this->createSessionGetExpectation(['_signup_authentication_request_id'], $authenticationRequestId);
-        $this->createVerifySignUpAuthenticationExpectation(
-            [$authenticationRequestId, $phrase],
-            $authenticationRequest
+        $routeName = 'front_end.sign_up_flow.choose_organization_url';
+        $url = '/sign-up/choose-organization-url';
+
+        $this->createSessionGetExpectation(['_signup_authorization_request_id'], $authorizationRequestId);
+        $this->createSignUpAuthorizationRequestRepositoryExpectation(
+            [$authorizationRequestId],
+            $authorizationRequestArray
         );
-        $this->createCreateFoundingMemberExpectation([$authenticationRequest], $person);
+        $this->createSignUpFoundingMemberExpectation(
+            [m::type(SignUpAuthorizationRequestModel::class), $requestBody],
+            $person
+        );
         $this->createSessionSetExpectation(['_personId', $personId]);
         $this->createRouterExpectation([$routeName], $url);
 
@@ -95,19 +105,19 @@ class VerifyEmailAddressControllerTest extends TestCase
             ->with(...$args);
     }
 
-    private function createCreateFoundingMemberExpectation($args, $result)
+    private function createSignUpFoundingMemberExpectation($args, $result)
     {
-        $this->createFoundingMember
-            ->shouldReceive('create')
+        $this->signUpFoundingMember
+            ->shouldReceive('signUp')
             ->once()
             ->with(...$args)
             ->andReturn($result);
     }
 
-    private function createVerifySignUpAuthenticationExpectation($args, $result)
+    private function createSignUpAuthorizationRequestRepositoryExpectation($args, $result)
     {
-        $this->verifySignUpAuthentication
-            ->shouldReceive('verifyWithPhrase')
+        $this->signUpAuthorizationRequestRepository
+            ->shouldReceive('findById')
             ->once()
             ->with(...$args)
             ->andReturn($result);

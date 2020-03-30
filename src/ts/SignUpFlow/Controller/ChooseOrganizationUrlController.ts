@@ -1,6 +1,6 @@
 import FormSubmitHelper from 'Helper/FormSubmitHelper';
 
-const ENDPOINT = '/_/sign-up';
+const ENDPOINT = '/_/sign-up/choose-organization-url';
 
 export default class ChooseOrganizationUrlController {
     private readonly formSubmitHelper: FormSubmitHelper;

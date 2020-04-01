@@ -13,11 +13,6 @@ export default function signupRoutes(bottle: Bottle): Record<string, RouteDefini
             controller: (): any[] => [bottle.container.verifyEmailAddressController, 'start'],
         },
 
-        name_team: {
-            path: '/sign-up/name-organization',
-            controller: (): any[] => [bottle.container.nameOrganizationController, 'start'],
-        },
-
         choose_organization_url: {
             path: '/sign-up/choose-organization-url',
             controller: (): any[] => [bottle.container.chooseOrganizationUrlController, 'start'],

@@ -7,7 +7,6 @@ use Hipper\Organization\Exception\OrganizationNotFoundException;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Organization\OrganizationRepository;
 use Hipper\Organization\OrganizationSubdomainGenerator;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment as Twig;
@@ -37,10 +36,6 @@ class ChooseOrganizationUrlController
             throw new OrganizationNotFoundException;
         }
         $organization = OrganizationModel::createFromArray($result);
-
-        if (OrganizationModel::DEFAULT_NAME === $organization->getName()) {
-            return new RedirectResponse('/sign-up/name-organization');
-        }
 
         $context = [
             'domain' => $request->getHttpHost(),

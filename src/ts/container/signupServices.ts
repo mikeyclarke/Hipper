@@ -1,7 +1,6 @@
 import * as Bottle from 'bottlejs';
 import SignUpController from 'SignUpFlow/Controller/SignUpController';
 import VerifyEmailAddressController from 'SignUpFlow/Controller/VerifyEmailAddressController';
-import NameOrganizationController from 'SignUpFlow/Controller/NameOrganizationController';
 import ChooseOrganizationUrlController from 'SignUpFlow/Controller/ChooseOrganizationUrlController';
 
 export default function signupServices(bottle: Bottle): void {
@@ -13,12 +12,6 @@ export default function signupServices(bottle: Bottle): void {
 
     bottle.factory('verifyEmailAddressController', (container) => {
         return new VerifyEmailAddressController(
-            container.formSubmitHelper
-        );
-    });
-
-    bottle.factory('nameOrganizationController', (container) => {
-        return new NameOrganizationController(
             container.formSubmitHelper
         );
     });

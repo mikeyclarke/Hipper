@@ -1,4 +1,7 @@
 import FormSubmitHelper from 'Helper/FormSubmitHelper';
+import PopoverAlert from 'components/PopoverAlert';
+import timeout from 'Timeout/timeout';
+import ky from 'ky';
 
 const ENDPOINT = '/_/join/verify-email-address';
 
@@ -50,9 +53,57 @@ export default class JoinOrganizationController {
         event.preventDefault();
 
         const payload = this.composePayload();
-        const json = await this.formSubmitHelper.submit(this.formElement, this.submitButton, ENDPOINT, payload);
+        let json = null;
+
+        try {
+            json = await this.formSubmitHelper.submit(this.formElement, this.submitButton, ENDPOINT, payload);
+        } catch (error) {
+            this.handleError(error);
+        }
+
         if (null !== json) {
             window.location.assign(json.url);
         }
+    }
+
+    private async handleError(error: Error): Promise<void> {
+        if (error instanceof ky.HTTPError) {
+            const response = <Response> error.response;
+            if (response.status === 400) {
+                const json = await response.json();
+                if (json.name) {
+                    switch (json.name) {
+                        case 'sign_up_auth_request_not_found':
+                            this.displayError(
+                                'Verification expired',
+                                'Your verification request has expired, please start the sign-up process again'
+                            );
+                            this.redirect();
+                            break;
+                        case 'email_address_taken':
+                            this.displayError(
+                                'Email address taken',
+                                'Your email address is now already in use, please try signing-up again'
+                            );
+                            this.redirect();
+                            break;
+                        default:
+                    }
+                }
+            }
+        }
+    }
+
+    private displayError(title: string, message: string): void {
+        const popoverAlert = <PopoverAlert> document.createElement('popover-alert');
+        popoverAlert.setAttribute('alert-title', title);
+        popoverAlert.setAttribute('alert-message', message);
+        popoverAlert.setAttribute('alert-type', 'error');
+        document.body.appendChild(popoverAlert);
+    }
+
+    private async redirect(): Promise<void> {
+        await timeout(1500);
+        window.location.assign('/join');
     }
 }

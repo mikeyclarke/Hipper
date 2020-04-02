@@ -15,6 +15,10 @@ function tryAddValueFromInput(this: MultipleValueInput): void {
         return;
     }
 
+    if (input.value.length === 0) {
+        return;
+    }
+
     if (!input.validity.valid) {
         showFieldError(input, input.validationMessage);
         if (document.activeElement !== input) {

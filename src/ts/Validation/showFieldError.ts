@@ -1,3 +1,5 @@
+const OFFSET_TO_INPUT_TOP = '6px';
+
 export default function showFieldError(
     fieldInputElement: HTMLElement,
     errorMessage: string,
@@ -9,16 +11,12 @@ export default function showFieldError(
     errorElement.textContent = errorMessage;
     errorElement.classList.add(className);
     errorElement.setAttribute('aria-live', 'assertive');
+    errorElement.style.bottom = `calc(100% - ${fieldInputElement.offsetTop}px + ${OFFSET_TO_INPUT_TOP})`;
 
     fieldInputElement.setAttribute('aria-invalid', 'true');
     fieldInputElement.setAttribute('aria-errormessage', id);
 
-    // Edge only supports the input event on input[type=text] and input[type=password]
-    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event#Browser_compatibility
-    let inputEvent = 'input';
-    if (!(fieldInputElement instanceof HTMLInputElement) || !['text', 'password'].includes(fieldInputElement.type)) {
-        inputEvent = 'keyup';
-    }
+    const inputEvent = 'input';
 
     const onInput = (): void => {
         errorElement.remove();

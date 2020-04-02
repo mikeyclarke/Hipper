@@ -13,6 +13,8 @@ $_checkbox-border-color--is-checked: $_checkbox-checked-color;
 $_checkbox-label-distance: 8px;
 $_checkbox-offset-top: 2px;
 
+$checkbox-offset-left: $_checkbox-width + $_checkbox-label-distance;
+
 $_label-font-size: 14px;
 $_label-font-weight: 500;
 $_label-line-height: 18px;
@@ -37,7 +39,7 @@ $_focused-box-shadow: config.config-get(element, focused-box-shadow);
     font-weight: $_label-font-weight;
     line-height: $_label-line-height;
     position: relative;
-    padding-left: $_checkbox-width + $_checkbox-label-distance;
+    padding-left: $checkbox-offset-left;
     z-index: 0;
     @include font-smoothing.font-smoothing;
 }

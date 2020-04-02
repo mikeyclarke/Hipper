@@ -1,0 +1,53 @@
+{% import 'custom_elements/_multiple_value_input.twig' as multiple_value_input %}
+
+{% extends 'sign_up_flow/sign_up_flow_layout.twig' %}
+
+{% block page_content %}
+<div class="c-login-screen">
+    <div class="c-login-screen__header">
+        <a href="https://usehipper.com" target="_blank"><svg class="c-login-screen__header-logo" role="img" aria-label="Hipper"><use xlink:href="#icon-sprite__wordmark"/></svg></a>
+    </div>
+
+    <main class="c-login-screen__inner">
+        <header class="c-login-screen__inner-header">
+            <h1 class="c-login-screen__inner-title">Invite people</h1>
+            <p class="c-login-screen__inner-description">Now that your organization is set up you might want to invite your co-workers</p>
+        </header>
+
+        <form class="js-invites-form" novalidate>
+            <fieldset class="c-form__field">
+                <label for="input-invite" class="c-form__label">Invite by email address (optional)</label>
+                {% set max_values_message = 'You’ve added the maximum number of invites, you can add more when you’ve finished signing up' %}
+                {% set duplicate_value_message = 'You’ve already added an invite for that email address' %}
+
+                {{ multiple_value_input.start(max_values_message, duplicate_value_message) }}
+                    {{ multiple_value_input.input('input-invite', 'email', 'Add', {
+                        placeholder: 'e.g. sue@acme.com',
+                        autcomplete: 'off',
+                        'aria-describedby': 'instructions',
+                    }) }}
+                    <p class="c-form__field-description" id="instructions">Press <kbd>{{ enter_key_label }}</kbd> after each address to invite more people</p>
+
+                    {{ multiple_value_input.template('invite_email_address', true, 'email') }}
+                {{ multiple_value_input.end() }}
+            </fieldset>
+
+            {% if is_approved_email_signup_supported %}
+                <hr class="c-form__divider">
+
+                <input type="hidden" name="approved_email_domain" value="{{ email_domain }}">
+
+                <fieldset class="c-form__field">
+                    <div class="c-checkbox">
+                        <input class="c-checkbox__input" type="checkbox" name="approved_email_domain_signup_allowed" id="input-approved-email-signup" checked aria-describedby="security-reassurance">
+                        <label for="input-approved-email-signup" class="c-checkbox__label">Allow anyone with an <strong>@{{ email_domain }}</strong> email address to join your organization</label>
+                    </div>
+                    <p class="c-form__field-description" id="security-reassurance">Don’t worry, we’ll verify their email address before they can join</p>
+                </fieldset>
+            {% endif %}
+
+            <button class="c-login-screen__submit-button js-submit" type="submit" autocomplete="off">Finish</button>
+        </form>
+    </main>
+</div>
+{% endblock %}

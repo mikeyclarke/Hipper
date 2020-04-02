@@ -21,6 +21,18 @@ class OrganizationUpdater
     public function update(string $organizationId, array $properties): void
     {
         $this->organizationValidator->validate($properties);
+
+        if (isset($properties['approved_email_domains'])) {
+            $properties['approved_email_domains'] = json_encode(
+                $properties['approved_email_domains'],
+                JSON_THROW_ON_ERROR
+            );
+        }
+
+        if (empty($properties)) {
+            return;
+        }
+
         $this->organizationStorageUpdater->update($organizationId, $properties);
     }
 }

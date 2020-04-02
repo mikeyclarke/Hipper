@@ -1,0 +1,143 @@
+@use 'sass:color';
+@use 'config/config';
+@use 'helper/break-text';
+@use 'helper/font-smoothing';
+@use 'helper/unstyled-button';
+@use 'component/form';
+
+$_button-background-color: config.config-get(element, input, background-color);
+$_button-border-color: config.config-get(element, input, border-color);
+$_button-border-color-focused: config.config-get(element, input, focused, border-color);
+$_button-border-radius: config.config-get(element, input, border-radius);
+$_button-border-width: config.config-get(element, input, border-width);
+$_button-pseudo-background-color: config.config-get(color-shades, primary, 1000);
+$_button-pseudo-background-color-active: color.adjust($_button-background-color, $lightness: -8%);
+$_button-pseudo-border-radius: 4px;
+$_button-pseudo-box-shadow-focused: config.config-get(element, focused-box-shadow);
+$_button-color: config.config-get(global, color, white);
+$_button-font-weight: 500;
+$_button-font-size: 12px;
+$_button-height: config.config-get(element, input, height);
+$_button-line-height: 12px;
+$_button-padding: 0 16px;
+$_button-text-transform: uppercase;
+
+$_list-border: 1px solid rgba(208, 212, 215, .6);
+$_list-border-radius: 4px;
+$_list-margin: 22px 0 0;
+$_list-max-height: 120px;
+$_list-padding: 0;
+
+$_value-color: config.config-get(element, input, text-color);
+$_value-line-height: 18px;
+$_value-padding: 10px 12px;
+$_value-divider-color: rgba(config.config-get(color-shades, dark, 100), .6);
+
+$_icon-dimension: 18px;
+$_icon-fill: config.config-get(color-shades, primary, 700);
+$_icon-margin: 0 8px 0 0;
+
+.c-multiple-value-input {
+    display: block;
+    position: relative;
+}
+
+.c-multiple-value-input__wrap {
+    display: flex;
+}
+
+.c-multiple-value-input__input {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.c-multiple-value-input__button {
+    @extend %unstyled-button;
+    background-color: $_button-background-color;
+    border: $_button-border-width solid $_button-border-color;
+    border-left: 0;
+    border-bottom-right-radius: $_button-border-radius;
+    border-top-right-radius: $_button-border-radius;
+    color: $_button-color;
+    font-size: $_button-font-size;
+    font-weight: $_button-font-weight;
+    height: $_button-height;
+    line-height: $_button-line-height;
+    padding: $_button-padding;
+    position: relative;
+    top: 0;
+    right: 0;
+    text-transform: $_button-text-transform;
+    z-index: 0;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-form__input + .c-multiple-value-input__button {
+    transition: form.$input-transition;
+}
+
+.c-multiple-value-input__input:focus + .c-multiple-value-input__button {
+    border-color: $_button-border-color-focused;
+}
+
+.c-multiple-value-input__button:disabled {
+    opacity: .65;
+}
+
+.c-multiple-value-input__button:focus {
+    outline: 0;
+}
+
+.c-multiple-value-input__button::before {
+    background-color: $_button-pseudo-background-color;
+    border-radius: $_button-pseudo-border-radius;
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    top: 8px;
+    transition: background-color .2s;
+    z-index: -1;
+}
+
+.c-multiple-value-input__button:focus::before {
+    box-shadow: $_button-pseudo-box-shadow-focused;
+}
+
+.c-multiple-value-input__button:active::before {
+    background-color: $_button-pseudo-background-color-active;
+}
+
+.c-multiple-value-input__list {
+    border: $_list-border;
+    border-radius: $_list-border-radius;
+    list-style: none;
+    margin: $_list-margin;
+    max-height: $_list-max-height;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    padding: $_list-padding;
+}
+
+.c-multiple-value-input__value {
+    @extend %break-text;
+    align-items: center;
+    color: $_value-color;
+    display: flex;
+    line-height: $_value-line-height;
+    padding: $_value-padding;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-multiple-value-input__value:not(:last-child) {
+    border-bottom: 1px solid $_value-divider-color;
+}
+
+.c-multiple-value-input__value-icon {
+    fill: $_icon-fill;
+    height: $_icon-dimension;
+    margin: $_icon-margin;
+    width: $_icon-dimension;
+}

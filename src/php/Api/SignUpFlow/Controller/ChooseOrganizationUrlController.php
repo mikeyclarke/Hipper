@@ -13,7 +13,7 @@ class ChooseOrganizationUrlController
 {
     use \Hipper\Api\ApiControllerTrait;
 
-    private const FINALIZE_ROUTE = 'front_end.sign_up_flow.finalize';
+    private const INVITE_ROUTE = 'front_end.sign_up_flow.invite';
 
     private OrganizationUpdater $organizationUpdater;
     private UrlGeneratorInterface $router;
@@ -41,7 +41,7 @@ class ChooseOrganizationUrlController
             return $this->createValidationExceptionResponse($e);
         }
 
-        $url = $this->router->generate(self::FINALIZE_ROUTE);
+        $url = $this->router->generate(self::INVITE_ROUTE);
         return new JsonResponse(['url' => $url], 200);
     }
 }

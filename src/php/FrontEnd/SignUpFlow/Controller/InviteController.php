@@ -21,18 +21,26 @@ class InviteController
 
     public function getAction(Request $request): Response
     {
+        $session = $request->getSession();
+        $userAgentProfile = $session->get('user_agent_profile');
+        $enterKeyLabel = 'enter';
+        if ($userAgentProfile['is_ios']) {
+            $enterKeyLabel = 'return';
+        }
+
         $currentUser = $request->attributes->get('current_user');
         $email = $currentUser->getEmailAddress();
         $emailDomain = substr($email, strrpos($email, '@') + 1);
 
         $context = [
-            'html_title' => 'Invites',
-            'isApprovedEmailSignupSupported' => !$this->isEmailDomainPersonal($emailDomain),
-            'emailDomain' => $emailDomain,
+            'html_title' => 'Invite people',
+            'is_approved_email_signup_supported' => !$this->isEmailDomainPersonal($emailDomain),
+            'email_domain' => $emailDomain,
+            'enter_key_label' => $enterKeyLabel,
         ];
 
         return new Response(
-            $this->twig->render('onboarding/invite.twig', $context)
+            $this->twig->render('sign_up_flow/invite.twig', $context)
         );
     }
 

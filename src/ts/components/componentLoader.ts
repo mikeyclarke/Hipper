@@ -10,6 +10,7 @@ import FloatingButton from 'components/FloatingButton';
 import ElasticTextInput from 'components/ElasticTextInput';
 import MobileNavigation from 'components/MobileNavigation';
 import MobileNavigationToggle from 'components/MobileNavigationToggle';
+import MultipleValueInput from 'components/MultipleValueInput';
 
 export default function loadComponents(): void {
     const components = {
@@ -25,6 +26,7 @@ export default function loadComponents(): void {
         'elastic-text-input': ElasticTextInput,
         'mobile-navigation': MobileNavigation,
         'mobile-navigation-toggle': MobileNavigationToggle,
+        'multiple-value-input': MultipleValueInput,
     };
 
     Object.entries(components).forEach(([name, classDef]) => {

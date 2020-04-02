@@ -2,6 +2,7 @@
 @use '../config/config';
 @use '../helper/font-smoothing';
 @use 'helper/break-text';
+@use 'component/checkbox';
 
 $form-margin: 40px 30px;
 
@@ -25,12 +26,19 @@ $form-label-margin-bottom: 7px;
 $form-footer-margin: 36px 0 0;
 $form-footer-text-align: right;
 
+$input-transition: border-color .35s;
 $_input-group-text-background-color: #fafafc;
 
 $_field-description-color: config.config-get(color-shades, dark, 600);
 $_field-description-font-size: 14px;
 $_field-description-font-weight: 400;
+$_field-description-line-height: 18px;
 $_field-description-margin: 8px 0 0;
+
+$_divider-background: linear-gradient(270deg, rgba(#f5f6f7, .1) 0%, #eeeff1 50%, rgba(#f5f6f7, .1) 100%);
+$_divider-border: 0;
+$_divider-height: 1px;
+$_divider-margin: 28px 0;
 
 .c-form {
     margin: $form-margin;
@@ -88,17 +96,19 @@ $_field-description-margin: 8px 0 0;
 }
 
 .c-form__input {
-    transition: border-color .35s;
+    transition: $input-transition;
     width: 100%;
 }
 
 .c-form__input[aria-invalid="true"],
+.c-form__input[aria-invalid="true"] ~ .c-multiple-value-input__button,
 .c-form__input[aria-invalid="true"] ~ .c-password-input__visibility-button {
     animation: error-input-animation .65s;
     border-color: rgba(config.config-get(global, color, error), .85);
 }
 
 .c-form__input[aria-invalid="true"]:focus,
+.c-form__input[aria-invalid="true"]:focus ~ .c-multiple-value-input__button,
 .c-form__input[aria-invalid="true"]:focus ~ .c-password-input__visibility-button {
     border-color: config.config-get(global, color, error);
 }
@@ -155,8 +165,20 @@ $_field-description-margin: 8px 0 0;
     color: $_field-description-color;
     font-size: $_field-description-font-size;
     font-weight: $_field-description-font-weight;
+    line-height: $_field-description-line-height;
     margin: $_field-description-margin;
     @include font-smoothing.font-smoothing;
+}
+
+.c-checkbox + .c-form__field-description {
+    margin-left: checkbox.$checkbox-offset-left;
+}
+
+.c-form__divider {
+    background: $_divider-background;
+    border: $_divider-border;
+    height: $_divider-height;
+    margin: $_divider-margin;
 }
 
 .c-form__error {
@@ -168,7 +190,6 @@ $_field-description-margin: 8px 0 0;
     line-height: 18px;
     padding: 8px;
     position: absolute;
-    top: -18px;
     @include font-smoothing.font-smoothing;
 }
 

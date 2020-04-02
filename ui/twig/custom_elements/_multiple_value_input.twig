@@ -1,0 +1,29 @@
+{% macro start(max_values_message, duplicate_value_message) %}
+    <multiple-value-input class="c-multiple-value-input"{% if max_values_message is defined %} data-max-values-message="{{ max_values_message }}"{% endif %}{% if duplicate_value_message %} data-duplicate-value-message="{{ duplicate_value_message }}"{% endif %}>
+{% endmacro %}
+
+{% macro end() %}
+        <template class="js-list-template">
+            <ol class="c-multiple-value-input__list js-value-list"></ol>
+        </template>
+    </multiple-value-input>
+{% endmacro %}
+
+{% macro input(id, type, button_label, attributes) %}
+    <div class="c-multiple-value-input__wrap">
+        <input class="c-form__input c-multiple-value-input__input js-value-input" id="{{ id }}" type="{{ type }}"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
+        <button type="button" class="c-multiple-value-input__button js-add-value" aria-controls="{{ id }}">{{ button_label }}</button>
+    </div>
+{% endmacro %}
+
+{% macro template(name, show_icon, icon) %}
+    <template class="js-value-template">
+        <li class="c-multiple-value-input__value">
+            <input type="hidden" name="{{ name }}">
+            {% if show_icon is same as(true) %}
+                <svg class="c-multiple-value-input__value-icon" aria-hidden="true"><use href="#icon-sprite__{{ icon }}"></svg>
+            {% endif %}
+            <span></span>
+        </li>
+    </template>
+{% endmacro %}

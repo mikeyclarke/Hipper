@@ -18,7 +18,7 @@ front_end.sign_up_flow.choose_organization_url:
     methods: [GET]
 
 front_end.sign_up_flow.invite:
-    path: /sign-up/invite
+    path: /sign-up/invite-people
     controller: Hipper\FrontEnd\SignUpFlow\Controller\InviteController::getAction
     methods: [GET]
 

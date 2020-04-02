@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BulkInvitationValidator
@@ -54,11 +55,13 @@ class BulkInvitationValidator
     {
         $constraints = [
             'email_invites' => [
-                new All([
-                    new NotBlank,
-                    new Email,
-                    new UniqueInvite,
-                    new UniqueEmailAddress,
+                new Optional([
+                    new All([
+                        new NotBlank,
+                        new Email,
+                        new UniqueInvite,
+                        new UniqueEmailAddress,
+                    ]),
                 ]),
             ],
         ];

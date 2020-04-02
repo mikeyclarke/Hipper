@@ -33,7 +33,7 @@ class BulkInvitationCreator
     public function create(PersonModel $person, string $domain, array $input): void
     {
         $this->validator->validate($input);
-        if (null === $input['email_invites'] || empty($input['email_invites'])) {
+        if (!isset($input['email_invites']) || empty($input['email_invites'])) {
             return;
         }
 

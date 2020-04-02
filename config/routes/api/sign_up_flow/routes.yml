@@ -25,16 +25,8 @@ api.sign_up_flow.choose_organization_url:
             - require_json_content_type_middleware:before
 
 api.sign_up_flow.invite:
-    path: /_/invite
+    path: /_/sign-up/invite-people
     controller: Hipper\Api\SignUpFlow\Controller\InviteController::postAction
-    methods: [POST]
-    defaults:
-        _before_middlewares:
-            - require_json_content_type_middleware:before
-
-api.sign_up_flow.invite_by_email:
-    path: /_/invite/emails
-    controller: Hipper\Api\SignUpFlow\Controller\InviteController::postEmailInvitesAction
     methods: [POST]
     defaults:
         _before_middlewares:

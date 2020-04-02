@@ -17,5 +17,10 @@ export default function signupRoutes(bottle: Bottle): Record<string, RouteDefini
             path: '/sign-up/choose-organization-url',
             controller: (): any[] => [bottle.container.chooseOrganizationUrlController, 'start'],
         },
+
+        invite_people: {
+            path: '/sign-up/invite-people',
+            controller: (): any[] => [bottle.container.invitePeopleController, 'start'],
+        },
     };
 }

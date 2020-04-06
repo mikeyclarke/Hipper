@@ -47,7 +47,7 @@ export default class SignUpController {
         return this.organizationNameInput.value.length > 0 &&
             this.nameInput.value.length > 0 &&
             this.emailInput.value.length > 0 &&
-            this.passwordInput.value.length >= 8 &&
+            this.passwordInput.value.length > 0 &&
             this.termsCheckbox.checked;
     }
 

@@ -50,7 +50,7 @@ export default class JoinOrganizationController {
 
         if (this.nameInput.value.length &&
             this.emailLocalPartInput.value.length &&
-            this.passwordInput.value.length >= 8 &&
+            this.passwordInput.value.length &&
             this.termsCheckbox.checked
         ) {
             eligible = true;

@@ -10,6 +10,7 @@ class InviteRepository
     private const DEFAULT_FIELDS = [
         'id',
         'email_address',
+        'expires',
     ];
 
     private $connection;
@@ -47,8 +48,7 @@ class InviteRepository
             ->from('invite')
             ->andWhere('id = :id')
             ->andWhere('organization_id = :organization_id')
-            ->andWhere('token = :token')
-            ->andWhere('expires > CURRENT_TIMESTAMP');
+            ->andWhere('token = :token');
 
         $qb->setParameters([
             'id' => $id,

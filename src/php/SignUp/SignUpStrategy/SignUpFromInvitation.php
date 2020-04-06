@@ -1,62 +1,78 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Person\CreationStrategy;
+namespace Hipper\SignUp\SignUpStrategy;
 
 use Doctrine\DBAL\Connection;
+use Hipper\Invite\InviteModel;
 use Hipper\Invite\InviteRepository;
 use Hipper\Invite\Storage\InviteDeleter;
 use Hipper\Organization\OrganizationModel;
 use Hipper\Person\Event\PersonCreatedEvent;
-use Hipper\Person\Exception\InviteNotFoundException;
-use Hipper\Person\PersonCreationValidator;
 use Hipper\Person\PersonCreator;
+use Hipper\Person\PersonModel;
+use Hipper\Person\PersonRepository;
+use Hipper\SignUp\Exception\EmailAddressAlreadyInUseException;
+use Hipper\SignUp\Exception\InviteExpiredException;
+use Hipper\SignUp\Exception\InviteNotFoundException;
+use Hipper\SignUp\SignUpValidation\InvitationSignUpValidator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CreateFromInvite
+class SignUpFromInvitation
 {
     private Connection $connection;
     private EventDispatcherInterface $eventDispatcher;
+    private InvitationSignUpValidator $validator;
     private InviteDeleter $inviteDeleter;
     private InviteRepository $inviteRepository;
-    private PersonCreationValidator $personCreationValidator;
     private PersonCreator $personCreator;
+    private PersonRepository $personRepository;
 
     public function __construct(
         Connection $connection,
         EventDispatcherInterface $eventDispatcher,
+        InvitationSignUpValidator $validator,
         InviteDeleter $inviteDeleter,
         InviteRepository $inviteRepository,
-        PersonCreationValidator $personCreationValidator,
-        PersonCreator $personCreator
+        PersonCreator $personCreator,
+        PersonRepository $personRepository
     ) {
         $this->connection = $connection;
         $this->eventDispatcher = $eventDispatcher;
+        $this->validator = $validator;
         $this->inviteDeleter = $inviteDeleter;
         $this->inviteRepository = $inviteRepository;
-        $this->personCreationValidator = $personCreationValidator;
         $this->personCreator = $personCreator;
+        $this->personRepository = $personRepository;
     }
 
-    public function create(OrganizationModel $organization, array $input): array
+    public function signUp(OrganizationModel $organization, array $input): PersonModel
     {
-        $this->personCreationValidator->validate($input, 'invite');
+        $this->validator->validate($input);
 
-        $invite = $this->inviteRepository->find($input['invite_id'], $organization->getId(), $input['invite_token']);
-        if (null === $invite) {
+        $result = $this->inviteRepository->find($input['invite_id'], $organization->getId(), $input['invite_token']);
+        if (null === $result) {
             throw new InviteNotFoundException;
+        }
+
+        $invite = InviteModel::createFromArray($result);
+        if ($invite->hasExpired()) {
+            throw new InviteExpiredException;
+        }
+
+        if ($this->personRepository->existsWithEmailAddress($invite->getEmailAddress())) {
+            throw new EmailAddressAlreadyInUseException;
         }
 
         $this->connection->beginTransaction();
         try {
-            list($person, $encodedPassword) = $this->personCreator->create(
+            $person = $this->personCreator->create(
                 $organization,
                 $input['name'],
-                $invite['email_address'],
-                $input['password'],
-                true
+                $invite->getEmailAddress(),
+                $input['password']
             );
-            $this->inviteDeleter->delete($invite['id']);
+            $this->inviteDeleter->delete($invite->getId());
             $this->connection->commit();
         } catch (\Exception $e) {
             $this->connection->rollBack();
@@ -66,6 +82,6 @@ class CreateFromInvite
         $personCreatedEvent = new PersonCreatedEvent($person);
         $this->eventDispatcher->dispatch($personCreatedEvent, PersonCreatedEvent::NAME);
 
-        return [$person, $encodedPassword];
+        return $person;
     }
 }

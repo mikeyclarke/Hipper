@@ -1,4 +1,5 @@
 import * as Bottle from 'bottlejs';
+import JoinByInvitationController from 'App/Controller/Organization/Join/JoinByInvitationController';
 import JoinOrganizationController from 'App/Controller/Organization/Join/JoinOrganizationController';
 import LoginController from 'App/Controller/Organization/LoginController';
 import VerifyEmailAddressController from 'App/Controller/Organization/Join/VerifyEmailAddressController';
@@ -72,6 +73,12 @@ export default function (bottle: Bottle): void {
     bottle.factory('documentOrTopicControllerRouter', (container) => {
         return new DocumentOrTopicControllerRouter(
             container.topicController
+        );
+    });
+
+    bottle.factory('joinByInvitationController', (container) => {
+        return new JoinByInvitationController(
+            container.formSubmitHelper
         );
     });
 

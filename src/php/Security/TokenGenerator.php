@@ -7,13 +7,14 @@ use RandomLib\Factory;
 
 class TokenGenerator
 {
-    const CHARACTERS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    private const CHARACTERS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    private const LENGTH = 32;
 
     public function generate(): string
     {
         $factory = new Factory;
         $generator = $factory->getMediumStrengthGenerator();
-        $token = $generator->generateString(32, self::CHARACTERS);
+        $token = $generator->generateString(self::LENGTH, self::CHARACTERS);
         return $token;
     }
 }

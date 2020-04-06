@@ -8,6 +8,11 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
             controller: (): any[] => [bottle.container.joinOrganizationController, 'start'],
         },
 
+        join_by_invitation: {
+            path: '/join/by-invitation',
+            controller: (): any[] => [bottle.container.joinByInvitationController, 'start'],
+        },
+
         verify_email_address: {
             path: '/join/verify-email-address',
             controller: (): any[] => [bottle.container.verifyEmailAddressController, 'start'],

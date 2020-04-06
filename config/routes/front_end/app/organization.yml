@@ -19,6 +19,13 @@ organization.join.verify_email:
     defaults:
         unsecured: true
 
+organization.join_by_invitation:
+    path: /join/by-invitation
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Organization\Join\JoinByInvitationController::getAction
+    defaults:
+        unsecured: true
+
 organization.tokenized_login:
     path: /tokenized-login
     methods: [GET]

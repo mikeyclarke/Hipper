@@ -19,7 +19,7 @@ organization.join.verify_email_address:
 organization.join_by_invitation:
     path: /_/join/by-invitation
     methods: [POST]
-    controller: Hipper\Api\App\Controller\Organization\JoinByInvitationController::postAction
+    controller: Hipper\Api\App\Controller\Organization\Join\JoinByInvitationController::postAction
     defaults:
         unsecured: true
         _before_middlewares:

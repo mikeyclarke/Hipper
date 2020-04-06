@@ -108,20 +108,21 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.8.0",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc"
+                "reference": "5eb79f3dbdffed6544e1fc287572c0f462bd29bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/904dca4eb10715b92569fbcd79e201d5c349b6bc",
-                "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/5eb79f3dbdffed6544e1fc287572c0f462bd29bb",
+                "reference": "5eb79f3dbdffed6544e1fc287572c0f462bd29bb",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "1.*",
+                "ext-tokenizer": "*",
                 "php": "^7.1"
             },
             "require-dev": {
@@ -131,7 +132,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-master": "1.9.x-dev"
                 }
             },
             "autoload": {
@@ -172,7 +173,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2019-10-01T18:55:10+00:00"
+            "time": "2020-04-02T12:33:25+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -1271,16 +1272,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.32.1",
+            "version": "2.32.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "ecb525c766deb3bbbb6a0082ea0e41d3d9ae477c"
+                "reference": "f10e22cf546704fab1db4ad4b9dedbc5c797a0dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ecb525c766deb3bbbb6a0082ea0e41d3d9ae477c",
-                "reference": "ecb525c766deb3bbbb6a0082ea0e41d3d9ae477c",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/f10e22cf546704fab1db4ad4b9dedbc5c797a0dc",
+                "reference": "f10e22cf546704fab1db4ad4b9dedbc5c797a0dc",
                 "shasum": ""
             },
             "require": {
@@ -1338,7 +1339,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2020-03-26T13:04:10+00:00"
+            "time": "2020-03-31T13:43:19+00:00"
         },
         {
             "name": "psr/cache",
@@ -4696,20 +4697,20 @@
         },
         {
             "name": "phpstan/extension-installer",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/extension-installer.git",
-                "reference": "295656793c53b5eb73a38486032ad1bd650264bc"
+                "reference": "2e041def501d661b806f50000c8a4dccbd4907b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/295656793c53b5eb73a38486032ad1bd650264bc",
-                "reference": "295656793c53b5eb73a38486032ad1bd650264bc",
+                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/2e041def501d661b806f50000c8a4dccbd4907b4",
+                "reference": "2e041def501d661b806f50000c8a4dccbd4907b4",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.1",
+                "composer-plugin-api": "^1.1 || ^2.0",
                 "php": "^7.1",
                 "phpstan/phpstan": ">=0.11.6"
             },
@@ -4717,6 +4718,7 @@
                 "composer/composer": "^1.8",
                 "consistence/coding-standard": "^3.8",
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+                "ergebnis/composer-normalize": "^2.0.2",
                 "jakub-onderka/php-parallel-lint": "^1.0",
                 "phing/phing": "^2.16",
                 "phpstan/phpstan-strict-rules": "^0.11",
@@ -4736,7 +4738,7 @@
                 "MIT"
             ],
             "description": "Composer plugin for automatic installation of PHPStan extensions",
-            "time": "2019-10-18T17:09:48+00:00"
+            "time": "2020-03-31T16:00:42+00:00"
         },
         {
             "name": "phpstan/phpstan",
@@ -5160,16 +5162,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.0.2",
+            "version": "9.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "c0ecbfb898ab8b24d8a59a23520f7b2a73e27b5b"
+                "reference": "848f6521c906500e66229668768576d35de0227e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c0ecbfb898ab8b24d8a59a23520f7b2a73e27b5b",
-                "reference": "c0ecbfb898ab8b24d8a59a23520f7b2a73e27b5b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/848f6521c906500e66229668768576d35de0227e",
+                "reference": "848f6521c906500e66229668768576d35de0227e",
                 "shasum": ""
             },
             "require": {
@@ -5190,6 +5192,7 @@
                 "phpunit/php-invoker": "^3.0",
                 "phpunit/php-text-template": "^2.0",
                 "phpunit/php-timer": "^3.0",
+                "sebastian/code-unit": "^1.0",
                 "sebastian/comparator": "^4.0",
                 "sebastian/diff": "^4.0",
                 "sebastian/environment": "^5.0.1",
@@ -5213,7 +5216,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "9.0-dev"
+                    "dev-master": "9.1-dev"
                 }
             },
             "autoload": {
@@ -5242,7 +5245,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-03-31T08:57:51+00:00"
+            "time": "2020-04-03T14:40:04+00:00"
         },
         {
             "name": "pyrech/composer-changelogs",
@@ -5305,12 +5308,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "abf855b59c93a92efbebc39107e2a5a6215a0488"
+                "reference": "0f73cf4b4b9227eb8845723bc2a8869bc4dd6e8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/abf855b59c93a92efbebc39107e2a5a6215a0488",
-                "reference": "abf855b59c93a92efbebc39107e2a5a6215a0488",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0f73cf4b4b9227eb8845723bc2a8869bc4dd6e8f",
+                "reference": "0f73cf4b4b9227eb8845723bc2a8869bc4dd6e8f",
                 "shasum": ""
             },
             "conflict": {
@@ -5351,8 +5354,8 @@
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1",
                 "dolibarr/dolibarr": "<=10.0.6",
                 "dompdf/dompdf": ">=0.6,<0.6.2",
-                "drupal/core": ">=7,<7.69|>=8,<8.7.11|>=8.8,<8.8.1",
-                "drupal/drupal": ">=7,<7.69|>=8,<8.7.11|>=8.8,<8.8.1",
+                "drupal/core": ">=7,<7.69|>=8,<8.7.12|>=8.8,<8.8.4",
+                "drupal/drupal": ">=7,<7.69|>=8,<8.7.12|>=8.8,<8.8.4",
                 "endroid/qr-code-bundle": "<3.4.2",
                 "enshrined/svg-sanitize": "<0.13.1",
                 "erusev/parsedown": "<1.7.2",
@@ -5561,7 +5564,53 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-03-30T15:16:05+00:00"
+            "time": "2020-03-31T14:30:16+00:00"
+        },
+        {
+            "name": "sebastian/code-unit",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/code-unit.git",
+                "reference": "8d8f09bd47c75159921e6e84fdef146343962866"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/code-unit/zipball/8d8f09bd47c75159921e6e84fdef146343962866",
+                "reference": "8d8f09bd47c75159921e6e84fdef146343962866",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Collection of value objects that represent the PHP code units",
+            "homepage": "https://github.com/sebastianbergmann/code-unit",
+            "time": "2020-03-30T11:59:20+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -5730,16 +5779,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "5.0.1",
+            "version": "5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "9bffdefa7810031a165ddd6275da6a2c1f6f2dfb"
+                "reference": "c39c1db0a5cffc98173f3de5a17d489d1043fd7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/9bffdefa7810031a165ddd6275da6a2c1f6f2dfb",
-                "reference": "9bffdefa7810031a165ddd6275da6a2c1f6f2dfb",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/c39c1db0a5cffc98173f3de5a17d489d1043fd7b",
+                "reference": "c39c1db0a5cffc98173f3de5a17d489d1043fd7b",
                 "shasum": ""
             },
             "require": {
@@ -5779,7 +5828,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2020-02-19T13:40:20+00:00"
+            "time": "2020-03-31T12:14:15+00:00"
         },
         {
             "name": "sebastian/exporter",

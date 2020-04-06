@@ -19,7 +19,7 @@
 
             <fieldset class="c-form__field">
                 <label for="input-name" class="c-form__label">Your name</label>
-                <input class="c-form__input" type="text" name="name" id="input-name" required autocomplete="name" spellcheck="false" placeholder="e.g. Sue Shei" minlength="3">
+                <input class="c-form__input" type="text" name="name" id="input-name" required autocomplete="name" spellcheck="false" placeholder="e.g. Sue Shei" minlength="3" maxlength="100">
             </fieldset>
 
             <fieldset class="c-form__field">
@@ -30,7 +30,7 @@
             <fieldset class="c-form__field">
                 <label for="input-password" class="c-form__label">Password</label>
                 <password-input class="c-password-input">
-                    <input class="c-form__input c-password-input__input js-password-input" type="password" name="password" id="input-password" required autocomplete="new-password" minlength="8" aria-describedby="password-rules">
+                    <input class="c-form__input c-password-input__input js-password-input" type="password" name="password" id="input-password" required autocomplete="new-password" minlength="8" maxlength="160" aria-describedby="password-rules">
                     <button class="c-password-input__visibility-button js-toggle-password-visibility" type="button" aria-hidden="true" tabindex="-1" aria-controls="input-password">Show</button>
                 </password-input>
                 <p class="c-form__field-description" id="password-rules">At least 8 characters.</p>

@@ -1,14 +1,33 @@
 @use '../config/config';
 
+$_background-color: config.config-get(global, color, white);
+$_border-radius: 8px;
+
+$_detached-background-color: config.config-get(color-shades, dark, 1000);
+$_detached-border-radius: 25px;
+$_detached-box-shadow: 0 1px 9px rgba($_detached-background-color, .3);
+$_detached-padding: 0 10px;
+$_detached-opacity: .98;
+
+$_button-color: config.config-get(color-shades, dark, 700);
+$_detached-button-color: config.config-get(color-shades, dark, 100);
+$_button-applied-color: config.config-get(color-shades, primary, 900);
+$_unavailable-button-opacity: .6;
+$_detached-gap-between-buttons: 6px;
+
 .c-document-editor-menu {
-    background: config.config-get(global, color, white);
-    border-radius: 8px;
+    background: $_background-color;
+    border-radius: $_border-radius;
     bottom: 0;
     height: 48px;
 }
 
 .c-document-editor-menu.is-detached {
-    background: config.config-get(color-shades, dark, 900);
+    background: $_detached-background-color;
+    border-radius: $_detached-border-radius;
+    box-shadow: $_detached-box-shadow;
+    opacity: $_detached-opacity;
+    padding: $_detached-padding;
     position: absolute;
 }
 
@@ -33,16 +52,28 @@
     width: 48px;
 }
 
+.c-document-editor-menu.is-detached .c-document-editor-menu__button {
+    margin-right: $_detached-gap-between-buttons;
+}
+
+.c-document-editor-menu.is-detached .c-document-editor-menu__button:last-child {
+    margin-right: 0;
+}
+
 .c-document-editor-menu__button-icon {
-    fill: config.config-get(color-shades, dark, 300);
+    fill: $_button-color;
     height: 24px;
     width: 24px;
 }
 
-.c-document-editor-menu__button.is-available .c-document-editor-menu__button-icon {
-    fill: config.config-get(color-shades, dark, 700);
+.c-document-editor-menu.is-detached .c-document-editor-menu__button-icon {
+    fill: $_detached-button-color;
+}
+
+.c-document-editor-menu__button:not(.is-available) .c-document-editor-menu__button-icon {
+    opacity: $_unavailable-button-opacity;
 }
 
 .c-document-editor-menu__button.is-applied .c-document-editor-menu__button-icon {
-    fill: config.config-get(color-shades, primary, 800);
+    fill: $_button-applied-color;
 }

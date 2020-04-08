@@ -13,7 +13,8 @@
             "es2017",
             "dom",
             "es2018.promise"
-        ]
+        ],
+        "typeRoots": ["./node_modules/@types", "./src/ts/@types"]
     },
     "include": ["src/ts"]
 }

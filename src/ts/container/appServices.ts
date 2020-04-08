@@ -12,6 +12,7 @@ import EditDocumentController from 'App/Controller/Document/EditDocumentControll
 import SearchController from 'App/Controller/SearchController';
 import SearchResultsPaginator from 'Search/SearchResultsPaginator';
 import TopicController from 'App/Controller/Topic/TopicController';
+import ViewDocumentController from 'App/Controller/Document/ViewDocumentController';
 
 export default function (bottle: Bottle): void {
     bottle.factory('searchResultsPaginator', (container) => {
@@ -64,6 +65,8 @@ export default function (bottle: Bottle): void {
         );
     });
 
+    bottle.factory('viewDocumentController', () => new ViewDocumentController());
+
     bottle.factory('topicController', (container) => {
         return new TopicController(
             container.httpClient
@@ -72,6 +75,7 @@ export default function (bottle: Bottle): void {
 
     bottle.factory('documentOrTopicControllerRouter', (container) => {
         return new DocumentOrTopicControllerRouter(
+            container.viewDocumentController,
             container.topicController
         );
     });

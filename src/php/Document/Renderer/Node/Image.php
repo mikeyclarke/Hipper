@@ -45,7 +45,7 @@ class Image implements NodeInterface
             }
         }
 
-        $tag = sprintf('<img %s>', implode(' ', $htmlAttributes));
+        $tag = sprintf('<img loading="lazy" %s>', implode(' ', $htmlAttributes));
         return [$tag];
     }
 

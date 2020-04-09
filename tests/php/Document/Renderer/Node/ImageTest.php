@@ -79,7 +79,7 @@ class ImageTest extends TestCase
 
         $expected = [
             sprintf(
-                '<img alt="%s" src="%s" title="%s">',
+                '<img loading="lazy" alt="%s" src="%s" title="%s">',
                 $attributes['alt'],
                 $attributes['src'],
                 $attributes['title']

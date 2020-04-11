@@ -1,3 +1,5 @@
+{% import 'custom_elements/_context_menu.twig' as context_menu %}
+
 <nav class="l-document-editor__toolbar c-document-toolbar js-document-toolbar">
     <div class="c-document-toolbar__controls-group">
         <a href="{{ back_link }}" class="c-document-toolbar__back-button" aria-label="Back">
@@ -40,14 +42,13 @@
                     <svg class="c-document-toolbar__outline-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__more"/></svg>
                 </button>
             </context-menu-toggle>
-            <context-menu id="doc-more-options" class="c-context-menu" role="menu" tabindex="-1" aria-hidden="true">
-                <div class="c-context-menu__content">
-                    <div class="c-context-menu__group">
-                        <a href="{{ export_url }}" class="c-context-menu__item" role="menuitem" download>Export this doc</a>
-                    </div>
-                    <button type="button" role="menuitem" class="c-context-menu__close-button js-close-button">Close</button>
-                </div>
-            </context-menu>
+            {{ context_menu.start('doc-more-options') }}
+                {{ context_menu.group_start() }}
+                    {{ context_menu.item_start('link', { href: export_url, download: null }) }}
+                        {{ context_menu.item_text('Export this doc') }}
+                    {{ context_menu.item_end('link') }}
+                {{ context_menu.group_end() }}
+            {{ context_menu.end() }}
         {% endif %}
     </div>
 </nav>

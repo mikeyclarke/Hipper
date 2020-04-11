@@ -9,13 +9,20 @@
                 <svg class="c-page-header__primary-action-icon" aria-hidden="true"><use href="#icon-sprite__add"></svg>
             {{ context_menu_toggle.end() }}
 
-            {{ context_menu.start('add-kb-entry') }}
+            {{ context_menu.start('add-kb-entry', true) }}
                 {{ context_menu.group_start() }}
-                    {{ context_menu.item_start('link', {href: create_doc_route}) }}New doc{{ context_menu.item_end('link') }}
+                    {{ context_menu.item_start('link', {href: create_doc_route}) }}
+                        {{ context_menu.item_avatar_icon('document') }}
+                        {{ context_menu.item_title('New doc') }}
+                    {{ context_menu.item_end('link') }}
                 {{ context_menu.group_end() }}
 
                 {{ context_menu.group_start() }}
-                    {{ context_menu.item_start('link', {href: create_topic_route}) }}New topic{{ context_menu.item_end('link') }}
+                    {{ context_menu.item_start('link', {href: create_topic_route}) }}
+                        {{ context_menu.item_avatar_icon('topic') }}
+                        {{ context_menu.item_title('New topic') }}
+                        {{ context_menu.item_description('Group docs by topic to make them easier to find') }}
+                    {{ context_menu.item_end('link') }}
                 {{ context_menu.group_end() }}
             {{ context_menu.end() }}
         </div>

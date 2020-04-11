@@ -1,5 +1,5 @@
-{% macro start(id) %}
-    <context-menu id="{{ id }}" class="c-context-menu" role="menu" tabindex="-1" aria-hidden="true">
+{% macro start(id, is_large) %}
+    <context-menu id="{{ id }}" class="c-context-menu{% if is_large is same as(true) %}--large{% endif %}" role="menu" tabindex="-1" aria-hidden="true">
         <div class="c-context-menu__content">
 {% endmacro %}
 
@@ -9,12 +9,12 @@
     </context-menu>
 {% endmacro %}
 
-{% macro group_start() %}
-    <div class="c-context-menu__group">
+{% macro group_start(element = 'div', attributes = {}) %}
+    <{{ element }} class="c-context-menu__group"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
 {% endmacro %}
 
-{% macro group_end() %}
-    </div>
+{% macro group_end(element = 'div') %}
+    </{{ element }}>
 {% endmacro %}
 
 {% macro item_start(type, attributes = {}) %}
@@ -31,4 +31,26 @@
     {% elseif type == 'button' %}
         </button>
     {% endif %}
+{% endmacro %}
+
+{% macro item_icon(icon_type) %}
+    <svg class="c-context-menu__item-icon" aria-hidden="true"><use href="#icon-sprite__{{ icon_type }}"/></svg>
+{% endmacro %}
+
+{% macro item_avatar_icon(icon_type) %}
+    <div class="c-avatar--{{ icon_type }} c-context-menu__item-avatar">
+        <svg class="c-avatar__icon" aria-hidden="true"><use href="#icon-sprite__{{ icon_type }}"/></svg>
+    </div>
+{% endmacro %}
+
+{% macro item_text(text) %}
+    <span class="c-context-menu__item-text">{{ text }}</span>
+{% endmacro %}
+
+{% macro item_title(text) %}
+    <span class="c-context-menu__item-title">{{ text }}</span>
+{% endmacro %}
+
+{% macro item_description(text) %}
+    <span class="c-context-menu__item-description">{{ text }}</span>
 {% endmacro %}

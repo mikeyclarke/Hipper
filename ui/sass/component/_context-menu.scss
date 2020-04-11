@@ -265,13 +265,16 @@ $group-margin-top-bottom-floating: 8px;
     align-items: center;
     background-color: transparent;
     color: config.config-get(color-shades, dark, 700);
-    display: flex;
+    display: grid;
     font-size: 18px;
     font-weight: 500;
-    height: 46px;
+    grid-column-gap: 12px;
+    grid-template-columns: 24px 1fr;
+    min-height: 46px;
     line-height: 18px;
     margin: 0 0 4px;
-    padding: 0 $left-right-padding;
+    padding: 11px $left-right-padding;
+    text-align: left;
     text-decoration: none;
     transition: background-color .125s;
     width: 100%;
@@ -282,7 +285,7 @@ $group-margin-top-bottom-floating: 8px;
         font-weight: 400;
         line-height: 16px;
         margin: 0;
-        padding: 0 $left-right-padding-floating;
+        padding: 11px $left-right-padding-floating;
     }
 }
 
@@ -298,8 +301,40 @@ $group-margin-top-bottom-floating: 8px;
 .c-context-menu__item-icon {
     fill: config.config-get(color-shades, dark, 700);
     height: 24px;
-    margin: 0 12px 0 0;
     width: 24px;
+}
+
+.c-context-menu__item-avatar {
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+}
+
+.c-context-menu__item-text {
+    grid-column: 1/2 span;
+}
+
+.c-context-menu__item-icon + .c-context-menu__item-text,
+.c-context-menu__item-avatar + .c-context-menu__item-text {
+    grid-column: 2;
+}
+
+.c-context-menu__item-title {
+    font-weight: 500;
+}
+
+.c-context-menu__item-description {
+    display: block;
+    font-size: 14px;
+    color: config.config-get(color-shades, dark, 500);
+    grid-column: 1/2 span;
+    line-height: 20px;
+    margin: 10px 0 0;
+}
+
+.c-context-menu__item-icon ~ .c-context-menu__item-description,
+.c-context-menu__item-avatar ~ .c-context-menu__item-description {
+    grid-column: 2;
 }
 
 .c-context-menu__close-button {

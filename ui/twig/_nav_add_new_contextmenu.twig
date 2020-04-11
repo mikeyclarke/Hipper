@@ -1,20 +1,28 @@
-<context-menu class="c-context-menu" role="menu" tabindex="-1" aria-hidden="true" id="{{ html_id }}">
-    <div class="c-context-menu__content">
-        <div class="c-context-menu__group">
-            <a href="/teams/new?{{ { return_to: app.request.getRequestUri() }|url_encode }}" role="menuitem" class="c-context-menu__item">
-                New team
-            </a>
-            <a href="/projects/new?{{ { return_to: app.request.getRequestUri() }|url_encode }}" role="menuitem" class="c-context-menu__item">
-                New project
-            </a>
-        </div>
+{% import 'custom_elements/_context_menu.twig' as context_menu %}
 
-        <div class="c-context-menu__group">
-            <a href="/organization-settings/members/invite" role="menuitem" class="c-context-menu__item">
-                Invite people
-            </a>
-        </div>
+{% set team_route = path('front_end.app.team.create', {
+    return_to: app.request.getRequestUri(),
+    subdomain: organization.subdomain,
+}) %}
+{% set project_route = path('front_end.app.project.create', {
+    return_to: app.request.getRequestUri(),
+    subdomain: organization.subdomain,
+}) %}
 
-        <button type="button" role="menuitem" class="c-context-menu__close-button js-close-button">Close</button>
-    </div>
-</context-menu>
+{{ context_menu.start(html_id) }}
+    {{ context_menu.group_start() }}
+        {{ context_menu.item_start('link', { href: team_route }) }}
+            {{ context_menu.item_text('New team') }}
+        {{ context_menu.item_end('link') }}
+
+        {{ context_menu.item_start('link', { href: project_route }) }}
+            {{ context_menu.item_text('New project') }}
+        {{ context_menu.item_end('link') }}
+    {{ context_menu.group_end() }}
+
+    {{ context_menu.group_start() }}
+        {{ context_menu.item_start('link', { href: '/organization-settings/members/invite' }) }}
+            {{ context_menu.item_text('Invite people') }}
+        {{ context_menu.item_end('link') }}
+    {{ context_menu.group_end() }}
+{{ context_menu.end() }}

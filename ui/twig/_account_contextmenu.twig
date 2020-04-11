@@ -1,47 +1,46 @@
+{% import 'custom_elements/_context_menu.twig' as context_menu %}
+
 {% set current_user_page_link = path('front_end.app.person.show', {
     subdomain: organization.subdomain,
     url_id: current_user.urlId,
     username: current_user.username,
 }) %}
 
-<context-menu class="c-context-menu--large" role="menu" tabindex="-1" aria-hidden="true" id="{{ html_id }}">
-    <div class="c-context-menu__content">
-        <div class="c-context-menu__header">
-            <div class="c-context-menu__identity">
-                <div class="c-avatar c-context-menu__identity-avatar" aria-hidden="true">
-                    <span class="c-avatar__initials">{{ current_user.abbreviatedName }}</span>
-                </div>
-
-                <div class="c-context-menu__identity-details">
-                    <span class="c-context-menu__identity-name">{{ current_user.name }}</span>
-                    <span class="c-context-menu__identity-description">{{ current_user.jobRoleOrTitle|default('A great person') }}</span>
-                </div>
-
-                <a class="c-context-menu__identity-action-link" href="{{ current_user_page_link }}" aria-label="View your profile" role="menuitem">
-                    <svg class="c-context-menu__identity-action-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
-                </a>
+{{ context_menu.start(html_id, true) }}
+    <div class="c-context-menu__header">
+        <div class="c-context-menu__identity">
+            <div class="c-avatar c-context-menu__identity-avatar" aria-hidden="true">
+                <span class="c-avatar__initials">{{ current_user.abbreviatedName }}</span>
             </div>
-        </div>
 
-        <div class="c-context-menu__group">
-            <a href="/account-settings" role="menuitem" class="c-context-menu__item">
-                <svg class="c-context-menu__item-icon" aria-hidden="true"><use xlink:href="#icon-sprite__account"/></svg>
-                Account settings
-            </a>
-            <a href="/organization-settings" role="menuitem" class="c-context-menu__item">
-                <svg class="c-context-menu__item-icon" aria-hidden="true"><use xlink:href="#icon-sprite__organization"/></svg>
-                Organization settings
+            <div class="c-context-menu__identity-details">
+                <span class="c-context-menu__identity-name">{{ current_user.name }}</span>
+                <span class="c-context-menu__identity-description">{{ current_user.jobRoleOrTitle|default('A great person') }}</span>
+            </div>
+
+            <a class="c-context-menu__identity-action-link" href="{{ current_user_page_link }}" aria-label="View your profile" role="menuitem">
+                <svg class="c-context-menu__identity-action-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
             </a>
         </div>
-
-        <form class="c-context-menu__group" action="/sign-out" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <button role="menuitem" class="c-context-menu__item">
-                <svg class="c-context-menu__item-icon" aria-hidden="true"><use xlink:href="#icon-sprite__sign-out"/></svg>
-                Sign out
-            </button>
-        </form>
-
-        <button type="button" role="menuitem" class="c-context-menu__close-button js-close-button">Close</button>
     </div>
-</context-menu>
+
+    {{ context_menu.group_start() }}
+        {{ context_menu.item_start('link', {href: '/account-settings'}) }}
+            {{ context_menu.item_icon('account') }}
+            {{ context_menu.item_text('Account settings') }}
+        {{ context_menu.item_end('link') }}
+
+        {{ context_menu.item_start('link', {href: '/organization-settings'}) }}
+            {{ context_menu.item_icon('organization') }}
+            {{ context_menu.item_text('Organization settings') }}
+        {{ context_menu.item_end('link') }}
+    {{ context_menu.group_end() }}
+
+    {{ context_menu.group_start('form', { action: '/sign-out', method: 'POST' }) }}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        {{ context_menu.item_start('button') }}
+            {{ context_menu.item_icon('sign-out') }}
+            {{ context_menu.item_text('Sign out') }}
+        {{ context_menu.item_end('button') }}
+    {{ context_menu.group_end('form') }}
+{{ context_menu.end() }}

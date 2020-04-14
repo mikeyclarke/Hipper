@@ -1,5 +1,5 @@
 {
-    "name": "mikeyclarke/hipper",
+    "name": "usehipper/Hipper",
     "license": "proprietary",
     "require": {
         "php": "^7.4",

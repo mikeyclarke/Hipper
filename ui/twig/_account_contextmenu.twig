@@ -38,7 +38,7 @@
 
     {{ context_menu.group_start('form', { action: '/sign-out', method: 'POST' }) }}
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        {{ context_menu.item_start('button') }}
+        {{ context_menu.item_start('button', {}, 'submit') }}
             {{ context_menu.item_icon('sign-out') }}
             {{ context_menu.item_text('Sign out') }}
         {{ context_menu.item_end('button') }}

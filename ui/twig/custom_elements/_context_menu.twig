@@ -17,11 +17,11 @@
     </{{ element }}>
 {% endmacro %}
 
-{% macro item_start(type, attributes = {}) %}
+{% macro item_start(type, attributes = {}, button_type = 'button') %}
     {% if type == 'link' %}
         <a class="c-context-menu__item" role="menuitem"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
     {% elseif type == 'button' %}
-        <button type="button" class="c-context-menu__item" role="menuitem"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
+        <button type="{{ button_type }}" class="c-context-menu__item" role="menuitem"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
     {% endif %}
 {% endmacro %}
 

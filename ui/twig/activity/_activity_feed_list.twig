@@ -1,6 +1,7 @@
 {% for activity in activity_feed %}
     {% include 'activity/_' ~ activity.type ~ '_activity.twig' with {
         activity: activity,
-        organization: organization
+        organization: organization,
+        current_path: current_path|default(app.request.getPathInfo()),
     } only %}
 {% endfor %}

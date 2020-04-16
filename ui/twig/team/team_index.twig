@@ -28,29 +28,13 @@
 
 <section class="c-page-section">
     <div class="c-page-section__header">
-        <h2 class="c-page-section__title">Team links</h2>
+        <h2 class="c-page-section__title">Activity</h2>
     </div>
 
-    <div class="c-page-section__content--contained">
-        <div class="c-banner">
-            <h3 class="c-banner__title">Bring your tools together</h3>
-            <p class="c-banner__copy">Add links to Slack, Trello, GitHub, and more to help members of this team and others find you elsewhere.</p>
-            <button type="button" class="c-banner__cta--alt">Add a link</button>
-        </div>
-    </div>
-</section>
-
-<section class="c-page-section">
-    <div class="c-page-section__header">
-        <h2 class="c-page-section__title">Pinned docs</h2>
-    </div>
-
-    <div class="c-page-section__content--contained">
-        <div class="c-banner">
-            <h3 class="c-banner__title">Curate your knowledge</h3>
-            <p class="c-banner__copy">Pin docs that you want people to find right away. It’s perfect for things like new starter onboarding guides.</p>
-            <a href="/teams/{{ team.urlId }}/docs" class="c-banner__cta">Find docs to pin</a>
-        </div>
+    <div class="c-page-section__content">
+        <ol class="c-activity-feed">
+            {% include 'activity/_activity_feed_list.twig' %}
+        </ol>
     </div>
 </section>
 

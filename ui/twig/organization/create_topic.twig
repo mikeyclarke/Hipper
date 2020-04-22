@@ -1,6 +1,8 @@
 {% set htmlClassList = ['is-editing-page-header'] %}
 
-{% extends '_app_default_layout.twig' %}
+{% extends '_app_sidebar_layout.twig' %}
+
+{% block navigational_header %}{% include 'organization/_organization_docs_header.twig' %}{% endblock %}
 
 {% block content %}
 

@@ -1,16 +1,6 @@
-{% extends '_app_default_layout.twig' %}
+{% extends '_app_sidebar_layout.twig' %}
 
-{% block navigational_header %}
-<header class="c-app-header--hide-at-medium">
-    <div class="c-app-header__top-bar">
-        {% include '_mobile_navigation_toggle.twig' %}
-
-        <div class="c-app-header__compass">
-            <span class="c-app-header__compass-name">Docs</span>
-        </div>
-    </div>
-</header>
-{% endblock %}
+{% block navigational_header %}{% include 'organization/_organization_docs_header.twig' %}{% endblock %}
 
 {% block content %}
 

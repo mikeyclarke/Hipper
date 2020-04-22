@@ -18,7 +18,7 @@ $app-header-compass-text-color: config.config-get(color-shades, dark, 900);
     }
 }
 
-.l-app-sidebar__sidebar %c-app-header {
+%c-app-header.has-adjacent-tabs {
     padding: 0;
 }
 

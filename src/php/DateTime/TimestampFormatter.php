@@ -11,6 +11,8 @@ class TimestampFormatter
     public function format(string $timestamp, string $displayTimeZone = 'UTC'): array
     {
         $dateTime = Carbon::createFromFormat('Y-m-d H:i:s.u', $timestamp);
+
+        // @phpstan-ignore-next-line
         if (false === $dateTime) {
             throw new RuntimeException('DateTime could not be created from format');
         }

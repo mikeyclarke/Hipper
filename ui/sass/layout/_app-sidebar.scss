@@ -1,0 +1,84 @@
+@use 'config/config';
+@use 'helper/breakpoint';
+@use 'component/standard-nav';
+
+.l-app-sidebar__wrapper {
+    background-color: config.config-get(element, page, background-color);
+    box-shadow: 0 2px 12px rgba(#000, 0);
+    min-height: 100vh;
+    opacity: 1;
+    position: relative;
+    transition: transform, box-shadow, opacity;
+    transition-duration: .2s;
+
+    @include breakpoint.breakpoint(app, medium) {
+        display: grid;
+        grid-template-columns: 30% 1fr;
+        height: calc(100vh - #{standard-nav.$height});
+        min-height: auto;
+        box-shadow: none;
+    }
+
+    @include breakpoint.free-form-breakpoint(1272px) {
+        grid-template-columns: calc(337px + ((100vw - 1272px) / 2)) 1fr;
+    }
+}
+
+.l-app-sidebar__wrapper:focus {
+    outline: 0;
+}
+
+.navigation-open .l-app-sidebar__wrapper {
+    box-shadow: 0 2px 12px rgba(#000, .32);
+    opacity: .95;
+    transform: translate(85%, 28px);
+}
+
+.navigation-open .l-app-sidebar__wrapper > * {
+    pointer-events: none;
+}
+
+.l-app-sidebar__sidebar {
+    @include breakpoint.breakpoint(app, medium) {
+        background-color: config.config-get(global, color, white);
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
+        padding-left: 16px;
+        padding-right: 25px;
+    }
+
+    @include breakpoint.free-form-breakpoint(1272px) {
+        padding-left: calc(((100vw - 1272px) / 2) + 16px);
+    }
+}
+
+.l-app-sidebar__main-panel {
+    @include breakpoint.breakpoint(app, medium) {
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
+        padding-top: 26px;
+        padding-left: 60px;
+        padding-right: 16px;
+    }
+
+    @include breakpoint.free-form-breakpoint(1272px) {
+        padding-right: calc(((100vw - 1272px) / 2) + 16px);
+    }
+}
+
+.l-app-sidebar__main-panel-body {
+    background-color: config.config-get(element, page, background-color);
+    border-bottom: 1px solid config.config-get(element, page, background-color);
+    box-shadow: 0 -2px 4px 0 rgba(200,212,216,0.30);
+    border-radius: 12px 12px 0 0;
+    margin: -12px 0 0;
+    position: relative;
+
+    @include breakpoint.breakpoint(app, medium) {
+        border: 0;
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+        padding-top: 42px;
+    }
+}

@@ -3,7 +3,7 @@
 @use '../helper/font-smoothing';
 @use '../helper/unstyled-button';
 
-$standard-nav-height: 46px;
+$height: 46px;
 $medium-large-breakpoint: 930px;
 
 :root.navigation-open {
@@ -13,7 +13,6 @@ $medium-large-breakpoint: 930px;
 .c-standard-nav {
     background: #f7f8fa;
     display: none;
-    height: 67px;
 
     @include breakpoint.breakpoint(app, medium) {
         display: block;
@@ -28,14 +27,13 @@ $medium-large-breakpoint: 930px;
     @include breakpoint.breakpoint(app, large) {
         justify-content: flex-start;
         margin: 0 auto;
-        padding: 0 12px 0 0;
         max-width: 1240px + 32px;
     }
 }
 
 .c-standard-nav__brand {
     display: flex;
-    height: $standard-nav-height;
+    height: $height;
     padding: 0 16px;
 
     @include breakpoint.breakpoint(app, large) {
@@ -149,6 +147,10 @@ $medium-large-breakpoint: 930px;
     position: relative;
 }
 
+.c-standard-nav__dropdown:last-child {
+    margin-right: 16px;
+}
+
 .c-standard-nav__add-new-button {
     @extend %unstyled-button;
     align-items: center;
@@ -157,7 +159,7 @@ $medium-large-breakpoint: 930px;
     display: flex;
     font-size: 16px;
     font-weight: 500;
-    height: $standard-nav-height;
+    height: $height;
     line-height: 16px;
     padding: 0 10px;
     position: relative;
@@ -220,7 +222,7 @@ $medium-large-breakpoint: 930px;
     appearance: none;
     display: flex;
     font-size: 0;
-    height: $standard-nav-height;
+    height: $height;
     padding: 0 0 0 6px;
 }
 
@@ -257,10 +259,5 @@ $medium-large-breakpoint: 930px;
 .c-standard-nav__account-arrow {
     fill: config.config-get(color-shades, dark, 400);
     height: 18px;
-    margin: 0 12px 0 0;
     width: 18px;
-
-    @include breakpoint.breakpoint(app, large) {
-        margin-right: 0;
-    }
 }

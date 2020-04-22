@@ -1,28 +1,41 @@
-<header class="c-app-header">
+<header class="c-app-header--hide-at-medium">
     <div class="c-app-header__top-bar">
         {% include '_mobile_navigation_toggle.twig' %}
 
-        <div class="c-app-header__compass">
-            <span class="c-app-header__compass-entity">Project</span>
-            <span class="c-app-header__compass-name">{{ project.name }}</span>
-        </div>
+        {% if extended_view is not defined or extended_view is same as(false) %}
+            <div class="c-app-header__compass">
+                <span class="c-app-header__compass-entity">Project</span>
+                <span class="c-app-header__compass-name">{{ project.name }}</span>
+            </div>
+        {% endif %}
+    </div>
+</header>
 
-        <button type="button" aria-label="Project options" class="c-app-header__top-bar-options-button">
-            <svg class="c-app-header__top-bar-options-icon" aria-hidden="true"><use xlink:href="#icon-sprite__options"/></svg>
-        </button>
+<div class="c-section-header{% if extended_view is not defined or extended_view is same as(false) %}--hide-at-small{% endif %} has-adjacent-tabs">
+    <span class="c-section-header__title-label">Project</span>
+    <h1 class="c-section-header__title">{{ project.name }}</h1>
+
+    {% if project.description is null or project.description is empty %}
+        <p class="c-section-header__subheading">This project doesn’t have a description yet</p>
+    {% else %}
+        <p class="c-section-header__subheading">{{ project.description }}</p>
+    {% endif %}
+
+    <div class="c-section-header__attribution">
+        <div class="c-section-header__attribution-avatar--blank"></div>
+        <span class="c-section-header__attribution-copy--muted">No one leads this project</span>
     </div>
 
-    <nav class="c-app-header__tab-bar">
-        <ol class="c-app-header__tab-list">
-            <li class="c-app-header__tab-list-item">
-                <a href="/projects/{{ project.urlId }}" class="c-app-header__tab-list-item-control"{% if activeTab == 'home' %} aria-selected="true"{% endif %}>Home</a>
-            </li>
-            <li class="c-app-header__tab-list-item">
-                <a href="/projects/{{ project.urlId }}/docs" class="c-app-header__tab-list-item-control"{% if activeTab == 'docs' %} aria-selected="true"{% endif %}>Docs</a>
-            </li>
-            <li class="c-app-header__tab-list-item">
-                <a href="/projects/{{ project.urlId }}/members" class="c-app-header__tab-list-item-control"{% if activeTab == 'members' %} aria-selected="true"{% endif %}>Members</a>
-            </li>
-        </ol>
-    </nav>
-</header>
+    {% if current_user_is_in_project %}
+        <div class="c-section-header__actions">
+            <button type="button" aria-label="Edit project" class="c-section-header__action-button">
+                <svg class="c-section-header__action-button-icon--edit" aria-hidden="true"><use href="#icon-sprite__edit"/></svg>
+            </button>
+            <button type="button" aria-label="Project options" class="c-section-header__action-button">
+                <svg class="c-section-header__action-button-icon" aria-hidden="true"><use href="#icon-sprite__options"/></svg>
+            </button>
+        </div>
+    {% else %}
+        <button type="button">Join this project</button>
+    {% endif %}
+</div>

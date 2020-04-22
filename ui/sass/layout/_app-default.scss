@@ -36,6 +36,13 @@
     border-radius: 12px 12px 0 0;
     margin: -12px 0 0;
     position: relative;
+
+    @include breakpoint.breakpoint(app, medium) {
+        border: 0;
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+    }
 }
 
 .l-app-default__main-content-inner-container {

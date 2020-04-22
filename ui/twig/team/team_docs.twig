@@ -1,6 +1,8 @@
-{% extends '_app_default_layout.twig' %}
+{% extends '_app_sidebar_layout.twig' %}
 
-{% block navigational_header %}{% include 'team/_team_header.twig' with { activeTab: 'docs' } %}{% endblock %}
+{% block navigational_header %}{% include 'team/_team_header.twig' %}{% endblock %}
+
+{% block tab_bar %}{% include 'team/_team_tabs.twig' with { active_tab: 'docs' } %}{% endblock %}
 
 {% block content %}
 

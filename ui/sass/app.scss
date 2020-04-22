@@ -37,9 +37,11 @@
 @use 'component/card-list';
 @use 'component/mini-card';
 @use 'component/app-header';
+@use 'component/section-header';
 @use 'component/page-header';
 @use 'component/page-title';
 @use 'component/page-section';
+@use 'component/tab-bar';
 @use 'component/empty-page-notice';
 @use 'component/document-toolbar';
 @use 'component/document';
@@ -57,5 +59,6 @@
 @use 'component/tag';
 
 @use 'layout/app-default';
+@use 'layout/app-sidebar';
 @use 'layout/sheet' as sheet-layout;
 @use 'layout/document-editor';

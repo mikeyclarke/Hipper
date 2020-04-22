@@ -1,0 +1,20 @@
+{% extends 'base_layout.twig' %}
+
+{% block page_content %}
+    {% include '_app_mobile_navigation.twig' %}
+    {% include '_app_standard_navigation.twig' %}
+
+    <div class="l-app-sidebar__wrapper js-page-content" tabindex="-1">
+        <div class="l-app-sidebar__sidebar">
+            {% block navigational_header %}{% endblock %}
+        </div>
+
+        <main class="l-app-sidebar__main-panel">
+            {% block tab_bar %}{% endblock %}
+
+            <div class="l-app-sidebar__main-panel-body">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+{% endblock %}

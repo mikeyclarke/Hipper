@@ -6,12 +6,20 @@ $app-header-background-color: #f7f8fa;
 $app-header-border-radius: 0 0 12px 12px;
 $app-header-box-shadow: 0 2px 4px 0 rgba(200, 212, 216, .3);
 
-$app-header-compass-text-color: config.config-get(color-shades, dark, 700);
+$app-header-compass-text-color: config.config-get(color-shades, dark, 900);
 
 %c-app-header {
     background-color: $app-header-background-color;
     padding: 0 0 12px;
     position: relative;
+
+    @include breakpoint.breakpoint(app, medium) {
+        padding: 0;
+    }
+}
+
+.l-app-sidebar__sidebar %c-app-header {
+    padding: 0;
 }
 
 .c-app-header,
@@ -70,7 +78,7 @@ $app-header-compass-text-color: config.config-get(color-shades, dark, 700);
 .c-app-header__compass-name {
     color: $app-header-compass-text-color;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     margin-top: 9px;
     @include font-smoothing.font-smoothing;
 
@@ -136,87 +144,4 @@ $app-header-compass-text-color: config.config-get(color-shades, dark, 700);
 .c-app-header__top-bar-menu-icon,
 .c-app-header__top-bar-options-icon {
     @extend %c-app-header__top-bar-button-icon;
-}
-
-.c-app-header__tab-bar {
-    @include breakpoint.breakpoint(app, medium) {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
-
-.c-app-header__tab-list {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.c-app-header__tab-list-item {
-    flex-basis: 0;
-    flex-grow: 1;
-    text-align: center;
-}
-
-.c-app-header__tab-list-item-control {
-    align-items: center;
-    color: config.config-get(color-shades, grey, 1100);
-    display: flex;
-    font-size: 16px;
-    font-weight: 500;
-    height: 48px;
-    justify-content: center;
-    line-height: 16px;
-    position: relative;
-    text-decoration: none;
-    z-index: 0;
-    @include font-smoothing.font-smoothing;
-
-    @include breakpoint.breakpoint(app, medium) {
-        font-weight: 600;
-        width: 125px;
-    }
-}
-
-.c-app-header__tab-list-item-control:focus {
-    outline: none;
-}
-
-.c-app-header__tab-list-item-control::before {
-    border-radius: 6px;
-    bottom: 8px;
-    content: '';
-    left: 12px;
-    position: absolute;
-    right: 12px;
-    top: 8px;
-    z-index: -1;
-
-    @include breakpoint.breakpoint(app, medium) {
-        border-radius: 16px;
-    }
-}
-
-.c-app-header__tab-list-item-control:focus::before {
-    background-color: rgba(config.config-get(color-shades, grey, 1100), .1);
-}
-
-.c-app-header__tab-list-item-control[aria-selected="true"] {
-    color: config.config-get(global, color, white);
-}
-
-.c-app-header__tab-list-item-control[aria-selected="true"]::before {
-    background-color: config.config-get(color-shades, primary, 900);
-
-    @include breakpoint.breakpoint(app, medium) {
-        box-shadow: 0 1px 9px 0 rgba(63,131,242,0.36);
-        border-radius: 16px;
-    }
-}
-
-.c-app-header__tab-list-item-control[aria-selected="true"]:focus::before {
-    background-color: config.config-get(color-shades, primary, 1100);
 }

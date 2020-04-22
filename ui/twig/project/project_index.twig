@@ -1,36 +1,12 @@
-{% extends '_app_default_layout.twig' %}
+{% extends '_app_sidebar_layout.twig' %}
 
-{% block navigational_header %}{% include 'project/_project_header.twig' with { activeTab: 'home' } %}{% endblock %}
+{% block navigational_header %}{% include 'project/_project_header.twig' with { extended_view: true } %}{% endblock %}
+
+{% block tab_bar %}{% include 'project/_project_tabs.twig' with { active_tab: 'home' } %}{% endblock %}
 
 {% block content %}
 
-<header class="c-page-header">
-    <span class="c-page-header__title-label">Project</span>
-    <h1 class="c-page-header__title">{{ project.name }}</h1>
-
-    {% if project.description is null or project.description is empty %}
-        <p class="c-page-header__subheading--muted">This project doesn’t have a description yet</p>
-    {% else %}
-        <p class="c-page-header__subheading">{{ project.description }}</p>
-    {% endif %}
-
-    <div class="c-page-header__attribution">
-        <div class="c-page-header__attribution-avatar--blank"></div>
-        <span class="c-page-header__attribution-copy--muted">No one leads this project</span>
-    </div>
-
-    {% if current_user_is_in_project %}
-        <button type="button" aria-label="Edit project" class="c-page-header__edit-button">
-            <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
-        </button>
-    {% endif %}
-</header>
-
 <section class="c-page-section">
-    <div class="c-page-section__header">
-        <h2 class="c-page-section__title">Activity</h2>
-    </div>
-
     <div class="c-page-section__content">
         <ol class="c-activity-feed">
             {% include 'activity/_activity_feed_list.twig' %}

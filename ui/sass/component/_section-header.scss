@@ -1,0 +1,241 @@
+@use 'sass:color';
+@use 'config/config';
+@use 'helper/breakpoint';
+@use 'helper/font-smoothing';
+@use 'helper/unstyled-button';
+
+$_background-color: #f7f8fa;
+$_margin-medium-bp: 98px 0;
+$_margin-medium-bp-with-adjacent-tabs: 130px 0;
+$_padding: 0 16px 18px;
+$_padding-medium-bp: 0;
+
+$_title-label-color: config.config-get(color-shades, dark, 800);
+$_title-label-font-size: 12px;
+$_title-label-font-weight: 600;
+$_title-label-margin: 0 0 2px;
+
+$_title-color: config.config-get(color-shades, dark, 900);
+$_title-font-size: 28px;
+$_title-font-weight: 700;
+$_title-line-height: 34px;
+$_title-min-height: 38px;
+
+$_title-font-size-medium-bp: 32px;
+$_title-line-height-medium-bp: 48px;
+$_title-min-height-medium-bp: 52px;
+$_title-max-width-medium-bp: 505px;
+
+$_subheading-color: config.config-get(color-shades, dark, 800);
+$_subheading-font-size: 16px;
+$_subheading-line-height: 24px;
+$_subheading-margin: 8px 0 0;
+$_subheading-min-height: 28px;
+
+$_subheading-font-size-medium-bp: 18px;
+$_subheading-line-height-medium-bp: 28px;
+$_subheading-min-height-medium-bp: 32px;
+$_subheading-margin-medium-bp: 15px 0 0;
+$_subheading-max-width-medium-bp: 505px;
+
+$_attribution-copy-color: config.config-get(color-shades, dark, 900);
+$_attribution-copy-color-muted: config.config-get(color-shades, dark, 700);
+$_attribution-copy-font-size: 14px;
+$_attribution-copy-font-size-medium-bp: 15px;
+$_attribution-copy-font-weight: 400;
+
+$_actions-margin-top: 16px;
+$_actions-margin-top-medium-bp: 32px;
+
+$_action-dimension: 46px;
+$_action-background-color: config.config-get(color-shades, dark, 100);
+$_action-background-dimension: 32px;
+$_action-background-offset: ($_action-dimension - $_action-background-dimension) / 2;
+
+$_action-icon-dimension: 24px;
+$_action-icon-fill: config.config-get(color-shades, dark, 800);
+
+%c-section-header {
+    background-color: $_background-color;
+    padding: $_padding;
+
+    @include breakpoint.breakpoint(app, medium) {
+        background-color: transparent;
+        margin: $_margin-medium-bp;
+        padding: $_padding-medium-bp;
+    }
+}
+
+.c-section-header,
+.c-section-header--hide-at-small {
+    @extend %c-section-header;
+}
+
+.c-section-header--hide-at-small {
+    display: none;
+
+    @include breakpoint.breakpoint(app, medium) {
+        display: block;
+    }
+}
+
+%c-section-header.has-adjacent-tabs {
+    @include breakpoint.breakpoint(app, medium) {
+        margin: $_margin-medium-bp-with-adjacent-tabs;
+    }
+}
+
+.c-section-header__title-label {
+    color: $_title-label-color;
+    display: block;
+    font-size: $_title-label-font-size;
+    font-weight: $_title-label-font-weight;
+    margin: $_title-label-margin;
+    text-transform: uppercase;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-section-header__title,
+.c-section-header__subheading,
+.c-section-header__subheading--muted {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    height: auto;
+    padding: 0;
+    width: 100%;
+}
+
+.c-section-header__title {
+    color: $_title-color;
+    font-size: $_title-font-size;
+    font-weight: $_title-font-weight;
+    line-height: $_title-line-height;
+    margin: 0;
+    min-height: $_title-min-height;
+    width: 100%;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $_title-font-size-medium-bp;
+        line-height: $_title-line-height-medium-bp;
+        max-width: $_title-max-width-medium-bp;
+        min-height: $_title-min-height-medium-bp;
+    }
+}
+
+.c-section-header__subheading {
+    color: $_subheading-color;
+    font-size: $_subheading-font-size;
+    line-height: $_subheading-line-height;
+    margin: $_subheading-margin;
+    min-height: $_subheading-min-height;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $_subheading-font-size-medium-bp;
+        line-height: $_subheading-line-height-medium-bp;
+        margin: $_subheading-margin-medium-bp;
+        max-width: $_subheading-max-width-medium-bp;
+        min-height: $_subheading-min-height-medium-bp;
+    }
+}
+
+.c-section-header__attribution {
+    align-items: center;
+    display: flex;
+    margin: 16px 0 0;
+}
+
+%c-section-header__attribution-avatar {
+    border-radius: 12px;
+    height: 24px;
+    width: 24px;
+}
+
+.c-section-header__attribution-avatar--blank {
+    @extend %c-section-header__attribution-avatar;
+    border: 1px dashed config.config-get(color-shades, dark, 500);
+}
+
+%c-section-header__attribution-copy {
+    color: $_attribution-copy-color;
+    font-size: $_attribution-copy-font-size;
+    font-weight: $_attribution-copy-font-weight;
+    margin: 0 0 0 8px;
+    @include font-smoothing.font-smoothing;
+
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $_attribution-copy-font-size-medium-bp;
+    }
+}
+
+.c-section-header__attribution-copy--muted {
+    @extend %c-section-header__attribution-copy;
+    color: $_attribution-copy-color-muted;
+}
+
+.c-section-header__actions {
+    display: flex;
+    margin-top: $_actions-margin-top;
+    margin-left: -#{$_action-background-offset};
+
+    @include breakpoint.breakpoint(app, medium) {
+        margin-top: $_actions-margin-top-medium-bp;
+    }
+}
+
+%c-section-header__action-button {
+    @extend %unstyled-button;
+    align-items: center;
+    display: flex;
+    height: $_action-dimension;
+    justify-content: center;
+    position: relative;
+    width: $_action-dimension;
+    z-index: 0;
+}
+
+%c-section-header__action-button:disabled {
+    opacity: .65;
+}
+
+%c-section-header__action-button:focus {
+    outline: 0;
+}
+
+%c-section-header__action-button::before {
+    background-color: $_action-background-color;
+    border-radius: $_action-background-dimension;
+    bottom: $_action-background-offset;
+    content: '';
+    left: $_action-background-offset;
+    position: absolute;
+    right: $_action-background-offset;
+    top: $_action-background-offset;
+    z-index: -1;
+}
+
+.c-section-header__action-button {
+    @extend %c-section-header__action-button;
+}
+
+.c-section-header__action-button:focus::before {
+    background-color: color.adjust($_action-background-color, $lightness: -10%);
+}
+
+%c-section-header__action-button-icon {
+    fill: $_action-icon-fill;
+    height: $_action-icon-dimension;
+    width: $_action-icon-dimension;
+}
+
+.c-section-header__action-button-icon,
+.c-section-header__action-button-icon--edit {
+    @extend %c-section-header__action-button-icon;
+}
+
+.c-section-header__action-button-icon--edit {
+    height: 18px;
+    width: 18px;
+}

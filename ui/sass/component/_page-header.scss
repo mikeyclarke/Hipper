@@ -58,6 +58,10 @@ $_primary-action-icon-margin: 0 0 0 15px;
 
 :root.is-editing-page-header .c-standard-nav,
 :root.is-editing-page-header .c-app-header,
+:root.is-editing-page-header .c-app-header--hide-at-medium,
+:root.is-editing-page-header .c-tab-bar,
+:root.is-editing-page-header .c-section-header,
+:root.is-editing-page-header .c-section-header--hide-at-small,
 :root.is-editing-page-header .c-page-header ~ * {
     opacity: .4;
     pointer-events: none;
@@ -163,111 +167,6 @@ $_primary-action-icon-margin: 0 0 0 15px;
 
 .c-page-header__subheading--muted {
     color: config.config-get(color-shades, dark, 400);
-}
-
-.c-page-header__attribution {
-    align-items: center;
-    display: flex;
-    margin: 16px 0 0;
-}
-
-%c-page-header__attribution-avatar {
-    border-radius: 12px;
-    height: 24px;
-    width: 24px;
-}
-
-.c-page-header__attribution-avatar--blank {
-    @extend %c-page-header__attribution-avatar;
-    border: 1px dashed config.config-get(color-shades, grey, 500);
-}
-
-%c-page-header__attribution-copy {
-    font-size: 14px;
-    font-weight: 500;
-    margin: 0 0 0 8px;
-    @include font-smoothing.font-smoothing;
-}
-
-.c-page-header__attribution-copy--muted {
-    @extend %c-page-header__attribution-copy;
-    color: config.config-get(color-shades, dark, 400);
-}
-
-%c-page-header__action-button {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    display: flex;
-    height: 48px;
-    justify-content: center;
-    right: 6px;
-    padding: 0;
-    position: absolute;
-    top: 14px;
-    width: 48px;
-}
-
-%c-page-header__action-button:focus {
-    outline: 0;
-}
-
-%c-page-header__action-button::before {
-    border-radius: 14px;
-    content: '';
-    height: 28px;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 28px;
-    z-index: -1;
-}
-
-.c-page-header__edit-button,
-.c-page-header__done-button {
-    @extend %c-page-header__action-button;
-}
-
-.c-page-header__edit-button::before {
-    background-color: config.config-get(color-shades, grey, 200);
-}
-
-.c-page-header__edit-button:focus::before {
-    background-color: color.adjust(config.config-get(color-shades, grey, 200), $lightness: -10%);
-}
-
-.c-page-header__done-button:disabled {
-    opacity: .6;
-}
-
-.c-page-header__done-button::before {
-    background-color: config.config-get(color-shades, secondary, 1100);
-}
-
-.c-page-header__done-button:focus::before {
-    background-color: color.adjust(config.config-get(color-shades, secondary, 1100), $lightness: -10%);
-}
-
-.c-page-header__edit-button-icon {
-    fill: config.config-get(color-shades, grey, 1100);
-    height: 18px;
-    width: 18px;
-}
-
-.c-page-header__edit-button:focus .c-page-header__edit-button-icon {
-    fill: color.adjust(config.config-get(color-shades, grey, 1100), $lightness: -10%);
-}
-
-.c-page-header__done-button-icon {
-    fill: config.config-get(global, color, white);
-    height: 24px;
-    width: 24px;
-}
-
-.c-page-header__done-button:focus .c-page-header__done-button-icon {
-    fill: color.adjust(config.config-get(global, color, white), $lightness: 10%);
 }
 
 .c-page-header__actions {

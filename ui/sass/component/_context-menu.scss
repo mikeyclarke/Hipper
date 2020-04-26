@@ -260,8 +260,16 @@ $group-margin-top-bottom-floating: 8px;
     width: 100%;
 }
 
-.c-context-menu__item {
+.c-context-menu__item-wrap {
     @extend %unstyled-button;
+    width: 100%;
+}
+
+.c-context-menu__item-wrap:focus {
+    outline: 0;
+}
+
+.c-context-menu__item {
     align-items: center;
     background-color: transparent;
     color: config.config-get(color-shades, dark, 700);
@@ -289,6 +297,7 @@ $group-margin-top-bottom-floating: 8px;
     }
 }
 
+.c-context-menu__item-wrap:focus .c-context-menu__item,
 .c-context-menu__item:focus {
     background-color: rgba(config.config-get(color-shades, dark, 100), .4);
     outline: 0;

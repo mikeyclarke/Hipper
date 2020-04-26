@@ -21,7 +21,8 @@
     {% if type == 'link' %}
         <a class="c-context-menu__item" role="menuitem"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
     {% elseif type == 'button' %}
-        <button type="{{ button_type }}" class="c-context-menu__item" role="menuitem"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
+        <button type="{{ button_type }}" class="c-context-menu__item-wrap" role="menuitem"{% for attribute, value in attributes %} {{ attribute }}{% if value is not null %}="{{ value }}"{% endif %}{% endfor %}>
+            <span class="c-context-menu__item">
     {% endif %}
 {% endmacro %}
 
@@ -29,6 +30,7 @@
     {% if type == 'link' %}
         </a>
     {% elseif type == 'button' %}
+            </span>
         </button>
     {% endif %}
 {% endmacro %}

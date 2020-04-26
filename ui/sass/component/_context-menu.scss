@@ -31,7 +31,7 @@ $group-margin-top-bottom-floating: 8px;
         position: absolute;
         right: 0;
         top: 100%;
-        transform: translateY(-10px);
+        transform: translate3d(0, -10px, 0);
         transition: transform .2s, opacity .2s;
         width: 220px;
     }
@@ -69,7 +69,7 @@ $group-margin-top-bottom-floating: 8px;
 %c-context-menu.animate-in {
     @include breakpoint.breakpoint(app, medium) {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
     }
 }
 

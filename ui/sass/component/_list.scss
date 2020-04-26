@@ -1,0 +1,46 @@
+@use '../component/base-list';
+
+.c-list {
+    @extend %c-base-list;
+}
+
+.c-list--pad-bottom {
+    @extend %c-base-list;
+    @extend %c-base-list--pad-bottom;
+}
+
+%c-list__item {
+    @extend %c-base-list__item;
+}
+
+.c-list__item--with-avatar {
+    @extend %c-list__item;
+}
+
+.c-list__item-link {
+    @extend %c-base-list__item-link;
+    @extend %c-base-list__item-link--responsive;
+}
+
+.c-list__item-avatar {
+    @extend %c-base-list__item-avatar;
+}
+
+.c-list__item-title {
+    @extend %c-base-list__item-title;
+    @extend %c-base-list__item-title--responsive;
+}
+
+.c-list__item-description {
+    @extend %c-base-list__item-description;
+    @extend %c-base-list__item-description--responsive;
+}
+
+.c-list__item-timestamp {
+    @extend %c-base-list__item-timestamp;
+    @extend %c-base-list__item-timestamp--responsive;
+}
+
+.c-list__item--with-avatar {
+    @extend %c-base-list__item--with-avatar;
+}

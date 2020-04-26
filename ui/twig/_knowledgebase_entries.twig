@@ -1,14 +1,14 @@
-<ol class="c-card-list--pad-bottom">
+<ol class="c-list--pad-bottom">
     {% for entry in knowledgebase_entries %}
-        {% include '_card_list_item.twig' with {
-            avatar_icon_type: entry.type,
-            avatar_type: 'icon',
-            is_discreet: true,
-            link_href: entry.route,
-            timestamp: entry.updated,
-            timestamp_label: 'Updated',
-            title: entry.name,
-            description: entry.description,
-        } only %}
+        <li class="c-list__item--with-avatar" data-id="{{ entry.id }}">
+            <a class="c-list__item-link" href="{{ entry.route }}">
+                <div class="c-avatar--{{ entry.type }} c-list__item-avatar">
+                    <svg class="c-avatar__icon" aria-hidden="true"><use xlink:href="#icon-sprite__{{ entry.type }}"/></svg>
+                </div>
+                <h2 class="c-list__item-title">{{ entry.name }}</h2>
+                <p class="c-list__item-description">{{ entry.description }}</p>
+                <span class="c-list__item-timestamp">Updated <time datetime="{{ entry.updated.utc_datetime }}" title="{{ entry.updated.verbose }}">{{ entry.updated.time_ago }}</time></span>
+            </a>
+        </li>
     {% endfor %}
 </ol>

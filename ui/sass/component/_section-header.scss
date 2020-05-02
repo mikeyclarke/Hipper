@@ -7,8 +7,19 @@
 $_background-color: #f7f8fa;
 $_margin-medium-bp: 98px 0;
 $_margin-medium-bp-with-adjacent-tabs: 130px 0;
-$_padding: 0 16px 18px;
+$_margin-medium-bp-with-image: 42px 0 130px;
+$_padding: 8px 16px 18px;
 $_padding-medium-bp: 0;
+
+$_image-background-color: rgba(config.config-get(color-shades, dark, 100), .4);
+$_image-dimension: 48px;
+$_image-dimension-medium-bp: 228px;
+$_image-margin: 0 0 18px;
+$_image-margin-medium-bp: 0 0 32px;
+
+$_image-icon-fill: config.config-get(color-shades, dark, 300);
+$_image-icon-dimension: 32px;
+$_image-icon-dimension-medium-bp: 120px;
 
 $_title-label-color: config.config-get(color-shades, dark, 800);
 $_title-label-font-size: 12px;
@@ -25,6 +36,17 @@ $_title-font-size-medium-bp: 32px;
 $_title-line-height-medium-bp: 48px;
 $_title-min-height-medium-bp: 52px;
 $_title-max-width-medium-bp: 505px;
+
+$_username-color: config.config-get(color-shades, dark, 800);
+$_username-margin: 8px 0 0;
+
+$_label-font-size: 16px;
+$_label-font-weight: 600;
+$_label-line-height: 24px;
+$_label-margin: 15px 0 0;
+
+$_label-font-size-medium-bp: 18px;
+$_label-line-height-medium-bp: 28px;
 
 $_subheading-color: config.config-get(color-shades, dark, 800);
 $_subheading-font-size: 16px;
@@ -45,7 +67,7 @@ $_attribution-copy-font-size-medium-bp: 15px;
 $_attribution-copy-font-weight: 400;
 
 $_actions-margin-top: 16px;
-$_actions-margin-top-medium-bp: 32px;
+$_actions-margin-top-medium-bp: 25px;
 
 $_action-dimension: 46px;
 $_action-background-color: config.config-get(color-shades, dark, 100);
@@ -85,6 +107,40 @@ $_action-icon-fill: config.config-get(color-shades, dark, 800);
     }
 }
 
+%c-section-header.has-image {
+    @include breakpoint.breakpoint(app, medium) {
+        margin: $_margin-medium-bp-with-image;
+    }
+}
+
+.c-section-header__image {
+    align-items: center;
+    background-color: $_image-background-color;
+    border-radius: 50%;
+    display: flex;
+    height: $_image-dimension;
+    justify-content: center;
+    margin: $_image-margin;
+    width: $_image-dimension;
+
+    @include breakpoint.breakpoint(app, medium) {
+        height: $_image-dimension-medium-bp;
+        margin: $_image-margin-medium-bp;
+        width: $_image-dimension-medium-bp;
+    }
+}
+
+.c-section-header__image-placeholder-icon {
+    fill: $_image-icon-fill;
+    height: $_image-icon-dimension;
+    width: $_image-icon-dimension;
+
+    @include breakpoint.breakpoint(app, medium) {
+        height: $_image-icon-dimension-medium-bp;
+        width: $_image-icon-dimension-medium-bp;
+    }
+}
+
 .c-section-header__title-label {
     color: $_title-label-color;
     display: block;
@@ -96,6 +152,8 @@ $_action-icon-fill: config.config-get(color-shades, dark, 800);
 }
 
 .c-section-header__title,
+.c-section-header__username,
+.c-section-header__label,
 .c-section-header__subheading,
 .c-section-header__subheading--muted {
     background: transparent;
@@ -104,6 +162,7 @@ $_action-icon-fill: config.config-get(color-shades, dark, 800);
     height: auto;
     padding: 0;
     width: 100%;
+    @include font-smoothing.font-smoothing;
 }
 
 .c-section-header__title {
@@ -114,7 +173,6 @@ $_action-icon-fill: config.config-get(color-shades, dark, 800);
     margin: 0;
     min-height: $_title-min-height;
     width: 100%;
-    @include font-smoothing.font-smoothing;
 
     @include breakpoint.breakpoint(app, medium) {
         font-size: $_title-font-size-medium-bp;
@@ -124,13 +182,29 @@ $_action-icon-fill: config.config-get(color-shades, dark, 800);
     }
 }
 
+.c-section-header__username {
+    color: $_username-color;
+    margin: $_username-margin;
+}
+
+.c-section-header__label {
+    font-size: $_label-font-size;
+    font-weight: $_label-font-weight;
+    line-height: $_label-line-height;
+    margin: $_label-margin;
+
+    @include breakpoint.breakpoint(app, medium) {
+        font-size: $_label-font-size-medium-bp;
+        line-height: $_label-line-height-medium-bp;
+    }
+}
+
 .c-section-header__subheading {
     color: $_subheading-color;
     font-size: $_subheading-font-size;
     line-height: $_subheading-line-height;
     margin: $_subheading-margin;
     min-height: $_subheading-min-height;
-    @include font-smoothing.font-smoothing;
 
     @include breakpoint.breakpoint(app, medium) {
         font-size: $_subheading-font-size-medium-bp;
@@ -238,4 +312,54 @@ $_action-icon-fill: config.config-get(color-shades, dark, 800);
 .c-section-header__action-button-icon--edit {
     height: 18px;
     width: 18px;
+}
+
+.c-section-header__ext-links {
+    list-style: none;
+    padding: 0;
+    margin: 32px 0 0;
+    background: #FEFEFF;
+    box-shadow: 0 0 4px 0 rgba(196,194,197,0.40);
+    border-radius: 2px;
+}
+
+.c-section-header__ext-link {
+    align-items: center;
+    display: flex;
+    padding: 13px 46px 13px 16px;
+    position: relative;
+    @include font-smoothing.font-smoothing;
+}
+
+.c-section-header__ext-link-icon {
+    fill: config.config-get(color-shades, dark, 400);
+    height: 20px;
+    margin: 0 8px 0 0;
+    width: 20px;
+}
+
+.c-section-header__ext-link-text {
+    font-size: 15px;
+    line-height: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.c-section-header__ext-link-link {
+    @extend %unstyled-button;
+    align-items: center;
+    display: flex;
+    color: config.config-get(color-shades, dark, 900);
+    height: 46px;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 46px;
+}
+
+.c-section-header__ext-link-open-icon {
+    fill: config.config-get(color-shades, primary, 800);
+    height: 16px;
+    width: 16px;
 }

@@ -1,13 +1,52 @@
-<header class="c-app-header">
+<header class="c-app-header--hide-at-medium has-adjacent-tabs">
     <div class="c-app-header__top-bar">
         {% include '_mobile_navigation_toggle.twig' %}
 
-        <div class="c-app-header__compass">
-            <span class="c-app-header__compass-name">{{ person.name }}</span>
-        </div>
-
-        <button type="button" aria-label="Person options" class="c-app-header__top-bar-options-button">
-            <svg class="c-app-header__top-bar-options-icon" aria-hidden="true"><use xlink:href="#icon-sprite__options"/></svg>
-        </button>
+        {% if extended_view is not defined or extended_view is same as(false) %}
+            <div class="c-app-header__compass">
+                <span class="c-app-header__compass-entity">Person</span>
+                <span class="c-app-header__compass-name">{{ person.name }}</span>
+            </div>
+        {% endif %}
     </div>
 </header>
+
+<div class="c-section-header{% if extended_view is not defined or extended_view is same as(false) %}--hide-at-small{% endif %} has-adjacent-tabs has-image">
+    <div class="c-section-header__image">
+        <svg class="c-section-header__image-placeholder-icon" aria-hidden="true"><use href="#icon-sprite__face"></svg>
+    </div>
+
+    <h1 class="c-section-header__title">{{ person.name }}</h1>
+
+    <span class="c-section-header__username">{{ person.username }}</span>
+
+    {% if person.jobRoleOrTitle is null or person.jobRoleOrTitle is empty %}
+        <p class="c-section-header__label">{{ person.name }} hasn’t added a job role or title yet</p>
+    {% else %}
+        <p class="c-section-header__label">{{ person.jobRoleOrTitle }}</p>
+    {% endif %}
+
+    {% if person.bio is null or person.bio is empty %}
+        <p class="c-section-header__subheading">{{ person.name }} hasn’t added a bio yet</p>
+    {% else %}
+        <p class="c-section-header__subheading">{{ person.bio }}</p>
+    {% endif %}
+
+    {% if person_is_current_user %}
+        <div class="c-section-header__actions">
+            <button type="button" aria-label="Edit profile" class="c-section-header__action-button">
+                <svg class="c-section-header__action-button-icon--edit" aria-hidden="true"><use href="#icon-sprite__edit"/></svg>
+            </button>
+        </div>
+    {% endif %}
+
+    <ul class="c-section-header__ext-links">
+        <li class="c-section-header__ext-link" aria-label="Email address">
+            <svg class="c-section-header__ext-link-icon" aria-hidden="true"><use href="#icon-sprite__email"></svg>
+            <span class="c-section-header__ext-link-text" title="{{ person.emailAddress }}">{{ person.emailAddress }}</span>
+            <a class="c-section-header__ext-link-link" href="{{ 'mailto:' ~ person.emailAddress|escape('url') }}" aria-label="Email this address">
+                <svg class="c-section-header__ext-link-open-icon" aria-hidden="true"><use href="#icon-sprite__open-link"></svg>
+            </a>
+        </li>
+    </ul>
+</div>

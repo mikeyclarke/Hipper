@@ -46,6 +46,27 @@ class ActivityRepository
         return $stmt->fetchAll();
     }
 
+    public function getPersonActivity(string $personId, string $organizationId, int $limit = 10): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select(self::FIELDS)
+            ->from('activity')
+            ->innerJoin('activity', 'person', 'person', 'person.id = activity.actor_id')
+            ->andWhere('activity.actor_id = :actor_id')
+            ->andWhere('activity.organization_id = :organization_id')
+            ->orderBy('activity.created', 'DESC')
+            ->setMaxResults($limit);
+
+        $qb->setParameters([
+            'organization_id' => $organizationId,
+            'actor_id' => $personId,
+        ]);
+
+        $stmt = $qb->execute();
+        return $stmt->fetchAll();
+    }
+
     public function getTeamActivity(string $teamId, string $organizationId, int $limit = 10): array
     {
         $qb = $this->connection->createQueryBuilder();

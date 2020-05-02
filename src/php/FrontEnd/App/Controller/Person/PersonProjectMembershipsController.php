@@ -3,28 +3,28 @@ declare(strict_types=1);
 
 namespace Hipper\FrontEnd\App\Controller\Person;
 
-use Hipper\Activity\ActivityFeedFormatter;
-use Hipper\Activity\ActivityRepository;
+use Hipper\Project\ProjectRepository;
+use Hipper\Project\ProjectsListFormatter;
 use Hipper\TimeZone\TimeZoneFromRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment as Twig;
 
-class PersonController
+class PersonProjectMembershipsController
 {
-    private ActivityFeedFormatter $activityFeedFormatter;
-    private ActivityRepository $activityRepository;
+    private ProjectRepository $projectRepository;
+    private ProjectsListFormatter $projectsListFormatter;
     private TimeZoneFromRequest $timeZoneFromRequest;
     private Twig $twig;
 
     public function __construct(
-        ActivityFeedFormatter $activityFeedFormatter,
-        ActivityRepository $activityRepository,
+        ProjectRepository $projectRepository,
+        ProjectsListFormatter $projectsListFormatter,
         TimeZoneFromRequest $timeZoneFromRequest,
         Twig $twig
     ) {
-        $this->activityFeedFormatter = $activityFeedFormatter;
-        $this->activityRepository = $activityRepository;
+        $this->projectRepository = $projectRepository;
+        $this->projectsListFormatter = $projectsListFormatter;
         $this->timeZoneFromRequest = $timeZoneFromRequest;
         $this->twig = $twig;
     }
@@ -36,17 +36,24 @@ class PersonController
         $person = $request->attributes->get('person');
         $timeZone = $this->timeZoneFromRequest->get($request);
 
-        $activity = $this->activityRepository->getPersonActivity($person->getId(), $currentUser->getOrganizationId());
-        $activityFeed = $this->activityFeedFormatter->format($organization, $currentUser, $timeZone, $activity);
+        $projectMemberships = $this->projectRepository->getAllWithMappingForPerson(
+            $person->getId(),
+            $organization->getId()
+        );
+        $formattedProjectMemberships = $this->projectsListFormatter->format(
+            $organization,
+            $projectMemberships,
+            $timeZone
+        );
 
         $context = [
-            'activity_feed' => $activityFeed,
             'person' => $person,
             'person_is_current_user' => ($person->getId() === $currentUser->getId()),
+            'project_memberships' => $formattedProjectMemberships,
         ];
 
         return new Response(
-            $this->twig->render('person/person_index.twig', $context)
+            $this->twig->render('person/person_project_memberships.twig', $context)
         );
     }
 }

@@ -1,0 +1,27 @@
+{% extends '_app_sidebar_layout.twig' %}
+
+{% block navigational_header %}{% include 'person/_person_header.twig' %}{% endblock %}
+
+{% block tab_bar %}{% include 'person/_person_tabs.twig' with { active_tab: 'projects' } %}{% endblock %}
+
+{% block content %}
+
+<section class="c-page-section">
+    <div class="c-page-section__content">
+        <ol class="c-card-list">
+            {% for project in project_memberships %}
+                {% include '_card_list_item.twig' with {
+                    avatar_initials: project.name|trim|first|upper,
+                    avatar_type: 'initials',
+                    link_href: project.route,
+                    timestamp: project.created,
+                    timestamp_label: 'Created',
+                    title: project.name,
+                    description: project.description,
+                } only %}
+            {% endfor %}
+        </ol>
+    </div>
+</section>
+
+{% endblock %}

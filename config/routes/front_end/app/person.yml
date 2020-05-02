@@ -10,3 +10,19 @@ person.show:
     defaults:
         _before_middlewares:
             - person_routing_middleware:before
+
+person.project_memberships.show:
+    path: /people/{username}~{url_id}/project-memberships
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Person\PersonProjectMembershipsController::getAction
+    defaults:
+        _before_middlewares:
+            - person_routing_middleware:before
+
+person.team_memberships.show:
+    path: /people/{username}~{url_id}/team-memberships
+    methods: [GET]
+    controller: Hipper\FrontEnd\App\Controller\Person\PersonTeamMembershipsController::getAction
+    defaults:
+        _before_middlewares:
+            - person_routing_middleware:before

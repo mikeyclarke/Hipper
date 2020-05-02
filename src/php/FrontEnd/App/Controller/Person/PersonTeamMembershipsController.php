@@ -3,28 +3,28 @@ declare(strict_types=1);
 
 namespace Hipper\FrontEnd\App\Controller\Person;
 
-use Hipper\Activity\ActivityFeedFormatter;
-use Hipper\Activity\ActivityRepository;
+use Hipper\Team\TeamRepository;
+use Hipper\Team\TeamsListFormatter;
 use Hipper\TimeZone\TimeZoneFromRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment as Twig;
 
-class PersonController
+class PersonTeamMembershipsController
 {
-    private ActivityFeedFormatter $activityFeedFormatter;
-    private ActivityRepository $activityRepository;
+    private TeamRepository $teamRepository;
+    private TeamsListFormatter $teamsListFormatter;
     private TimeZoneFromRequest $timeZoneFromRequest;
     private Twig $twig;
 
     public function __construct(
-        ActivityFeedFormatter $activityFeedFormatter,
-        ActivityRepository $activityRepository,
+        TeamRepository $teamRepository,
+        TeamsListFormatter $teamsListFormatter,
         TimeZoneFromRequest $timeZoneFromRequest,
         Twig $twig
     ) {
-        $this->activityFeedFormatter = $activityFeedFormatter;
-        $this->activityRepository = $activityRepository;
+        $this->teamRepository = $teamRepository;
+        $this->teamsListFormatter = $teamsListFormatter;
         $this->timeZoneFromRequest = $timeZoneFromRequest;
         $this->twig = $twig;
     }
@@ -36,17 +36,24 @@ class PersonController
         $person = $request->attributes->get('person');
         $timeZone = $this->timeZoneFromRequest->get($request);
 
-        $activity = $this->activityRepository->getPersonActivity($person->getId(), $currentUser->getOrganizationId());
-        $activityFeed = $this->activityFeedFormatter->format($organization, $currentUser, $timeZone, $activity);
+        $teamMemberships = $this->teamRepository->getAllWithMappingForPerson(
+            $person->getId(),
+            $organization->getId()
+        );
+        $formattedTeamMemberships = $this->teamsListFormatter->format(
+            $organization,
+            $teamMemberships,
+            $timeZone
+        );
 
         $context = [
-            'activity_feed' => $activityFeed,
             'person' => $person,
             'person_is_current_user' => ($person->getId() === $currentUser->getId()),
+            'team_memberships' => $formattedTeamMemberships,
         ];
 
         return new Response(
-            $this->twig->render('person/person_index.twig', $context)
+            $this->twig->render('person/person_team_memberships.twig', $context)
         );
     }
 }

@@ -1,67 +1,15 @@
-{% extends '_app_default_layout.twig' %}
+{% extends '_app_sidebar_layout.twig' %}
 
-{% block navigational_header %}{% include 'person/_person_header.twig' %}{% endblock %}
+{% block navigational_header %}{% include 'person/_person_header.twig' with { extended_view: true } %}{% endblock %}
+
+{% block tab_bar %}{% include 'person/_person_tabs.twig' with { active_tab: 'home' } %}{% endblock %}
 
 {% block content %}
 
-<header class="c-page-header">
-    <h1 class="c-page-header__title">{{ person.name }}</h1>
-
-    <p class="c-page-header__subheading">{{ person.jobTitleOrRole|default('This person hasn’t added their job role yet') }}</p>
-
-    {% if person.bio is null or person.bio is empty %}
-        <p class="c-page-header__subheading--muted">This person hasn’t added a bio yet</p>
-    {% else %}
-        <p class="c-page-header__subheading">{{ person.bio }}</p>
-    {% endif %}
-
-    {% if person_is_current_user %}
-        <button type="button" aria-label="Edit topic" class="c-page-header__edit-button">
-            <svg class="c-page-header__edit-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>
-        </button>
-    {% endif %}
-</header>
-
 <section class="c-page-section">
-    <div class="c-page-section__header">
-        <h2 class="c-page-section__title">Member of these teams</h2>
-    </div>
-
     <div class="c-page-section__content">
-        <ol class="c-card-list">
-            {% for team in team_memberships %}
-                {% include '_card_list_item.twig' with {
-                    avatar_initials: team.name|trim|first|upper,
-                    avatar_type: 'initials',
-                    link_href: team.route,
-                    timestamp: team.created,
-                    timestamp_label: 'Created',
-                    title: team.name,
-                    description: team.description,
-                } only %}
-            {% endfor %}
-        </ol>
-    </div>
-</section>
-
-<section class="c-page-section">
-    <div class="c-page-section__header">
-        <h2 class="c-page-section__title">Working on these projects</h2>
-    </div>
-
-    <div class="c-page-section__content">
-        <ol class="c-card-list">
-            {% for project in project_memberships %}
-                {% include '_card_list_item.twig' with {
-                    avatar_initials: project.name|trim|first|upper,
-                    avatar_type: 'initials',
-                    link_href: project.route,
-                    timestamp: project.created,
-                    timestamp_label: 'Created',
-                    title: project.name,
-                    description: project.description,
-                } only %}
-            {% endfor %}
+        <ol class="c-activity-feed">
+            {% include 'activity/_activity_feed_list.twig' %}
         </ol>
     </div>
 </section>

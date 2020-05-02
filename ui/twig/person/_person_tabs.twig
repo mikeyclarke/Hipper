@@ -1,0 +1,19 @@
+{% set route_params = {
+    subdomain: organization.subdomain,
+    url_id: person.urlId,
+    username: person.username,
+} %}
+
+<nav class="c-tab-bar">
+    <ol class="c-tab-bar__list">
+        <li class="c-tab-bar__item">
+            <a href="{{ path('front_end.app.person.show', route_params) }}" class="c-tab-bar__item-control"{% if active_tab == 'home' %} aria-selected="true"{% endif %}>Home</a>
+        </li>
+        <li class="c-tab-bar__item">
+            <a href="{{ path('front_end.app.person.team_memberships.show', route_params) }}" class="c-tab-bar__item-control"{% if active_tab == 'teams' %} aria-selected="true"{% endif %}>Teams</a>
+        </li>
+        <li class="c-tab-bar__item">
+            <a href="{{ path('front_end.app.person.project_memberships.show', route_params) }}" class="c-tab-bar__item-control"{% if active_tab == 'projects' %} aria-selected="true"{% endif %}>Projects</a>
+        </li>
+    </ol>
+</nav>

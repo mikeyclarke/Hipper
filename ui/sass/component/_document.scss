@@ -4,6 +4,7 @@
 @use '../helper/font-smoothing';
 
 $large-type-breakpoint: 1000px;
+$_fixed-toolbar-height: config.config-get(layout, document, toolbar, height);
 
 $header-placeholder-color: config.config-get(color-shades, grey, 1100);
 
@@ -141,6 +142,19 @@ $content-p-margin: 0 0 30px;
     outline: 0;
     white-space: pre-wrap;
     white-space: break-spaces;
+}
+
+.c-document__content {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @include breakpoint.breakpoint(app, document, two-column-layout) {
+            scroll-margin-top: $_fixed-toolbar-height;
+        }
+    }
 }
 
 @each $heading, $props in $content-headings-typography {

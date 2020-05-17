@@ -1,4 +1,4 @@
-{% extends '_app_default_layout.twig' %}
+{% extends '_app_sidebar_layout.twig' %}
 
 {% block navigational_header %}
 <header class="c-app-header--hide-at-medium">
@@ -10,11 +10,15 @@
         </div>
     </div>
 </header>
+
+<div class="c-section-header--hide-at-small">
+    <h1 class="c-section-header__title">Projects at {{ organization.name }}</h1>
+
+    <p class="c-section-header__subheading">Check out what everyone is working on across all the exciting projects underway at {{ organization.name }}</p>
+</div>
 {% endblock %}
 
 {% block content %}
-
-<h1 class="c-page-title--hide-below-medium">Projects at {{ organization.name }}</h1>
 
 <ol class="c-card-list--pad-bottom">
     {% for project in projects_list %}

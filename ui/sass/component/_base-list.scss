@@ -45,10 +45,6 @@ $item-description-line-height-medium-bp: 24px;
         grid-row-gap: 24px;
         grid-template-columns: 1fr 1fr;
     }
-
-    @include breakpoint.free-form-breakpoint(1092px) {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
 }
 
 .l-app-default__main-content-inner-container > %c-base-list:first-child {

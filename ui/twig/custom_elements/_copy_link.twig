@@ -1,0 +1,15 @@
+{% macro start(link, confirm_label = null) %}
+    <copy-link link="{{ link }}"{% if confirm_label is not null %} confirm-label="{{ confirm_label }}"{% endif %}>
+{% endmacro %}
+
+{% macro button_start(class_name, label) %}
+    <button class="{{ class_name }} js-button" type="button" aria-label="{{ label }}">
+{% endmacro %}
+
+{% macro button_end() %}
+    </button>
+{% endmacro %}
+
+{% macro end() %}
+    </copy-link>
+{% endmacro %}

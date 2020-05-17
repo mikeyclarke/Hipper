@@ -1,4 +1,5 @@
 {% import 'custom_elements/_context_menu.twig' as context_menu %}
+{% import 'custom_elements/_copy_link.twig' as copy_link %}
 
 <nav class="l-document-editor__toolbar c-document-toolbar js-document-toolbar">
     <div class="c-document-toolbar__controls-group">
@@ -27,11 +28,11 @@
                 <svg class="c-document-toolbar__primary-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__done"/></svg>
             </button>
         {% elseif mode is same as('view') %}
-            <copy-link link="{{ view_url }}" confirm-label="Link copied">
-                <button class="c-document-toolbar__outline-button--icon-only js-button" type="button" aria-label="Copy a link to this doc to your clipboard">
+            {{ copy_link.start(view_url, 'Link copied') }}
+                {{ copy_link.button_start('c-document-toolbar__outline-button--icon-only', 'Copy a link to this doc to your clipboard') }}
                     <svg class="c-document-toolbar__outline-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__link"/></svg>
-                </button>
-            </copy-link>
+                {{ copy_link.button_end() }}
+            {{ copy_link.end() }}
             <a href="{{ edit_url }}" class="c-document-toolbar__primary-button">
                 Edit this doc
                 <svg class="c-document-toolbar__primary-button-icon" aria-hidden="true"><use xlink:href="#icon-sprite__edit"/></svg>

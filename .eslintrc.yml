@@ -55,6 +55,10 @@ rules:
     "@typescript-eslint/no-unused-vars":
         - error
         - args: none
+    "@typescript-eslint/lines-between-class-members": off
+    "@typescript-eslint/camelcase": off
+    "@typescript-eslint/ban-types": off
+    "@typescript-eslint/explicit-module-boundary-types": off
 
 settings:
     import/resolver:

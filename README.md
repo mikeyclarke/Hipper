@@ -38,11 +38,13 @@
 - SSL certs
     - `mkcert -install`
     - `mkcert usehipper.test "*.usehipper.test"`
-    - `mkdir -p /usr/local/etc/nginx/ssl`
-    - `mv usehipper.test.pem /usr/local/etc/nginx/ssl/hipper.crt`
-    - `mv usehipper.test-key.pem /usr/local/etc/nginx/ssl/hipper.key`
+    - `mkdir -p /usr/local/etc/nginx/ssl/hipper`
+    - `mv usehipper.test.pem /usr/local/etc/nginx/ssl/hipper/fullchain.pem`
+    - `mv usehipper.test-key.pem /usr/local/etc/nginx/ssl/hipper/privkey.pem`
 - Nginx
-    - Run `php bin/console app:generate-vhosts usehipper.test /usr/local/etc/nginx/servers /usr/local/etc/nginx/ssl`
+    - Run `php bin/console app:generate-vhosts usehipper.test /usr/local/etc/nginx/servers /usr/local/etc/nginx/ssl/hipper`
+- Redis
+    - `/usr/local/etc/redis.conf` add `requirepass ''` and restart Redis
 
 ### Set up
 

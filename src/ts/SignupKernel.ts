@@ -5,8 +5,13 @@ import Kernel from 'Kernel';
 import DocumentHeadConfigurationProvider from 'DocumentHeadConfigurationProvider';
 import loadComponents from 'components/componentLoader';
 
+const defaultConfig = {
+    service_worker_url: './service-worker.js',
+    service_worker_scope: '/sign-up',
+};
 const htmlHeadConfigVars = [
     { name: 'csrf_token', selector: '.js-csrf', parseAsJson: false },
+    { name: 'asset_base_url', selector: '.js-asset-base-url', parseAsJson: false },
 ];
 
 export default class SignupKernel extends Kernel {
@@ -30,7 +35,7 @@ export default class SignupKernel extends Kernel {
             config[configVar.name] = result;
         });
 
-        return [config];
+        return [defaultConfig, config];
     }
 
     protected getRoutes(): Function {

@@ -7,6 +7,8 @@ import TimeZoneRetriever from 'TimeZone/TimeZoneRetriever';
 import CallbackControllerInvoker from 'Routing/CallbackControllerInvoker';
 import RouteMatcher from 'Routing/RouteMatcher';
 import Router from 'Routing/Router';
+import ServiceWorkerRegistrar from 'ServiceWorker/ServiceWorkerRegistrar';
+import InlineAssetCacher from 'Asset/InlineAssetCacher';
 
 export default function sharedServices(bottle: Bottle): void {
     bottle.factory('httpClient', (container) => {
@@ -44,6 +46,20 @@ export default function sharedServices(bottle: Bottle): void {
         return new Router(
             container.routeMatcher,
             container.callbackControllerInvoker
+        );
+    });
+
+    bottle.factory('serviceWorkerRegistrar', (container) => {
+        return new ServiceWorkerRegistrar(
+            container.config.service_worker_url,
+            container.config.service_worker_scope
+        );
+    });
+
+    bottle.factory('inlineAssetCacher', (container) => {
+        return new InlineAssetCacher(
+            container.serviceWorkerRegistrar,
+            container.config.asset_base_url
         );
     });
 }

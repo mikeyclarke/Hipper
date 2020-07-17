@@ -5,9 +5,14 @@ import Kernel from 'Kernel';
 import DocumentHeadConfigurationProvider from 'DocumentHeadConfigurationProvider';
 import loadComponents from 'components/componentLoader';
 
+const defaultConfig = {
+    service_worker_url: './service-worker.js',
+    service_worker_scope: null,
+};
 const htmlHeadConfigVars = [
     { name: 'csrf_token', selector: '.js-csrf', parseAsJson: false },
     { name: 'user_agent_profile', selector: '.js-user-agent-profile', parseAsJson: true },
+    { name: 'asset_base_url', selector: '.js-asset-base-url', parseAsJson: false },
 ];
 
 export default class AppKernel extends Kernel {
@@ -32,7 +37,7 @@ export default class AppKernel extends Kernel {
             config[configVar.name] = result;
         });
 
-        return [config];
+        return [defaultConfig, config];
     }
 
     protected getRoutes(): Function {

@@ -21,7 +21,7 @@ class ContentSecurityPolicyBuilder
             'default-src' => ['none'],
             'base-uri' => ['self'],
             'block-all-mixed-content' => null,
-            'connect-src' => ['self'],
+            'connect-src' => ['self', $this->assetDomain],
             'font-src' => ['self', 'data:', $this->assetDomain],
             'form-action' => ['self'],
             'frame-ancestors' => ['none'],

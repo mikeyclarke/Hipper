@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment as Twig;
 
-class ProjectModelFromUrlIdMiddleware
+class ProjectModelFromUrlSlugMiddleware
 {
     const SEARCH_ROUTE = 'front_end.app.project.search';
 
@@ -33,8 +33,8 @@ class ProjectModelFromUrlIdMiddleware
         $organization = $request->attributes->get('organization');
         $currentUser = $request->attributes->get('current_user');
 
-        $urlId = $request->attributes->get('project_url_id');
-        $result = $this->projectRepository->findByUrlId($urlId, $organization->getId());
+        $urlSlug = $request->attributes->get('project_url_slug');
+        $result = $this->projectRepository->findByUrlSlug($urlSlug, $organization->getId());
         if (null === $result) {
             throw new NotFoundHttpException;
         }
@@ -55,7 +55,7 @@ class ProjectModelFromUrlIdMiddleware
                 self::SEARCH_ROUTE,
                 [
                     'subdomain' => $organization->getSubdomain(),
-                    'project_url_id' => $urlId,
+                    'project_url_slug' => $urlSlug,
                 ]
             )
         );

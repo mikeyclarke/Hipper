@@ -9,72 +9,72 @@ team.create:
     controller: Hipper\FrontEnd\App\Controller\Team\CreateTeamController::getAction
 
 team.show:
-    path: /teams/{team_url_id}
+    path: /teams/{team_url_slug}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\TeamController::getAction
     defaults:
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before
 
 team.docs.list:
-    path: /teams/{team_url_id}/docs
+    path: /teams/{team_url_slug}/docs
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\TeamDocsController::getAction
     defaults:
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before
 
 team.topic.create:
-    path: /teams/{team_url_id}/docs/new-topic
+    path: /teams/{team_url_slug}/docs/new-topic
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Topic\CreateTopicController::getAction
     defaults:
         knowledgebase_type: 'team'
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before
 
 team.doc.create:
-    path: /teams/{team_url_id}/docs/new
+    path: /teams/{team_url_slug}/docs/new
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\CreateDocumentController::getAction
     defaults:
         knowledgebase_type: 'team'
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before
 
 team.doc.edit:
-    path: /teams/{team_url_id}/docs/edit/{path}
+    path: /teams/{team_url_slug}/docs/edit/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\EditDocumentController::getAction
     defaults:
         knowledgebase_type: 'team'
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before
             - knowledgebase_routing_middleware:before
     requirements:
         path: '.+'
 
 team.doc.export:
-    path: /teams/{team_url_id}/docs/export/{path}
+    path: /teams/{team_url_slug}/docs/export/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\ExportDocumentController::getAction
     defaults:
         knowledgebase_type: 'team'
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before
             - knowledgebase_routing_middleware:before
     requirements:
         path: '.+'
 
 team.doc.show:
-    path: /teams/{team_url_id}/docs/{path}
+    path: /teams/{team_url_slug}/docs/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrTopicControllerRouter::route
     defaults:
         knowledgebase_type: 'team'
         action: 'getAction'
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before
             - knowledgebase_routing_middleware:before
         _after_middlewares:
             - knowledgebase_entry_view_middleware:after
@@ -82,25 +82,25 @@ team.doc.show:
         path: '.+'
 
 team.search:
-    path: /teams/{team_url_id}/search
+    path: /teams/{team_url_slug}/search
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\TeamSearchController::getAction
     defaults:
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before
 
 team.members.show:
-    path: /teams/{team_url_id}/members
+    path: /teams/{team_url_slug}/members
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\TeamMembersController::getAction
     defaults:
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before
 
 team.members.search:
-    path: /teams/{team_url_id}/search/members
+    path: /teams/{team_url_slug}/search/members
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Team\TeamMembersSearchController::getAction
     defaults:
         _before_middlewares:
-            - team_model_from_url_id_middleware:before
+            - team_model_from_url_slug_middleware:before

@@ -31,7 +31,7 @@ class ProjectSubscriber implements EventSubscriberInterface
         $project = $event->getProject();
         $properties = [
             'project_name' => $project->getName(),
-            'project_url_id' => $project->getUrlId(),
+            'project_url_slug' => $project->getUrlSlug(),
         ];
 
         $this->activityCreator->create(

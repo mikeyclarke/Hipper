@@ -37,7 +37,7 @@ class TeamSearchResultsFormatter
                         self::ROUTE_NAME,
                         [
                             'subdomain' => $organization->getSubdomain(),
-                            'team_url_id' => $result['url_id'],
+                            'team_url_slug' => $result['url_slug'],
                         ]
                     ),
                     'type' => 'team',

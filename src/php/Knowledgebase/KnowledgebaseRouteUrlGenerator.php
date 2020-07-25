@@ -60,7 +60,7 @@ class KnowledgebaseRouteUrlGenerator
                 default:
                     $routeName = self::SHOW_TEAM_DOC_ROUTE_NAME;
             }
-            $routeParams['team_url_id'] = $knowledgebaseOwner->getUrlId();
+            $routeParams['team_url_slug'] = $knowledgebaseOwner->getUrlSlug();
         }
 
         if ($knowledgebaseOwner instanceof ProjectModel) {
@@ -74,7 +74,7 @@ class KnowledgebaseRouteUrlGenerator
                 default:
                     $routeName = self::SHOW_PROJECT_DOC_ROUTE_NAME;
             }
-            $routeParams['project_url_id'] = $knowledgebaseOwner->getUrlId();
+            $routeParams['project_url_slug'] = $knowledgebaseOwner->getUrlSlug();
         }
 
         if ($knowledgebaseOwner instanceof OrganizationModel) {

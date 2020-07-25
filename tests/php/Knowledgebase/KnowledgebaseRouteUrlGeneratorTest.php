@@ -42,7 +42,7 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
     public function generateForRouteInTeamKnowledgebase()
     {
         $knowledgebaseOwner = new TeamModel;
-        $knowledgebaseOwner->setUrlId('team-name');
+        $knowledgebaseOwner->setUrlSlug('team-name');
 
         $url = '/team/team-name/docs/knowledgebase-route~abcd1234';
 
@@ -52,7 +52,7 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
                 [
                     'path' => $this->route->toUrlSegment(),
                     'subdomain' => $this->organization->getSubdomain(),
-                    'team_url_id' => $knowledgebaseOwner->getUrlId()
+                    'team_url_slug' => $knowledgebaseOwner->getUrlSlug()
                 ],
                 UrlGeneratorInterface::ABSOLUTE_PATH,
             ],
@@ -73,7 +73,7 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
     public function generateForRouteInProjectKnowledgebase()
     {
         $knowledgebaseOwner = new ProjectModel;
-        $knowledgebaseOwner->setUrlId('project-name');
+        $knowledgebaseOwner->setUrlSlug('project-name');
 
         $url = '/project/project-name/docs/knowledgebase-route~abcd1234';
 
@@ -83,7 +83,7 @@ class KnowledgebaseRouteUrlGeneratorTest extends TestCase
                 [
                     'path' => $this->route->toUrlSegment(),
                     'subdomain' => $this->organization->getSubdomain(),
-                    'project_url_id' => $knowledgebaseOwner->getUrlId()
+                    'project_url_slug' => $knowledgebaseOwner->getUrlSlug()
                 ],
                 UrlGeneratorInterface::ABSOLUTE_PATH,
             ],

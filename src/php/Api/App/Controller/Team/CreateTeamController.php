@@ -42,7 +42,7 @@ class CreateTeamController
                 self::TEAM_ROUTE_NAME,
                 [
                     'subdomain' => $organization->getSubdomain(),
-                    'team_url_id' => $teamModel->getUrlId(),
+                    'team_url_slug' => $teamModel->getUrlSlug(),
                 ]
             ),
         ], 201);

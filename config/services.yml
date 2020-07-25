@@ -160,8 +160,8 @@ services:
     app_onboarding_completed_middleware:
         class: Hipper\FrontEnd\App\Middleware\Organization\OnboardingCompletedMiddleware
 
-    team_model_from_url_id_middleware:
-        class: Hipper\FrontEnd\App\Middleware\Team\TeamModelFromUrlIdMiddleware
+    team_model_from_url_slug_middleware:
+        class: Hipper\FrontEnd\App\Middleware\Team\TeamModelFromUrlSlugMiddleware
 
     team_model_from_id_middleware:
         class: Hipper\Api\App\Middleware\Team\TeamModelFromIdMiddleware
@@ -175,8 +175,8 @@ services:
     person_routing_middleware:
         class: Hipper\FrontEnd\App\Middleware\Person\PersonRoutingMiddleware
 
-    project_model_from_url_id_middleware:
-        class: Hipper\FrontEnd\App\Middleware\Project\ProjectModelFromUrlIdMiddleware
+    project_model_from_url_slug_middleware:
+        class: Hipper\FrontEnd\App\Middleware\Project\ProjectModelFromUrlSlugMiddleware
 
     project_model_from_id_middleware:
         class: Hipper\Api\App\Middleware\Project\ProjectModelFromIdMiddleware

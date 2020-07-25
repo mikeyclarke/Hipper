@@ -1,13 +1,13 @@
 <nav class="c-tab-bar">
     <ol class="c-tab-bar__list">
         <li class="c-tab-bar__item">
-            <a href="/projects/{{ project.urlId }}" class="c-tab-bar__item-control"{% if active_tab == 'home' %} aria-selected="true"{% endif %}>Home</a>
+            <a href="/projects/{{ project.urlSlug }}" class="c-tab-bar__item-control"{% if active_tab == 'home' %} aria-selected="true"{% endif %}>Home</a>
         </li>
         <li class="c-tab-bar__item">
-            <a href="/projects/{{ project.urlId }}/docs" class="c-tab-bar__item-control"{% if active_tab == 'docs' %} aria-selected="true"{% endif %}>Docs</a>
+            <a href="/projects/{{ project.urlSlug }}/docs" class="c-tab-bar__item-control"{% if active_tab == 'docs' %} aria-selected="true"{% endif %}>Docs</a>
         </li>
         <li class="c-tab-bar__item">
-            <a href="/projects/{{ project.urlId }}/members" class="c-tab-bar__item-control"{% if active_tab == 'members' %} aria-selected="true"{% endif %}>Members</a>
+            <a href="/projects/{{ project.urlSlug }}/members" class="c-tab-bar__item-control"{% if active_tab == 'members' %} aria-selected="true"{% endif %}>Members</a>
         </li>
     </ol>
 </nav>

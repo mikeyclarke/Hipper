@@ -38,7 +38,7 @@ class TopicSubscriber implements EventSubscriberInterface
         $route = $event->getRoute();
 
         $knowledgebaseOwnerName = $knowledgebaseOwner->getName();
-        $knowledgebaseOwnerUrlId = null;
+        $knowledgebaseOwnerUrlSlug = null;
         $teamId = null;
         $projectId = null;
 
@@ -47,12 +47,12 @@ class TopicSubscriber implements EventSubscriberInterface
             case TeamModel::class:
                 $knowledgebaseOwnerType = 'team';
                 $teamId = $knowledgebaseOwner->getId();
-                $knowledgebaseOwnerUrlId = $knowledgebaseOwner->getUrlId();
+                $knowledgebaseOwnerUrlSlug = $knowledgebaseOwner->getUrlSlug();
                 break;
             case ProjectModel::class:
                 $knowledgebaseOwnerType = 'project';
                 $projectId = $knowledgebaseOwner->getId();
-                $knowledgebaseOwnerUrlId = $knowledgebaseOwner->getUrlId();
+                $knowledgebaseOwnerUrlSlug = $knowledgebaseOwner->getUrlSlug();
                 break;
             case OrganizationModel::class:
                 $knowledgebaseOwnerType = 'organization';
@@ -64,7 +64,7 @@ class TopicSubscriber implements EventSubscriberInterface
         $properties = [
             'knowledgebase_owner_type' => $knowledgebaseOwnerType,
             'knowledgebase_owner_name' => $knowledgebaseOwnerName,
-            'knowledgebase_owner_url_id' => $knowledgebaseOwnerUrlId,
+            'knowledgebase_owner_url_slug' => $knowledgebaseOwnerUrlSlug,
             'topic_name' => $topic->getName(),
             'topic_description' => $this->getTopicDescription($topic),
             'topic_url_id' => $route->getUrlId(),

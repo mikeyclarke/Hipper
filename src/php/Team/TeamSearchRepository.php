@@ -27,13 +27,13 @@ SELECT
         websearch_to_tsquery('english', :search_query),
         'StartSel = %ts-mark%, StopSel = %/ts-mark%, HighlightAll=TRUE'
     ) AS description_snippet,
-    url_id,
+    url_slug,
     created
 FROM (
     SELECT
         name,
         description,
-        url_id,
+        url_slug,
         created
     FROM team
     WHERE search_tokens @@ websearch_to_tsquery('english', :search_query)

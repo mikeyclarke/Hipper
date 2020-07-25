@@ -9,7 +9,7 @@ interface KnowledgebaseOwnerModelInterface
 
     public function getName(): string;
 
-    public function getUrlId(): ?string;
+    public function getUrlSlug(): ?string;
 
     public function getKnowledgebaseId(): string;
 }

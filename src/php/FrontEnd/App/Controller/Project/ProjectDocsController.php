@@ -42,15 +42,15 @@ class ProjectDocsController
         $organization = $request->attributes->get('organization');
         $project = $request->attributes->get('project');
         $currentUserIsInProject = $request->attributes->get('current_user_is_in_project');
-        $projectUrlId = $project->getUrlId();
+        $projectUrlSlug = $project->getUrlSlug();
         $subdomain = $organization->getSubdomain();
 
         $createDocRoute = $this->router->generate(self::CREATE_DOC_ROUTE_NAME, [
-            'project_url_id' => $projectUrlId,
+            'project_url_slug' => $projectUrlSlug,
             'subdomain' => $subdomain,
         ]);
         $createTopicRoute = $this->router->generate(self::CREATE_TOPIC_ROUTE_NAME, [
-            'project_url_id' => $projectUrlId,
+            'project_url_slug' => $projectUrlSlug,
             'subdomain' => $subdomain,
             'return_to' => $request->getRequestUri(),
         ]);
@@ -68,7 +68,7 @@ class ProjectDocsController
             $topics,
             $timeZone,
             KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME,
-            ['project_url_id' => $projectUrlId]
+            ['project_url_slug' => $projectUrlSlug]
         );
 
         $context = [

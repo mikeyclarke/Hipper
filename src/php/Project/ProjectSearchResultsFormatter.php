@@ -37,7 +37,7 @@ class ProjectSearchResultsFormatter
                         self::ROUTE_NAME,
                         [
                             'subdomain' => $organization->getSubdomain(),
-                            'project_url_id' => $result['url_id'],
+                            'project_url_slug' => $result['url_slug'],
                         ]
                     ),
                     'type' => 'project',

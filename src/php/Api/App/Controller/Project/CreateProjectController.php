@@ -41,7 +41,7 @@ class CreateProjectController
             'project_url' => $this->router->generate(
                 self::PROJECT_ROUTE_NAME,
                 [
-                    'project_url_id' => $projectModel->getUrlId(),
+                    'project_url_slug' => $projectModel->getUrlSlug(),
                     'subdomain' => $organization->getSubdomain(),
                 ]
             ),

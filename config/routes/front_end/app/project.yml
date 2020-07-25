@@ -9,72 +9,72 @@ project.create:
     controller: Hipper\FrontEnd\App\Controller\Project\CreateProjectController::getAction
 
 project.show:
-    path: /projects/{project_url_id}
+    path: /projects/{project_url_slug}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\ProjectController::getAction
     defaults:
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before
 
 project.docs.list:
-    path: /projects/{project_url_id}/docs
+    path: /projects/{project_url_slug}/docs
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\ProjectDocsController::getAction
     defaults:
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before
 
 project.topic.create:
-    path: /projects/{project_url_id}/docs/new-topic
+    path: /projects/{project_url_slug}/docs/new-topic
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Topic\CreateTopicController::getAction
     defaults:
         knowledgebase_type: 'project'
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before
 
 project.doc.create:
-    path: /projects/{project_url_id}/docs/new
+    path: /projects/{project_url_slug}/docs/new
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\CreateDocumentController::getAction
     defaults:
         knowledgebase_type: 'project'
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before
 
 project.doc.edit:
-    path: /projects/{project_url_id}/docs/edit/{path}
+    path: /projects/{project_url_slug}/docs/edit/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\EditDocumentController::getAction
     defaults:
         knowledgebase_type: 'project'
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before
             - knowledgebase_routing_middleware:before
     requirements:
         path: '.+'
 
 project.doc.export:
-    path: /projects/{project_url_id}/docs/export/{path}
+    path: /projects/{project_url_slug}/docs/export/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Document\ExportDocumentController::getAction
     defaults:
         knowledgebase_type: 'project'
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before
             - knowledgebase_routing_middleware:before
     requirements:
         path: '.+'
 
 project.doc.show:
-    path: /projects/{project_url_id}/docs/{path}
+    path: /projects/{project_url_slug}/docs/{path}
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Knowledgebase\DocumentOrTopicControllerRouter::route
     defaults:
         knowledgebase_type: 'project'
         action: 'getAction'
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before
             - knowledgebase_routing_middleware:before
         _after_middlewares:
             - knowledgebase_entry_view_middleware:after
@@ -82,25 +82,25 @@ project.doc.show:
         path: '.+'
 
 project.search:
-    path: /projects/{project_url_id}/search
+    path: /projects/{project_url_slug}/search
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\ProjectSearchController::getAction
     defaults:
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before
 
 project.members.list:
-    path: /projects/{project_url_id}/members
+    path: /projects/{project_url_slug}/members
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\ProjectMembersController::getAction
     defaults:
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before
 
 project.members.search:
-    path: /projects/{project_url_id}/search/members
+    path: /projects/{project_url_slug}/search/members
     methods: [GET]
     controller: Hipper\FrontEnd\App\Controller\Project\ProjectMembersSearchController::getAction
     defaults:
         _before_middlewares:
-            - project_model_from_url_id_middleware:before
+            - project_model_from_url_slug_middleware:before

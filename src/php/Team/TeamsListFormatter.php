@@ -35,7 +35,7 @@ class TeamsListFormatter
                         self::TEAM_ROUTE_NAME,
                         [
                             'subdomain' => $organization->getSubdomain(),
-                            'team_url_id' => $team['url_id'],
+                            'team_url_slug' => $team['url_slug'],
                         ]
                     ),
                 ];

@@ -69,13 +69,13 @@ class KnowledgebaseBreadcrumbsFormatter
         if ($knowledgebaseOwner instanceof TeamModel) {
             $display = sprintf('%s team docs', $knowledgebaseOwner->getName());
             $routeName = self::LIST_TEAM_DOCS_ROUTE_NAME;
-            $routeParams['team_url_id'] = $knowledgebaseOwner->getUrlId();
+            $routeParams['team_url_slug'] = $knowledgebaseOwner->getUrlSlug();
         }
 
         if ($knowledgebaseOwner instanceof ProjectModel) {
             $display = sprintf('%s project docs', $knowledgebaseOwner->getName());
             $routeName = self::LIST_PROJECT_DOCS_ROUTE_NAME;
-            $routeParams['project_url_id'] = $knowledgebaseOwner->getUrlId();
+            $routeParams['project_url_slug'] = $knowledgebaseOwner->getUrlSlug();
         }
 
         if ($knowledgebaseOwner instanceof OrganizationModel) {

@@ -82,7 +82,7 @@ class UpdateTopicControllerTest extends TestCase
             'organization_id' => $this->organization->getId(),
         ]);
         $knowledgebaseOwner = TeamModel::createFromArray([
-            'url_id' => 'foo',
+            'url_slug' => 'foo',
         ]);
         $route = new KnowledgebaseRouteModel;
         $breadcrumbsResult = ['breadcrumbs'];

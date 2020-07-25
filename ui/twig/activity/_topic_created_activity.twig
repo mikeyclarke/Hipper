@@ -4,13 +4,13 @@
     {% if activity.properties.knowledgebase_owner_type is same as('team') %}
         {% set team_route = path('front_end.app.team.show', {
             subdomain: organization.subdomain,
-            team_url_id: activity.properties.knowledgebase_owner_url_id,
+            team_url_slug: activity.properties.knowledgebase_owner_url_slug,
         }) %}
         <a href="{{ activity.actor.route }}">{{ activity.actor.name }}</a> created a new topic in the <a href="{{ team_route }}">{{ activity.properties.knowledgebase_owner_name }}</a> team
     {% elseif activity.properties.knowledgebase_owner_type is same as('project') %}
         {% set project_route = path('front_end.app.project.show', {
             subdomain: organization.subdomain,
-            project_url_id: activity.properties.knowledgebase_owner_url_id,
+            project_url_slug: activity.properties.knowledgebase_owner_url_slug,
         }) %}
         <a href="{{ activity.actor.route }}">{{ activity.actor.name }}</a> created a new topic in the <a href="{{ project_route }}">{{ activity.properties.knowledgebase_owner_name }}</a> project
     {% else %}
@@ -22,7 +22,7 @@
     {% if activity.properties.knowledgebase_owner_type is same as('team') %}
         {% set topic_route = path('front_end.app.team.doc.show', {
             subdomain: organization.subdomain,
-            team_url_id: activity.properties.knowledgebase_owner_url_id,
+            team_url_slug: activity.properties.knowledgebase_owner_url_slug,
             path: activity.properties.topic_route ~ '~' ~ activity.properties.topic_url_id,
         }) %}
         {% include '_mini_card.twig' with {
@@ -36,7 +36,7 @@
     {% elseif activity.properties.knowledgebase_owner_type is same as('project') %}
         {% set topic_route = path('front_end.app.project.doc.show', {
             subdomain: organization.subdomain,
-            project_url_id: activity.properties.knowledgebase_owner_url_id,
+            project_url_slug: activity.properties.knowledgebase_owner_url_slug,
             path: activity.properties.topic_route ~ '~' ~ activity.properties.topic_url_id,
         }) %}
         {% include '_mini_card.twig' with {

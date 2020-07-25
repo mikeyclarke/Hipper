@@ -64,7 +64,7 @@ SELECT *
 FROM (
     SELECT
 		name,
-		url_id,
+		url_slug,
 		knowledgebase_id,
 		'team' AS entity
     FROM team
@@ -74,7 +74,7 @@ FROM (
 
     SELECT
 		name,
-		url_id,
+		url_slug,
 		knowledgebase_id,
 		'project' AS entity
     FROM project

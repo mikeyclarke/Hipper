@@ -59,22 +59,22 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
         },
 
         team_search: {
-            path: '/teams/:team_url_id/search',
+            path: '/teams/:team_url_slug/search',
             controller: (): any[] => [bottle.container.searchController, 'start'],
         },
 
         team_members_search: {
-            path: '/teams/:team_url_id/search/members',
+            path: '/teams/:team_url_slug/search/members',
             controller: (): any[] => [bottle.container.searchController, 'start'],
         },
 
         project_search: {
-            path: '/projects/:project_url_id/search',
+            path: '/projects/:project_url_slug/search',
             controller: (): any[] => [bottle.container.searchController, 'start'],
         },
 
         project_members_search: {
-            path: '/projects/:project_url_id/search/members',
+            path: '/projects/:project_url_slug/search/members',
             controller: (): any[] => [bottle.container.searchController, 'start'],
         },
 
@@ -84,7 +84,7 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
         },
 
         create_team_doc: {
-            path: '/teams/:team_url_id/docs/new',
+            path: '/teams/:team_url_slug/docs/new',
             controller: (): any[] => [bottle.container.createDocumentController, 'start'],
         },
 
@@ -94,27 +94,27 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
         },
 
         create_project_doc: {
-            path: '/projects/:project_url_id/docs/new',
+            path: '/projects/:project_url_slug/docs/new',
             controller: (): any[] => [bottle.container.createDocumentController, 'start'],
         },
 
         create_project_topic: {
-            path: '/projects/:project_url_id/docs/new-topic',
+            path: '/projects/:project_url_slug/docs/new-topic',
             controller: (): any[] => [bottle.container.createTopicController, 'start'],
         },
 
         create_team_topic: {
-            path: '/teams/:team_url_id/docs/new-topic',
+            path: '/teams/:team_url_slug/docs/new-topic',
             controller: (): any[] => [bottle.container.createTopicController, 'start'],
         },
 
         edit_project_doc: {
-            path: '/projects/:project_url_id/docs/edit/:doc_route(.+)',
+            path: '/projects/:project_url_slug/docs/edit/:doc_route(.+)',
             controller: (): any[] => [bottle.container.editDocumentController, 'start'],
         },
 
         edit_team_doc: {
-            path: '/teams/:team_url_id/docs/edit/:doc_route(.+)',
+            path: '/teams/:team_url_slug/docs/edit/:doc_route(.+)',
             controller: (): any[] => [bottle.container.editDocumentController, 'start'],
         },
 
@@ -124,12 +124,12 @@ export default function appRoutes(bottle: Bottle): Record<string, RouteDefinitio
         },
 
         show_team_knowledgebase_entry: {
-            path: '/teams/:team_url_id/docs/:doc_route(.+)',
+            path: '/teams/:team_url_slug/docs/:doc_route(.+)',
             controller: (): any[] => [bottle.container.documentOrTopicControllerRouter, 'route'],
         },
 
         show_project_knowledgebase_entry: {
-            path: '/projects/:project_url_id/docs/:doc_route(.+)',
+            path: '/projects/:project_url_slug/docs/:doc_route(.+)',
             controller: (): any[] => [bottle.container.documentOrTopicControllerRouter, 'route'],
         },
     };

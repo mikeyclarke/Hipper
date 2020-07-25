@@ -34,7 +34,7 @@ class ProjectsListFormatter
                     'route' => $this->router->generate(
                         self::PROJECT_ROUTE_NAME,
                         [
-                            'project_url_id' => $project['url_id'],
+                            'project_url_slug' => $project['url_slug'],
                             'subdomain' => $organization->getSubdomain(),
                         ]
                     ),

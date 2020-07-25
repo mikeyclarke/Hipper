@@ -116,11 +116,11 @@ class UpdateTopicController
         switch ($class) {
             case TeamModel::class:
                 $routeName = self::CREATE_TEAM_DOC_ROUTE_NAME;
-                $routeParams = array_merge($parameters, ['team_url_id' => $knowledgebaseOwner->getUrlId()]);
+                $routeParams = array_merge($parameters, ['team_url_slug' => $knowledgebaseOwner->getUrlSlug()]);
                 break;
             case ProjectModel::class:
                 $routeName = self::CREATE_PROJECT_DOC_ROUTE_NAME;
-                $routeParams = array_merge($parameters, ['project_url_id' => $knowledgebaseOwner->getUrlId()]);
+                $routeParams = array_merge($parameters, ['project_url_slug' => $knowledgebaseOwner->getUrlSlug()]);
                 break;
             case OrganizationModel::class:
                 $routeName = self::CREATE_ORGANIZATION_DOC_ROUTE_NAME;
@@ -147,11 +147,11 @@ class UpdateTopicController
         switch ($class) {
             case TeamModel::class:
                 $routeName = self::CREATE_TEAM_TOPIC_ROUTE_NAME;
-                $routeParams = array_merge($parameters, ['team_url_id' => $knowledgebaseOwner->getUrlId()]);
+                $routeParams = array_merge($parameters, ['team_url_slug' => $knowledgebaseOwner->getUrlSlug()]);
                 break;
             case ProjectModel::class:
                 $routeName = self::CREATE_PROJECT_TOPIC_ROUTE_NAME;
-                $routeParams = array_merge($parameters, ['project_url_id' => $knowledgebaseOwner->getUrlId()]);
+                $routeParams = array_merge($parameters, ['project_url_slug' => $knowledgebaseOwner->getUrlSlug()]);
                 break;
             case OrganizationModel::class:
                 $routeName = self::CREATE_ORGANIZATION_TOPIC_ROUTE_NAME;

@@ -64,20 +64,20 @@ class TopicController
         switch ($knowledgebaseType) {
             case 'team':
                 $knowledgebaseOwner = $request->attributes->get('team');
-                $teamUrlId = $knowledgebaseOwner->getUrlId();
+                $teamUrlSlug = $knowledgebaseOwner->getUrlSlug();
                 $createDocRoute = $this->router->generate(self::CREATE_TEAM_DOC_ROUTE_NAME, [
                     'subdomain' => $subdomain,
-                    'team_url_id' => $teamUrlId,
+                    'team_url_slug' => $teamUrlSlug,
                     'in' => $topic->getId(),
                 ]);
                 $createTopicRoute = $this->router->generate(self::CREATE_TEAM_TOPIC_ROUTE_NAME, [
                     'subdomain' => $subdomain,
-                    'team_url_id' => $teamUrlId,
+                    'team_url_slug' => $teamUrlSlug,
                     'in' => $topic->getId(),
                     'return_to' => $request->getRequestUri(),
                 ]);
                 $showDocRouteName = KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME;
-                $showDocRouteParams = ['team_url_id' => $teamUrlId];
+                $showDocRouteParams = ['team_url_slug' => $teamUrlSlug];
                 $twigTemplate = 'team/team_topic.twig';
 
                 $context['current_user_is_in_team'] = $request->attributes->get('current_user_is_in_team');
@@ -86,20 +86,20 @@ class TopicController
                 break;
             case 'project':
                 $knowledgebaseOwner = $request->attributes->get('project');
-                $projectUrlId = $knowledgebaseOwner->getUrlId();
+                $projectUrlSlug = $knowledgebaseOwner->getUrlSlug();
                 $createDocRoute = $this->router->generate(self::CREATE_PROJECT_DOC_ROUTE_NAME, [
                     'subdomain' => $subdomain,
-                    'project_url_id' => $projectUrlId,
+                    'project_url_slug' => $projectUrlSlug,
                     'in' => $topic->getId(),
                 ]);
                 $createTopicRoute = $this->router->generate(self::CREATE_PROJECT_TOPIC_ROUTE_NAME, [
                     'subdomain' => $subdomain,
-                    'project_url_id' => $projectUrlId,
+                    'project_url_slug' => $projectUrlSlug,
                     'in' => $topic->getId(),
                     'return_to' => $request->getRequestUri(),
                 ]);
                 $showDocRouteName = KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME;
-                $showDocRouteParams = ['project_url_id' => $knowledgebaseOwner->getUrlId()];
+                $showDocRouteParams = ['project_url_slug' => $knowledgebaseOwner->getUrlSlug()];
                 $twigTemplate = 'project/project_topic.twig';
 
                 $context['current_user_is_in_project'] = $request->attributes->get('current_user_is_in_project');

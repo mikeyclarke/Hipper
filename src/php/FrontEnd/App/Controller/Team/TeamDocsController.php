@@ -43,14 +43,14 @@ class TeamDocsController
         $team = $request->attributes->get('team');
         $currentUserIsInTeam = $request->attributes->get('current_user_is_in_team');
         $subdomain = $organization->getSubdomain();
-        $teamUrlId = $team->getUrlId();
+        $teamUrlSlug = $team->getUrlSlug();
 
         $createDocRoute = $this->router->generate(self::CREATE_DOC_ROUTE_NAME, [
-            'team_url_id' => $teamUrlId,
+            'team_url_slug' => $teamUrlSlug,
             'subdomain' => $subdomain,
         ]);
         $createTopicRoute = $this->router->generate(self::CREATE_TOPIC_ROUTE_NAME, [
-            'team_url_id' => $teamUrlId,
+            'team_url_slug' => $teamUrlSlug,
             'subdomain' => $subdomain,
             'return_to' => $request->getRequestUri(),
         ]);
@@ -68,7 +68,7 @@ class TeamDocsController
             $topics,
             $timeZone,
             KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME,
-            ['team_url_id' => $teamUrlId]
+            ['team_url_slug' => $teamUrlSlug]
         );
 
         $context = [

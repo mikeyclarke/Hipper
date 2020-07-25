@@ -31,7 +31,7 @@ class TeamSubscriber implements EventSubscriberInterface
         $team = $event->getTeam();
         $properties = [
             'team_name' => $team->getName(),
-            'team_url_id' => $team->getUrlId(),
+            'team_url_slug' => $team->getUrlSlug(),
         ];
 
         $this->activityCreator->create(

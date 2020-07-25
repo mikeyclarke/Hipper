@@ -82,7 +82,7 @@ class ProjectCreatorTest extends TestCase
             $knowledgebaseResult['id'],
             $this->person->getOrganizationId(),
         ];
-        $projectResult = ['id' => $projectId, 'name' => $parameters['name'], 'url_id' => $projectSlug];
+        $projectResult = ['id' => $projectId, 'name' => $parameters['name'], 'url_slug' => $projectSlug];
         $personToProjectMapId = 'map-uuid';
 
         $this->createProjectValidatorExpectation([$parameters, $this->person->getOrganizationId(), true]);

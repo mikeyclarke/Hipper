@@ -39,7 +39,7 @@ class DocumentSubscriber implements EventSubscriberInterface
         $route = $event->getRoute();
 
         $knowledgebaseOwnerName = $knowledgebaseOwner->getName();
-        $knowledgebaseOwnerUrlId = null;
+        $knowledgebaseOwnerUrlSlug = null;
         $teamId = null;
         $projectId = null;
 
@@ -48,12 +48,12 @@ class DocumentSubscriber implements EventSubscriberInterface
             case TeamModel::class:
                 $knowledgebaseOwnerType = 'team';
                 $teamId = $knowledgebaseOwner->getId();
-                $knowledgebaseOwnerUrlId = $knowledgebaseOwner->getUrlId();
+                $knowledgebaseOwnerUrlSlug = $knowledgebaseOwner->getUrlSlug();
                 break;
             case ProjectModel::class:
                 $knowledgebaseOwnerType = 'project';
                 $projectId = $knowledgebaseOwner->getId();
-                $knowledgebaseOwnerUrlId = $knowledgebaseOwner->getUrlId();
+                $knowledgebaseOwnerUrlSlug = $knowledgebaseOwner->getUrlSlug();
                 break;
             case OrganizationModel::class:
                 $knowledgebaseOwnerType = 'organization';
@@ -65,7 +65,7 @@ class DocumentSubscriber implements EventSubscriberInterface
         $properties = [
             'knowledgebase_owner_type' => $knowledgebaseOwnerType,
             'knowledgebase_owner_name' => $knowledgebaseOwnerName,
-            'knowledgebase_owner_url_id' => $knowledgebaseOwnerUrlId,
+            'knowledgebase_owner_url_slug' => $knowledgebaseOwnerUrlSlug,
             'document_name' => $document->getName(),
             'document_description' => $this->getDocumentDescription($document),
             'document_url_id' => $route->getUrlId(),

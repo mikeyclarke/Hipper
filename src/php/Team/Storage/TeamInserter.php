@@ -11,7 +11,7 @@ class TeamInserter
         'id',
         'name',
         'description',
-        'url_id',
+        'url_slug',
         'knowledgebase_id',
         'organization_id',
         'created',
@@ -30,19 +30,19 @@ class TeamInserter
         string $id,
         string $name,
         string $description,
-        string $urlId,
+        string $urlSlug,
         string $knowledgebaseId,
         string $organizationId
     ): array {
         $fieldsToReturn = implode(', ', self::FIELDS_TO_RETURN);
-        $sql = "INSERT INTO team (id, name, description, url_id, knowledgebase_id, organization_id) " .
-            "VALUES (:id, :name, :description, :url_id, :knowledgebase_id, :organization_id) " .
+        $sql = "INSERT INTO team (id, name, description, url_slug, knowledgebase_id, organization_id) " .
+            "VALUES (:id, :name, :description, :url_slug, :knowledgebase_id, :organization_id) " .
             "RETURNING {$fieldsToReturn}";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $id);
         $stmt->bindValue('name', $name);
         $stmt->bindValue('description', $description);
-        $stmt->bindValue('url_id', $urlId);
+        $stmt->bindValue('url_slug', $urlSlug);
         $stmt->bindValue('knowledgebase_id', $knowledgebaseId);
         $stmt->bindValue('organization_id', $organizationId);
         $stmt->execute();

@@ -102,14 +102,14 @@ class KnowledgebaseSearchResultsFormatter
         if ($knowledgebaseOwner instanceof ProjectModel) {
             return [
                 KnowledgebaseRouteUrlGenerator::SHOW_PROJECT_DOC_ROUTE_NAME,
-                ['project_url_id' => $knowledgebaseOwner->getUrlId()]
+                ['project_url_slug' => $knowledgebaseOwner->getUrlSlug()]
             ];
         }
 
         if ($knowledgebaseOwner instanceof TeamModel) {
             return [
                 KnowledgebaseRouteUrlGenerator::SHOW_TEAM_DOC_ROUTE_NAME,
-                ['team_url_id' => $knowledgebaseOwner->getUrlId()]
+                ['team_url_slug' => $knowledgebaseOwner->getUrlSlug()]
             ];
         }
 

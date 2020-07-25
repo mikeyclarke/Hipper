@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment as Twig;
 
-class TeamModelFromUrlIdMiddleware
+class TeamModelFromUrlSlugMiddleware
 {
     const SEARCH_ROUTE = 'front_end.app.team.search';
 
@@ -33,8 +33,8 @@ class TeamModelFromUrlIdMiddleware
         $organization = $request->attributes->get('organization');
         $currentUser = $request->attributes->get('current_user');
 
-        $urlId = $request->attributes->get('team_url_id');
-        $result = $this->teamRepository->findByUrlId($organization->getId(), $urlId);
+        $urlSlug = $request->attributes->get('team_url_slug');
+        $result = $this->teamRepository->findByUrlSlug($organization->getId(), $urlSlug);
         if (null === $result) {
             throw new NotFoundHttpException;
         }
@@ -52,7 +52,7 @@ class TeamModelFromUrlIdMiddleware
                 self::SEARCH_ROUTE,
                 [
                     'subdomain' => $organization->getSubdomain(),
-                    'team_url_id' => $urlId,
+                    'team_url_slug' => $urlSlug,
                 ]
             )
         );

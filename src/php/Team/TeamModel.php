@@ -13,7 +13,7 @@ final class TeamModel implements KnowledgebaseOwnerModelInterface
         'id' => 'id',
         'name' => 'name',
         'description' => 'description',
-        'url_id' => 'urlId',
+        'url_slug' => 'urlSlug',
         'knowledgebase_id' => 'knowledgebaseId',
         'organization_id' => 'organizationId',
         'created' => 'created',
@@ -23,7 +23,7 @@ final class TeamModel implements KnowledgebaseOwnerModelInterface
     private $id;
     private $name;
     private $description;
-    private $urlId;
+    private $urlSlug;
     private $knowledgebaseId;
     private $organizationId;
     private $created;
@@ -66,14 +66,14 @@ final class TeamModel implements KnowledgebaseOwnerModelInterface
         return $this->description;
     }
 
-    public function setUrlId(string $urlId): void
+    public function setUrlSlug(string $urlSlug): void
     {
-        $this->urlId = $urlId;
+        $this->urlSlug = $urlSlug;
     }
 
-    public function getUrlId(): string
+    public function getUrlSlug(): string
     {
-        return $this->urlId;
+        return $this->urlSlug;
     }
 
     public function setKnowledgebaseId(string $knowledgebaseId): void

@@ -10,8 +10,8 @@
                 }) :
                 path('front_end.app.' ~ search_context_type ~ '.search', {
                     subdomain: organization.subdomain,
-                    project_url_id: (project is defined) ? project.urlId : null,
-                    team_url_id: (team is defined) ? team.urlId : null,
+                    project_url_slug: (project is defined) ? project.urlSlug : null,
+                    team_url_slug: (team is defined) ? team.urlSlug : null,
                     q: search_query,
                     return_to: back_link,
                 }),
@@ -29,8 +29,8 @@
                 }) :
                 path('front_end.app.' ~ search_context_type ~ '.members.search', {
                     subdomain: organization.subdomain,
-                    project_url_id: (project is defined) ? project.urlId : null,
-                    team_url_id: (team is defined) ? team.urlId : null,
+                    project_url_slug: (project is defined) ? project.urlSlug : null,
+                    team_url_slug: (team is defined) ? team.urlSlug : null,
                     q: search_query,
                     return_to: back_link,
                 }),

@@ -69,7 +69,7 @@ class TopicSubscriberTest extends TestCase
         $properties = [
             'knowledgebase_owner_type' => 'organization',
             'knowledgebase_owner_name' => $organizationName,
-            'knowledgebase_owner_url_id' => null,
+            'knowledgebase_owner_url_slug' => null,
             'topic_name' => $topicName,
             'topic_description' => 'This topic doesn’t have a description yet',
             'topic_url_id' => $topicUrlId,
@@ -95,7 +95,7 @@ class TopicSubscriberTest extends TestCase
         $topicUrlSlug = 'coding-standards';
         $teamId = 'team-uuid';
         $teamName = 'Engineering';
-        $teamUrlId = 'engineering';
+        $teamUrlSlug = 'engineering';
 
         $topic = TopicModel::createFromArray([
             'id' => $topicId,
@@ -107,7 +107,7 @@ class TopicSubscriberTest extends TestCase
         $team = TeamModel::createFromArray([
             'id' => $teamId,
             'name' => $teamName,
-            'url_id' => $teamUrlId,
+            'url_slug' => $teamUrlSlug,
         ]);
         $route = KnowledgebaseRouteModel::createFromArray([
             'route' => $topicUrlSlug,
@@ -125,7 +125,7 @@ class TopicSubscriberTest extends TestCase
         $properties = [
             'knowledgebase_owner_type' => 'team',
             'knowledgebase_owner_name' => $teamName,
-            'knowledgebase_owner_url_id' => $teamUrlId,
+            'knowledgebase_owner_url_slug' => $teamUrlSlug,
             'topic_name' => $topicName,
             'topic_description' => $topicDescription,
             'topic_url_id' => $topicUrlId,
@@ -151,7 +151,7 @@ class TopicSubscriberTest extends TestCase
         $topicUrlSlug = 'branding-guidelines';
         $projectId = 'project-uuid';
         $projectName = 'Marketing website';
-        $projectUrlId = 'marketing-website';
+        $projectUrlSlug = 'marketing-website';
 
         $topic = TopicModel::createFromArray([
             'id' => $topicId,
@@ -163,7 +163,7 @@ class TopicSubscriberTest extends TestCase
         $project = ProjectModel::createFromArray([
             'id' => $projectId,
             'name' => $projectName,
-            'url_id' => $projectUrlId,
+            'url_slug' => $projectUrlSlug,
         ]);
         $route = KnowledgebaseRouteModel::createFromArray([
             'route' => $topicUrlSlug,
@@ -181,7 +181,7 @@ class TopicSubscriberTest extends TestCase
         $properties = [
             'knowledgebase_owner_type' => 'project',
             'knowledgebase_owner_name' => $projectName,
-            'knowledgebase_owner_url_id' => $projectUrlId,
+            'knowledgebase_owner_url_slug' => $projectUrlSlug,
             'topic_name' => $topicName,
             'topic_description' => $topicDescription,
             'topic_url_id' => $topicUrlId,

@@ -71,7 +71,7 @@ class DocumentSubscriberTest extends TestCase
         $properties = [
             'knowledgebase_owner_type' => 'organization',
             'knowledgebase_owner_name' => $organizationName,
-            'knowledgebase_owner_url_id' => null,
+            'knowledgebase_owner_url_slug' => null,
             'document_name' => $documentName,
             'document_description' => 'This document doesn’t have a description yet',
             'document_url_id' => $documentUrlId,
@@ -98,7 +98,7 @@ class DocumentSubscriberTest extends TestCase
         $documentUrlSlug = 'welcome-to-engineering';
         $teamId = 'team-uuid';
         $teamName = 'Engineering';
-        $teamUrlId = 'engineering';
+        $teamUrlSlug = 'engineering';
 
         $document = DocumentModel::createFromArray([
             'id' => $documentId,
@@ -111,7 +111,7 @@ class DocumentSubscriberTest extends TestCase
         $team = TeamModel::createFromArray([
             'id' => $teamId,
             'name' => $teamName,
-            'url_id' => $teamUrlId,
+            'url_slug' => $teamUrlSlug,
         ]);
         $route = KnowledgebaseRouteModel::createFromArray([
             'route' => $documentUrlSlug,
@@ -129,7 +129,7 @@ class DocumentSubscriberTest extends TestCase
         $properties = [
             'knowledgebase_owner_type' => 'team',
             'knowledgebase_owner_name' => $teamName,
-            'knowledgebase_owner_url_id' => $teamUrlId,
+            'knowledgebase_owner_url_slug' => $teamUrlSlug,
             'document_name' => $documentName,
             'document_description' => $documentDeducedDescription,
             'document_url_id' => $documentUrlId,
@@ -156,7 +156,7 @@ class DocumentSubscriberTest extends TestCase
         $documentUrlSlug = 'acme-starter-guide';
         $projectId = 'project-uuid';
         $projectName = 'HR docs';
-        $projectUrlId = 'hr-docs';
+        $projectUrlSlug = 'hr-docs';
 
         $document = DocumentModel::createFromArray([
             'id' => $documentId,
@@ -169,7 +169,7 @@ class DocumentSubscriberTest extends TestCase
         $project = ProjectModel::createFromArray([
             'id' => $projectId,
             'name' => $projectName,
-            'url_id' => $projectUrlId,
+            'url_slug' => $projectUrlSlug,
         ]);
         $route = KnowledgebaseRouteModel::createFromArray([
             'route' => $documentUrlSlug,
@@ -187,7 +187,7 @@ class DocumentSubscriberTest extends TestCase
         $properties = [
             'knowledgebase_owner_type' => 'project',
             'knowledgebase_owner_name' => $projectName,
-            'knowledgebase_owner_url_id' => $projectUrlId,
+            'knowledgebase_owner_url_slug' => $projectUrlSlug,
             'document_name' => $documentName,
             'document_description' => $documentDescription,
             'document_url_id' => $documentUrlId,

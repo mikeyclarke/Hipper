@@ -120,7 +120,7 @@ final class OrganizationModel implements KnowledgebaseOwnerModelInterface
         return $this->updated;
     }
 
-    public function getUrlId(): ?string
+    public function getUrlSlug(): ?string
     {
         return null;
     }

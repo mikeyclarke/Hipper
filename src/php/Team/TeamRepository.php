@@ -14,7 +14,7 @@ class TeamRepository
         'id',
         'name',
         'description',
-        'url_id',
+        'url_slug',
         'knowledgebase_id',
         'organization_id',
         'created',
@@ -78,18 +78,18 @@ class TeamRepository
         return $result;
     }
 
-    public function findByUrlId(string $organizationId, string $urlId): ?array
+    public function findByUrlSlug(string $organizationId, string $urlSlug): ?array
     {
         $qb = $this->connection->createQueryBuilder();
 
         $qb->select(self::DEFAULT_FIELDS)
             ->from('team')
             ->andWhere('organization_id = :organization_id')
-            ->andWhere('url_id = :url_id');
+            ->andWhere('url_slug = :url_slug');
 
         $qb->setParameters([
             'organization_id' => $organizationId,
-            'url_id' => $urlId,
+            'url_slug' => $urlSlug,
         ]);
 
         $stmt = $qb->execute();
@@ -134,7 +134,7 @@ class TeamRepository
             'team.id',
             'team.name',
             'team.description',
-            'team.url_id',
+            'team.url_slug',
             'team.created',
         ];
 

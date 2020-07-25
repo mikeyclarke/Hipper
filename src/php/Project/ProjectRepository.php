@@ -14,7 +14,7 @@ class ProjectRepository
         'id',
         'name',
         'description',
-        'url_id',
+        'url_slug',
         'knowledgebase_id',
         'organization_id',
         'created',
@@ -78,18 +78,18 @@ class ProjectRepository
         return $result;
     }
 
-    public function findByUrlId(string $urlId, string $organizationId): ?array
+    public function findByUrlSlug(string $urlSlug, string $organizationId): ?array
     {
         $qb = $this->connection->createQueryBuilder();
 
         $qb->select(self::DEFAULT_FIELDS)
             ->from('project')
             ->andWhere('organization_id = :organization_id')
-            ->andWhere('url_id = :url_id');
+            ->andWhere('url_slug = :url_slug');
 
         $qb->setParameters([
             'organization_id' => $organizationId,
-            'url_id' => $urlId,
+            'url_slug' => $urlSlug,
         ]);
 
         $stmt = $qb->execute();
@@ -134,7 +134,7 @@ class ProjectRepository
             'project.id',
             'project.name',
             'project.description',
-            'project.url_id',
+            'project.url_slug',
             'project.created',
         ];
 

@@ -22,7 +22,7 @@ class ApprovedEmailDomain extends Constraint
         if (!$this->organization instanceof OrganizationModel) {
             throw new MissingOptionsException(
                 sprintf('"organization" must be given for constraint %s', __CLASS__),
-                'organization'
+                ['organization']
             );
         }
     }

@@ -50,7 +50,7 @@ class GenerateVhostsCommand extends Command
             null,
             InputOption::VALUE_REQUIRED,
             'Path to the hipper codebase, e.g. /var/hipper',
-            realpath(__DIR__ . '/../../../')
+            realpath(__DIR__ . '/../../../') ?: null
         );
         $this->addOption('fastcgi-pass', null, InputOption::VALUE_REQUIRED, 'fastcgi_pass', '127.0.0.1:9000');
         $this->addOption(

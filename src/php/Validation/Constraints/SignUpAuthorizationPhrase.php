@@ -20,7 +20,7 @@ class SignUpAuthorizationPhrase extends Constraint
         if (!$this->authorizationRequest instanceof SignUpAuthorizationRequestModel) {
             throw new MissingOptionsException(
                 sprintf('"authorizationRequest" must be given for constraint %s', __CLASS__),
-                'authorizationRequest'
+                ['authorizationRequest']
             );
         }
     }

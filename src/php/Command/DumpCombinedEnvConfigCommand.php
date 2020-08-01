@@ -52,7 +52,7 @@ EOF;
         putenv('SYMFONY_DOTENV_VARS=' . $_SERVER['SYMFONY_DOTENV_VARS']);
 
         try {
-            $dotenv = new Dotenv(false);
+            $dotenv = new Dotenv();
             $dotenv->loadEnv($path);
             unset($_ENV['SYMFONY_DOTENV_VARS']);
             $vars = $_ENV;

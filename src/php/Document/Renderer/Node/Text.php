@@ -32,7 +32,7 @@ class Text implements NodeInterface
 
     public function toPlainTextString(string $textContent): string
     {
-        return null;
+        return '';
     }
 
     public function toMarkdownString(

@@ -133,7 +133,6 @@ export default class HttpClient {
         createErrorAlert();
     }
 
-
     private shouldRetryCsrfFailure(response: Response): boolean {
         if (!response.headers.has('X-CSRF-Reset')) {
             return false;

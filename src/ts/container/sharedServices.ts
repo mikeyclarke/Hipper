@@ -1,4 +1,4 @@
-import * as Bottle from 'bottlejs';
+import Bottle from 'bottlejs';
 import HttpClient from 'Http/HttpClient';
 import DocumentCookies from 'Cookie/DocumentCookies';
 import FormSubmitHelper from 'Helper/FormSubmitHelper';

@@ -1,4 +1,4 @@
-import * as Bottle from 'bottlejs';
+import Bottle from 'bottlejs';
 import JoinByInvitationController from 'App/Controller/Organization/Join/JoinByInvitationController';
 import JoinOrganizationController from 'App/Controller/Organization/Join/JoinOrganizationController';
 import LoginController from 'App/Controller/Organization/LoginController';

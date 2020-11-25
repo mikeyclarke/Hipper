@@ -16,7 +16,7 @@ rules:
     arrow-body-style: off
     arrow-parens: off
     class-methods-use-this: off
-    comma-dangle: [error, always-multiline]
+    comma-dangle: off
     func-names: off
     indent: off
     lines-between-class-members: off
@@ -32,6 +32,7 @@ rules:
     no-param-reassign: off
     no-restricted-globals: off
     no-restricted-syntax: off
+    no-shadow: off
     no-underscore-dangle: off
     object-curly-newline: off
     object-shorthand: off
@@ -59,6 +60,16 @@ rules:
     "@typescript-eslint/camelcase": off
     "@typescript-eslint/ban-types": off
     "@typescript-eslint/explicit-module-boundary-types": off
+    "@typescript-eslint/comma-dangle":
+        - error
+        - arrays: always-multiline
+          objects: always-multiline
+          imports: always-multiline
+          exports: always-multiline
+          enums: always-multiline
+          generics: always-multiline
+          tuples: always-multiline
+          functions: ignore
 
 settings:
     import/resolver:

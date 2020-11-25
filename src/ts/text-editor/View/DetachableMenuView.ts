@@ -1,15 +1,6 @@
 import { EditorView } from 'prosemirror-view';
 import timeout from 'Timeout/timeout';
 
-declare global {
-    interface Window {
-        visualViewport: {
-            height: number;
-            addEventListener: Function;
-        };
-    }
-}
-
 interface MenuOptions {
     detachable?: boolean;
     isDetached?: boolean;

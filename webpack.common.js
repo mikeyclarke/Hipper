@@ -17,7 +17,7 @@ module.exports = {
     },
     stats: {
         children: false,
-        maxModules: 0,
+        modulesSpace: 0,
     },
     plugins: [
         new CleanWebpackPlugin(),
@@ -48,6 +48,9 @@ module.exports = {
             path.resolve('./src/ts'),
             path.resolve('./node_modules'),
         ],
+        fallback: {
+            fs: false,
+        },
     },
     module: {
         rules: [
@@ -69,6 +72,9 @@ module.exports = {
                         loader: 'sass-loader',
                         options: {
                             webpackImporter: false,
+                            sassOptions: {
+                                includePaths: ['./ui/sass']
+                            },
                         },
                     },
                 ],
@@ -97,8 +103,5 @@ module.exports = {
     },
     optimization: {
         splitChunks: false,
-    },
-    node: {
-        fs: 'empty',
     },
 };

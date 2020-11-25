@@ -1,4 +1,4 @@
-import * as Bottle from 'bottlejs';
+import Bottle from 'bottlejs';
 import ContainerBuilder from 'ContainerBuilder';
 
 export default abstract class Kernel {

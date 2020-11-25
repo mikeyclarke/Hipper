@@ -5,7 +5,7 @@ import RouteCollectionParser from 'Routing/RouteCollectionParser';
 
 type RouteMatch = [
     Route,
-    Map<any, any> | null
+    Map<any, any> | null,
 ];
 
 export default class RouteMatcher {

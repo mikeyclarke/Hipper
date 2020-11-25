@@ -1,4 +1,4 @@
-import * as Bottle from 'bottlejs';
+import Bottle from 'bottlejs';
 import RouteDefinition from 'routes/route';
 
 export default function appRoutes(bottle: Bottle): Record<string, RouteDefinition> {

@@ -1,4 +1,4 @@
-import * as Bottle from 'bottlejs';
+import Bottle from 'bottlejs';
 import RouteDefinition from 'routes/route';
 import RouteCollection from 'Routing/RouteCollection';
 import Route from 'Routing/Route';

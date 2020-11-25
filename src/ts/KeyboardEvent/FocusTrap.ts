@@ -1,4 +1,4 @@
-import * as tabbable from 'tabbable';
+import { tabbable, FocusableElement } from 'tabbable';
 
 interface Options {
     treatArrowUpDownAsTabbing?: boolean;
@@ -11,7 +11,7 @@ const DEFAULT_OPTIONS: Options = {
 export default class FocusTrap {
     private containingElement: HTMLElement;
     private options: Options;
-    private tabbableElements: HTMLElement[];
+    private tabbableElements: FocusableElement[];
 
     constructor(
         containingElement: HTMLElement,

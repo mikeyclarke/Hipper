@@ -32,7 +32,8 @@ export default class Link implements MarkInterface {
             toDOM(node: ProseMirrorNode): (string | number | object)[] {
                 const { href, title, spellcheck } = node.attrs;
                 const rel = 'noopener noreferrer';
-                const htmlAttributes = { href, title, spellcheck, rel };
+                type HtmlAttributes = { href: string, title: string, spellcheck: string, rel?: string };
+                const htmlAttributes: HtmlAttributes = { href, title, spellcheck, rel };
 
                 try {
                     const url = new URL(href, window.location.href);

@@ -1,4 +1,4 @@
-import * as Bottle from 'bottlejs';
+import Bottle from 'bottlejs';
 import SignUpController from 'SignUpFlow/Controller/SignUpController';
 import VerifyEmailAddressController from 'SignUpFlow/Controller/VerifyEmailAddressController';
 import ChooseOrganizationUrlController from 'SignUpFlow/Controller/ChooseOrganizationUrlController';

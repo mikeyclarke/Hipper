@@ -4,11 +4,11 @@
 
 ### Installation
 
-- PHP 7.4 – `brew install php`
+- PHP 7.4 – `brew install php@7.4`
 - nginx with more headers and http2 modules
     - `brew tap denji/nginx`
     - `brew install --with-headers-more-module --with-http2 nginx-full`
-- PostgreSQL – `brew install postgresql`
+- PostgreSQL – `brew install postgresql@12`
 - Redis – `brew install redis`
 - Redis PHP extension – `pecl install redis`
 - mkcert – `brew install mkcert`
@@ -44,7 +44,7 @@
 - Nginx
     - Run `php bin/console app:generate-vhosts usehipper.test /usr/local/etc/nginx/servers /usr/local/etc/nginx/ssl/hipper`
 - Redis
-    - `/usr/local/etc/redis.conf` add `requirepass ''` and restart Redis
+    - `/usr/local/etc/redis.conf` add `requirepass '<YOUR_PASSWORD>'` and restart Redis; you’ll need to add this password to your `.env.local`
 
 ### Set up
 

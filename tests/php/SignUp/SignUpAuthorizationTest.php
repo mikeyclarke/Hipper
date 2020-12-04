@@ -5,10 +5,11 @@ namespace Hipper\Tests\SignUp;
 
 use Hipper\EmailAddressVerification\VerificationPhraseGenerator;
 use Hipper\IdGenerator\IdGenerator;
+use Hipper\Messenger\MessageBus;
+use Hipper\Messenger\Message\SignUpAuthorizationRequested;
 use Hipper\SignUp\SignUpAuthorization;
 use Hipper\SignUp\SignUpAuthorizationRequestModel;
 use Hipper\SignUp\Storage\SignUpAuthorizationRequestInserter;
-use Hipper\TransactionalEmail\VerifyEmailAddressEmail;
 use Hipper\Validation\Exception\ValidationException;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -22,26 +23,26 @@ class SignUpAuthorizationTest extends TestCase
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     private $idGenerator;
+    private $messageBus;
     private $inserter;
     private $validatorInterface;
     private $verificationPhraseGenerator;
-    private $verifyEmailAddressEmail;
     private $signUpAuthorization;
 
     public function setUp(): void
     {
         $this->idGenerator = m::mock(IdGenerator::class);
+        $this->messageBus = m::mock(MessageBus::class);
         $this->inserter = m::mock(SignUpAuthorizationRequestInserter::class);
         $this->validatorInterface = m::mock(ValidatorInterface::class);
         $this->verificationPhraseGenerator = m::mock(VerificationPhraseGenerator::class);
-        $this->verifyEmailAddressEmail = m::mock(VerifyEmailAddressEmail::class);
 
         $this->signUpAuthorization = new SignUpAuthorization(
             $this->idGenerator,
+            $this->messageBus,
             $this->inserter,
             $this->validatorInterface,
-            $this->verificationPhraseGenerator,
-            $this->verifyEmailAddressEmail
+            $this->verificationPhraseGenerator
         );
     }
 
@@ -70,7 +71,7 @@ class SignUpAuthorizationTest extends TestCase
             $organizationId,
             $organizationName
         ]);
-        $this->createVerifyEmailAddressEmailExpectation([$name, $emailAddress, $verificationPhrase]);
+        $this->createMessageBusExpectation([m::type(SignUpAuthorizationRequested::class)]);
 
         $result = $this->signUpAuthorization->request(
             $emailAddress,
@@ -114,7 +115,7 @@ class SignUpAuthorizationTest extends TestCase
             $organizationId,
             $organizationName
         ]);
-        $this->createVerifyEmailAddressEmailExpectation([$name, $emailAddress, $verificationPhrase]);
+        $this->createMessageBusExpectation([m::type(SignUpAuthorizationRequested::class)]);
 
         $result = $this->signUpAuthorization->request(
             $emailAddress,
@@ -186,10 +187,10 @@ class SignUpAuthorizationTest extends TestCase
             ->andReturn($result);
     }
 
-    private function createVerifyEmailAddressEmailExpectation($args)
+    private function createMessageBusExpectation($args)
     {
-        $this->verifyEmailAddressEmail
-            ->shouldReceive('send')
+        $this->messageBus
+            ->shouldReceive('dispatch')
             ->once()
             ->with(...$args);
     }

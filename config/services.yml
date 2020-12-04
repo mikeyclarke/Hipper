@@ -69,6 +69,10 @@ services:
         resource: '../src/php/Controller'
         tags: ['controller.service_arguments']
 
+    Hipper\Messenger\Message\:
+        resource: '../src/php/Messenger/Message/*'
+        autowire: false
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

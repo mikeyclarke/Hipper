@@ -10,11 +10,11 @@ use Hipper\Person\PersonModel;
 
 class BulkInvitationCreator
 {
-    private $bulkInvitationProcessor;
-    private $validator;
-    private $connection;
-    private $idGenerator;
-    private $inviteInserter;
+    private BulkInvitationProcessor $bulkInvitationProcessor;
+    private BulkInvitationValidator $validator;
+    private Connection $connection;
+    private IdGenerator $idGenerator;
+    private InviteInserter $inviteInserter;
 
     public function __construct(
         BulkInvitationProcessor $bulkInvitationProcessor,

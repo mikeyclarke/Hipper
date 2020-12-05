@@ -6,9 +6,10 @@ namespace Hipper\Tests\Invite;
 use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Invite\BulkInvitationCreator;
-use Hipper\Invite\BulkInvitationProcessor;
 use Hipper\Invite\BulkInvitationValidator;
 use Hipper\Invite\Storage\InviteInserter;
+use Hipper\Messenger\MessageBus;
+use Hipper\Messenger\Message\InvitationsCreated;
 use Hipper\Person\PersonModel;
 use Hipper\TransactionalEmail\BulkInvite;
 use Mockery as m;
@@ -18,27 +19,27 @@ class BulkInvitationCreatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    private $bulkInvitationProcessor;
     private $validator;
     private $connection;
     private $idGenerator;
     private $inviteInserter;
+    private $messageBus;
     private $creator;
 
     public function setUp(): void
     {
-        $this->bulkInvitationProcessor = m::mock(BulkInvitationProcessor::class);
         $this->validator = m::mock(BulkInvitationValidator::class);
         $this->connection = m::mock(Connection::class);
         $this->idGenerator = m::mock(IdGenerator::class);
         $this->inviteInserter = m::mock(InviteInserter::class);
+        $this->messageBus = m::mock(MessageBus::class);
 
         $this->creator = new BulkInvitationCreator(
-            $this->bulkInvitationProcessor,
             $this->validator,
             $this->connection,
             $this->idGenerator,
-            $this->inviteInserter
+            $this->inviteInserter,
+            $this->messageBus
         );
     }
 
@@ -72,12 +73,7 @@ class BulkInvitationCreatorTest extends TestCase
         $this->createInviteExpectations($person, $inviteIds[2], $input['email_invites'][2]);
 
         $this->createConnectionCommitExpectation();
-        $this->createBulkInvitationProcessorExpectation(
-            $person->getOrganizationId(),
-            $person->getId(),
-            $domain,
-            $inviteIds
-        );
+        $this->createMessageBusExpectation([m::type(InvitationsCreated::class)]);
 
         $this->creator->create($person, $domain, $input);
     }
@@ -114,12 +110,12 @@ class BulkInvitationCreatorTest extends TestCase
         $this->creator->create($person, $domain, $input);
     }
 
-    private function createBulkInvitationProcessorExpectation($organizationId, $personId, $domain, $inviteIds)
+    private function createMessageBusExpectation($args)
     {
-        $this->bulkInvitationProcessor
-            ->shouldReceive('processInvitations')
+        $this->messageBus
+            ->shouldReceive('dispatch')
             ->once()
-            ->with($organizationId, $personId, $domain, $inviteIds);
+            ->with(...$args);
     }
 
     private function createConnectionCommitExpectation()

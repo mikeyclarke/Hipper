@@ -6,28 +6,30 @@ namespace Hipper\Invite;
 use Doctrine\DBAL\Connection;
 use Hipper\IdGenerator\IdGenerator;
 use Hipper\Invite\Storage\InviteInserter;
+use Hipper\Messenger\MessageBus;
+use Hipper\Messenger\Message\InvitationsCreated;
 use Hipper\Person\PersonModel;
 
 class BulkInvitationCreator
 {
-    private BulkInvitationProcessor $bulkInvitationProcessor;
     private BulkInvitationValidator $validator;
     private Connection $connection;
     private IdGenerator $idGenerator;
     private InviteInserter $inviteInserter;
+    private MessageBus $messageBus;
 
     public function __construct(
-        BulkInvitationProcessor $bulkInvitationProcessor,
         BulkInvitationValidator $validator,
         Connection $connection,
         IdGenerator $idGenerator,
-        InviteInserter $inviteInserter
+        InviteInserter $inviteInserter,
+        MessageBus $messageBus
     ) {
-        $this->bulkInvitationProcessor = $bulkInvitationProcessor;
         $this->validator = $validator;
         $this->connection = $connection;
         $this->idGenerator = $idGenerator;
         $this->inviteInserter = $inviteInserter;
+        $this->messageBus = $messageBus;
     }
 
     public function create(PersonModel $person, string $domain, array $input): void
@@ -49,7 +51,7 @@ class BulkInvitationCreator
             throw $e;
         }
 
-        $this->bulkInvitationProcessor->processInvitations($organizationId, $personId, $domain, $inviteIds);
+        $this->messageBus->dispatch(new InvitationsCreated($organizationId, $personId, $domain, $inviteIds));
     }
 
     private function insertInvites(string $organizationId, string $personId, array $input): array

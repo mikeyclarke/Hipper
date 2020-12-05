@@ -4,4 +4,4 @@ framework:
             async: '%env(MESSENGER_TRANSPORT_DSN)%'
 
         routing:
-            'Hipper\Messenger\Message\SignUpAuthorizationRequested': async
+            'Hipper\Messenger\Message\AsyncMessageInterface': async

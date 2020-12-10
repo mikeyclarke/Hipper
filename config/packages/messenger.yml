@@ -1,7 +1,16 @@
 framework:
     messenger:
         transports:
-            async: '%env(MESSENGER_TRANSPORT_DSN)%'
+            async_high_priority:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    stream: high_priority_messages
+
+            async_low_priority:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    stream: low_priority_messages
 
         routing:
-            'Hipper\Messenger\Message\AsyncMessageInterface': async
+            'Hipper\Messenger\Message\HighPriorityAsyncMessageInterface': async_high_priority
+            'Hipper\Messenger\Message\LowPriorityAsyncMessageInterface': async_low_priority

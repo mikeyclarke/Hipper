@@ -99,4 +99,94 @@ SQL;
         );
         return $stmt->fetchAll();
     }
+
+    public function getContents(string $knowledgebaseId, string $organizationId): array
+    {
+        $sql = <<<SQL
+WITH RECURSIVE tree AS (
+    SELECT
+        id,
+        name,
+        url_id,
+        url_slug,
+        parent_topic_id,
+        knowledgebase_id,
+        organization_id,
+        'topic' AS type,
+        NULL AS content
+    FROM topic
+    WHERE knowledgebase_id = :knowledgebase_id AND organization_id = :organization_id AND parent_topic_id IS NULL
+
+    UNION ALL
+
+    SELECT
+        id,
+        name,
+        url_id,
+        url_slug,
+        topic_id AS parent_topic_id,
+        knowledgebase_id,
+        organization_id,
+        'document' AS type,
+        content
+    FROM document
+    WHERE knowledgebase_id = :knowledgebase_id AND organization_id = :organization_id AND topic_id IS NULL
+
+    UNION ALL
+
+    (
+        SELECT
+            child.id,
+            child.name,
+            child.url_id,
+            child.url_slug,
+            child.parent_topic_id,
+            child.knowledgebase_id,
+            child.organization_id,
+            child.type,
+            child.content
+        FROM
+        (
+            SELECT
+                id,
+                name,
+                url_id,
+                url_slug,
+                topic_id AS parent_topic_id,
+                knowledgebase_id,
+                organization_id,
+                'document' AS type,
+                content
+            FROM document
+            WHERE knowledgebase_id = :knowledgebase_id AND organization_id = :organization_id
+
+            UNION ALL
+
+            SELECT
+                id,
+                name,
+                url_id,
+                url_slug,
+                parent_topic_id,
+                knowledgebase_id,
+                organization_id,
+                'topic' AS type,
+                NULL AS content
+            FROM topic
+            WHERE knowledgebase_id = :knowledgebase_id AND organization_id = :organization_id
+        ) child, tree tree
+        WHERE child.parent_topic_id = tree.id
+    )
+)
+
+SELECT * FROM tree;
+SQL;
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('knowledgebase_id', $knowledgebaseId, PDO::PARAM_STR);
+        $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
+
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

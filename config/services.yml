@@ -31,7 +31,7 @@ parameters:
         - 'code'
         - 'strike'
     asset_integrity_manifest_path: '%kernel.project_dir%/public-roots/assets/public/build/integrity.json'
-    domain: '%env(DOMAIN)%'
+    domain: '%env(string:DOMAIN)%'
 
 services:
     # default configuration for services in *this* file
@@ -109,6 +109,15 @@ services:
     Hipper\Document\Renderer\PlainTextRenderer:
         arguments:
             $allowedNodes: '%document_allowed_nodes%'
+
+    Hipper\Organization\OrganizationKnowledgeExporter:
+        arguments:
+            $environmentDomain: '%domain%'
+
+    Hipper\TransactionalEmail\OrganizationKnowledgeExport:
+        arguments:
+            $emailFromAddress: '%transactional_email_from_addr%'
+            $emailReplyToAddress: '%transactional_email_reply_to_addr%'
 
     Hipper\TransactionalEmail\PostmarkApiClientFactory:
         arguments:

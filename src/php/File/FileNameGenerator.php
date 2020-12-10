@@ -18,8 +18,11 @@ class FileNameGenerator
         'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9',
     ];
 
-    public function generateFromString(string $stringToSluggify, string $extension, string $defaultName = null): string
-    {
+    public function generateFromString(
+        string $stringToSluggify,
+        string $extension = null,
+        string $defaultName = null
+    ): string {
         $generator = new SlugGenerator;
         $fileName = $this->sluggify($generator, $stringToSluggify);
 
@@ -27,7 +30,10 @@ class FileNameGenerator
         $fileName = $this->stripTrailingSpaces($fileName);
         $fileName = $this->stripRedundantWhitespace($fileName);
 
-        $maxLength = self::MAX_LENGTH - (mb_strlen($extension) + 1);
+        $maxLength = self::MAX_LENGTH;
+        if (null !== $extension) {
+            $maxLength -= (mb_strlen($extension) + 1);
+        }
 
         if (mb_strlen($fileName) > $maxLength) {
             $fileName = $this->trimToFit($fileName, $maxLength);
@@ -37,7 +43,20 @@ class FileNameGenerator
             $fileName = (null !== $defaultName) ? $defaultName : self::DEFAULT_FILE_NAME;
         }
 
+        if (null === $extension) {
+            return $fileName;
+        }
+
         return sprintf('%s.%s', $fileName, $extension);
+    }
+
+    public function generateRandom(string $extension = null): string
+    {
+        if (null === $extension) {
+            return uniqid();
+        }
+
+        return sprintf('%s.%s', uniqid(), $extension);
     }
 
     private function sluggify(SlugGenerator $generator, string $string): string

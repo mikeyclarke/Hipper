@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hipper\Messenger\Message;
 
-class InvitationsCreated implements AsyncMessageInterface
+class InvitationsCreated implements HighPriorityAsyncMessageInterface
 {
     private string $organizationId;
     private string $personId;

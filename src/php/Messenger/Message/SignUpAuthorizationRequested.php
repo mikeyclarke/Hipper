@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hipper\Messenger\Message;
 
-class SignUpAuthorizationRequested implements AsyncMessageInterface
+class SignUpAuthorizationRequested implements HighPriorityAsyncMessageInterface
 {
     private string $name;
     private string $emailAddress;

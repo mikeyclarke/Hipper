@@ -33,7 +33,8 @@
         "phpstan/phpstan": "^0.12",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan-symfony": "^0.12",
-        "pyrech/composer-changelogs": "^1.7"
+        "pyrech/composer-changelogs": "^1.7",
+        "mikey179/vfsstream": "^1.6"
     },
     "autoload": {
         "psr-4": {

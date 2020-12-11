@@ -84,25 +84,33 @@ class KnowledgebaseExporterTest extends TestCase
             ],
             [
                 'id' => 'node5-uuid',
+                'name' => 'Topic 1 doc',
+                'parent_topic_id' => 'node2-uuid',
+                'type' => 'document',
+            ],
+            [
+                'id' => 'node6-uuid',
                 'name' => 'Topic 1 subtopic doc 1',
                 'parent_topic_id' => 'node3-uuid',
                 'type' => 'document',
             ],
             [
-                'id' => 'node6-uuid',
+                'id' => 'node7-uuid',
                 'name' => 'Topic 1 subtopic doc 2',
                 'parent_topic_id' => 'node3-uuid',
                 'type' => 'document',
             ],
         ];
         $node1Content = 'node 1 content';
-        $node1FileName = 'Node 1';
+        $node1FileName = 'Node 1.md';
         $node4Content = 'node 4 content';
-        $node4FileName = 'Node 4';
+        $node4FileName = 'Topic 1 doc.md';
         $node5Content = 'node 5 content';
-        $node5FileName = 'Node 5';
+        $node5FileName = 'Topic 1 doc.md';
         $node6Content = 'node 6 content';
-        $node6FileName = 'Node 6';
+        $node6FileName = 'Node 6.md';
+        $node7Content = 'node 7 content';
+        $node7FileName = 'Node 7.md';
 
         $this->createFilesystemFactoryExpectation();
         $this->createKnowledgebaseRepositoryExpectation([$knowledgebaseId, $organizationId], $contents);
@@ -110,6 +118,10 @@ class KnowledgebaseExporterTest extends TestCase
         $this->createDocumentExporterExpectation(
             [m::type(DocumentModel::class), $organizationDomain],
             [$node1Content, $node1FileName]
+        );
+        $this->createFilesystemExistsExpectation(
+            [$directoryPathname . '/' . $node1FileName],
+            false
         );
         $this->createFilesystemDumpFileExpectation([$directoryPathname . '/' . $node1FileName, $node1Content]);
 
@@ -121,15 +133,11 @@ class KnowledgebaseExporterTest extends TestCase
 
         $this->createDocumentExporterExpectation(
             [m::type(DocumentModel::class), $organizationDomain],
-            [$node5Content, $node5FileName]
-        );
-        $this->createFilesystemDumpFileExpectation(
-            [$directoryPathname . '/Topic 1/Topic 1 subtopic/' . $node5FileName, $node5Content]
-        );
-
-        $this->createDocumentExporterExpectation(
-            [m::type(DocumentModel::class), $organizationDomain],
             [$node6Content, $node6FileName]
+        );
+        $this->createFilesystemExistsExpectation(
+            [$directoryPathname . '/Topic 1/Topic 1 subtopic/' . $node6FileName],
+            false
         );
         $this->createFilesystemDumpFileExpectation(
             [$directoryPathname . '/Topic 1/Topic 1 subtopic/' . $node6FileName, $node6Content]
@@ -137,9 +145,39 @@ class KnowledgebaseExporterTest extends TestCase
 
         $this->createDocumentExporterExpectation(
             [m::type(DocumentModel::class), $organizationDomain],
+            [$node7Content, $node7FileName]
+        );
+        $this->createFilesystemExistsExpectation(
+            [$directoryPathname . '/Topic 1/Topic 1 subtopic/' . $node7FileName],
+            false
+        );
+        $this->createFilesystemDumpFileExpectation(
+            [$directoryPathname . '/Topic 1/Topic 1 subtopic/' . $node7FileName, $node7Content]
+        );
+
+        $this->createDocumentExporterExpectation(
+            [m::type(DocumentModel::class), $organizationDomain],
             [$node4Content, $node4FileName]
         );
+        $this->createFilesystemExistsExpectation(
+            [$directoryPathname . '/Topic 1/' . $node4FileName],
+            false
+        );
         $this->createFilesystemDumpFileExpectation([$directoryPathname . '/Topic 1/' . $node4FileName, $node4Content]);
+
+        $this->createDocumentExporterExpectation(
+            [m::type(DocumentModel::class), $organizationDomain],
+            [$node5Content, $node5FileName]
+        );
+        $this->createFilesystemExistsExpectation(
+            [$directoryPathname . '/Topic 1/' . $node5FileName],
+            true
+        );
+        $this->createFilesystemExistsExpectation(
+            [$directoryPathname . '/Topic 1/Topic 1 doc (1).md'],
+            false
+        );
+        $this->createFilesystemDumpFileExpectation([$directoryPathname . '/Topic 1/Topic 1 doc (1).md', $node5Content]);
 
         $result = $this->knowledgebaseExporter->export($knowledgebase, $organizationDomain, $directoryPathname);
         $this->assertEquals($directoryPathname, $result);
@@ -166,6 +204,15 @@ class KnowledgebaseExporterTest extends TestCase
     {
         $this->documentExporter
             ->shouldReceive('export')
+            ->once()
+            ->with(...$args)
+            ->andReturn($result);
+    }
+
+    private function createFilesystemExistsExpectation($args, $result)
+    {
+        $this->filesystem
+            ->shouldReceive('exists')
             ->once()
             ->with(...$args)
             ->andReturn($result);

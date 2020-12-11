@@ -97,9 +97,8 @@ class KnowledgebaseExporter
         string $organizationDomain
     ): void {
         if ($node['type'] === 'document') {
-            $model = DocumentModel::createFromArray($node);
-            list($content, $fileName) = $this->documentExporter->export($model, $organizationDomain);
-            $filesystem->dumpFile($directory . '/' . $fileName, $content);
+            $document = DocumentModel::createFromArray($node);
+            $this->writeDocumentToFile($document, $filesystem, $directory, $organizationDomain);
             return;
         }
 
@@ -111,5 +110,25 @@ class KnowledgebaseExporter
                 $this->writeToDirectory($filesystem, $childNode, $topicDirectory, $organizationDomain);
             }
         }
+    }
+
+    private function writeDocumentToFile(
+        DocumentModel $document,
+        Filesystem $filesystem,
+        string $directory,
+        string $organizationDomain
+    ): void {
+        list($content, $fileName) = $this->documentExporter->export($document, $organizationDomain);
+        $ext = '.md';
+        $name = mb_substr($fileName, 0, mb_strlen($fileName) - mb_strlen($ext));
+        $i = 0;
+        $versioned = $name;
+
+        while ($filesystem->exists(sprintf('%s/%s%s', $directory, $versioned, $ext))) {
+            $i++;
+            $versioned = sprintf('%s (%d)', $name, $i);
+        }
+
+        $filesystem->dumpFile($directory . '/' . $versioned . $ext, $content);
     }
 }

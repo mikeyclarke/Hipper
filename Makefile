@@ -75,6 +75,13 @@ webpack-production: ## Build webpack assets for production
 	./node_modules/.bin/webpack --config webpack.production.js
 
 ## ---------
+##	Async messaging
+## ---------
+
+run_queues: ## Run async messaging workers
+	php bin/console messenger:consume -vv async_high_priority async_low_priority
+
+## ---------
 ##	Production
 ## ---------
 

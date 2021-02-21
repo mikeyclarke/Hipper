@@ -45,7 +45,7 @@ class TeamInserter
         $stmt->bindValue('url_slug', $urlSlug);
         $stmt->bindValue('knowledgebase_id', $knowledgebaseId);
         $stmt->bindValue('organization_id', $organizationId);
-        $stmt->execute();
-        return $stmt->fetch();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAssociative();
     }
 }

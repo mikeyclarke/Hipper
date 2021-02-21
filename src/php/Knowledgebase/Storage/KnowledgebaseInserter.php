@@ -31,7 +31,7 @@ class KnowledgebaseInserter
         $stmt->bindValue('id', $id);
         $stmt->bindValue('entity', $entity);
         $stmt->bindValue('organization_id', $organizationId);
-        $stmt->execute();
-        return $stmt->fetch();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAssociative();
     }
 }

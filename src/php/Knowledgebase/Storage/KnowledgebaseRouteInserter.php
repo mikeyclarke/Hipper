@@ -60,7 +60,7 @@ SQL;
         $stmt->bindValue('topic_id', $topicId, PDO::PARAM_STR);
         $stmt->bindValue('document_id', $documentId, PDO::PARAM_STR);
 
-        $stmt->execute();
-        return $stmt->fetch();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAssociative();
     }
 }

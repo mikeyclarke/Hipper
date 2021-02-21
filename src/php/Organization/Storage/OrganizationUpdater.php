@@ -60,7 +60,7 @@ class OrganizationUpdater
             $stmt->bindValue($name, $value, $type);
         }
 
-        $stmt->execute();
-        return $stmt->fetch();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAssociative();
     }
 }

@@ -56,7 +56,7 @@ class TopicUpdater
             $stmt->bindValue($name, $value, PDO::PARAM_STR);
         }
 
-        $stmt->execute();
-        return $stmt->fetch();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAssociative();
     }
 }

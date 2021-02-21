@@ -32,8 +32,8 @@ class TokenizedLoginRepository
             'token' => $token,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if ($result === false) {
             return null;

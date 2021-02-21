@@ -41,8 +41,8 @@ SQL;
         $stmt->bindValue('organization_id', $organizationId);
         $stmt->bindValue('limit', $limit);
         $stmt->bindValue('offset', $offset);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAllAssociative();
     }
 
     public function getResultsInTeam(
@@ -79,8 +79,8 @@ SQL;
         $stmt->bindValue('organization_id', $organizationId);
         $stmt->bindValue('limit', $limit);
         $stmt->bindValue('offset', $offset);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAllAssociative();
     }
 
     public function getResultsInProject(
@@ -117,8 +117,8 @@ SQL;
         $stmt->bindValue('organization_id', $organizationId);
         $stmt->bindValue('limit', $limit);
         $stmt->bindValue('offset', $offset);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAllAssociative();
     }
 
     private function addOuterQuery(string $innerQuery): string

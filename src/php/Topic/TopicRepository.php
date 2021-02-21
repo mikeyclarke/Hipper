@@ -44,8 +44,8 @@ class TopicRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -70,8 +70,8 @@ class TopicRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -120,8 +120,8 @@ class TopicRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAllAssociative();
         return $result;
     }
 
@@ -149,7 +149,7 @@ WITH RECURSIVE family AS (
 SELECT * FROM family
 SQL;
 
-        $stmt = $this->connection->executeQuery(
+        $statementResult = $this->connection->executeQuery(
             $sql,
             [
                 $ids,
@@ -162,7 +162,7 @@ SQL;
                 ParameterType::STRING,
             ]
         );
-        $result = $stmt->fetchAll();
+        $result = $statementResult->fetchAllAssociative();
         return $result;
     }
 
@@ -202,8 +202,8 @@ SQL;
         $stmt->bindValue('knowledgebase_id', $knowledgebaseId, PDO::PARAM_STR);
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
 
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+        $statementResult = $stmt->execute();
+        $result = $statementResult->fetchAllAssociative();
         return $result;
     }
 
@@ -271,7 +271,7 @@ SQL;
         $stmt->bindValue('knowledgebase_id', $knowledgebaseId, PDO::PARAM_STR);
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
 
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAllAssociative();
     }
 }

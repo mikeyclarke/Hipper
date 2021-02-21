@@ -45,8 +45,8 @@ class DocumentRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (empty($result)) {
             return null;
@@ -96,8 +96,8 @@ class DocumentRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAllAssociative();
         return $result;
     }
 }

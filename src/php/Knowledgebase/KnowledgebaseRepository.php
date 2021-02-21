@@ -36,8 +36,8 @@ class KnowledgebaseRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -48,13 +48,13 @@ class KnowledgebaseRepository
 
     public function exists(string $organizationId, string $knowledgebaseId): bool
     {
-        $stmt = $this->connection->executeQuery(
+        $statementResult = $this->connection->executeQuery(
             'SELECT EXISTS (
                 SELECT 1 FROM knowledgebase WHERE organization_id = ? AND id = ?
             )',
             [$organizationId, $knowledgebaseId]
         );
-        return (bool) $stmt->fetchColumn();
+        return (bool) $statementResult->fetchOne();
     }
 
     public function getKnowledgebaseOwnersForIds(array $knowledgebaseIds, string $organizationId): array
@@ -82,7 +82,7 @@ FROM (
 ) AS foo;
 SQL;
 
-        $stmt = $this->connection->executeQuery(
+        $statementResult = $this->connection->executeQuery(
             $sql,
             [
                 $knowledgebaseIds,
@@ -97,7 +97,7 @@ SQL;
                 ParameterType::STRING,
             ]
         );
-        return $stmt->fetchAll();
+        return $statementResult->fetchAllAssociative();
     }
 
     public function getContents(string $knowledgebaseId, string $organizationId): array
@@ -186,7 +186,7 @@ SQL;
         $stmt->bindValue('knowledgebase_id', $knowledgebaseId, PDO::PARAM_STR);
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
 
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAllAssociative();
     }
 }

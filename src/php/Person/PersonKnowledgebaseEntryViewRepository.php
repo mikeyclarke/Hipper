@@ -79,7 +79,7 @@ SQL;
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('person_id', $personId);
         $stmt->bindValue('limit', $limit);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAllAssociative();
     }
 }

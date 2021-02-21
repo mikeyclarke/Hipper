@@ -49,7 +49,7 @@ SQL;
         $stmt->bindValue('organization_id', $organizationId);
         $stmt->bindValue('limit', $limit);
         $stmt->bindValue('offset', $offset);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAllAssociative();
     }
 }

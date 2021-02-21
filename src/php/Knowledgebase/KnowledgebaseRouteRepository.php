@@ -45,8 +45,8 @@ class KnowledgebaseRouteRepository
 
         $qb->orderBy('is_canonical', 'DESC');
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
         if (false === $result) {
             return null;
         }
@@ -64,8 +64,8 @@ class KnowledgebaseRouteRepository
 
         $qb->setParameter('route', $route);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
         if (false === $result) {
             return null;
         }
@@ -83,8 +83,8 @@ class KnowledgebaseRouteRepository
 
         $qb->setParameter('url_id', $urlId);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
         if (false === $result) {
             return null;
         }
@@ -105,8 +105,8 @@ class KnowledgebaseRouteRepository
 
         $qb->setParameter('document_id', $documentId);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
         if (false === $result) {
             return null;
         }
@@ -127,8 +127,8 @@ class KnowledgebaseRouteRepository
 
         $qb->setParameter('topic_id', $topicId);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
         if (false === $result) {
             return null;
         }

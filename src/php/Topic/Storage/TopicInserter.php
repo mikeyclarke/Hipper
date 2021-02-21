@@ -59,7 +59,7 @@ SQL;
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
         $stmt->bindValue('parent_topic_id', $parentTopicId, PDO::PARAM_STR);
 
-        $stmt->execute();
-        return $stmt->fetch();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAssociative();
     }
 }

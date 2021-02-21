@@ -36,8 +36,8 @@ class OrganizationRepository
 
         $qb->setParameter('id', $id);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -56,8 +56,8 @@ class OrganizationRepository
 
         $qb->setParameter('subdomain', $subdomain);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -68,12 +68,12 @@ class OrganizationRepository
 
     public function existsWithSubdomain(string $subdomain): bool
     {
-        $stmt = $this->connection->executeQuery(
+        $statementResult = $this->connection->executeQuery(
             'SELECT EXISTS (
                 SELECT 1 FROM organization WHERE subdomain = ?
             )',
             [$subdomain]
         );
-        return (bool) $stmt->fetchColumn();
+        return (bool) $statementResult->fetchOne();
     }
 }

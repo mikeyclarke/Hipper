@@ -74,7 +74,7 @@ SQL;
         $stmt->bindValue('created_by', $createdBy, PDO::PARAM_STR);
         $stmt->bindValue('last_updated_by', $createdBy, PDO::PARAM_STR);
 
-        $stmt->execute();
-        return $stmt->fetch();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAssociative();
     }
 }

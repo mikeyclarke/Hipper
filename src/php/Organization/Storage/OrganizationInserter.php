@@ -33,7 +33,7 @@ class OrganizationInserter
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $id);
         $stmt->bindValue('name', $name);
-        $stmt->execute();
-        return $stmt->fetch();
+        $statementResult = $stmt->execute();
+        return $statementResult->fetchAssociative();
     }
 }

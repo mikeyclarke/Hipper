@@ -79,8 +79,8 @@ SQL;
         $stmt->bindValue('username', $username, PDO::PARAM_STR);
         $stmt->bindValue('organization_id', $organizationId, PDO::PARAM_STR);
 
-        $stmt->execute();
-        $result = $stmt->fetch();
+        $statementResult = $stmt->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;

@@ -58,8 +58,8 @@ class PersonRepository
 
         $qb->setParameter('organization_id', $organizationId);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAllAssociative();
 
         return $result;
     }
@@ -81,8 +81,8 @@ class PersonRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAllAssociative();
 
         return $result;
     }
@@ -104,8 +104,8 @@ class PersonRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAllAssociative();
 
         return $result;
     }
@@ -122,8 +122,8 @@ class PersonRepository
 
         $qb->setParameter('id', $id);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -151,8 +151,8 @@ class PersonRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -180,8 +180,8 @@ class PersonRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -206,29 +206,29 @@ class PersonRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        return $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        return $statementResult->fetchAllAssociative();
     }
 
     public function existsWithUsername(string $username, string $organizationId): bool
     {
-        $stmt = $this->connection->executeQuery(
+        $statementResult = $this->connection->executeQuery(
             'SELECT EXISTS (
                 SELECT 1 FROM person WHERE username = ? AND organization_id = ?
             )',
             [$username, $organizationId]
         );
-        return (bool) $stmt->fetchColumn();
+        return (bool) $statementResult->fetchOne();
     }
 
     public function existsWithEmailAddress(string $emailAddress): bool
     {
-        $stmt = $this->connection->executeQuery(
+        $statementResult = $this->connection->executeQuery(
             'SELECT EXISTS (
                 SELECT 1 FROM person WHERE email_address = ?
             )',
             [$emailAddress]
         );
-        return (bool) $stmt->fetchColumn();
+        return (bool) $statementResult->fetchOne();
     }
 }

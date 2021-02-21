@@ -38,8 +38,8 @@ class DocumentRevisionRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAllAssociative();
 
         return $result;
     }

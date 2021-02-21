@@ -30,8 +30,8 @@ class InviteRepository
             ->where('id in (:ids)')
             ->setParameter('ids', $ids, Connection::PARAM_STR_ARRAY);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAllAssociative();
 
         $indexed = [];
         foreach ($result as $row) {
@@ -56,8 +56,8 @@ class InviteRepository
             'token' => $token,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
         if (false === $result) {
             return null;
         }
@@ -66,12 +66,12 @@ class InviteRepository
 
     public function existsWithEmailAddress(string $emailAddress): bool
     {
-        $stmt = $this->connection->executeQuery(
+        $statementResult = $this->connection->executeQuery(
             'SELECT EXISTS (
                 SELECT 1 FROM invite WHERE email_address = ?
             )',
             [$emailAddress]
         );
-        return (bool) $stmt->fetchColumn();
+        return (bool) $statementResult->fetchOne();
     }
 }

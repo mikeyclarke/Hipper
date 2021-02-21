@@ -42,8 +42,8 @@ class ActivityRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        return $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        return $statementResult->fetchAllAssociative();
     }
 
     public function getPersonActivity(string $personId, string $organizationId, int $limit = 10): array
@@ -63,8 +63,8 @@ class ActivityRepository
             'actor_id' => $personId,
         ]);
 
-        $stmt = $qb->execute();
-        return $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        return $statementResult->fetchAllAssociative();
     }
 
     public function getTeamActivity(string $teamId, string $organizationId, int $limit = 10): array
@@ -84,8 +84,8 @@ class ActivityRepository
             'team_id' => $teamId,
         ]);
 
-        $stmt = $qb->execute();
-        return $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        return $statementResult->fetchAllAssociative();
     }
 
     public function getProjectActivity(string $projectId, string $organizationId, int $limit = 10): array
@@ -105,7 +105,7 @@ class ActivityRepository
             'project_id' => $projectId,
         ]);
 
-        $stmt = $qb->execute();
-        return $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        return $statementResult->fetchAllAssociative();
     }
 }

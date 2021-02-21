@@ -48,8 +48,8 @@ class TeamRepository
 
         $qb->setParameter('organization_id', $organizationId);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAllAssociative();
 
         return $result;
     }
@@ -68,8 +68,8 @@ class TeamRepository
             'id' => $id,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -92,8 +92,8 @@ class TeamRepository
             'url_slug' => $urlSlug,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -116,8 +116,8 @@ class TeamRepository
             'knowledgebase_id' => $knowledgebaseId,
         ]);
 
-        $stmt = $qb->execute();
-        $result = $stmt->fetch();
+        $statementResult = $qb->execute();
+        $result = $statementResult->fetchAssociative();
 
         if (false === $result) {
             return null;
@@ -149,29 +149,29 @@ class TeamRepository
             'organization_id' => $organizationId,
         ]);
 
-        $stmt = $qb->execute();
-        return $stmt->fetchAll();
+        $statementResult = $qb->execute();
+        return $statementResult->fetchAllAssociative();
     }
 
     public function existsWithName(string $organizationId, string $name): bool
     {
-        $stmt = $this->connection->executeQuery(
+        $statementResult = $this->connection->executeQuery(
             'SELECT EXISTS (
                 SELECT 1 FROM team WHERE organization_id = ? AND LOWER(name) = LOWER(?)
             )',
             [$organizationId, $name]
         );
-        return (bool) $stmt->fetchColumn();
+        return (bool) $statementResult->fetchOne();
     }
 
     public function existsWithMappingForPerson(string $teamId, string $personId): bool
     {
-        $stmt = $this->connection->executeQuery(
+        $statementResult = $this->connection->executeQuery(
             'SELECT EXISTS (
                 SELECT 1 FROM person_to_team_map WHERE team_id = ? AND person_id = ?
             )',
             [$teamId, $personId]
         );
-        return (bool) $stmt->fetchColumn();
+        return (bool) $statementResult->fetchOne();
     }
 }

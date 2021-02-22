@@ -23,12 +23,13 @@ module.exports = {
         new CleanWebpackPlugin(),
         new WebpackAssetsManifest({
             publicPath: true,
+            output: 'manifest.json',
         }),
         new WebpackAssetsManifest({
             customize(entry, original, manifest, asset) {
                 return {
                     key: entry.key,
-                    value: asset.integrity,
+                    value: asset.info.integrity,
                 };
             },
             integrity: true,

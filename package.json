@@ -4,6 +4,9 @@
   "repository": "git@github.com:usehipper/Hipper.git",
   "private": true,
   "test": "jest",
+  "engines": {
+    "node": "^15.10"
+  },
   "devDependencies": {
     "@types/autosize": "^3.0.7",
     "@types/jest": "^26.0.20",

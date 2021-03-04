@@ -10,10 +10,10 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 class SessionStorage extends NativeSessionStorage
 {
     public function __construct(
+        RequestStack $requestStack,
         array $options,
         $handler = null,
         MetadataBag $metaBag = null,
-        RequestStack $requestStack
     ) {
         $host = $requestStack->getMasterRequest()->getHttpHost();
         $options['name'] = 'a-s';

@@ -40,9 +40,9 @@
       chdir: /var/hipper
 
 - name: Set path to PHP preload file
-  lineinfile: dest=/etc/php/7.4/fpm/php.ini regexp="^[#|;]?opcache.preload =" insertafter="^[#|;]?opcache.preload =" line="opcache.preload = {{ php_preload_file }}"
+  lineinfile: dest=/etc/php/8.0/fpm/php.ini regexp="^[#|;]?opcache.preload =" insertafter="^[#|;]?opcache.preload =" line="opcache.preload = {{ php_preload_file }}"
   notify: restart php-fpm
 
 - name: Set PHP preload user
-  lineinfile: dest=/etc/php/7.4/fpm/php.ini regexp="^[#|;]?opcache.preload_user =" insertafter="^[#|;]?opcache.preload_user =" line="opcache.preload_user = www-data"
+  lineinfile: dest=/etc/php/8.0/fpm/php.ini regexp="^[#|;]?opcache.preload_user =" insertafter="^[#|;]?opcache.preload_user =" line="opcache.preload_user = www-data"
   notify: restart php-fpm

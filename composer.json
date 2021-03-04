@@ -2,7 +2,7 @@
     "name": "usehipper/hipper",
     "license": "proprietary",
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "guzzlehttp/guzzle": "^7.0",
         "ircmaxell/random-lib": "^1.2",
         "ramsey/uuid": "^4.0",

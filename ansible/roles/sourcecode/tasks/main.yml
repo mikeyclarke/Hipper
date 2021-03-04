@@ -1,7 +1,7 @@
 ---
 - name: Remove PHP preload file
   lineinfile:
-      path: /etc/php/7.4/fpm/php.ini
+      path: /etc/php/8.0/fpm/php.ini
       regexp: '^opcache.preload ='
       state: absent
 

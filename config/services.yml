@@ -165,7 +165,7 @@ services:
 
     hipper_session_storage:
         class: Hipper\Session\SessionStorage
-        arguments: ['%session.storage.options%', '@session.handler', '@session.storage.metadata_bag', '@request_stack']
+        arguments: ['@request_stack', '%session.storage.options%', '@session.handler', '@session.storage.metadata_bag']
 
     require_json_content_type_middleware:
         class: Hipper\Http\RequireJsonContentTypeMiddleware

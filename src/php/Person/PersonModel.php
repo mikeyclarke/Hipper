@@ -17,6 +17,9 @@ final class PersonModel
         'url_id' => 'urlId',
         'username' => 'username',
         'onboarding_completed' => 'onboardingCompleted',
+        'image_id' => 'imageId',
+        'image_thumb_1x_id' => 'imageThumb1xId',
+        'image_thumb_2x_id' => 'imageThumb2xId',
         'organization_id' => 'organizationId',
         'created' => 'created',
         'updated' => 'updated',
@@ -31,6 +34,9 @@ final class PersonModel
     private $username;
     private $urlId;
     private $onboardingCompleted;
+    private $imageId;
+    private $imageThumb1xId;
+    private $imageThumb2xId;
     private $organizationId;
     private $created;
     private $updated;
@@ -130,6 +136,36 @@ final class PersonModel
     public function isOnboardingCompleted(): bool
     {
         return $this->onboardingCompleted;
+    }
+
+    public function setImageId(?string $imageId): void
+    {
+        $this->imageId = $imageId;
+    }
+
+    public function getImageId(): ?string
+    {
+        return $this->imageId;
+    }
+
+    public function setImageThumb1xId(?string $imageThumb1xId): void
+    {
+        $this->imageThumb1xId = $imageThumb1xId;
+    }
+
+    public function getImageThumb1xId(): ?string
+    {
+        return $this->imageThumb1xId;
+    }
+
+    public function setImageThumb2xId(?string $imageThumb2xId): void
+    {
+        $this->imageThumb2xId = $imageThumb2xId;
+    }
+
+    public function getImageThumb2xId(): ?string
+    {
+        return $this->imageThumb2xId;
     }
 
     public function setOrganizationId(string $organizationId): void

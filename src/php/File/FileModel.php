@@ -36,6 +36,13 @@ class FileModel
     private string $creatorId;
     private string $created;
 
+    public static function createFromArray(array $array): FileModel
+    {
+        $model = new static;
+        $model->mapProperties($array);
+        return $model;
+    }
+
     public function setId(string $id): void
     {
         $this->id = $id;

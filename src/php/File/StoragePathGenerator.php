@@ -5,22 +5,12 @@ declare(strict_types=1);
 namespace Hipper\File;
 
 use Hipper\File\Exception\UnsupportedFileUsageException;
-use Hipper\IdGenerator\IdGenerator;
 
 class StoragePathGenerator
 {
-    private IdGenerator $idGenerator;
-
-    public function __construct(
-        IdGenerator $idGenerator,
-    ) {
-        $this->idGenerator = $idGenerator;
-    }
-
-    public function generate(string $usage, string $extension): string
+    public function generate(string $usage, string $id, string $extension): string
     {
         $prefix = $this->getPrefix($usage);
-        $id = $this->idGenerator->generate();
 
         return sprintf('%s/%s.%s', $prefix, $id, $extension);
     }

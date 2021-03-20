@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hipper\File;
 
+use Hipper\File\Exception\UnguessableFileExtensionException;
 use Hipper\File\FileModel;
 use Hipper\File\FileTypeGuesser;
 use Hipper\File\FileWriter;
@@ -43,11 +44,11 @@ class FileUploader
     {
         $extension = $uploadedFile->guessExtension();
         if (null === $extension) {
-            // BAD
+            throw new UnguessableFileExtensionException();
         }
 
         $id = $this->idGenerator->generate();
-        $storagePath = $this->storagePathGenerator->generate($usage, $extension);
+        $storagePath = $this->storagePathGenerator->generate($usage, $id, $extension);
         $mimeType = $uploadedFile->getMimeType();
         $fileType = $this->fileTypeGuesser->guessFromMimeType($mimeType);
 

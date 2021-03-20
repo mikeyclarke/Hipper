@@ -30,7 +30,8 @@
         "ext-intl": "*",
         "ext-mbstring": "*",
         "ext-xml": "*",
-        "ext-apcu": "*"
+        "ext-apcu": "*",
+        "symfony/mime": "^5.2"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.4",

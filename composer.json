@@ -52,5 +52,12 @@
         "psr-4": {
             "Hipper\\Tests\\": "tests/php/"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "phpstan/extension-installer": true,
+            "pyrech/composer-changelogs": true
+        }
     }
 }

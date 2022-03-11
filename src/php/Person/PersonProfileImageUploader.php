@@ -7,7 +7,7 @@ namespace Hipper\Person;
 use Doctrine\DBAL\Connection;
 use Hipper\File\FileModel;
 use Hipper\File\FileUploader;
-use Hipper\File\Storage\FileDeleter;
+use Hipper\File\FileDeleter;
 use Hipper\Person\PersonModel;
 use Hipper\Person\PersonProfileImageValidator;
 use Hipper\Person\Storage\PersonUpdater as PersonStorageUpdater;
@@ -26,7 +26,7 @@ class PersonProfileImageUploader
         FileDeleter $fileDeleter,
         FileUploader $fileUploader,
         PersonProfileImageValidator $validator,
-        PersonStorageUpdater $personStorageUpdater
+        PersonStorageUpdater $personStorageUpdater,
     ) {
         $this->connection = $connection;
         $this->fileDeleter = $fileDeleter;
@@ -39,16 +39,21 @@ class PersonProfileImageUploader
     {
         $this->validator->validate(['file' => $uploadedFile]);
 
+        $existingImages = $this->getExistingImages($person);
+
         $this->connection->beginTransaction();
         try {
             $file = $this->fileUploader->upload($person, $uploadedFile, 'profile_image');
 
-            $this->deleteExistingImages($person);
             $this->personStorageUpdater->update($person->getId(), [
                 'image_id' => $file->getId(),
                 'image_thumb_1x_id' => null,
                 'image_thumb_2x_id' => null,
             ]);
+
+            if (!empty($existingImages)) {
+                $this->fileDeleter->markForDeletion($existingImages);
+            }
 
             $this->connection->commit();
         } catch (\Exception $e) {
@@ -59,7 +64,7 @@ class PersonProfileImageUploader
         return $file;
     }
 
-    private function deleteExistingImages(PersonModel $person): void
+    private function getExistingImages(PersonModel $person): array
     {
         $files = [];
 
@@ -75,8 +80,6 @@ class PersonProfileImageUploader
             $files[] = $person->getImageThumb2xId();
         }
 
-        if (!empty($files)) {
-            $this->fileDeleter->deleteSelection($files);
-        }
+        return $files;
     }
 }

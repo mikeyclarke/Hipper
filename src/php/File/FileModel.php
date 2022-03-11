@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hipper\File;
 
-class FileModel
+final class FileModel
 {
     use \Hipper\ModelTrait;
 
@@ -81,6 +81,11 @@ class FileModel
     public function getFileType(): string
     {
         return $this->fileType;
+    }
+
+    public function isImage(): bool
+    {
+        return $this->fileType === 'image';
     }
 
     public function setMimeType(string $mimeType): void

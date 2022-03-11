@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS file (
     bytes               integer NOT NULL,
     height              smallint DEFAULT NULL,
     width               smallint DEFAULT NULL,
+    marked_for_deletion boolean DEFAULT FALSE,
     organization_id     UUID NOT NULL references organization(id),
     creator_id          UUID NOT NULL references person(id),
     created             timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hipper\File;
 
 use Hipper\File\Exception\UnguessableFileExtensionException;
+use Hipper\File\FileHash;
 use Hipper\File\FileModel;
 use Hipper\File\FileTypeGuesser;
 use Hipper\File\FileWriter;
@@ -17,28 +18,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
 {
-    private FileInserter $fileInserter;
-    private FileTypeGuesser $fileTypeGuesser;
-    private FileWriter $fileWriter;
-    private IdGenerator $idGenerator;
-    private ImageResourceFactory $imageResourceFactory;
-    private StoragePathGenerator $storagePathGenerator;
-
     public function __construct(
-        FileInserter $fileInserter,
-        FileTypeGuesser $fileTypeGuesser,
-        FileWriter $fileWriter,
-        IdGenerator $idGenerator,
-        ImageResourceFactory $imageResourceFactory,
-        StoragePathGenerator $storagePathGenerator,
-    ) {
-        $this->fileInserter = $fileInserter;
-        $this->fileTypeGuesser = $fileTypeGuesser;
-        $this->fileWriter = $fileWriter;
-        $this->idGenerator = $idGenerator;
-        $this->imageResourceFactory = $imageResourceFactory;
-        $this->storagePathGenerator = $storagePathGenerator;
-    }
+        private FileHash $fileHash,
+        private FileInserter $fileInserter,
+        private FileTypeGuesser $fileTypeGuesser,
+        private FileWriter $fileWriter,
+        private IdGenerator $idGenerator,
+        private ImageResourceFactory $imageResourceFactory,
+        private StoragePathGenerator $storagePathGenerator,
+    ) {}
 
     public function upload(PersonModel $person, UploadedFile $uploadedFile, string $usage): FileModel
     {
@@ -48,11 +36,11 @@ class FileUploader
         }
 
         $id = $this->idGenerator->generate();
-        $storagePath = $this->storagePathGenerator->generate($usage, $id, $extension);
+        $storagePath = $this->storagePathGenerator->generate($usage, $extension);
         $mimeType = $uploadedFile->getMimeType();
         $fileType = $this->fileTypeGuesser->guessFromMimeType($mimeType);
 
-        $contentHash = md5_file($uploadedFile->getPathname());
+        $contentHash = $this->fileHash->get($uploadedFile->getPathname());
         $bytes = $uploadedFile->getSize();
         $height = null;
         $width = null;

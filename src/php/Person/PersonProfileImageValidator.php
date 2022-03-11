@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Hipper\Team;
+namespace Hipper\Person;
 
 use Hipper\Validation\ConstraintViolationListFormatter;
 use Hipper\Validation\Exception\ValidationException;

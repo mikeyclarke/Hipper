@@ -90,7 +90,7 @@ class FileUploaderTest extends TestCase
         ];
 
         $this->createIdGeneratorExpectation($id);
-        $this->createStoragePathGeneratorExpectation([$usage, $id, $extension], $storagePath);
+        $this->createStoragePathGeneratorExpectation([$usage, $extension], $storagePath);
         $this->createFileTypeGuesserExpectation([$mimeType], $fileType);
         $this->createImageResourceFactoryExpectation([$pathname, $mimeType]);
         $this->createImageResourceGetHeightExpectation($height);
@@ -151,7 +151,7 @@ class FileUploaderTest extends TestCase
         ];
 
         $this->createIdGeneratorExpectation($id);
-        $this->createStoragePathGeneratorExpectation([$usage, $id, $extension], $storagePath);
+        $this->createStoragePathGeneratorExpectation([$usage, $extension], $storagePath);
         $this->createFileTypeGuesserExpectation([$mimeType], $fileType);
         $this->createFileInserterExpectation(
             [

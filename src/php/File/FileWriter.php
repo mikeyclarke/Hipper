@@ -20,4 +20,9 @@ class FileWriter
     {
         $this->filesystem->write($storagePath, $contents);
     }
+
+    public function delete(string $storagePath): void
+    {
+        $this->filesystem->delete($storagePath);
+    }
 }

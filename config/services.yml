@@ -12,6 +12,8 @@ parameters:
     env(HSTS_ENABLED): false
     env(HSTS_MAX_AGE): 300
     env(RESOURCE_HINTS_ENABLED): false
+    env(PROFILE_IMAGE_MAX_WIDTH): 1200
+    env(PROFILE_IMAGE_MAX_HEIGHT): 1200
     document_allowed_nodes:
         - 'blockquote'
         - 'code_block'
@@ -32,6 +34,7 @@ parameters:
         - 'strike'
     asset_integrity_manifest_path: '%kernel.project_dir%/public-roots/assets/public/build/integrity.json'
     domain: '%env(string:DOMAIN)%'
+    fileBaseUrl: '%env(string:FILE_BASE_URL)%'
 
 services:
     # default configuration for services in *this* file
@@ -140,6 +143,11 @@ services:
             $hstsEnabled: '%env(bool:HSTS_ENABLED)%'
             $hstsMaxAge: '%env(int:HSTS_MAX_AGE)%'
             $resourceHintsEnabled: '%env(bool:RESOURCE_HINTS_ENABLED)%'
+
+    Hipper\Image\ImageConstraintsFactory:
+        arguments:
+            $profileImageMaxWidth: '%env(int:PROFILE_IMAGE_MAX_WIDTH)%'
+            $profileImageMaxHeight: '%env(int:PROFILE_IMAGE_MAX_HEIGHT)%'
 
     Hipper\Subscriber\TwigGlobalsSubscriber:
         arguments:

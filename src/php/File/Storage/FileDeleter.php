@@ -11,13 +11,13 @@ class FileDeleter
     private Connection $connection;
 
     public function __construct(
-        Connection $connection
+        Connection $connection,
     ) {
         $this->connection = $connection;
     }
 
-    public function deleteSelection(array $ids): void
+    public function delete(string $id): void
     {
-        $this->connection->executeUpdate('DELETE FROM file WHERE id IN (?)', [$ids], [Connection::PARAM_STR_ARRAY]);
+        $this->connection->delete('file', ['id' => $id]);
     }
 }

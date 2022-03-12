@@ -1,23 +1,20 @@
 @font-face {
-    font-family: 'Proxima Nova Soft';
-    src: url('proximasoft-bold-webfont.woff2') format('woff2'),
-         url('proximasoft-bold-webfont.woff') format('woff');
+    font-family: 'Nunito';
+    src: url('nunito-bold-webfont.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Proxima Nova Soft';
-    src: url('proximanovasoft-regular-webfont.woff2') format('woff2'),
-         url('proximanovasoft-regular-webfont.woff') format('woff');
+    font-family: 'Nunito';
+    src: url('nunito-regular-webfont.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Proxima Nova Soft';
-    src: url('proximanovasoft-semibold-webfont.woff2') format('woff2'),
-         url('proximanovasoft-semibold-webfont.woff') format('woff');
+    font-family: 'Nunito';
+    src: url('nunito-semibold-webfont.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
 }
@@ -28,7 +25,7 @@ html {
 }
 
 body {
-    font-family: 'Proxima Nova Soft', sans-serif;
+    font-family: Nunito, sans-serif;
 }
 
 .container {

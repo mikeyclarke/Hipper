@@ -1,7 +1,7 @@
 {
   "name": "Hipper",
   "version": "1.0.0",
-  "repository": "git@github.com:usehipper/Hipper.git",
+  "repository": "git@github.com:mikeyclarke/Hipper.git",
   "private": true,
   "test": "jest",
   "engines": {

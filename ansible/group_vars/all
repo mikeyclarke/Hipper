@@ -1,4 +1,4 @@
-sourcecode_git_repo: git@github.com:usehipper/Hipper.git
+sourcecode_git_repo: git@github.com:mikeyclarke/Hipper.git
 
 php_timezone: UTC
 php_session_maxlifetime: 345600
